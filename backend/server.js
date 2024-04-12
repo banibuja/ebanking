@@ -166,7 +166,37 @@ app.put('/updateUsers/:id', (req, res) => {
     });
 });
 
+app.post('/contactUs', (req, res) => {
+
+    const sql = "INSERT INTO contactus (`name`,`email`,`message`)  VALUES (?, ?, ?)";
+    const values = [
+        req.body.name,
+        req.body.email,
+        req.body.message,
+    ];
+    db.query(sql, values, (err, data) => {
+        if (err) {
+            return res.json("Error");
+        }
+        return res.json(data);
+    });
+});
+
+app.delete("/deleteContacts/:id", (req, res) => {
+    const id = req.params.id;
+    const sqlDelete = "DELETE FROM contactus WHERE id = ?";
+  
+    db.query(sqlDelete, id, (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+
+        return res.status(200).json({ message: "User deleted successfully" });
+    });
+});
 
 app.listen(8080, () => {
     console.log("Server is running");
     });
+
