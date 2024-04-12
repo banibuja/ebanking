@@ -22,7 +22,7 @@ function Login() {
                 if (res.data.valid) {
                     navigate('/dashboard');
                 } else {
-                    navigate('/Alogin');
+                    navigate('/adminLogin');
                 }
             })
             .catch(err => console.log(err));
@@ -31,7 +31,7 @@ function Login() {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        axios.post('http://localhost:8080/Alogin', values)
+        axios.post('http://localhost:8080/adminLogin', values)
             .then(res => {
                 if (res.data.Login) {
                     navigate('/dashboard');

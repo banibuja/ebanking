@@ -66,6 +66,7 @@ app.get('/',  (req, res) => {
         return res.json({ valid: true, uId: req.session.uId, username: req.session.username, role: req.session.role })
     } else {
         return res.json({ valid: false, sessionExpired: req.session.expired }); 
+    }
 });
 app.get('/logout', (req, res) => {
     req.session.destroy(err => {
@@ -78,7 +79,26 @@ app.get('/logout', (req, res) => {
         }
     });
 });
-app.post('/Alogin', (req, res) => {
+app.post('/login', (req, res) => {
+    const sql = "SELECT * FROM loginregister WHERE email = ?  AND  password = ?";
+   
+     
+    db.query(sql,[req.body.email,  req.body.password], (err,result) => {
+        if(err) return res.json({Message:"Email or Password is incorrect!"});
+        
+        if(result.length > 0){
+            req.session.uId = result[0].id;
+            req.session.username = result[0].name;
+            req.session.role = "user";
+            console.log(req.session.username);
+            return res.json({Login: true})
+        } else {
+            return res.json({Login: false});
+        }
+        
+    })
+})
+app.post('/adminLogin', (req, res) => {
     const sql = "SELECT * FROM admin WHERE email = ?  AND  password = ?";
     const date = new Date();
     expireDate = date.setMinutes(date.getMinutes() + 15)
@@ -97,7 +117,8 @@ app.post('/Alogin', (req, res) => {
         }
         
     })
-})app.post('/signup', (req, res) => {
+})
+app.post('/signup', (req, res) => {
     const banknumber = "2223" + Math.floor(1000 + Math.random() * 9000);
       const accountNumber = '';
     const sql = "INSERT INTO loginRegister (`name`,`lastname`,`banknumber`,`account`,`email`,`password`,`dateb`,`gender`,`phonenumber`)  VALUES (?, ?, ?, ?, ?, ?, ?,?,?)";
@@ -195,6 +216,63 @@ app.delete("/deleteContacts/:id", (req, res) => {
         return res.status(200).json({ message: "User deleted successfully" });
     });
 });
+
+
+
+app.post('/Stafflogin', (req, res) => {
+    const staff_number = "2223" + Math.floor(1000 + Math.random() * 9000);
+
+    const sql = "SELECT * FROM staffi WHERE email = ?  AND  password = ?";
+
+    db.query(sql, [req.body.email, req.body.password], (err, result) => {
+        if (err) return res.json({ Message: "Email or Password is incorrect!" });
+
+        if (result.length > 0) {
+            req.session.username = result[0].name;
+            req.session.role = "staff";
+            console.log(req.session.username);
+            return res.json({ Login: true })
+        } else {
+            return res.json({ Login: false });
+        }
+
+    })
+})
+app.post('/addStaff', (req, res) => {
+    const staff_number = "2223" + Math.floor(1000 + Math.random() * 9000);
+    const sql = "INSERT INTO staffi (`name`, `staff_number`, `gender`, `phone_number`, `email`, `password`, `created_at`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    const values = [
+        req.body.name,
+        staff_number,
+        req.body.gender,
+        req.body.phone_number,
+        req.body.email,
+        req.body.password,
+        new Date()
+    ];
+    
+    db.query(sql, [...values], (err, result) => {
+        if (err) return res.json({ Message: "Error!!" });
+        return res.json(result);
+    })
+})
+app.get('/getStaff/:id', (req, res) => {
+    const staffId = req.params.id;
+    const sql = "SELECT * FROM stafii WHERE id = ?";
+
+    db.query(sql, [staffId], (err, data) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+        if (data.length > 0) {
+            return res.json(data[0]); 
+        } else {
+            return res.status(404).json({ error: "User not found" });
+        }
+    });
+});
+
 
 app.listen(8080, () => {
     console.log("Server is running");
