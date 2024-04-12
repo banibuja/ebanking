@@ -23,7 +23,7 @@ import Page2 from './Home/Page2';
 import ContactUs2 from './ContactUs/ContactUs2';
 
 import AddAcc from './admin/Accounts/AddAcc';
-import Acc from './admin/Accounts/Acc';
+import Acc from './admin/accounts/Acc';
 import OpenAcc from './admin/Accounts/OpenAcc';
 import OpenAction from './admin/Accounts/OpenAction';
 import Profile from './admin/Profile/Profile';
