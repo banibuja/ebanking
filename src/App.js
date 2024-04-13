@@ -23,11 +23,11 @@ import Page2 from './Home/Page2';
 import ContactUs2 from './ContactUs/ContactUs2';
 
 import AddAcc from './admin/Accounts/AddAcc';
-import Acc from './admin/accounts/Acc';
-import OpenAcc from './admin/Accounts/OpenAcc';
-import OpenAction from './admin/Accounts/OpenAction';
-import Profile from './admin/Profile/Profile';
-import ManageAccIban from './admin/Accounts/ManageAccIban';
+import Acc from './admin/Accounts/Acc';
+// import OpenAcc from './admin/Accounts/OpenAcc';
+// import OpenAction from './admin/Accounts/OpenAction';
+// import Profile from './admin/Profile/Profile';
+// import ManageAccIban from './admin/Accounts/ManageAccIban';
 import Sidebar from './admin/Dashboard/Sidebar';
 
 
@@ -53,16 +53,16 @@ function App() {
         <Route path="/ContactUs" element={<ContactUs />} />
         <Route path="/editclient" element={<EditClient />} />
         <Route path="/ContactForm" element={<ContactForm />} />
-        <Route path="/Profile" element={<Profile />} />
+        {/* <Route path="/Profile" element={<Profile />} /> */}
 
         <Route path="/Page2" element={<Page2 />} />
 
         <Route path="/AddAcc" element={<AddAcc />} />
         <Route path="/acc" element={<Acc />} />
-        <Route path="/OpenAcc" element={<OpenAcc />} />
-        <Route path="/OpenAction" element={<OpenAction />} />
+        {/* <Route path="/OpenAcc" element={<OpenAcc />} />
+        <Route path="/OpenAction" element={<OpenAction />} /> */}
         <Route path="/ContactUs2" element={<ContactUs2 />} />
-        <Route path="/ManageAccIban" element={<ManageAccIban />} />
+        {/* <Route path="/ManageAccIban" element={<ManageAccIban />} /> */}
         <Route path="/Sidebar" element={<Sidebar/>} />
 
 
