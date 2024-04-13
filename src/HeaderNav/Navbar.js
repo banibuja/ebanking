@@ -17,7 +17,7 @@ const Navbar = () => {
         <li className="dropdown">
         <a href="/Stafflogin">Staff Login</a>
         </li>
-        <li><a href="#">Education & Goals</a></li>
+        <li><a href="/login">Login</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
           <li><a href=""><img src={menuLogo}/></a></li>
