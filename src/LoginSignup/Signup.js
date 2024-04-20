@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Validation from './SignupValidation';
 import axios from 'axios'
-import Header from '../HeaderNav/Header';
-import Navbar from '../HeaderNav/Navbar';
+// import Header from '../HeaderNav/Header';
+// import Navbar from '../HeaderNav/Navbar';
 
 
 
@@ -43,8 +43,8 @@ function Signup() {
 
   return (
     <div>
-      <Header />
-      <Navbar />
+      {/* <Header />
+      <Navbar /> */}
       <section className="vh-100">
       <div className="container-fluid h-custom">
         <div className="row d-flex justify-content-center align-items-center h-100">

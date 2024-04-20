@@ -1,5 +1,7 @@
 import React from 'react';
+// import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+// import { Page1 } from './Home/Page1';
 import { Dashboard } from './admin/Dashboard/Dashboard';
 import { Client } from './admin/Client/Client';
 import { Staff } from './Staff/Staff';
@@ -22,11 +24,12 @@ import ContactUs2 from './ContactUs/ContactUs2';
 
 import AddAcc from './admin/accounts/AddAcc';
 import Acc from './admin/accounts/Acc';
-// import OpenAcc from './admin/Accounts/OpenAcc';
-// import OpenAction from './admin/Accounts/OpenAction';
-// import Profile from './admin/Profile/Profile';
-// import ManageAccIban from './admin/Accounts/ManageAccIban';
+import OpenAcc from './admin/accounts/OpenAcc';
+import OpenAction from './admin/accounts/OpenAction';
+import Profile from './admin/Profile/Profile';
+import ManageAccIban from './admin/accounts/ManageAccIban';
 import Sidebar from './admin/Dashboard/Sidebar';
+import EditAcc from './admin/accounts/EditAcc';
 
 
 
@@ -36,7 +39,7 @@ function App() {
     <BrowserRouter>
       <Routes>
 
-        <Route path="/" element={<Page2 />} />
+        {/* <Route path="/" element={<Page1 />} /> */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
@@ -51,16 +54,19 @@ function App() {
         <Route path="/ContactUs" element={<ContactUs />} />
         <Route path="/editclient" element={<EditClient />} />
         <Route path="/ContactForm" element={<ContactForm />} />
-        {/* <Route path="/Profile" element={<Profile />} /> */}
+        <Route path="/Profile" element={<Profile />} />
 
+        <Route path="/" element={<Page2 />} />
 
         <Route path="/AddAcc" element={<AddAcc />} />
         <Route path="/acc" element={<Acc />} />
-        {/* <Route path="/OpenAcc" element={<OpenAcc />} />
-        <Route path="/OpenAction" element={<OpenAction />} /> */}
+        <Route path="/OpenAcc" element={<OpenAcc />} />
+        <Route path="/OpenAction" element={<OpenAction />} />
         <Route path="/ContactUs2" element={<ContactUs2 />} />
-        {/* <Route path="/ManageAccIban" element={<ManageAccIban />} /> */}
+        <Route path="/ManageAccIban" element={<ManageAccIban />} />
         <Route path="/Sidebar" element={<Sidebar/>} />
+        <Route path="/EditAcc" element={<EditAcc/>} />
+
 
 
         

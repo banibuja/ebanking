@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Login.css';
-import Header from '../HeaderNav/Header';
-import Navbar from '../HeaderNav/Navbar';
+// import Header from '../HeaderNav/Header';
+// import Navbar from '../HeaderNav/Navbar';
 
 function Login() {
   const [values, setValues] = useState({
@@ -50,8 +50,8 @@ function Login() {
 
     return (
       <div>
-      <Header />
-      <Navbar />
+      {/* <Header />
+      <Navbar /> */}
     
       <section className="vh-100">
         <div className="container-fluid h-custom">
