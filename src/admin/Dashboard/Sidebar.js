@@ -51,7 +51,7 @@ export default function Sidebar() {
     axios.get('http://localhost:8080/logout')
       .then(res => {
         if (res.data.success) {
-          navigate('/Alogin');
+          navigate('/adminLogin');
         } else {
         }
       })

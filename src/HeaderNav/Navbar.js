@@ -13,7 +13,7 @@ const Navbar = () => {
     <div class="container-fluid">
       <ul className="nav navbar-nav">
         <li><a href="/">Home</a></li>
-        <li><a href="/Alogin">Admin Login</a></li>
+        <li><a href="/adminLogin">Admin Login</a></li>
         <li className="dropdown">
         <a href="/Stafflogin">Staff Login</a>
         </li>
