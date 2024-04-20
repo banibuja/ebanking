@@ -47,7 +47,7 @@ const db = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
-    database: "e-banking"
+    database: "ebanking"
 })
 db.connect((err) => {
     if (err) {
