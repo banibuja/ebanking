@@ -1,7 +1,7 @@
 import React from 'react';
-import '../Home/page2.css';
+import '../Home/Home';
 
-import Navbar from '../HeaderNav/Navbar';
+import Navbar from '../HeaderNav&Footer/Navbar';
 import menuLogo from '../imgs/menu-logo.png';
 import footerImg from '../imgs/black&white-logo.png';
 

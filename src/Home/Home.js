@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Carousel, Container, Row, Col } from 'react-bootstrap';
-import './page2.css';
-import Navbar from '../HeaderNav/Navbar';
+import './Home.css';
+import Navbar from '../HeaderNav&Footer/Navbar';
 import arrowImage from '../imgs/arrow.png';
 import eLogo from '../imgs/e-bankinglogo.png';
 import RetireWell from '../imgs/Retire well.png';
@@ -17,7 +17,7 @@ import outlookLogo from '../imgs/outlook-logo.png';
 import twitterLogo from '../imgs/twitter-logo.png';
 import facebookLogo from '../imgs/facebook-logo.png';
 
-export const Page2 = () => {
+export const Home = () => {
 
   return (
 <>
@@ -44,27 +44,27 @@ export const Page2 = () => {
         <Carousel.Item>
           <Row>
           <Col>
-              <div className="carusel-cards" id="carusel-cards-2">
-                <img src={TransferLove} alt="Transfer Love" className="carusel-img" />
-                <div className="carusel-gold-line"></div>
-                <h1 className="carusel-title">Transfer Love</h1>
-                <p className="carusel-txt">Across distances, we send love alongside funds, uniting hearts through screens.</p>
+            <div class="carusel-cards" id="carusel-cards-1">
+              <img src={RetireWell} class="carusel-img"/>
+              <div class="carusel-gold-line"></div>
+              <h1 class="carusel-title">Retire Well</h1>
+              <p class="carusel-txt">Build your dream bridge bridge today for a confident tomorrow.</p>
+            </div>
+          </Col>
+            <Col>
+              <div class="carusel-cards" id="carusel-cards-2">
+                <img src={Security} class="carusel-img"/>
+                <div class="carusel-gold-line"></div>
+                <h1 class="carusel-title">Security</h1>
+                <p class="carusel-txt">Trust's pricless gem in every transaction.</p>
               </div>
             </Col>
             <Col>
-              <div className="carusel-cards">
-                <img src={Explore} alt="Explore" className="carusel-img" />
-                <div className="carusel-gold-line"></div>
-                <h1 className="carusel-title">Explore</h1>
-                <p className="carusel-txt">Saved pennies lead to unforgettable experiences, showing travel's value beyond cost.</p>
-              </div>
-            </Col>
-            <Col>
-              <div className="carusel-cards">
-                <img src={unExpected} alt="Prepare" className="carusel-img" />
-                <div className="carusel-gold-line"></div>
-                <h1 className="carusel-title">Prepare</h1>
-                <p className="carusel-txt">In tough times, savings offer stability and solace, showcasing resilience.</p>
+              <div class="carusel-cards" id="carusel-cards-3">
+                <img src={Scheme} class="carusel-img"/>
+                <div class="carusel-gold-line"></div>
+                <h1 class="carusel-title">Scheme</h1>
+                <p class="carusel-txt">Balancing rick and reward, shaping tomorrow's aspirations.</p>
               </div>
             </Col>
           </Row>
@@ -72,34 +72,34 @@ export const Page2 = () => {
         <Carousel.Item>
           <Row>
             <Col>
-              <div className="carusel-cards" id="carusel-cards-2">
-                <img src={TransferLove} alt="Transfer Love" className="carusel-img" />
-                <div className="carusel-gold-line"></div>
-                <h1 className="carusel-title">Transfer Love</h1>
-                <p className="carusel-txt">Across distances, we send love alongside funds, uniting hearts through screens.</p>
+              <div class="carusel-cards">
+                <img src={TransferLove} class="carusel-img"/>
+                <div class="carusel-gold-line"></div>
+                <h1 class="carusel-title">Transfer Love</h1>
+                <p class="carusel-txt">Across distances, we send love alongside funds, uniting hearts through screens.</p>
               </div>
             </Col>
             <Col>
-              <div className="carusel-cards">
-                <img src={Explore} alt="Explore" className="carusel-img" />
-                <div className="carusel-gold-line"></div>
-                <h1 className="carusel-title">Explore</h1>
-                <p className="carusel-txt">Saved pennies lead to unforgettable experiences, showing travel's value beyond cost.</p>
-              </div>
+            <div class="carusel-cards">
+              <img src={Explore} class="carusel-img"/>
+              <div class="carusel-gold-line"></div>
+              <h1 class="carusel-title">Explore</h1>
+              <p class="carusel-txt">Saved pennies lead to unforgettable experiences, showing travel's value beyond cost.</p>
+            </div>
             </Col>
             <Col>
-              <div className="carusel-cards">
-                <img src={unExpected} alt="Prepare" className="carusel-img" />
-                <div className="carusel-gold-line"></div>
-                <h1 className="carusel-title">Prepare</h1>
-                <p className="carusel-txt">In tough times, savings offer stability and solace, showcasing resilience.</p>
+              <div class="carusel-cards">
+                <img src={unExpected} class="carusel-img"/>
+                <div class="carusel-gold-line"></div>
+                <h1 class="carusel-title">Prepare</h1>
+                <p class="carusel-txt">In tough times, savings offer stability and solace, showcasing resilience.</p>
               </div>
             </Col>
           </Row>
         </Carousel.Item>
       </Carousel>
     </Container>
-
+   
 <div class="info-place">
   <img src={logoNoBackground} alt="Logo"/>
   <h1>E-banking offers everything you need for seamless financial management: account services, fund transfers, bill payment, mobile banking, deposits, loans, and support.</h1>
@@ -144,4 +144,4 @@ export const Page2 = () => {
   );
 }
 
-export default Page2;
+export default Home;

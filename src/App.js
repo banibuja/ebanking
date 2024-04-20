@@ -19,7 +19,7 @@ import ContactUs from './ContactUs/ContactUs'
 import EditClient from './admin/Client/EditClient';
 
 import ContactForm from './ContactUs/ContactForm';
-import Page2 from './Home/Page2';
+import Home from './Home/Home';
 import ContactUs2 from './ContactUs/ContactUs2';
 
 import AddAcc from './admin/accounts/AddAcc';
@@ -39,7 +39,6 @@ function App() {
     <BrowserRouter>
       <Routes>
 
-        {/* <Route path="/" element={<Page1 />} /> */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
@@ -56,7 +55,7 @@ function App() {
         <Route path="/ContactForm" element={<ContactForm />} />
         <Route path="/Profile" element={<Profile />} />
 
-        <Route path="/" element={<Page2 />} />
+        <Route path="/" element={<Home />} />
 
         <Route path="/AddAcc" element={<AddAcc />} />
         <Route path="/acc" element={<Acc />} />
@@ -66,16 +65,6 @@ function App() {
         <Route path="/ManageAccIban" element={<ManageAccIban />} />
         <Route path="/Sidebar" element={<Sidebar/>} />
         <Route path="/EditAcc" element={<EditAcc/>} />
-
-
-
-        
-
-
-
-        
-        
-
 
 
       </Routes>
