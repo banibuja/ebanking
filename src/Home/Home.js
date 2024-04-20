@@ -11,12 +11,8 @@ import TransferLove from '../imgs/transfer love.png';
 import Explore from '../imgs/explore.png';
 import unExpected from '../imgs/unExpected.png';
 import logoNoBackground from '../imgs/elogo-removed-background.png';
-import footerImg from '../imgs/black&white-logo.png';
-import emailLogo from '../imgs/email-logo (2).png';
-import outlookLogo from '../imgs/outlook-logo.png';
-import twitterLogo from '../imgs/twitter-logo.png';
-import facebookLogo from '../imgs/facebook-logo.png';
-import Footer from '@/HeaderNav&Footer/Footer';
+
+import Footer from '../HeaderNav&Footer/Footer';
 export const Home = () => {
 
   return (
