@@ -17,9 +17,10 @@ import Footer from '../HeaderNav&Footer/Footer';
 export const Home = () => {
 
   return (
+   
     <>
       <Navbar />
-
+ <body> 
       <div className="container">
         <div className="flexbox">
           <h1 class="gateway">Gateway</h1>
@@ -101,10 +102,13 @@ export const Home = () => {
         <img src={logoNoBackground} alt="Logo" />
         <h1>E-banking offers everything you need for seamless financial management: account services, fund transfers, bill payment, mobile banking, deposits, loans, and support.</h1>
       </div>
+    
 
       <Footer />
-
+      </body>
     </>
+  
+   
 
   );
 }
