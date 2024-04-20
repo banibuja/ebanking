@@ -11,7 +11,6 @@ import TransferLove from '../imgs/transfer love.png';
 import Explore from '../imgs/explore.png';
 import unExpected from '../imgs/unExpected.png';
 import logoNoBackground from '../imgs/elogo-removed-background.png';
-
 import Footer from '../HeaderNav&Footer/Footer';
 
 export const Home = () => {
@@ -19,7 +18,9 @@ export const Home = () => {
   return (
    
     <>
-      <Navbar />
+    <header>
+      <Navbar/>
+    </header>
  <body> 
       <div className="container">
         <div className="flexbox">
@@ -103,8 +104,9 @@ export const Home = () => {
         <h1>E-banking offers everything you need for seamless financial management: account services, fund transfers, bill payment, mobile banking, deposits, loans, and support.</h1>
       </div>
     
-
-      <Footer />
+<footer>
+  <Footer/>
+</footer>
       </body>
     </>
   

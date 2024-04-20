@@ -1,7 +1,6 @@
 // Navbar.js
 
 import React, { useEffect } from 'react';
-import footerImg from '../imgs/black&white-logo.png';
 import emailLogo from '../imgs/email-logo (2).png';
 import outlookLogo from '../imgs/outlook-logo.png';
 import twitterLogo from '../imgs/twitter-logo.png';
@@ -9,9 +8,7 @@ import facebookLogo from '../imgs/facebook-logo.png';
 
 const Footer = () => {
   return (
-
-<div class="footer">
-    <img src={footerImg} class="footerImg" />
+<>
     <div class="footer-txt-box">
       <div>
         <h1>About E-Banking</h1>
@@ -41,11 +38,10 @@ const Footer = () => {
         <img src={twitterLogo}/>
       </div>
     </div>
-    <div class="footer-bottom">
+    {/* <div class="footer-bottom">
       <p>@2024, E-Banking the finesse for finance</p>
-    </div>
-</div>
-    
+    </div> */}
+</>    
     );
 }
 export default Footer;
