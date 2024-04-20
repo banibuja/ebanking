@@ -1,5 +1,10 @@
 // Navbar.js
 import React, { useEffect } from 'react';
+import footerImg from '../imgs/black&white-logo.png';
+import emailLogo from '../imgs/email-logo (2).png';
+import outlookLogo from '../imgs/outlook-logo.png';
+import twitterLogo from '../imgs/twitter-logo.png';
+import facebookLogo from '../imgs/facebook-logo.png';
 
 const Footer = () => {
   return (
