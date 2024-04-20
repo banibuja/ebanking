@@ -1,0 +1,45 @@
+// Navbar.js
+import React, { useEffect } from 'react';
+
+const Footer = () => {
+  return (
+
+<div class="footer">
+    <img src={footerImg} class="footerImg" />
+    <div class="footer-txt-box">
+      <div>
+        <h1>About E-Banking</h1>
+        <p>About Us<br/>
+        Fees<br/>
+        Rae<br/>
+        Privacy Policy<br/>
+        Stay Informt</p>
+      </div>
+      <div>
+        <h1>Consumer Loans</h1>
+        <p>Personal Loans<br/>
+        Retire Loans<br/>
+        Travel Loans<br/>
+        Emergency Loans</p>
+        </div>
+      <div>
+      <h1>Healtt & Support</h1>
+        <p>Contact Us<br/>
+        Help/Support</p>
+      </div>
+      <div>
+      <h1>Connect</h1>
+        <img src={emailLogo}/>
+        <img src={facebookLogo}/>
+        <img src={outlookLogo}/>
+        <img src={twitterLogo}/>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>@2024, E-Banking the finesse for finance</p>
+    </div>
+</div>
+    
+    );
+}
+export default Footer;
