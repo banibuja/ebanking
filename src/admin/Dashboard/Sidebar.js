@@ -11,11 +11,10 @@ export default function Sidebar() {
   axios.defaults.withCredentials = true;
 
   useEffect(() => {
-    // Fetch user role after login
     axios.get('http://localhost:8080')
       .then(res => {
         if (res.data.valid) {
-          setRole(res.data.role); // Update user role
+          setRole(res.data.role); 
         } else {
           navigate('/login');
         }
@@ -84,7 +83,6 @@ export default function Sidebar() {
         <hr />
         <p>Session Time Remaining: {formatTime(sessionTimeRemaining)}</p>
         <ul className="nav nav-pills flex-column mb-auto">
-          {/* Display navigation items based on user role */}
           {role !== 'user' && (
             <>
               <li>
@@ -145,7 +143,6 @@ export default function Sidebar() {
             </>
           )}
           
-          {/* Display common navigation items for all roles */}
           <li>
           <Dropdown>
                   <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">

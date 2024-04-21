@@ -69,7 +69,7 @@ export const Profile = () => {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title">Edit Client</h5>
-                            <button type="button" className="close">
+                            <button type="button" className="close" onClick={() => navigate('/dashboard')}>
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -77,11 +77,11 @@ export const Profile = () => {
                             <form onSubmit={handleSubmit}>
                                 <div className="form-group">
                                     <label>Name</label>
-                                    <input type="text" placeholder='Enter name' name='name' onChange={handeInput} className='form-control roundend-0' value={values.name} disabled />
+                                    <input type="text" placeholder='Enter name' name='name' onChange={handeInput} className='form-control roundend-0' value={values.name} readOnly />
                                     {errors.name && <span className='text-danger'>{errors.name}</span>}                            </div>
                                 <div className="form-group">
                                     <label>Lastname</label>
-                                    <input type="text" placeholder='Enter name' name='lastname' onChange={handeInput} className='form-control roundend-0' value={values.lastname} disabled />
+                                    <input type="text" placeholder='Enter name' name='lastname' onChange={handeInput} className='form-control roundend-0' value={values.lastname} readOnly />
                                     {errors.lastname && <span className='text-danger'>{errors.lastname}</span>}                            </div>
                                 <div className="form-group">
                                     <label>Email</label>
@@ -98,7 +98,7 @@ export const Profile = () => {
 />                                </div>
                                 <div className="form-group">
                                     <label>Gender</label>
-                                    <select name="gender" onChange={handeInput} value={values.gender} className="form-control rounded-0" disabled>
+                                    <select name="gender" onChange={handeInput} value={values.gender} className="form-control rounded-0" readOnly>
                                         <option value="">Select Gender</option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
@@ -111,7 +111,7 @@ export const Profile = () => {
                                 </div>                        </form>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary">Close</button>
+                        <button type="button" className="btn btn-secondary" onClick={() => navigate('/dashboard')}>Close</button>
                             <button type="button" className="btn btn-primary" onClick={handleSubmit}>Save changes</button>
                         </div>
                     </div>

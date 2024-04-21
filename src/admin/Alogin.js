@@ -51,7 +51,7 @@ function Login() {
         </div>
         <div className='d-flex justify-content-center align-items-center bg-primary vh-100 text-black'>
                 <div className='bg-white p-3 rounded w-25'>
-                    <h2>Sign-in</h2>
+                    <h2>ADMIN Login</h2>
                     <form onSubmit={handleSubmit}>
                         <div className='form-group'>
                             <label htmlFor="email">Email</label>
@@ -73,9 +73,7 @@ function Login() {
                                 onChange={handleInput}
                                 className='form-control' />
                         </div>
-                        <button type='submit' className='btn btn-success btn-block'>Log in</button>
-                        <p>You agree to our terms and policies</p>
-                        <Link to="/signup" className='btn btn-default btn-block border bg-light text-decoration-none'>Create Account</Link>
+                        <button type='submit' className='btn btn-success btn-block w-100 mt-2'>Log in</button>
                     </form>
                 </div>
             </div></>
