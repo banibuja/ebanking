@@ -64,6 +64,7 @@ function ContactForm() {
         <textarea class="form-control" rows="5" id="comment" name='message' onChange={handeInput}></textarea>
       </div>
 
+      <button type="submit" className="btn btn-danger btn-lg m-3" style={{ margin: '5px', paddingLeft: '2.5rem', paddingRight: '2.5rem', justifyContent: 'center' }}>Sends</button>
     </form>
   </div>
 </div>
