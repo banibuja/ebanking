@@ -103,10 +103,9 @@ export const Home = () => {
         <img src={logoNoBackground} alt="Logo" />
         <h1>E-banking offers everything you need for seamless financial management: account services, fund transfers, bill payment, mobile banking, deposits, loans, and support.</h1>
       </div>
-    
-<footer>
-  <Footer/>
-</footer>
+        <footer className="footer">
+          <Footer/>
+        </footer>
       </body>
     </>
   

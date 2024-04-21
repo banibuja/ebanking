@@ -19,8 +19,6 @@ import EditClient from './admin/Client/EditClient';
 
 import ContactForm from './ContactUs/ContactForm';
 import Home from './Home/Home';
-import ContactUs2 from './ContactUs/ContactUs2';
-
 import AddAcc from './admin/accounts/AddAcc';
 import Acc from './admin/accounts/Acc';
 import OpenAcc from './admin/accounts/OpenAcc';
@@ -60,7 +58,6 @@ function App() {
         <Route path="/acc" element={<Acc />} />
         <Route path="/OpenAcc" element={<OpenAcc />} />
         <Route path="/OpenAction" element={<OpenAction />} />
-        <Route path="/ContactUs2" element={<ContactUs2 />} />
         <Route path="/ManageAccIban" element={<ManageAccIban />} />
         <Route path="/Sidebar" element={<Sidebar/>} />
         <Route path="/EditAcc" element={<EditAcc/>} />

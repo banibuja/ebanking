@@ -8,40 +8,40 @@ import facebookLogo from '../imgs/facebook-logo.png';
 
 const Footer = () => {
   return (
-<>
-    <div class="footer-txt-box">
-      <div>
-        <h1>About E-Banking</h1>
-        <p>About Us<br/>
-        Fees<br/>
-        Rae<br/>
-        Privacy Policy<br/>
-        Stay Informt</p>
+    <div className="container">
+    <div className="row">
+      <div className="col-md-6">
+        <h1 style={{ letterSpacing: '3px' }}>About E-Banking</h1>
+        <p style={{ fontSize: '25px', fontWeight: 500, letterSpacing: '1px' }}>About Us<br />
+          Fees<br />
+          Rae<br />
+          Privacy Policy<br />
+          Stay Informt</p>
       </div>
-      <div>
-        <h1>Consumer Loans</h1>
-        <p>Personal Loans<br/>
-        Retire Loans<br/>
-        Travel Loans<br/>
-        Emergency Loans</p>
-        </div>
-      <div>
-      <h1>Healtt & Support</h1>
-        <p>Contact Us<br/>
-        Help/Support</p>
-      </div>
-      <div>
-      <h1>Connect</h1>
-        <img src={emailLogo}/>
-        <img src={facebookLogo}/>
-        <img src={outlookLogo}/>
-        <img src={twitterLogo}/>
+      <div className="col-md-6">
+        <h1 style={{ letterSpacing: '3px' }}>Consumer Loans</h1>
+        <p style={{ fontSize: '25px', fontWeight: 500, letterSpacing: '1px' }}>Personal Loans<br />
+          Retire Loans<br />
+          Travel Loans<br />
+          Emergency Loans</p>
       </div>
     </div>
-    {/* <div class="footer-bottom">
-      <p>@2024, E-Banking the finesse for finance</p>
-    </div> */}
-</>    
+    <div className="row">
+      <div className="col-md-6">
+        <h1 style={{ letterSpacing: '3px' }}>Health & Support</h1>
+        <p style={{ fontSize: '25px', fontWeight: 500, letterSpacing: '1px' }}>Contact Us<br />
+          Help/Support</p>
+      </div>
+      <div className="col-md-6">
+        <h1 style={{ letterSpacing: '3px' }}>Connect</h1>
+        <img src={emailLogo} style={{ padding: '10px', width: '60px', height: 'auto' }} className="img-fluid" alt="email" />
+        <img src={facebookLogo} style={{ padding: '10px', width: '60px', height: 'auto' }} className="img-fluid" alt="facebook" />
+        <img src={outlookLogo} style={{ padding: '10px', width: '60px', height: 'auto' }} className="img-fluid" alt="outlook" />
+        <img src={twitterLogo} style={{ padding: '10px', width: '60px', height: 'auto' }} className="img-fluid" alt="twitter" />
+      </div>
+    </div>
+  </div>
+
     );
 }
 export default Footer;
