@@ -39,7 +39,7 @@ export const Acc = () => {
 
     return (
         <div>
-            <main style={{ display: 'flex', minHeight: '100vh' }}>
+            <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
                 <Sidebar />
                 <div className="container-fluid" style={{  marginTop: '100px' }} >
 

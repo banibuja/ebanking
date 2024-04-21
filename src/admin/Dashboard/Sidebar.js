@@ -76,7 +76,7 @@ export default function Sidebar() {
 
   return (
     <div>
-      <div className="d-flex flex-column flex-shrink-0 p-3 bg-light" style={{ width: '300px', height: '100%' }}>
+      <div className="d-flex flex-column flex-shrink-0 p-3 bg-light" style={{ width: '300px', height: '100%', color: 'black', backgroundColor: 'white'}}>
         <a href="/" className="d-flex align-items-center mb-3 link-dark text-decoration-none">
           <i className="bi me-2 fas fa-university fa-2x text-gray-300" ></i>
           <span className="fs-4">E-Banking</span>

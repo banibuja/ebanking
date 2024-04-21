@@ -40,7 +40,7 @@ export const Client = () => {
 
     return (
         <div>
-            <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white' }}>
+            <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
                 <Sidebar />
                 <div className="container-fluid" style={{  marginTop: '100px' }} >
 

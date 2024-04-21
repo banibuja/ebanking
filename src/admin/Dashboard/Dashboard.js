@@ -55,7 +55,7 @@ export const Dashboard = () => {
 
   return (
     <div>
-      <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'white'}}>
+      <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black'}}>
         <Sidebar />
 
         <div className="container-fluid  " style={{ marginRight: '120px' }}>

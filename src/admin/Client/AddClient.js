@@ -48,7 +48,7 @@ function AddClient() {
 
     return (
         <div>
-            <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white' }}>
+            <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
                 <Sidebar />
                 <div className="content-wrapper" style={{ marginRight: '100px' }}>
                     <section className="content">

@@ -45,7 +45,7 @@ function ContactForm() {
 <div class="contact-us">
 <img src={footerImg} class="contactus-img" />
 
-  <div class="contactus-form">
+  <div class="contactus-form ">
     <form action="" onSubmit={handleSubmit}>  
       <div className="form-group">         
         <label for="usr">Name:</label>

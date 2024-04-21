@@ -25,11 +25,11 @@ export const Home = () => {
       <div className="container">
         <div className="flexbox">
           <h1 class="gateway">Gateway</h1>
-          <button className="StartBanking-button">
+          <a href="/login" className="StartBanking-button">
             <span className="arrow-slide"></span>
             <img src={arrowImage} className="arrow-img" alt="Arrow" />
-            <p>StartBanking</p>
-          </button>
+            <p className="start-banking-text">StartBanking</p>
+          </a>
         </div>
         <div className="flexbox">
           <p class="paragraph-p">Experience seamless blend of finance and finesse for effortless transfers, balance and more.</p>
