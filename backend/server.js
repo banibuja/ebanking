@@ -4,6 +4,8 @@ const cors = require('cors');
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+const bcrypt = require('bcrypt');
+
 
 
 const app = express();
@@ -79,25 +81,62 @@ app.get('/logout', (req, res) => {
     });
 });
 app.post('/login', (req, res) => {
-    const sql = "SELECT * FROM loginRegister WHERE email = ?  AND  password = ?";
+    const sql = "SELECT * FROM loginRegister WHERE email = ?";
     const date = new Date();
     expireDate = date.setMinutes(date.getMinutes() + 15)
-    db.query(sql,[req.body.email,  req.body.password], (err,result) => {
+    db.query(sql,[req.body.email], async (err,result) => {
         if(err) return res.json({Message:"Email or Password is incorrect!"});
         
         if(result.length > 0){
-            req.session.uId = result[0].id;
-            req.session.username = result[0].name;
-            req.session.role = "user";
-            req.session.maxAge = + expireDate;
-            console.log(req.session.username);
-            return res.json({Login: true})
+            const comparison = await bcrypt.compare(req.body.password, result[0].password);
+            if(comparison){
+                req.session.uId = result[0].id;
+                req.session.username = result[0].name;
+                req.session.role = "user";
+                req.session.maxAge = + expireDate;
+                console.log(req.session.username);
+                return res.json({Login: true})
+            } else {
+                return res.json({Login: false});
+            }
         } else {
             return res.json({Login: false});
         }
         
     })
 })
+app.post('/signup', async (req, res) => {
+    const banknumber = "2223" + Math.floor(1000 + Math.random() * 9000);
+    const accountNumber = '';
+    try {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+        const sql = "INSERT INTO loginRegister (`name`, `lastname`, `banknumber`, `account`, `email`, `password`, `dateb`, `gender`, `phonenumber`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        const values = [
+            req.body.name,
+            req.body.lastname,
+            banknumber,
+            accountNumber,
+            req.body.email,
+            hashedPassword, 
+            req.body.dateb,
+            req.body.gender,
+            req.body.phonenumber
+        ];
+
+        db.query(sql, values, (err, result) => {
+            if (err) {
+                console.error('Error inserting user:', err);
+                return res.status(500).json({ error: 'Internal Server Error' });
+            }
+            return res.json(result);
+        });
+    } catch (error) {
+        console.error('Error hashing password:', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 app.post('/adminLogin', (req, res) => {
     const sql = "SELECT * FROM admin WHERE email = ?  AND  password = ?";
     const date = new Date();
@@ -140,26 +179,6 @@ app.post('/Stafflogin', (req, res) => {
     })
 })
 
-app.post('/signup', (req, res) => {
-    const banknumber = "2223" + Math.floor(1000 + Math.random() * 9000);
-      const accountNumber = '';
-    const sql = "INSERT INTO loginRegister (`name`,`lastname`,`banknumber`,`account`,`email`,`password`,`dateb`,`gender`,`phonenumber`)  VALUES (?, ?, ?, ?, ?, ?, ?,?,?)";
-    const values = [
-        req.body.name,
-        req.body.lastname,
-        banknumber, 
-        accountNumber,
-        req.body.email,
-        req.body.password,
-        req.body.dateb,  
-        req.body.gender,
-        req.body.phonenumber
-    ]
-      db.query(sql, [...values], (err, result) => {
-        if(err) return res.json({Message:"Error!!"});
-        return res.json(result);
-    })
-})
 
 app.post('/getUsers', (req, res) => {
     const sql = "SELECT * FROM loginRegister";
@@ -390,7 +409,27 @@ app.get('/getUsers/:id', (req, res) => {
         }
     });
 });
+app.get('/getUserData/:role/:id', (req, res) => {
+    const userRole = req.params.role;
+    const userId = req.params.id;
+    var tableName = '';
+    if (userRole == "user") tableName = `loginregister`
+    else if (userRole == "staff") tableName = 'staffi';
+    else tableName = 'admin';
+    const sql = `SELECT * FROM ${tableName} WHERE id = ?`;
 
+    db.query(sql, [userId], (err, data) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+        if (data.length > 0) {
+            return res.json(data[0]); 
+        } else {
+            return res.status(404).json({ error: "User not found" });
+        }
+    });
+});
 
 
 

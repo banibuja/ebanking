@@ -63,7 +63,7 @@ export const Profile = () => {
 
     return (
         <div>
-            <main style={{ display: 'flex', minHeight: '100vh' }}>
+            <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
                 <Sidebar />
                 <div className="modal-dialog">
                     <div className="modal-content">
@@ -77,11 +77,11 @@ export const Profile = () => {
                             <form onSubmit={handleSubmit}>
                                 <div className="form-group">
                                     <label>Name</label>
-                                    <input type="text" placeholder='Enter name' name='name' onChange={handeInput} className='form-control roundend-0' value={values.name} readOnly />
+                                    <input type="text" placeholder='Enter name' name='name' onChange={handeInput} className='form-control roundend-0' value={values.name} disabled />
                                     {errors.name && <span className='text-danger'>{errors.name}</span>}                            </div>
                                 <div className="form-group">
                                     <label>Lastname</label>
-                                    <input type="text" placeholder='Enter name' name='lastname' onChange={handeInput} className='form-control roundend-0' value={values.lastname} readOnly />
+                                    <input type="text" placeholder='Enter name' name='lastname' onChange={handeInput} className='form-control roundend-0' value={values.lastname} disabled />
                                     {errors.lastname && <span className='text-danger'>{errors.lastname}</span>}                            </div>
                                 <div className="form-group">
                                     <label>Email</label>
@@ -98,7 +98,7 @@ export const Profile = () => {
 />                                </div>
                                 <div className="form-group">
                                     <label>Gender</label>
-                                    <select name="gender" onChange={handeInput} value={values.gender} className="form-control rounded-0" readOnly>
+                                    <select name="gender" onChange={handeInput} value={values.gender} className="form-control rounded-0" disabled>
                                         <option value="">Select Gender</option>
                                         <option value="Male">Male</option>
                                         <option value="Female">Female</option>
