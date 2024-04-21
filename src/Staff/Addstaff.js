@@ -45,7 +45,7 @@ function Addstaff
     return (
 
       <div> 
-      <main style={{ display: 'flex', minHeight: '100vh' }}>
+      <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white' }}>
   <Sidebar />
 
 
