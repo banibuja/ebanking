@@ -49,7 +49,7 @@ function Login() {
         <><div>
             <Navbar />
         </div>
-        <div className='d-flex justify-content-center align-items-center bg-primary vh-100 text-black'>
+        <div className='d-flex justify-content-center align-items-center bg-danger vh-100 text-black'>
                 <div className='bg-white p-3 rounded w-25'>
                     <h2>ADMIN Login</h2>
                     <form onSubmit={handleSubmit}>

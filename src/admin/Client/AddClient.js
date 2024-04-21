@@ -15,7 +15,8 @@ function AddClient() {
         password: '',
         dateb: '',
         gender: '',
-        phonenumber: ''
+        phonenumber: '',
+        emailExists: false 
     });
 
     const [errors, setErrors] = useState({});
@@ -33,8 +34,9 @@ function AddClient() {
         axios.get(`http://localhost:8080/check-email?email=${values.email}`)
             .then(response => {
                 if (response.data.exists) {
-                    alert('This email is already in use.');
+                    setValues(prev => ({ ...prev, emailExists: true }));
                 } else {
+                    setValues(prev => ({ ...prev, emailExists: false }));
                     setErrors(Validation(values));
 
                     if (Object.keys(errors).length === 0) {
@@ -48,6 +50,7 @@ function AddClient() {
             })
             .catch(err => console.log(err));
     };
+
     return (
         <div>
             <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
@@ -86,6 +89,15 @@ function AddClient() {
                                                         <label htmlFor="name">Client Email</label>
                                                         <input type="email" placeholder='Enter email' name='email' onChange={handeInput} className='form-control roundend-0' />
                                                         {errors.email && <span className='text-danger'>{errors.email}</span>}
+                                                        {values.email && (
+                                                            <span style={{ marginLeft: '10px' }}>
+                                                                {values.emailExists ? (
+                                                                    <span style={{ color: 'red' }}>This email is already in use.</span>
+                                                                ) : (
+                                                                    <span style={{ color: 'green' }}>Email is available.</span>
+                                                                )}
+                                                            </span>
+                                                        )}
                                                     </div>
                                                     <div className="col-md-6 form-group">
                                                         <label htmlFor="name">Client Password</label>
