@@ -39,11 +39,11 @@ function ContactForm() {
 
 
     return (
-<>
+<body>
  <Navbar/>
 
-<div class="contact-us">
-<img src={footerImg} class="contactus-img" />
+<div style={{ backgroundColor: '#0D0D0D', position: 'relative', width: '100vh', height: '100vh' }}>
+<img src={footerImg} className="contactus-img img-fluid" style={{ height: '600px' }}/>
 
   <div class="contactus-form">
     <form action="" onSubmit={handleSubmit}>  
@@ -68,7 +68,7 @@ function ContactForm() {
     </form>
   </div>
 </div>
-</>
+</body>
     )
 }
 

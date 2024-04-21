@@ -92,6 +92,7 @@ body{
   overflow: hidden;
   margin-left: 100px;
   margin-right: 150px;
+  background-color:#0D0D0D;
 }
 .StartBanking-button .arrow-slide::before {
   content: '';
@@ -208,19 +209,7 @@ body{
   font-size:40px;
   text-align: center;
 }
-.contact-us {
-  background-color: #0D0D0D;
-  position: relative;
-  width:100vh;
-  height:100vh;
-}
-.contactus-img {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  height: 600px;
-  width: auto; 
-}
+
 .contactus-form {
   z-index: 999;
   position: fixed;
@@ -238,7 +227,7 @@ body{
 }
 footer{
   background-image: url('../imgs/black&white-logo.png');
-  background-size: 700px; 
+  background-size: 800px; 
   background-repeat: no-repeat;
   background-color: #0D0D0D;
 }
