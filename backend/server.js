@@ -29,7 +29,6 @@ app.get('/sessionTimeRemaining',  (req, res) => {
     if (req.session && req.session.username) {
         const now = new Date().getTime();
         const expireTime = req.session.maxAge;
-        // const sessionExpire = req.session.lastActivity + expireTime;
         if (now > expireTime) {
             req.session.expired = true;
             return res.json({ timeRemaining: 0 });
@@ -80,9 +79,9 @@ app.get('/logout', (req, res) => {
     });
 });
 app.post('/login', (req, res) => {
-    const sql = "SELECT * FROM loginregister WHERE email = ?  AND  password = ?";
-   
-     
+    const sql = "SELECT * FROM loginRegister WHERE email = ?  AND  password = ?";
+    const date = new Date();
+    expireDate = date.setMinutes(date.getMinutes() + 15)
     db.query(sql,[req.body.email,  req.body.password], (err,result) => {
         if(err) return res.json({Message:"Email or Password is incorrect!"});
         
@@ -90,6 +89,7 @@ app.post('/login', (req, res) => {
             req.session.uId = result[0].id;
             req.session.username = result[0].name;
             req.session.role = "user";
+            req.session.maxAge = + expireDate;
             console.log(req.session.username);
             return res.json({Login: true})
         } else {
@@ -118,6 +118,28 @@ app.post('/adminLogin', (req, res) => {
         
     })
 })
+app.post('/Stafflogin', (req, res) => {
+
+    const sql = "SELECT * FROM staffi WHERE email = ?  AND  password = ?";
+    const date = new Date();
+    expireDate = date.setMinutes(date.getMinutes() + 15)
+    db.query(sql,[req.body.email,  req.body.password], (err,result) => {
+        if(err) return res.json({Message:"Email or Password is incorrect!"});
+        
+        if(result.length > 0){
+            req.session.uId = result[0].id;
+            req.session.username = result[0].name;
+            req.session.role = "staff";
+            req.session.maxAge = + expireDate;
+            console.log(req.session.username);
+            return res.json({Login: true})
+        } else {
+            return res.json({Login: false});
+        }
+        
+    })
+})
+
 app.post('/signup', (req, res) => {
     const banknumber = "2223" + Math.floor(1000 + Math.random() * 9000);
       const accountNumber = '';
@@ -235,25 +257,7 @@ app.delete("/deleteContacts/:id", (req, res) => {
 
 
 
-app.post('/Stafflogin', (req, res) => {
-    const staff_number = "2223" + Math.floor(1000 + Math.random() * 9000);
 
-    const sql = "SELECT * FROM staffi WHERE email = ?  AND  password = ?";
-
-    db.query(sql, [req.body.email, req.body.password], (err, result) => {
-        if (err) return res.json({ Message: "Email or Password is incorrect!" });
-
-        if (result.length > 0) {
-            req.session.username = result[0].name;
-            req.session.role = "staff";
-            console.log(req.session.username);
-            return res.json({ Login: true })
-        } else {
-            return res.json({ Login: false });
-        }
-
-    })
-})
 app.post('/addStaff', (req, res) => {
     const staff_number = "2223" + Math.floor(1000 + Math.random() * 9000);
     const sql = "INSERT INTO staffi (`name`, `staff_number`, `gender`, `phone_number`, `email`, `password`, `created_at`) VALUES (?, ?, ?, ?, ?, ?, ?)";
