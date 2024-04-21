@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Validation from './SignupValidation';
 import axios from 'axios'
-// import Header from '../HeaderNav/Header';
-// import Navbar from '../HeaderNav/Navbar';
+import Navbar from '../HeaderNav&Footer/Navbar';
+
+
 
 
 
@@ -24,27 +25,32 @@ function Signup() {
     setValues(prev => ({ ...prev, [event.target.name]: event.target.value }));
   };
   axios.defaults.withCredentials = true;
-    const handleSubmit = (event) => {
-        event.preventDefault();
+  const handleSubmit = (event) => {
 
-      // setErrors(Validation(values));
-      console.log(Object.keys(errors));
+  event.preventDefault();
+        
+  axios.get(`http://localhost:8080/check-email?email=${values.email}`)
+      .then(response => {
+          if (response.data.exists) {
+              alert('This email is already in use.');
+          } else {
+              setErrors(Validation(values));
 
-      // if (errors.name === "" && errors.email === "" && errors.password === "") {
-      axios.post('http://localhost:8080/signup', values)
-        .then(res => {
-          navigate('/login');
-        })
-        .catch(err => console.log(err));
-        // }
-    }
-
-
-
+              if (Object.keys(errors).length === 0) {
+                  axios.post('http://localhost:8080/signup', values)
+                      .then(res => {
+                          navigate('/client');
+                      })
+                      .catch(err => console.log(err));
+              }
+          }
+      })
+      .catch(err => console.log(err));
+};
   return (
     <div>
-      {/* <Header />
-      <Navbar /> */}
+            <Navbar /> 
+
       <section className="vh-100">
       <div className="container-fluid h-custom">
         <div className="row d-flex justify-content-center align-items-center h-100">
@@ -99,6 +105,7 @@ function Signup() {
     </section>
     </div>
     )
-}
+  }
+
 
 export default Signup

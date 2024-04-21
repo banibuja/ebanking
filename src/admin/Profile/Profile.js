@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../Dashboard/Sidebar';
+import './Profile.css';
 
 
 export const Profile = () => {
@@ -63,13 +64,13 @@ export const Profile = () => {
 
     return (
         <div>
-            <main style={{ display: 'flex', minHeight: '100vh' }}>
+            <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
                 <Sidebar />
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
                             <h5 className="modal-title">Edit Client</h5>
-                            <button type="button" className="close">
+                            <button type="button" className="close" onClick={() => navigate('/dashboard')}>
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
@@ -111,7 +112,7 @@ export const Profile = () => {
                                 </div>                        </form>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary">Close</button>
+                        <button type="button" className="btn btn-secondary" onClick={() => navigate('/dashboard')}>Close</button>
                             <button type="button" className="btn btn-primary" onClick={handleSubmit}>Save changes</button>
                         </div>
                     </div>

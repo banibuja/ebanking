@@ -1,30 +1,48 @@
-// Navbar.js
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
+import { slide as Menu } from 'react-burger-menu';
 import menuLogo from '../imgs/menu-logo.png';
+import './nav.css'
 
-
-<div className="right">
-<a href="/"><i className="fas fa-phone-alt"></i> 045963828</a>
-<a id="sign" href="/login"><i className="fas fa-sign-in-alt"></i> Signup/Login</a>
-</div>
 const Navbar = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const handleStateChange = (state) => {
+    setMenuOpen(state.isOpen);
+  };
+
+  const closeMenu = () => {
+    setMenuOpen(false);
+  };
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
+  };
+
   return (
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-      <ul className="nav navbar-nav">
-        <li><a href="/">Home</a></li>
-        <li><a href="/adminLogin">Admin Login</a></li>
-        <li className="dropdown">
-        <a href="/Stafflogin">Staff Login</a>
-        </li>
-        <li><a href="/login">Login</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-          <li><a href=""><img src={menuLogo}/></a></li>
-      </ul>
-    </div>
-</nav>
+    <nav className="navbar navbar-inverse">
+      <div className="container-fluid">
+        {/* <ul className="nav navbar-nav">
+          <li><a href="/">Home</a></li>
+          <li><a href="/contactform">ContactUs</a></li>
+          <li><a href="/adminLogin">Admin Login</a></li>
+          <li className="dropdown">
+            <a href="/Stafflogin">Staff Login</a>
+          </li>
+          <li><a href="/login">Login</a></li>
+        </ul> */}
+        <Menu right isOpen={menuOpen} onStateChange={handleStateChange}>
+          <a id='a' href="/" onClick={closeMenu}>Home</a>
+          <a href="/contactform" onClick={closeMenu}>ContactUs</a>
+          <a href="/adminLogin" onClick={closeMenu}>Admin Login</a>
+          <a href="/Stafflogin" onClick={closeMenu}>Staff Login</a>
+          <a href="/login" onClick={closeMenu}>Login</a>
+        </Menu>
+        <ul className="nav navbar-nav navbar-right">
+          <li><a href="#" onClick={toggleMenu}><img src={menuLogo} alt="Menu Logo" /></a></li>
+        </ul>
+      </div>
+    </nav>
   );
-}
+};
 
 export default Navbar;

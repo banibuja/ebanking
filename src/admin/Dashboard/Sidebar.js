@@ -11,11 +11,10 @@ export default function Sidebar() {
   axios.defaults.withCredentials = true;
 
   useEffect(() => {
-    // Fetch user role after login
     axios.get('http://localhost:8080')
       .then(res => {
         if (res.data.valid) {
-          setRole(res.data.role); // Update user role
+          setRole(res.data.role); 
         } else {
           navigate('/login');
         }
@@ -76,7 +75,7 @@ export default function Sidebar() {
 
   return (
     <div>
-      <div className="d-flex flex-column flex-shrink-0 p-3 bg-light" style={{ width: '300px', height: '100%' }}>
+      <div className="d-flex flex-column flex-shrink-0 p-3 bg-light" style={{ width: '300px', height: '100%', color: 'black', backgroundColor: 'white'}}>
         <a href="/" className="d-flex align-items-center mb-3 link-dark text-decoration-none">
           <i className="bi me-2 fas fa-university fa-2x text-gray-300" ></i>
           <span className="fs-4">E-Banking</span>
@@ -84,7 +83,6 @@ export default function Sidebar() {
         <hr />
         <p>Session Time Remaining: {formatTime(sessionTimeRemaining)}</p>
         <ul className="nav nav-pills flex-column mb-auto">
-          {/* Display navigation items based on user role */}
           {role !== 'user' && (
             <>
               <li>
@@ -145,7 +143,6 @@ export default function Sidebar() {
             </>
           )}
           
-          {/* Display common navigation items for all roles */}
           <li>
           <Dropdown>
                   <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">

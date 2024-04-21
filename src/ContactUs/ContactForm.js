@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Validation from '../LoginSignup/SignupValidation';
-import axios from 'axios'
+import axios from 'axios';
 import footerImg from '../imgs/black&white-logo.png';
-
 import Navbar from '../HeaderNav&Footer/Navbar';
-
 
 function ContactForm() {
     const [values, setValues] = useState({
         name: '',
         email: '',
         message: ''
-
-    })
-    const [errors, setErrors] = useState({})
+    });
+    const [errors, setErrors] = useState({});
+    const [isSubmitted, setIsSubmitted] = useState(false); 
     const navigate = useNavigate();
-    const handeInput = (event) => {
-        setValues(prev => ({ ...prev, [event.target.name]: [event.target.value] }))
-    }
+
+    const handleInput = (event) => {
+        setValues(prev => ({ ...prev, [event.target.name]: event.target.value }));
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
 
         setErrors(Validation(values));
-    }
+    };
 
     useEffect(() => {
         console.log(errors);
@@ -31,12 +31,12 @@ function ContactForm() {
         if (errors.name === "" && errors.email === "") {
             axios.post('http://localhost:8080/contactUs', values)
                 .then(res => {
-                  window.location.reload();
+                    setIsSubmitted(true); 
+                    setValues({ name: '', email: '', message: '' }); 
                 })
                 .catch(err => console.log(err));
         }
     }, [errors]);
-
 
     return (
 <body>
@@ -72,4 +72,4 @@ function ContactForm() {
     )
 }
 
-export default ContactForm
+export default ContactForm;

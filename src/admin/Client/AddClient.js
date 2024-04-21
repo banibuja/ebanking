@@ -15,12 +15,12 @@ function AddClient() {
         password: '',
         dateb: '',
         gender: '',
-        phonenumber: ''
+        phonenumber: '',
+        emailExists: false 
     });
 
     const [errors, setErrors] = useState({});
 
-   
     useEffect(() => {
     }, []);
 
@@ -28,27 +28,32 @@ function AddClient() {
         setValues(prev => ({ ...prev, [event.target.name]: event.target.value }));
     };
 
-   
-
     const handleSubmit = (event) => {
         event.preventDefault();
         
-        console.log(values); 
-        
-        setErrors(Validation(values));
-    
-        if (Object.keys(errors).length === 0) {
-            axios.post('http://localhost:8080/signup', values)
-                .then(res => {
-                    navigate('/client');
-                })
-                .catch(err => console.log(err));
-        }
+        axios.get(`http://localhost:8080/check-email?email=${values.email}`)
+            .then(response => {
+                if (response.data.exists) {
+                    setValues(prev => ({ ...prev, emailExists: true }));
+                } else {
+                    setValues(prev => ({ ...prev, emailExists: false }));
+                    setErrors(Validation(values));
+
+                    if (Object.keys(errors).length === 0) {
+                        axios.post('http://localhost:8080/signup', values)
+                            .then(res => {
+                                navigate('/client');
+                            })
+                            .catch(err => console.log(err));
+                    }
+                }
+            })
+            .catch(err => console.log(err));
     };
 
     return (
         <div>
-            <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white' }}>
+            <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
                 <Sidebar />
                 <div className="content-wrapper" style={{ marginRight: '100px' }}>
                     <section className="content">
@@ -84,6 +89,15 @@ function AddClient() {
                                                         <label htmlFor="name">Client Email</label>
                                                         <input type="email" placeholder='Enter email' name='email' onChange={handeInput} className='form-control roundend-0' />
                                                         {errors.email && <span className='text-danger'>{errors.email}</span>}
+                                                        {values.email && (
+                                                            <span style={{ marginLeft: '10px' }}>
+                                                                {values.emailExists ? (
+                                                                    <span style={{ color: 'red' }}>This email is already in use.</span>
+                                                                ) : (
+                                                                    <span style={{ color: 'green' }}>Email is available.</span>
+                                                                )}
+                                                            </span>
+                                                        )}
                                                     </div>
                                                     <div className="col-md-6 form-group">
                                                         <label htmlFor="name">Client Password</label>

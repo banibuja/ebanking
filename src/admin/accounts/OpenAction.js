@@ -40,7 +40,7 @@ function OpenAction({ id, onClose }) {
 
 
     return (
-        <div className="modal fade show" style={{ display: 'block' }} aria-modal="true">
+        <div className="modal fade show text-black" style={{ display: 'block' }} aria-modal="true">
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
