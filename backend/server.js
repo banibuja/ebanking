@@ -203,6 +203,22 @@ app.post('/contactUs', (req, res) => {
     });
 });
 
+app.post('/getContactUs', (req, res) => {
+    const sql = "SELECT * FROM contactus";
+
+
+    db.query(sql, (err, data) => {
+        if (err) {
+            return res.json("Error");
+        }
+        if (data.length > 0) {
+            return res.json(data);
+        } else {
+            return res.json("faile");
+        }
+    })
+})
+
 app.delete("/deleteContacts/:id", (req, res) => {
     const id = req.params.id;
     const sqlDelete = "DELETE FROM contactus WHERE id = ?";
@@ -272,6 +288,21 @@ app.get('/getStaff/:id', (req, res) => {
         }
     });
 });
+app.post('/getStaff', (req, res) => {
+    const sql = "SELECT * FROM staffi";
+
+
+    db.query(sql, (err, data) => {
+        if (err) {
+            return res.json("Error");
+        }
+        if (data.length > 0) {
+            return res.json(data);
+        } else {
+            return res.json("faile");
+        }
+    })
+})
 
 app.post('/getAcc', (req, res) => {
     const sql = "SELECT * FROM accountcategories";
@@ -337,6 +368,22 @@ app.post('/accountsacc', (req, res) => {
             return res.json("Error");
         }
         return res.json(data);
+    });
+});
+app.get('/getUsers/:id', (req, res) => {
+    const staffId = req.params.id;
+    const sql = "SELECT * FROM loginregister WHERE id = ?";
+
+    db.query(sql, [staffId], (err, data) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+        if (data.length > 0) {
+            return res.json(data[0]); 
+        } else {
+            return res.status(404).json({ error: "User not found" });
+        }
     });
 });
 
