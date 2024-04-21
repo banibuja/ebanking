@@ -7,11 +7,15 @@
   font-optical-sizing: auto;
   font-weight: weight;
   font-style: normal;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 body {
   height: 100vh;
-  background-color: #0D0D0D !important;
+  background-color: #070707 !important;
   color: white !important;
 
 }
@@ -21,32 +25,6 @@ body {
   flex-direction: row !important;
   gap: 50px;
   z-index: 9999;
-}
-
-.navbar-nav li a {
-  text-decoration: none;
-  color: white;
-  font-size: 22px;
-  padding-bottom: 5px;
-  position: relative;
-  background-color: transparent;
-}
-
-.navbar-nav li a::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  width: 0;
-  height: 2px;
-  background-color: #EDC14A;
-  transition: width 0.3s ease, left 0.3s ease;
-  /* Added */
-}
-
-.navbar-nav li a:hover::after {
-  width: 100%;
-  left: 0;
 }
 
 .navbar-nav img {
@@ -103,7 +81,7 @@ body {
   overflow: hidden;
   margin-left: 100px;
   margin-right: 150px;
-  background-color:#0D0D0D;
+  background-color:#070707;
 }
 
 .StartBanking-button .arrow-slide::before {
@@ -255,5 +233,5 @@ footer {
   background-image: url('../imgs/black&white-logo.png');
   background-size: 800px; 
   background-repeat: no-repeat;
-  background-color: #0D0D0D;
+  background-color: #0d0d0d;
 }

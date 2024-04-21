@@ -38,7 +38,7 @@ const Navbar = () => {
           <a href="/login" onClick={closeMenu}>Login</a>
         </Menu>
         <ul className="nav navbar-nav navbar-right">
-          <li><a href="#" onClick={toggleMenu}><img src={menuLogo} alt="Menu Logo" /></a></li>
+          <a href="#" onClick={toggleMenu}><img src={menuLogo} alt="Menu Logo" /></a>
         </ul>
       </div>
     </nav>

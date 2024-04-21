@@ -39,37 +39,34 @@ function ContactForm() {
     }, [errors]);
 
     return (
-<body>
- <Navbar/>
+        <>
 
-<div style={{ backgroundColor: '#0D0D0D', position: 'relative', width: '100vh', height: '100vh' }}>
-<img src={footerImg} className="contactus-img img-fluid" style={{ height: '600px' }}/>
-
-  <div class="contactus-form">
-    <form action="" onSubmit={handleSubmit}>  
-      <div className="form-group">         
-        <label for="usr">Name:</label>
-          <input type="text"  name='name' className="form-control" onChange={handeInput}/>
-          {errors.name && <span className='text-danger'> {errors.name}</span>} 
-      </div>     
-          
-      <div class="form-group">
-        <label for="pwd">Email:</label>
-        <input type="email"  name='email' className="form-control" onChange={handeInput}/>
-        {errors.email && <span className='text-danger'> {errors.email}</span>}   
-      </div>
-
-      <div class="form-group">
-        <label for="comment">Comment:</label>
-        <textarea class="form-control" rows="5" id="comment" name='message' onChange={handeInput}></textarea>
-      </div>
-
-      <button type="submit" className="btn btn-danger btn-lg m-3" style={{ margin: '5px', paddingLeft: '2.5rem', paddingRight: '2.5rem', justifyContent: 'center' }}>Sends</button>
-    </form>
-  </div>
-</div>
-</body>
-    )
+            <Navbar />
+            <div className="contact-us">
+                <img src={footerImg} className="contactus-img" />
+                <div className="contactus-form ">
+                    <form action="" onSubmit={handleSubmit}>
+                        <div className="form-group">
+                            <label htmlFor="usr">Name:</label>
+                            <input type="text" name='name' className="form-control" onChange={handleInput} value={values.name} />
+                            {errors.name && <span className='text-danger'> {errors.name}</span>}
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="pwd">Email:</label>
+                            <input type="email" name='email' className="form-control" onChange={handleInput} value={values.email} />
+                            {errors.email && <span className='text-danger'> {errors.email}</span>}
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="comment">Comment:</label>
+                            <textarea className="form-control" rows="5" id="comment" name='message' onChange={handleInput} value={values.message}></textarea>
+                        </div>
+                        <button type="submit" className="btn btn-danger btn-lg m-3" style={{ margin: '5px', paddingLeft: '2.5rem', paddingRight: '2.5rem', justifyContent: 'center' }}>Send</button>
+                        {isSubmitted && <p className="text-success">Message sent successfully!</p>} 
+                    </form>
+                </div>
+            </div>
+        </>
+    );
 }
 
 export default ContactForm;
