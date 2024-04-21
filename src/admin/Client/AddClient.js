@@ -20,7 +20,6 @@ function AddClient() {
 
     const [errors, setErrors] = useState({});
 
-   
     useEffect(() => {
     }, []);
 
@@ -28,24 +27,27 @@ function AddClient() {
         setValues(prev => ({ ...prev, [event.target.name]: event.target.value }));
     };
 
-   
-
     const handleSubmit = (event) => {
         event.preventDefault();
         
-        console.log(values); 
-        
-        setErrors(Validation(values));
-    
-        if (Object.keys(errors).length === 0) {
-            axios.post('http://localhost:8080/signup', values)
-                .then(res => {
-                    navigate('/client');
-                })
-                .catch(err => console.log(err));
-        }
-    };
+        axios.get(`http://localhost:8080/check-email?email=${values.email}`)
+            .then(response => {
+                if (response.data.exists) {
+                    alert('This email is already in use.');
+                } else {
+                    setErrors(Validation(values));
 
+                    if (Object.keys(errors).length === 0) {
+                        axios.post('http://localhost:8080/signup', values)
+                            .then(res => {
+                                navigate('/client');
+                            })
+                            .catch(err => console.log(err));
+                    }
+                }
+            })
+            .catch(err => console.log(err));
+    };
     return (
         <div>
             <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
