@@ -144,12 +144,22 @@ export default function Sidebar() {
               </li>
             </>
           )}
+          
           {/* Display common navigation items for all roles */}
           <li>
-            <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
-              <i className="bi me-2 fas fa-money-bill-wave fa-1x text-gray-300" ></i>
-              Finances
-            </a>
+          <Dropdown>
+                  <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
+                    <i className="bi me-2 fas fa-money-bill-wave fa-1x text-gray-300 bg-light"></i>
+                    Finances
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item href="#" onClick={handleManageClick}>Deposists</Dropdown.Item>
+                    <Dropdown.Item href="#" onClick={handleManageClick}>Withdrawals</Dropdown.Item>
+                    <Dropdown.Item href="#" onClick={handleManageClick}>Funds Transfers</Dropdown.Item>
+                    <Dropdown.Item href="#" onClick={handleManageClick}>Balanace</Dropdown.Item>
+
+                  </Dropdown.Menu>
+                </Dropdown>
           </li>
           <li>
             <a href="/Profile" className="nav-link link-dark" onClick={handleManageClick}>
