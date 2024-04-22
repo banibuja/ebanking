@@ -176,7 +176,7 @@ app.delete("/deleteUsers/:id", (req, res) => {
 app.put('/updateUsers/:id', (req, res) => {
     const userId = req.params.id;
     const { name, lastname, email, account, password, dateb, gender, phonenumber } = req.body;
-    const sqlUpdate =  "UPDATE loginRegister SET name=?, lastname=?, email=?, account=?, password=?, dateb=?, gender=?, phonenumber=? WHERE id=?"
+    const sqlUpdate =  "UPDATE loginRegister SET name=?, lastname=?, email=?, account=?, password=?, dateb=?, gender=?, phonenumber=? WHERE id=? AND role = 'user'"
 
     db.query(sqlUpdate, [name, lastname, email, account, password, dateb, gender, phonenumber, userId], (err, result) => {
         if (err) {
@@ -234,27 +234,38 @@ app.delete("/deleteContacts/:id", (req, res) => {
     });
 });
 
+app.post('/addStaff', async (req, res) => {
+    const banknumber = "2223" + Math.floor(1000 + Math.random() * 9000);
+    const accountNumber = '';
+    try {
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
+        const sql = "INSERT INTO loginRegister (`name`, `lastname`, `banknumber`, `account`, `email`, `password`, `dateb`, `gender`, `phonenumber`, `role`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'staff')";
+        const values = [
+            req.body.name,
+            req.body.lastname,
+            banknumber,
+            accountNumber,
+            req.body.email,
+            hashedPassword, 
+            req.body.dateb,
+            req.body.gender,
+            req.body.phonenumber,
+            req.body.role
+        ];
 
-
-app.post('/addStaff', (req, res) => {
-    const staff_number = "2223" + Math.floor(1000 + Math.random() * 9000);
-    const sql = "INSERT INTO staffi (`name`, `staff_number`, `gender`, `phone_number`, `email`, `password`, `created_at`) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    const values = [
-        req.body.name,
-        staff_number,
-        req.body.gender,
-        req.body.phone_number,
-        req.body.email,
-        req.body.password,
-        new Date()
-    ];
-    
-    db.query(sql, [...values], (err, result) => {
-        if (err) return res.json({ Message: "Error!!" });
-        return res.json(result);
-    })
-})
+        db.query(sql, values, (err, result) => {
+            if (err) {
+                console.error('Error inserting user:', err);
+                return res.status(500).json({ error: 'Internal Server Error' });
+            }
+            return res.json(result);
+        });
+    } catch (error) {
+        console.error('Error hashing password:', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 app.get('/getStaff/:id', (req, res) => {
     const staffId = req.params.id;
     const sql = "SELECT * FROM loginRegister WHERE id = ? AND role = 'staff'";
@@ -355,7 +366,7 @@ app.post('/accountsacc', (req, res) => {
 });
 app.get('/getUsers/:id', (req, res) => {
     const staffId = req.params.id;
-    const sql = "SELECT * FROM loginregister WHERE id = ? AND role = 'user";
+    const sql = "SELECT * FROM loginregister WHERE id = ? AND role = 'user'";
 
     db.query(sql, [staffId], (err, data) => {
         if (err) {
