@@ -9,8 +9,6 @@ import { Staff } from './Staff/Staff';
 
 import Login from './LoginSignup/Login'
 import Signup from './LoginSignup/Signup'
-import Alogin from './admin/Alogin'
-import Stafflogin from './Staff/Stafflogin'
 import AddClient from './admin/Client/AddClient';
 import Addstaff from './Staff/Addstaff';
 import EditStaff from './Staff/EditStaff';
@@ -42,8 +40,6 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/client" element={<Client />} />
         <Route path="/staff" element={<Staff />} />
-        <Route path="/adminLogin" element={<Alogin />} />
-        <Route path="/stafflogin" element={<Stafflogin />} />
         <Route path="/addclient" element={<AddClient />} />
         <Route path="/addstaff" element={<Addstaff />} />
         <Route path="/editstaff" element={<EditStaff />} />

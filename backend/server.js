@@ -92,7 +92,7 @@ app.post('/login', (req, res) => {
             if(comparison){
                 req.session.uId = result[0].id;
                 req.session.username = result[0].name;
-                req.session.role = "user";
+                req.session.role = result[0].role; 
                 req.session.maxAge = + expireDate;
                 console.log(req.session.username);
                 return res.json({Login: true})
@@ -137,64 +137,24 @@ app.post('/signup', async (req, res) => {
     }
 });
 
-app.post('/adminLogin', (req, res) => {
-    const sql = "SELECT * FROM admin WHERE email = ?  AND  password = ?";
-    const date = new Date();
-    expireDate = date.setMinutes(date.getMinutes() + 15)
-    db.query(sql,[req.body.email,  req.body.password], (err,result) => {
-        if(err) return res.json({Message:"Email or Password is incorrect!"});
-        
-        if(result.length > 0){
-            req.session.uId = result[0].id;
-            req.session.username = result[0].username;
-            req.session.role = "admin";
-            req.session.maxAge = + expireDate;
-            console.log(req.session.username);
-            return res.json({Login: true})
-        } else {
-            return res.json({Login: false});
-        }
-        
-    })
-})
-app.post('/Stafflogin', (req, res) => {
 
-    const sql = "SELECT * FROM staffi WHERE email = ?  AND  password = ?";
-    const date = new Date();
-    expireDate = date.setMinutes(date.getMinutes() + 15)
-    db.query(sql,[req.body.email,  req.body.password], (err,result) => {
-        if(err) return res.json({Message:"Email or Password is incorrect!"});
-        
-        if(result.length > 0){
-            req.session.uId = result[0].id;
-            req.session.username = result[0].name;
-            req.session.role = "staff";
-            req.session.maxAge = + expireDate;
-            console.log(req.session.username);
-            return res.json({Login: true})
-        } else {
-            return res.json({Login: false});
-        }
-        
-    })
-})
 
 
 app.post('/getUsers', (req, res) => {
-    const sql = "SELECT * FROM loginRegister";
-
+    const sql = "SELECT * FROM loginRegister WHERE role = 'user'";
 
     db.query(sql, (err, data) => {
         if (err) {
-            return res.json("Error");
+            console.error(err);
+            return res.status(500).json("Error");
         }
         if (data.length > 0) {
             return res.json(data);
         } else {
-            return res.json("faile");
+            return res.status(404).json("No users found");
         }
-    })
-})
+    });
+});
 
 app.delete("/deleteUsers/:id", (req, res) => {
     const id = req.params.id;
@@ -297,7 +257,7 @@ app.post('/addStaff', (req, res) => {
 })
 app.get('/getStaff/:id', (req, res) => {
     const staffId = req.params.id;
-    const sql = "SELECT * FROM stafii WHERE id = ?";
+    const sql = "SELECT * FROM loginRegister WHERE id = ? AND role = 'staff'";
 
     db.query(sql, [staffId], (err, data) => {
         if (err) {
@@ -307,12 +267,12 @@ app.get('/getStaff/:id', (req, res) => {
         if (data.length > 0) {
             return res.json(data[0]); 
         } else {
-            return res.status(404).json({ error: "User not found" });
+            return res.status(404).json({ error: "User not found or is not a staff member" });
         }
     });
 });
 app.post('/getStaff', (req, res) => {
-    const sql = "SELECT * FROM staffi";
+    const sql = "SELECT * FROM loginRegister WHERE role = 'staff'";
 
 
     db.query(sql, (err, data) => {
@@ -395,7 +355,7 @@ app.post('/accountsacc', (req, res) => {
 });
 app.get('/getUsers/:id', (req, res) => {
     const staffId = req.params.id;
-    const sql = "SELECT * FROM loginregister WHERE id = ?";
+    const sql = "SELECT * FROM loginregister WHERE id = ? AND role = 'user";
 
     db.query(sql, [staffId], (err, data) => {
         if (err) {
@@ -430,6 +390,7 @@ app.get('/getUserData/:role/:id', (req, res) => {
         }
     });
 });
+
 app.get('/check-email', async (req, res) => {
     const { email } = req.query;
 

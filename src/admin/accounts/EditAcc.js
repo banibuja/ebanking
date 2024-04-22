@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Sidebar from '../Dashboard/Sidebar';
+// import Sidebar from '../Dashboard/Sidebar';
 
 function EditAcc({id, onClose}) {
 
@@ -12,7 +12,7 @@ function EditAcc({id, onClose}) {
         ratings: '',
 });
 
-const [errors, setErrors] = useState({});
+const [errors] = useState({});
 
 useEffect(() => {
     axios.get(`http://localhost:8080/getAcc/${id}`)

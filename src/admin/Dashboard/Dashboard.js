@@ -142,7 +142,7 @@ export const Dashboard = () => {
                         <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
                           Deposits
                         </div>
-                        <div className="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                        <div className="h5 mb-0 font-weight-bold text-gray-800">$0,0</div>
                       </div>
                       <div className="col-auto">
                         <i className="fas fa-upload fa-2x text-gray-300"></i>
@@ -160,7 +160,7 @@ export const Dashboard = () => {
                         <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
                           Withdrawal
                         </div>
-                        <div className="h5 mb-0 font-weight-bold text-gray-800">$1,000</div>
+                        <div className="h5 mb-0 font-weight-bold text-gray-800">$0,0</div>
                       </div>
                       <div className="col-auto">
                         <i className="fas fa-download fa-2x text-gray-300"></i>
@@ -177,7 +177,7 @@ export const Dashboard = () => {
                         <div className="text-xs font-weight-bold text-primary text-uppercase mb-3">
                           Transfers
                         </div>
-                        <div className="h5 mb-0 font-weight-bold text-gray-800">$90,000</div>
+                        <div className="h5 mb-0 font-weight-bold text-gray-800">$00,000</div>
                       </div>
                       <div className="col-auto">
                         <i className="fas fa-random fa-2x text-gray-300"></i>
@@ -194,7 +194,7 @@ export const Dashboard = () => {
                         <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
                           Wallet Balance
                         </div>
-                        <div className="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                        <div className="h5 mb-0 font-weight-bold text-gray-800">$00,000</div>
                       </div>
                       <div className="col-auto">
                         <i className="fas fa-money-bill-alt  fa-2x text-gray-300"></i>
@@ -212,7 +212,7 @@ export const Dashboard = () => {
                         <div className="text-xs font-weight-bold text-primary text-uppercase mb-3">
                           Accounts
                         </div>
-                        <div className="h5 mb-0 font-weight-bold text-gray-800">5</div>
+                        <div className="h5 mb-0 font-weight-bold text-gray-800">0</div>
                       </div>
                       <div className="col-auto">
                         <i className="fas fa-users fa-2x text-gray-300"></i>

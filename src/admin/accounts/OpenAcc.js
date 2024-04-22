@@ -22,13 +22,13 @@ export const OpenAcc = () => {
             .catch(err => console.log(err));
     };
 
-    const handleDelete = (id) => {
-        axios.delete(`http://localhost:8080/deleteUsers/${id}`)
-            .then(res => {
-                getUsers();
-            })
-            .catch(err => console.log(err));
-    };
+    // const handleDelete = (id) => {
+    //     axios.delete(`http://localhost:8080/deleteUsers/${id}`)
+    //         .then(res => {
+    //             getUsers();
+    //         })
+    //         .catch(err => console.log(err));
+    // };
 
     const handleEdit = (id) => {
         setEditClientId(id); 

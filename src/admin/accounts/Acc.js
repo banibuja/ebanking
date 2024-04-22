@@ -5,7 +5,6 @@ import Sidebar from '../Dashboard/Sidebar';
 export const Acc = () => {
     const [users, setUsers] = useState([]);
     const [numAcc, setNumClients] = useState(0);
-    const [editClientId, setEditClientId] = useState(null); 
 
     useEffect(() => {
         getAcc();
@@ -29,13 +28,13 @@ export const Acc = () => {
             .catch(err => console.log(err));
     };
 
-    const handleEdit = (id) => {
-        setEditClientId(id); 
-    };
+    // const handleEdit = (id) => {
+    //     setEditClientId(id); 
+    // };
 
-    const handleCloseEditModal = () => {
-        setEditClientId(null); 
-    };
+    // const handleCloseEditModal = () => {
+    //     setEditClientId(null); 
+    // };
 
     return (
         <div>

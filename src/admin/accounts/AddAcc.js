@@ -14,7 +14,7 @@ function AddAcc() {
        
     });
 
-    const [errors, setErrors] = useState({});
+    const [errors] = useState({});
 
    
     useEffect(() => {

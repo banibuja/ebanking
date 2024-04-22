@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 // import Validation from '../../LoginSignup/SignupValidation';
 import axios from 'axios';
-import Sidebar from '../Dashboard/Sidebar';
+// import Sidebar from '../Dashboard/Sidebar';
 
 function OpenAction({ id, onClose }) {
     const navigate = useNavigate();
@@ -10,7 +10,7 @@ function OpenAction({ id, onClose }) {
         name: '',
     });
 
-    const [errors, setErrors] = useState({});
+    const [errors] = useState({});
 
     useEffect(() => {
         axios.get(`http://localhost:8080/getUsers/${id}`)
