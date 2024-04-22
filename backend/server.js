@@ -105,10 +105,17 @@ app.post('/login', (req, res) => {
         
     })
 })
+// 
+let lastBankNumber = 22230000;
+
 app.post('/signup', async (req, res) => {
-    const banknumber = "2223" + Math.floor(1000 + Math.random() * 9000);
-    const accountNumber = '';
     try {
+        lastBankNumber++;
+
+        const banknumber = lastBankNumber.toString();
+
+        const accountNumber = '';
+
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
         const sql = "INSERT INTO loginRegister (`name`, `lastname`, `banknumber`, `account`, `email`, `password`, `dateb`, `gender`, `phonenumber`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
