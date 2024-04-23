@@ -64,8 +64,8 @@ export default function Sidebar() {
 
   const formatTime = (timeInSeconds) => {
     const minutes = Math.floor(timeInSeconds / 60);
-    const seconds = timeInSeconds % 60;
-    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;  
+    // const seconds = timeInSeconds % 60;
+    return minutes;  
   };
 
   const handleManageClick = (e) => {
@@ -81,7 +81,6 @@ export default function Sidebar() {
           <span className="fs-4">E-Banking</span>
         </a>
         <hr />
-        <p>Session Time Remaining: {formatTime(sessionTimeRemaining)}</p>
         <ul className="nav nav-pills flex-column mb-auto">
           {role !== 'user' && (
             <>
@@ -190,7 +189,8 @@ export default function Sidebar() {
             </a>
           </li>
         </ul>
-        <hr />
+        <hr />       
+
         <Dropdown>
           <Dropdown.Toggle variant="link" id="dropdown-profile" className="nav-link link-dark">
             <i className="bi me-2 fas fa-user fa-1x text-gray-300 bg-light" ></i>
@@ -203,6 +203,7 @@ export default function Sidebar() {
             <Dropdown.Item href="/ContactUs" onClick={handleManageClick}>ContactUs</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
+        <small>Session Time Remaining: {formatTime(sessionTimeRemaining)}</small>
       </div>
     </div>
   );
