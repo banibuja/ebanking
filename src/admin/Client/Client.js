@@ -47,36 +47,40 @@ export const Client = () => {
                     <h1 className=''>MANAGE Client</h1>
 
                     <div className="row">
-                    <caption>List of client</caption>
 
                         <div className="col-md-12 d-flex justify-content-center align-items-center">
                         <table className="table table-hover table-bordered table-striped dataTable no-footer" style={{ width: '100%' }}>
+                                <caption>List of client</caption>
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
+                                        <th scope="col">Username</th>
                                         <th scope="col">Emri</th>
                                         <th scope="col">Email</th>
                                         <th scope="col">Birthday</th>
-                                        <th scope="col">banknumber</th>
                                         <th scope="col">Gender</th>
-                                        <th scope="col">PhoneNumber</th>
+                                        <th scope="col">Shteti</th>
+                                        <th scope="col">Qyteti</th>
+                                        <th scope="col">Adresa</th>
                                         <th scope="col">Edit</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {Array.isArray(users) && users.map((item, index) => (
-                                        <tr key={item.id}>
+                                        <tr key={item.userId}>
                                             <th scope="row">
-                                                {item.id}</th>
+                                                {index + 1}</th>
+                                            <td>{item.username}</td>
                                             <td>{item.name + ' ' + item.lastname}</td>
                                             <td>{item.email}</td>
-                                            <td>{item.dateb}</td>
-                                            <td>{item.banknumber}</td>
+                                            <td>{item.birthday}</td>
                                             <td>{item.gender}</td>
-                                            <td>{item.phonenumber}</td>
+                                            <td>{item.Country}</td>
+                                            <td>{item.City}</td>
+                                            <td>{item.Street}</td>
                                             <td>
-                                                <button onClick={() => handleEdit(item.id)} className="btn btn-primary mr-2">Edit</button>
-                                                <button onClick={() => handleDelete(item.id)} className="btn btn-danger">Delete</button>
+                                                <button onClick={() => handleEdit(item.userId)} className="btn btn-primary mr-2">Edit</button>
+                                                <button onClick={() => handleDelete(item.userId)} className="btn btn-danger">Delete</button>
                                             </td>
                                         </tr>
                                     ))}

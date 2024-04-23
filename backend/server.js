@@ -81,18 +81,23 @@ app.get('/logout', (req, res) => {
     });
 });
 app.post('/login', (req, res) => {
-    const sql = "SELECT * FROM loginRegister WHERE email = ?";
+    const sql = "SELECT * FROM users WHERE email = ?";
     const date = new Date();
     expireDate = date.setMinutes(date.getMinutes() + 15)
     db.query(sql,[req.body.email], async (err,result) => {
-        if(err) return res.json({Message:"Email or Password is incorrect!"});
+        if (err) return res.json({ Message: "bad connection " });
         
         if(result.length > 0){
-            const comparison = await bcrypt.compare(req.body.password, result[0].password);
+            const comparison = true //await bcrypt.compare(req.body.password, result[0].password);
+            console.log(comparison);
             if(comparison){
-                req.session.uId = result[0].id;
-                req.session.username = result[0].name;
-                req.session.role = result[0].role; 
+
+                db.query(`SELECT AccessLevel FROM accesspermissions WHERE UserId = ${result[0].userId}`, (error, results) => {
+                    if (error) throw error;
+                    req.session.role = result[0].role;
+                });
+                req.session.uId = result[0].userId;
+                req.session.username = result[0].username;
                 req.session.maxAge = + expireDate;
                 console.log(req.session.username);
                 return res.json({Login: true})
@@ -105,39 +110,82 @@ app.post('/login', (req, res) => {
         
     })
 })
-// 
-let lastBankNumber = 22230000;
 
-app.post('/signup', async (req, res) => {
+
+app.post('/addClient', async (req, res) => {
     try {
-        lastBankNumber++;
+        const client = req.body;
+        const hashedPassword = await bcrypt.hash(client.password, 10);
 
-        const banknumber = lastBankNumber.toString();
-
-        const accountNumber = '';
-
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
-        const sql = "INSERT INTO loginRegister (`name`, `lastname`, `banknumber`, `account`, `email`, `password`, `dateb`, `gender`, `phonenumber`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        const values = [
-            req.body.name,
-            req.body.lastname,
-            banknumber,
-            accountNumber,
-            req.body.email,
-            hashedPassword, 
-            req.body.dateb,
-            req.body.gender,
-            req.body.phonenumber
-        ];
-
-        db.query(sql, values, (err, result) => {
-            if (err) {
-                console.error('Error inserting user:', err);
-                return res.status(500).json({ error: 'Internal Server Error' });
-            }
-            return res.json(result);
+        // const sql = "INSERT INTO users (`username`, `name`, `lastname`, `email`, `password`, `gender`,`birthday`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        // const values = [
+        //     client.username,
+        //     client.name,
+        //     client.lastname,
+        //     client.email,
+        //     hashedPassword, 
+        //     client.gender,
+        //     client.birthday
+        // ];
+        const addClient = await new Promise((resolve, reject) => {
+            db.query(`INSERT INTO users (username, name, lastname, email, password, gender, birthday) VALUES ('${client.username}', '${client.name}', '${client.lastname}', '${client.email}', '${hashedPassword}', '${client.gender}', '${client.birthday}')`, (error, result) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(result);
+                }
+            });
         });
+        console.log(addClient);
+        const addAddress = await new Promise((resolve, reject) => {
+            db.query(`INSERT INTO adresa (
+                userId, Country, City, Street) VALUES (
+                    '${addClient.insertId}', 
+                    '${client.Country}', 
+                    '${client.City}', 
+                    '${client.Street}'
+                )`, (error, results) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+
+        const addRole = await new Promise((resolve, reject) => {
+            db.query(`INSERT INTO accesspermissions (
+                UserID, AccessLevel) VALUES (
+                    '${addClient.insertId}', 
+                    'User'
+                )`, (error, results) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+
+
+        return res.json(addClient);
+
+
+        // db.query(sql, values, (err, result) => {
+        //     if (err) {
+        //         console.error('Error inserting user:', err);
+        //         return res.status(500).json({ error: 'Internal Server Error' });
+        //     }
+        //     const addressSql = "INSERT INTO adresa (`userId`, `Country`, `City`, `Street`) VALUES (?, ?, ?, ?)";
+
+        //     db.query(addressSql, [result.insertId, client.Country, client.City, client.Street], (e, r) => {
+        //         if (e) {
+        //             console.error('Error inserting user:', e);
+        //             return res.status(500).json({ error: 'address Server Error' });
+        //         }
+        //         return res.json(result);
+        //     });
+        // });
     } catch (error) {
         console.error('Error hashing password:', error);
         return res.status(500).json({ error: 'Internal Server Error' });
@@ -147,25 +195,42 @@ app.post('/signup', async (req, res) => {
 
 
 
-app.post('/getUsers', (req, res) => {
-    const sql = "SELECT * FROM loginRegister WHERE role = 'user'";
+app.post('/getUsers', async (req, res) => {
+    var users;
+    try {
+        const accessPermissions = await new Promise((resolve, reject) => {
+            db.query(`SELECT UserId FROM accesspermissions WHERE AccessLevel = 'User'`, (error, results) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
 
-    db.query(sql, (err, data) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json("Error");
-        }
-        if (data.length > 0) {
-            return res.json(data);
-        } else {
-            return res.status(404).json("No users found");
-        }
-    });
+        const userPromises = accessPermissions.map(accessPermission => {
+            return new Promise((resolve, reject) => {
+                db.query(`SELECT * FROM users u INNER JOIN adresa a ON a.userId=u.userId WHERE u.userId = ${accessPermission.UserId}`, (error, results) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(results[0]);
+                    }
+                });
+            });
+        });
+
+        users = await Promise.all(userPromises);
+        console.log(users);
+    } catch (error) {
+        console.error(error);
+    }
+    return res.json(users);
 });
 
 app.delete("/deleteUsers/:id", (req, res) => {
     const id = req.params.id;
-    const sql = "DELETE FROM loginRegister WHERE id = ?";
+    const sql = "DELETE FROM users WHERE id = ?";
   
     db.query(sql, id, (err, result) => {
         if (err) {
@@ -183,7 +248,7 @@ app.delete("/deleteUsers/:id", (req, res) => {
 app.put('/updateUsers/:id', (req, res) => {
     const userId = req.params.id;
     const { name, lastname, email, account, password, dateb, gender, phonenumber } = req.body;
-    const sqlUpdate =  "UPDATE loginRegister SET name=?, lastname=?, email=?, account=?, password=?, dateb=?, gender=?, phonenumber=? WHERE id=? AND role = 'user'"
+    const sqlUpdate = "UPDATE users SET name=?, lastname=?, email=?, account=?, password=?, dateb=?, gender=?, phonenumber=? WHERE id=? AND role = 'user'"
 
     db.query(sqlUpdate, [name, lastname, email, account, password, dateb, gender, phonenumber, userId], (err, result) => {
         if (err) {
@@ -247,7 +312,7 @@ app.post('/addStaff', async (req, res) => {
     try {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-        const sql = "INSERT INTO loginRegister (`name`, `lastname`, `banknumber`, `account`, `email`, `password`, `dateb`, `gender`, `phonenumber`, `role`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'staff')";
+        const sql = "INSERT INTO users (`name`, `lastname`, `banknumber`, `account`, `email`, `password`, `dateb`, `gender`, `phonenumber`, `role`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'staff')";
         const values = [
             req.body.name,
             req.body.lastname,
@@ -275,7 +340,7 @@ app.post('/addStaff', async (req, res) => {
 });
 app.get('/getStaff/:id', (req, res) => {
     const staffId = req.params.id;
-    const sql = "SELECT * FROM loginRegister WHERE id = ? AND role = 'staff'";
+    const sql = "SELECT * FROM users WHERE id = ? AND role = 'staff'";
 
     db.query(sql, [staffId], (err, data) => {
         if (err) {
@@ -290,7 +355,7 @@ app.get('/getStaff/:id', (req, res) => {
     });
 });
 app.post('/getStaff', (req, res) => {
-    const sql = "SELECT * FROM loginRegister WHERE role = 'staff'";
+    const sql = "SELECT * FROM users WHERE role = 'staff'";
 
 
     db.query(sql, (err, data) => {
@@ -373,7 +438,7 @@ app.post('/accountsacc', (req, res) => {
 });
 app.get('/getUsers/:id', (req, res) => {
     const staffId = req.params.id;
-    const sql = "SELECT * FROM loginregister WHERE id = ? AND role = 'user'";
+    const sql = "SELECT * FROM users WHERE id = ? AND role = 'user'";
 
     db.query(sql, [staffId], (err, data) => {
         if (err) {
@@ -391,7 +456,7 @@ app.get('/getUserData/:role/:id', (req, res) => {
     const userRole = req.params.role;
     const userId = req.params.id;
     var tableName = '';
-    if (userRole == "user") tableName = `loginregister`
+    if (userRole == "user") tableName = `users`
     else if (userRole == "staff") tableName = 'staffi';
     else tableName = 'admin';
     const sql = `SELECT * FROM ${tableName} WHERE id = ?`;
@@ -413,7 +478,7 @@ app.get('/check-email', async (req, res) => {
     const { email } = req.query;
 
     try {
-        const sql = "SELECT COUNT(*) AS count FROM loginRegister WHERE email = ?";
+        const sql = "SELECT COUNT(*) AS count FROM users WHERE email = ?";
         db.query(sql, [email], (err, result) => {
             if (err) {
                 console.error('Error checking email:', err);

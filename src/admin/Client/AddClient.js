@@ -7,15 +7,16 @@ import Sidebar from '../Dashboard/Sidebar';
 function AddClient() {
     const navigate = useNavigate();
     const [values, setValues] = useState({
+        username: '',
         name: '',
         lastname: '',
-        banknumber: '',
-        account: '',
         email: '',
         password: '',
-        dateb: '',
         gender: '',
-        phonenumber: '',
+        birthday: '',
+        Country: '',
+        City: '',
+        Street: '',
         emailExists: false 
     });
 
@@ -40,7 +41,7 @@ function AddClient() {
                     setErrors(Validation(values));
 
                     if (Object.keys(errors).length === 0) {
-                        axios.post('http://localhost:8080/signup', values)
+                        axios.post('http://localhost:8080/addClient', values)
                             .then(res => {
                                 navigate('/client');
                             })
@@ -68,26 +69,23 @@ function AddClient() {
                                             <div className="card-body">
                                                 <div className="row">
                                                     <div className="col-md-6 form-group">
+                                                        <label htmlFor="name">Client Username</label>
+                                                        <input type="text" placeholder='Username' name='username' onChange={handeInput} className='form-control roundend-0' />
+                                                        {errors.username && <span className='text-danger'>{errors.username}</span>}
+                                                    </div>
+                                                    <div className="col-md-6 form-group">
                                                         <label htmlFor="name">Client Name</label>
-                                                        <input type="text" placeholder='Enter name' name='name' onChange={handeInput} className='form-control roundend-0' />
+                                                        <input type="text" placeholder='Name' name='name' onChange={handeInput} className='form-control roundend-0' />
                                                         {errors.name && <span className='text-danger'>{errors.name}</span>}
                                                     </div>
                                                     <div className="col-md-6 form-group">
-                                                        <label htmlFor="name">Lastname</label>
-                                                        <input type="text" placeholder='Enter name' name='lastname' onChange={handeInput} className='form-control roundend-0' />
+                                                        <label htmlFor="name">Client Lastname</label>
+                                                        <input type="text" placeholder='Lastname' name='lastname' onChange={handeInput} className='form-control roundend-0' />
                                                         {errors.lastname && <span className='text-danger'>{errors.lastname}</span>}
                                                     </div>
                                                     <div className="col-md-6 form-group">
-                                                        <label htmlFor="name">Client Bank Number</label>
-                                                        <input type="text" placeholder='2223****' name='banknumber' onChange={handeInput} className='form-control roundend-0' readOnly/>
-                                                    </div>
-                                                    <div className="col-md-6 form-group">
-                                                        <label htmlFor="name">Account type</label>
-                                                        <input type="text" placeholder='*****' name='account' onChange={handeInput} className='form-control roundend-0' readOnly/>
-                                                    </div>
-                                                    <div className="col-md-6 form-group">
                                                         <label htmlFor="name">Client Email</label>
-                                                        <input type="email" placeholder='Enter email' name='email' onChange={handeInput} className='form-control roundend-0' />
+                                                        <input type="email" placeholder='Email' name='email' onChange={handeInput} className='form-control roundend-0' />
                                                         {errors.email && <span className='text-danger'>{errors.email}</span>}
                                                         {values.email && (
                                                             <span style={{ marginLeft: '10px' }}>
@@ -101,25 +99,26 @@ function AddClient() {
                                                     </div>
                                                     <div className="col-md-6 form-group">
                                                         <label htmlFor="name">Client Password</label>
-                                                        <input type="password" placeholder='Enter password' name='password' onChange={handeInput} className='form-control roundend-0' />
+                                                        <input type="password" placeholder='Password' name='password' onChange={handeInput} className='form-control roundend-0' />
                                                         {errors.password && <span className='text-danger'>{errors.password}</span>}
                                                     </div>
-                                                    <div className="col-md-6 form-group">
-                                                        <input type="date"  name='dateb' className="form-control form-control-lg" placeholder="Enter Birthdate" onChange={handeInput}  />
-                                                    </div>
-                                                   
                                                     <div className="col-md-6 form-group">
                                                         <label htmlFor="gender">Client Gender</label>
                                                         <select name="gender" onChange={handeInput} value={values.gender} className="form-control rounded-0">
                                                             <option value="">Select Gender</option>
-                                                            <option value="Male">Male</option>
-                                                            <option value="Female">Female</option>
+                                                            <option value="M">Male</option>
+                                                            <option value="F">Female</option>
                                                         </select>
                                                         {errors.gender && <span className="text-danger">{errors.gender}</span>}
                                                     </div>
                                                     <div className="col-md-6 form-group">
-                                                        <label htmlFor="name">client Phone Number</label>
-                                                        <input type="text" placeholder='Enter staff number' name='phonenumber' onChange={handeInput} className='form-control roundend-0' />
+                                                        <input type="date" name='birthday' className="form-control form-control-lg" placeholder="Birthdate" onChange={handeInput} />
+                                                    </div>
+                                                    <div className="col-md-6 form-group">
+                                                        <label htmlFor="name">Client Address</label>
+                                                        <input type="text" placeholder='Country' name='Country' onChange={handeInput} className='form-control roundend-0' />
+                                                        <input type="text" placeholder='City' name='City' onChange={handeInput} className='form-control roundend-0' />
+                                                        <input type="text" placeholder='Street' name='Street' onChange={handeInput} className='form-control roundend-0' />
                                                     </div>
                                                 </div>
                                             </div>
