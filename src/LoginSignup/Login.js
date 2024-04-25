@@ -7,7 +7,7 @@ import Navbar from '../HeaderNav&Footer/Navbar';
 
 function Login() {
   const [values, setValues] = useState({
-      email: '',
+      username: '',
       password: ''
   });
 
@@ -63,7 +63,7 @@ function Login() {
                 </div>
                 {/* <!-- Email input --> */}
                 <div className="form-outline mb-4">
-                  <input type="email" name='email' className="form-control form-control-lg" style={{ paddingLeft: '2.5rem', paddingRight: '2.5rem' }} placeholder="Enter a valid email address" onChange={handleInput} />
+                  <input type="text" name='username' className="form-control form-control-lg" style={{ paddingLeft: '2.5rem', paddingRight: '2.5rem' }} placeholder="Enter a valid email address" onChange={handleInput} />
                 </div>
                 {/* <!-- Password input --> */}
                 <div className="form-outline mb-3">

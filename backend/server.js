@@ -81,10 +81,10 @@ app.get('/logout', (req, res) => {
     });
 });
 app.post('/login', (req, res) => {
-    const sql = "SELECT * FROM users WHERE email = ?";
+    const sql = "SELECT * FROM users WHERE username = ?";
     const date = new Date();
     expireDate = date.setMinutes(date.getMinutes() + 15)
-    db.query(sql,[req.body.email], async (err,result) => {
+    db.query(sql,[req.body.username], async (err,result) => {
         if (err) return res.json({ Message: "bad connection " });
         
         if(result.length > 0){
