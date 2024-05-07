@@ -246,14 +246,16 @@ app.post('/contactUs', (req, res) => {
     const userId = req.session.uId;
     const clientFirstName = req.session.name;
     const clientLastName = req.session.lastname;
+    const contactDate = new Date().toISOString(); 
 
-    const sql = "INSERT INTO ContactUs (`UserID`, `ClientFirstName`, `ClientLastName`, `Subject`, `Message`) VALUES (?, ?, ?, ?, ?)";
+    const sql = "INSERT INTO ContactUs (`UserID`, `ClientFirstName`, `ClientLastName`, `Subject`, `Message`, `ContactDate`) VALUES (?, ?, ?, ?, ?, ?)";
     const values = [
         userId,
         clientFirstName,
         clientLastName,
         req.body.Subject,
         req.body.Message,
+        contactDate, 
     ];
 
     db.query(sql, values, (err, data) => {
@@ -263,6 +265,7 @@ app.post('/contactUs', (req, res) => {
         return res.json(data);
     });
 });
+
 
 
 

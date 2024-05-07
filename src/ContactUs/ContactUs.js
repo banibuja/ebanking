@@ -81,7 +81,7 @@ export const ContactsUs = () => {
                 <td>{item.ClientLastName}</td>
                 <td>{item.Subject}</td>
                 <td>{item.Message}</td>
-                <td>{item.Message}</td>
+                <td>{item.ContactDate}</td>
 
                 
 
