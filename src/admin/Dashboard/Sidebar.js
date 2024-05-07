@@ -10,45 +10,45 @@ export default function Sidebar() {
 
   axios.defaults.withCredentials = true;
 
-  // useEffect(() => {
-  //   axios.get('http://localhost:8080')
-  //     .then(res => {
-  //       if (res.data.valid) {
-  //         setRole(res.data.role); 
-  //       } else {
-  //         navigate('/login');
-  //       }
-  //     })
-  //     .catch(err => console.log(err))
-  // }, [navigate]);
+  useEffect(() => {
+    axios.get('http://localhost:8080')
+      .then(res => {
+        if (res.data.valid) {
+          setRole(res.data.role); 
+        } else {
+          navigate('/login');
+        }
+      })
+      .catch(err => console.log(err))
+  }, [navigate]);
 
-  // useEffect(() => {
-  //   axios.get('http://localhost:8080/sessionTimeRemaining')
-  //     .then(res => {
-  //       const { timeRemaining } = res.data;
-  //       if (timeRemaining === 0) {
-  //         handleLogout(); 
-  //       } else {
-  //         setSessionTimeRemaining(timeRemaining); // Update session time remaining
-  //       }
-  //     })
-  //     .catch(err => console.log(err));
+  useEffect(() => {
+    axios.get('http://localhost:8080/sessionTimeRemaining')
+      .then(res => {
+        const { timeRemaining } = res.data;
+        if (timeRemaining === 0) {
+          handleLogout(); 
+        } else {
+          setSessionTimeRemaining(timeRemaining); // Update session time remaining
+        }
+      })
+      .catch(err => console.log(err));
   
-  //   const timer = setInterval(() => {
-  //     setSessionTimeRemaining(prevTime => {
-  //       if (prevTime > 0) {
-  //         return prevTime - 1; 
-  //       } else {
-  //         clearInterval(timer); 
-  //         handleLogout(); 
-  //         return 0;
-  //       }
-  //     });
+    const timer = setInterval(() => {
+      setSessionTimeRemaining(prevTime => {
+        if (prevTime > 0) {
+          return prevTime - 1; 
+        } else {
+          clearInterval(timer); 
+          handleLogout(); 
+          return 0;
+        }
+      });
 
-  //   }, 1000);
+    }, 1000);
   
-  //   return () => clearInterval(timer);
-  // }, []);
+    return () => clearInterval(timer);
+  }, []);
 
   const handleLogout = () => {
     axios.get('http://localhost:8080/logout')
@@ -104,20 +104,7 @@ export default function Sidebar() {
               </li>
             </>
           )}
-          {role !== 'staff' && role !== 'user' && (
-            <li>
-              <Dropdown>
-                <Dropdown.Toggle variant="link" id="dropdown-staff" className="nav-link link-dark">
-                  <i className="bi me-2 fas fa-user fa-1x text-gray-300 bg-light"></i>
-                  Staff
-                </Dropdown.Toggle>
-                <Dropdown.Menu>
-                  <Dropdown.Item href="/addstaff" onClick={handleManageClick}>Add Staff</Dropdown.Item>
-                  <Dropdown.Item href="/staff" onClick={handleManageClick}>Manage Staff</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </li>
-          )}
+        
           {role !== 'user' && (
             <>
               <li>

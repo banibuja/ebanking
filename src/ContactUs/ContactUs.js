@@ -46,7 +46,7 @@ export const ContactsUs = () => {
                 <Sidebar />
 
                 <div className="container-fluid " style={{  marginTop: '100px' }} >
-                                        <h1 className=''>MANAGE Message</h1>
+                                        <h1 className=''>MANAGE Messages</h1>
 
                     <div className="row">
                     <caption>List of Messages</caption>
@@ -56,23 +56,37 @@ export const ContactsUs = () => {
     
     <thead>
         <tr>
-            <th scope="col">#</th>
-            <th scope="col">Emri</th>
-            <th scope="col">Email</th>
+
+            {/* <th scope="col">#</th> */}
+            <th scope="col">ContactId</th>
+            <th scope="col">UserId</th>
+            <th scope="col">Firstname</th>
+            <th scope="col">Lastname</th> 
+            <th scope="col">Subject</th> 
             <th scope="col">Message</th>
-            <th scope="col">Edit</th> 
+            <th scope="col">Contact-Date</th> 
+            <th scope="col">Action</th> 
+
+
+
         </tr>
     </thead>
     <tbody>
         {Array.isArray(mess) && mess.map((item, index) => (
-            <tr key={item.id}>
+            <tr key={item.ContactID}>
                 <th scope="row">
-                {item.id}</th> 
-                <td>{item.name}</td>
-                <td>{item.email}</td>
-                <td>{item.message}</td>
+                {item.ContactID}</th> 
+                <td>{item.UserID}</td>
+                <td>{item.ClientFirstName}</td>
+                <td>{item.ClientLastName}</td>
+                <td>{item.Subject}</td>
+                <td>{item.Message}</td>
+                <td>{item.Message}</td>
+
+                
+
                 <td>
-                <button onClick={() => handleDelete(item.id)} className="btn btn-danger">Delete</button>
+                <button onClick={() => handleDelete(item.ContactID)} className="btn btn-danger">Delete</button>
                 </td>
             </tr>
         ))}

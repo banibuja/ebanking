@@ -130,6 +130,18 @@ CREATE TABLE Retirements (
     CONSTRAINT FK_User_Retirement FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
 );
 
+
+  CREATE TABLE ContactUs (
+    ContactID int primary key AUTO_INCREMENT,
+    UserID INT,
+    ClientFirstName VARCHAR(50),
+    ClientLastName VARCHAR(50),
+    Subject VARCHAR(100) NOT NULL,
+    Message TEXT NOT NULL,
+    ContactDate DATETIME NOT NULL,
+    CONSTRAINT FK_User_Contact FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
+);
+    
 -- Tabela Users
 INSERT INTO Users (userId, username, name, lastname, email, password, gender, birthday)
 VALUES 

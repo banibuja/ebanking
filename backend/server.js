@@ -88,7 +88,7 @@ app.post('/login', (req, res) => {
         if (err) return res.json({ Message: "bad connection " });
         
         if(result.length > 0){
-            const comparison = true //await bcrypt.compare(req.body.password, result[0].password);
+            const comparison = true 
             console.log(comparison);
             if(comparison){
 
@@ -98,6 +98,8 @@ app.post('/login', (req, res) => {
                 });
                 req.session.uId = result[0].userId;
                 req.session.username = result[0].username;
+                req.session.name = result[0].name; 
+                req.session.lastname = result[0].lastname; 
                 req.session.maxAge = + expireDate;
                 console.log(req.session.username);
                 return res.json({Login: true})
@@ -117,16 +119,6 @@ app.post('/addClient', async (req, res) => {
         const client = req.body;
         const hashedPassword = await bcrypt.hash(client.password, 10);
 
-        // const sql = "INSERT INTO users (`username`, `name`, `lastname`, `email`, `password`, `gender`,`birthday`) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        // const values = [
-        //     client.username,
-        //     client.name,
-        //     client.lastname,
-        //     client.email,
-        //     hashedPassword, 
-        //     client.gender,
-        //     client.birthday
-        // ];
         const addClient = await new Promise((resolve, reject) => {
             db.query(`INSERT INTO users (username, name, lastname, email, password, gender, birthday) VALUES ('${client.username}', '${client.name}', '${client.lastname}', '${client.email}', '${hashedPassword}', '${client.gender}', '${client.birthday}')`, (error, result) => {
                 if (error) {
@@ -171,21 +163,7 @@ app.post('/addClient', async (req, res) => {
         return res.json(addClient);
 
 
-        // db.query(sql, values, (err, result) => {
-        //     if (err) {
-        //         console.error('Error inserting user:', err);
-        //         return res.status(500).json({ error: 'Internal Server Error' });
-        //     }
-        //     const addressSql = "INSERT INTO adresa (`userId`, `Country`, `City`, `Street`) VALUES (?, ?, ?, ?)";
-
-        //     db.query(addressSql, [result.insertId, client.Country, client.City, client.Street], (e, r) => {
-        //         if (e) {
-        //             console.error('Error inserting user:', e);
-        //             return res.status(500).json({ error: 'address Server Error' });
-        //         }
-        //         return res.json(result);
-        //     });
-        // });
+      
     } catch (error) {
         console.error('Error hashing password:', error);
         return res.status(500).json({ error: 'Internal Server Error' });
@@ -261,13 +239,23 @@ app.put('/updateUsers/:id', (req, res) => {
 });
 
 app.post('/contactUs', (req, res) => {
+    if (!req.session.username) {
+        return res.status(401).json({ error: "Unauthorized" });
+    }
 
-    const sql = "INSERT INTO contactus (`name`,`email`,`message`)  VALUES (?, ?, ?)";
+    const userId = req.session.uId;
+    const clientFirstName = req.session.name;
+    const clientLastName = req.session.lastname;
+
+    const sql = "INSERT INTO ContactUs (`UserID`, `ClientFirstName`, `ClientLastName`, `Subject`, `Message`) VALUES (?, ?, ?, ?, ?)";
     const values = [
-        req.body.name,
-        req.body.email,
-        req.body.message,
+        userId,
+        clientFirstName,
+        clientLastName,
+        req.body.Subject,
+        req.body.Message,
     ];
+
     db.query(sql, values, (err, data) => {
         if (err) {
             return res.json("Error");
@@ -276,8 +264,10 @@ app.post('/contactUs', (req, res) => {
     });
 });
 
+
+
 app.post('/getContactUs', (req, res) => {
-    const sql = "SELECT * FROM contactus";
+    const sql = "SELECT * FROM ContactUs ";
 
 
     db.query(sql, (err, data) => {
@@ -293,18 +283,20 @@ app.post('/getContactUs', (req, res) => {
 })
 
 app.delete("/deleteContacts/:id", (req, res) => {
-    const id = req.params.id;
-    const sqlDelete = "DELETE FROM contactus WHERE id = ?";
+    const contactId = req.params.id;
+    const sqlDelete = "DELETE FROM ContactUs WHERE ContactID = ?";
   
-    db.query(sqlDelete, id, (err, result) => {
+    db.query(sqlDelete, contactId, (err, result) => {
         if (err) {
             console.log(err);
             return res.status(500).json({ error: "Internal server error" });
         }
 
-        return res.status(200).json({ message: "User deleted successfully" });
+        return res.status(200).json({ message: "Message deleted successfully" });
     });
 });
+
+
 
 app.post('/addStaff', async (req, res) => {
     const banknumber = "2223" + Math.floor(1000 + Math.random() * 9000);

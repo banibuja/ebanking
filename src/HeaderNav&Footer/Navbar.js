@@ -21,15 +21,7 @@ const Navbar = () => {
   return (
     <nav className="navbar navbar-inverse">
       <div className="container-fluid">
-        {/* <ul className="nav navbar-nav">
-          <li><a href="/">Home</a></li>
-          <li><a href="/contactform">ContactUs</a></li>
-          <li><a href="/adminLogin">Admin Login</a></li>
-          <li className="dropdown">
-            <a href="/Stafflogin">Staff Login</a>
-          </li>
-          <li><a href="/login">Login</a></li>
-        </ul> */}
+       
         <Menu right isOpen={menuOpen} onStateChange={handleStateChange}>
           <a id='a' href="/" onClick={closeMenu}>Home</a>
           <a href="/contactform" onClick={closeMenu}>ContactUs</a>
