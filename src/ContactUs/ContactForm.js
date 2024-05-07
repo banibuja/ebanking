@@ -34,7 +34,6 @@ function ContactForm() {
         event.preventDefault();
 
         setErrors(Validation(values));
-        // Kontrollojme nëse ka gabime në formën, nese jo atehere dërgojmë mesazhin
         if (!errors.Subject) {
             axios.post('http://localhost:8080/contactUs', values)
                 .then(res => {

@@ -150,6 +150,100 @@ export default function Sidebar() {
               Profile
             </a>
           </li>
+          <li>
+            <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
+              <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
+              Transactions
+            </a>
+          </li>
+          <li>
+            <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
+              <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
+              Cards
+            </a>
+          </li>
+
+          <li>
+            <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
+              <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
+              Currencies
+            </a>
+          </li>
+          <li>
+            <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
+              <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
+              Reports
+            </a>
+          </li>
+          <li>
+            <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
+              <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
+              SavinggsAccounts
+            </a>
+          </li>
+          <li>
+            <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
+              <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
+              Loans
+            </a>
+          </li>
+          
+          <li>
+            <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
+              <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
+              Investments
+            </a>
+          </li>
+
+          <li>
+            <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
+              <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
+              AccessPermissions
+            </a>
+          </li>
+          <li>
+            <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
+              <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
+              Notifications
+            </a>
+          </li>
+
+          <li>
+            <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
+              <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
+              TransactionAuthorizations
+            </a>
+          </li>
+
+          <li>
+            <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
+              <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
+              Payments
+            </a>
+          </li>
+          <li>
+            <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
+              <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
+              Retirements
+            </a>
+          </li>
+          <li>
+            <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
+              <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
+              +
+            </a>
+          </li>
+
+          
+
+          
+
+
+          
+          
+          
+
+
           <li>Advanced Modules</li>
           <li>
             <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
