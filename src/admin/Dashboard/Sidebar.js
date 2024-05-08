@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Dropdown } from 'react-bootstrap'; 
 import { useNavigate } from 'react-router-dom';
+import { FaCreditCard } from 'react-icons/fa';
 import axios from 'axios';
 
 export default function Sidebar() {
@@ -116,13 +117,12 @@ export default function Sidebar() {
               <li>
                 <Dropdown>
                   <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
-                    <i className="bi me-2 fas fa-user-secret fa-1x text-gray-300 bg-light"></i>
-                    Accounts
+                  <FaCreditCard className="me-2 text-gray-300 bg-light" size={20} />
+                    Cards
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
-                    <Dropdown.Item href="/addacc" onClick={handleManageClick}>Add Acc</Dropdown.Item>
-                    <Dropdown.Item href="/acc" onClick={handleManageClick}>Manage Acc</Dropdown.Item>
-                    <Dropdown.Item href="/openacc" onClick={handleManageClick}>Open acc</Dropdown.Item>
+                    <Dropdown.Item href="/CardsForm" onClick={handleManageClick}>Add Cards</Dropdown.Item>
+                    <Dropdown.Item href="/Cards" onClick={handleManageClick}>Manage Cards</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
               </li>

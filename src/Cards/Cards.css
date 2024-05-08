@@ -1,0 +1,15 @@
+.rccs__card--front {
+    margin-top: 250px;
+    margin-left: 680px;
+}
+
+.rccs__card--back {
+    margin-top: 250px;
+    margin-right: 100px !important;
+
+}
+
+.rccs__card--flipped{
+    margin-left:  680px;
+}
+

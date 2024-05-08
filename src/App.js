@@ -22,6 +22,7 @@ import Profile from './admin/Profile/Profile';
 import ManageAccIban from './admin/accounts/ManageAccIban';
 import Sidebar from './admin/Dashboard/Sidebar';
 import EditAcc from './admin/accounts/EditAcc';
+import CardsForm from './Cards/CardsForm';
 
 
 
@@ -51,6 +52,9 @@ function App() {
         <Route path="/ManageAccIban" element={<ManageAccIban />} />
         <Route path="/Sidebar" element={<Sidebar/>} />
         <Route path="/EditAcc" element={<EditAcc/>} />
+        <Route path="/CardsForm" element={<CardsForm/>} />
+
+
 
 
       </Routes>
