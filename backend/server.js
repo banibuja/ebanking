@@ -251,7 +251,7 @@ app.post('/addCard', async (req, res) => {
         const userID = req.session.uId; 
 
         const addCard = await new Promise((resolve, reject) => {
-            db.query(`INSERT INTO Cards (AccountID, CardNumber, ExpiryDate, CardHolderName, CardType, CardStatus, AvailableBalance) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            db.query(`INSERT INTO Cards (UserID, CardNumber, ExpiryDate, CardHolderName, CardType, CardStatus, AvailableBalance) VALUES (?, ?, ?, ?, ?, ?, ?)`,
                 [userID, cardDetails.CardNumber, cardDetails.ExpiryDate, cardDetails.CardHolderName, cardDetails.CardType, cardDetails.CardStatus, cardDetails.AvailableBalance],
                 (error, result) => {
                     if (error) {
@@ -262,17 +262,17 @@ app.post('/addCard', async (req, res) => {
                 });
         });
 
-        const addAccount = await new Promise((resolve, reject) => {
-            db.query(`INSERT INTO Accounts (UserID, AccountType, Balance) VALUES (?, ?, ?)`,
-                [userID, cardDetails.AccountType, cardDetails.Balance],
-                (error, result) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        resolve(result);
-                    }
-                });
-        });
+        // const addAccount = await new Promise((resolve, reject) => {
+        //     db.query(`INSERT INTO Accounts (UserID, AccountType, Balance) VALUES (?, ?, ?)`,
+        //         [userID, cardDetails.AccountType, cardDetails.Balance],
+        //         (error, result) => {
+        //             if (error) {
+        //                 reject(error);
+        //             } else {
+        //                 resolve(result);
+        //             }
+        //         });
+        // });
 
         res.json({ message: 'Card added successfully', cardId: addCard.insertId });
 

@@ -12,6 +12,7 @@ const CreditCardForm = () => {
     expiry: "",
     cvc: "",
     focus: "",
+    cardType: "",
   });
 
   const handleInputChange = (e) => {
@@ -27,11 +28,10 @@ const CreditCardForm = () => {
     e.preventDefault();
     try {
       const response = await axios.post('http://localhost:8080/addCard', {
-        AccountID: "990",
         CardNumber: state.number,
         ExpiryDate: state.expiry,
         CardHolderName: state.name,
-        CardType: "YOUR_CARD_TYPE",
+        CardType: state.cardType,
         CardStatus: "ACTIVE",
         AvailableBalance: 0 
       });
@@ -79,7 +79,7 @@ const CreditCardForm = () => {
               />
             </div>
             <div className="row">
-              <div className="col-6 mb-3">
+              <div className="col-4 mb-3">
                 <input
                   type="number"
                   name="expiry"
@@ -92,7 +92,7 @@ const CreditCardForm = () => {
                   required
                 />
               </div>
-              <div className="col-6 mb-3">
+              <div className="col-4 mb-3">
                 <input
                   type="number"
                   name="cvc"
@@ -105,6 +105,20 @@ const CreditCardForm = () => {
                   required
                 />
               </div>
+              <div className="col-4 mb-3">
+                <select
+                  name="cardType"
+                  value={state.cardType}
+                  className="form-control"
+                  onChange={handleInputChange}
+                  onFocus={handleInputFocus}
+                  required
+                >
+                  <option value="Debit">Debit</option>
+                  <option value="Credit">Credit</option>
+                  <option value="Prepaid">Prepaid</option>
+                </select>
+              </div>
             </div>
             <div className="d-grid">
               <button type="submit" className="btn btn-dark">Add Card</button>
@@ -115,5 +129,6 @@ const CreditCardForm = () => {
     </div>
   );
 };
+
 
 export default CreditCardForm;

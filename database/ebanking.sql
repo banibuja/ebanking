@@ -41,7 +41,7 @@ CREATE TABLE Transactions (
 
 CREATE TABLE Cards (
     CardID int primary key AUTO_INCREMENT,
-    AccountID INT NOT NULL,
+    UserID INT NOT NULL,
     CardNumber VARCHAR(16) NOT NULL,
     ExpiryDate DATE NOT NULL,
     CardHolderName VARCHAR(100) NOT NULL,
@@ -49,7 +49,7 @@ CREATE TABLE Cards (
     CardStatus VARCHAR(50) NOT NULL,
   /*  Limit DECIMAL(18, 2), */
     AvailableBalance DECIMAL(18, 2),
-    CONSTRAINT FK_Account_Card FOREIGN KEY (AccountID) REFERENCES Accounts(AccountID) ON DELETE CASCADE
+    CONSTRAINT FK_User_Card FOREIGN KEY (UserID) REFERENCES users(userId) ON DELETE CASCADE
 );
 CREATE TABLE Currencies (
     CurrencyID int primary key AUTO_INCREMENT,
@@ -171,10 +171,10 @@ VALUES
 (203, 102, 'Transfer', 200.00, '2024-04-22 09:00:00', 'Transfer to checking account');
 
 -- Tabela Cards
-INSERT INTO Cards (CardID, AccountID, CardNumber, ExpiryDate, CardHolderName, CardType, CardStatus, AvailableBalance)
+INSERT INTO Cards (CardID, UserId, CardNumber, ExpiryDate, CardHolderName, CardType, CardStatus, AvailableBalance)
 VALUES
-(301, 101, '1234567812345678', '2026-12-31', 'John Doe', 'Debit', 'Active', 4000.00),
-(302, 102, '8765432187654321', '2025-10-31', 'Jane Smith', 'Credit', 'Active', 8000.00);
+(301, 1, '1234567812345678', '2026-12-31', 'John Doe', 'Debit', 'Active', 4000.00),
+(302, 2, '8765432187654321', '2025-10-31', 'Jane Smith', 'Credit', 'Active', 8000.00);
 
 -- Tabela Currencies
 INSERT INTO Currencies (CurrencyID, CurrencyCode, ExchangeRate)
