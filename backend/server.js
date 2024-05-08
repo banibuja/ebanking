@@ -238,25 +238,49 @@ app.put('/updateUsers/:id', (req, res) => {
     });
 });
 
-app.post('/addCard', (req, res) => {
-    const { AccountID, CardNumber, ExpiryDate, CardHolderName, CardType, CardStatus, AvailableBalance } = req.body;
 
-   
 
-    const sql = "INSERT INTO Cards (AccountID, CardNumber, ExpiryDate, CardHolderName, CardType, CardStatus, AvailableBalance) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    const values = [AccountID, CardNumber, ExpiryDate, CardHolderName, CardType, CardStatus, AvailableBalance];
-    
-    db.query(sql, values, (err, result) => {
-        if (err) {
-            console.error('Error adding card:', err);
-            return res.status(500).json({ error: 'An internal server error occurred.' });
+
+app.post('/addCard', async (req, res) => {
+    try {
+        if (!req.session.username) {
+            return res.status(401).json({ error: "Unauthorized" });
         }
-        console.log('Card added successfully!');
-        return res.status(201).json({ message: 'Card added successfully.' });
-    });
+
+        const cardDetails = req.body;
+        const userID = req.session.uId; 
+
+        const addCard = await new Promise((resolve, reject) => {
+            db.query(`INSERT INTO Cards (AccountID, CardNumber, ExpiryDate, CardHolderName, CardType, CardStatus, AvailableBalance) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                [userID, cardDetails.CardNumber, cardDetails.ExpiryDate, cardDetails.CardHolderName, cardDetails.CardType, cardDetails.CardStatus, cardDetails.AvailableBalance],
+                (error, result) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result);
+                    }
+                });
+        });
+
+        const addAccount = await new Promise((resolve, reject) => {
+            db.query(`INSERT INTO Accounts (UserID, AccountType, Balance) VALUES (?, ?, ?)`,
+                [userID, cardDetails.AccountType, cardDetails.Balance],
+                (error, result) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result);
+                    }
+                });
+        });
+
+        res.json({ message: 'Card added successfully', cardId: addCard.insertId });
+
+    } catch (error) {
+        console.error('Error adding card:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 });
-
-
 
 
 
