@@ -14,15 +14,13 @@ import EditClient from './admin/Client/EditClient';
 
 import ContactForm from './ContactUs/ContactForm';
 import Home from './Home/Home';
-import AddAcc from './admin/accounts/AddAcc';
-import Acc from './admin/accounts/Acc';
-import OpenAcc from './admin/accounts/OpenAcc';
-import OpenAction from './admin/accounts/OpenAction';
+
 import Profile from './admin/Profile/Profile';
-import ManageAccIban from './admin/accounts/ManageAccIban';
 import Sidebar from './admin/Dashboard/Sidebar';
-import EditAcc from './admin/accounts/EditAcc';
 import CardsForm from './Cards/CardsForm';
+import ManageCards from './Cards/ManageCards';
+import ManageAccounts from './Accounts/ManageAccounts';
+
 
 
 
@@ -45,14 +43,13 @@ function App() {
 
         <Route path="/" element={<Home />} />
 
-        <Route path="/AddAcc" element={<AddAcc />} />
-        <Route path="/acc" element={<Acc />} />
-        <Route path="/OpenAcc" element={<OpenAcc />} />
-        <Route path="/OpenAction" element={<OpenAction />} />
-        <Route path="/ManageAccIban" element={<ManageAccIban />} />
         <Route path="/Sidebar" element={<Sidebar/>} />
-        <Route path="/EditAcc" element={<EditAcc/>} />
         <Route path="/CardsForm" element={<CardsForm/>} />
+        <Route path="/ManageCards" element={<ManageCards/>} />
+        <Route path="/ManageAccounts" element={<ManageAccounts/>} />
+
+
+        
 
 
 

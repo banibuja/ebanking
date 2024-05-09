@@ -1,6 +1,6 @@
 .rccs__card--front {
     margin-top: 250px;
-    margin-left: 680px;
+    margin-left: 500px;
 }
 
 .rccs__card--back {
@@ -10,11 +10,10 @@
 }
 
 .rccs__card--flipped{
-    margin-left:  680px;
+    margin-left:  500px;
 }
 input[type=number] {
     -moz-appearance: textfield;
-    /* Firefox */
 }
 
 input[type=number]::-webkit-inner-spin-button,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Cards from "react-credit-cards-2";
 import Sidebar from '../admin/Dashboard/Sidebar';
@@ -15,6 +15,14 @@ const CreditCardForm = () => {
     cardType: "",
   });
 
+  const [cardExists, setCardExists] = useState(false);
+
+  useEffect(() => {
+    if (state.number.length === 16) {
+      checkCard();
+    }
+  }, [state.number]);
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setState((prev) => ({ ...prev, [name]: value }));
@@ -24,18 +32,51 @@ const CreditCardForm = () => {
     setState((prev) => ({ ...prev, focus: e.target.name }));
   };
 
+  const checkCard = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/getCardDetails', {
+        params: {
+          cardNumber: state.number
+        }
+      });
+      setCardExists(response.data.exists);
+    } catch (error) {
+      console.error('Error checking card:', error);
+    }
+  };
+
   const handleAddCard = async (e) => {
     e.preventDefault();
+  
+    if (state.number.length !== 16) {
+      alert('Please enter a valid 16-digit card number');
+      return;
+    }
+  
+    const expiryRegex = /^(0[1-9]|1[0-2])\/\d{2}$/; 
+    if (!expiryRegex.test(state.expiry)) {
+      alert('Please enter a valid expiry date in MM/YY format');
+      return;
+    }
+  
+    const [month, year] = state.expiry.split('/');
+    const formattedExpiry = `20${year}-${month}-01`;
+  
     try {
+      if (cardExists) {
+        alert('Card already exists');
+        return;
+      }
+      
       const response = await axios.post('http://localhost:8080/addCard', {
         CardNumber: state.number,
-        ExpiryDate: state.expiry,
+        ExpiryDate: formattedExpiry,
         CardHolderName: state.name,
         CardType: state.cardType,
         CardStatus: "ACTIVE",
-        AvailableBalance: 0 
+        AvailableBalance: 0
       });
-
+  
       console.log(response.data);
     } catch (error) {
       console.error('Error adding card:', error);
@@ -81,7 +122,7 @@ const CreditCardForm = () => {
             <div className="row">
               <div className="col-4 mb-3">
                 <input
-                  type="number"
+                  type="text"
                   name="expiry"
                   className="form-control"
                   placeholder="Valid Thru"
@@ -129,6 +170,5 @@ const CreditCardForm = () => {
     </div>
   );
 };
-
 
 export default CreditCardForm;

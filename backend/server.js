@@ -119,6 +119,9 @@ app.post('/addClient', async (req, res) => {
         const client = req.body;
         const hashedPassword = await bcrypt.hash(client.password, 10);
 
+        const currentAccount = generateRandomAccountNumber();
+        // const flexSaveAccount = generateRandomAccountNumber();
+
         const addClient = await new Promise((resolve, reject) => {
             db.query(`INSERT INTO users (username, name, lastname, email, password, gender, birthday) VALUES ('${client.username}', '${client.name}', '${client.lastname}', '${client.email}', '${hashedPassword}', '${client.gender}', '${client.birthday}')`, (error, result) => {
                 if (error) {
@@ -128,15 +131,11 @@ app.post('/addClient', async (req, res) => {
                 }
             });
         });
+
         console.log(addClient);
+
         const addAddress = await new Promise((resolve, reject) => {
-            db.query(`INSERT INTO adresa (
-                userId, Country, City, Street) VALUES (
-                    '${addClient.insertId}', 
-                    '${client.Country}', 
-                    '${client.City}', 
-                    '${client.Street}'
-                )`, (error, results) => {
+            db.query(`INSERT INTO adresa (userId, Country, City, Street) VALUES ('${addClient.insertId}', '${client.Country}', '${client.City}', '${client.Street}')`, (error, results) => {
                 if (error) {
                     reject(error);
                 } else {
@@ -146,11 +145,7 @@ app.post('/addClient', async (req, res) => {
         });
 
         const addRole = await new Promise((resolve, reject) => {
-            db.query(`INSERT INTO accesspermissions (
-                UserID, AccessLevel) VALUES (
-                    '${addClient.insertId}', 
-                    'User'
-                )`, (error, results) => {
+            db.query(`INSERT INTO accesspermissions (UserID, AccessLevel) VALUES ('${addClient.insertId}', 'User')`, (error, results) => {
                 if (error) {
                     reject(error);
                 } else {
@@ -159,16 +154,34 @@ app.post('/addClient', async (req, res) => {
             });
         });
 
+        const addAccounts = await new Promise((resolve, reject) => {
+            const userId = addClient.insertId; 
+            db.query(`INSERT INTO accounts (UserID, CurrentAccount,  Balance) VALUES (?, ?, ?)`, [userId, currentAccount,  0], (error, results) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
 
         return res.json(addClient);
-
-
       
     } catch (error) {
-        console.error('Error hashing password:', error);
+        console.error('Error adding client:', error);
         return res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+function generateRandomAccountNumber() {
+    const digits = '0123456789';
+    let accountNumber = '';
+    for (let i = 0; i < 16; i++) {
+        accountNumber += digits[Math.floor(Math.random() * 10)];
+    }
+    return accountNumber;
+}
+
 
 
 
@@ -250,6 +263,20 @@ app.post('/addCard', async (req, res) => {
         const cardDetails = req.body;
         const userID = req.session.uId; 
 
+        const existingCard = await new Promise((resolve, reject) => {
+            db.query(`SELECT * FROM Cards WHERE CardNumber = ?`, [cardDetails.CardNumber], (error, result) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(result);
+                }
+            });
+        });
+
+        if (existingCard.length > 0) {
+            return res.status(400).json({ error: "Card number already exists" });
+        }
+
         const addCard = await new Promise((resolve, reject) => {
             db.query(`INSERT INTO Cards (UserID, CardNumber, ExpiryDate, CardHolderName, CardType, CardStatus, AvailableBalance) VALUES (?, ?, ?, ?, ?, ?, ?)`,
                 [userID, cardDetails.CardNumber, cardDetails.ExpiryDate, cardDetails.CardHolderName, cardDetails.CardType, cardDetails.CardStatus, cardDetails.AvailableBalance],
@@ -262,18 +289,6 @@ app.post('/addCard', async (req, res) => {
                 });
         });
 
-        // const addAccount = await new Promise((resolve, reject) => {
-        //     db.query(`INSERT INTO Accounts (UserID, AccountType, Balance) VALUES (?, ?, ?)`,
-        //         [userID, cardDetails.AccountType, cardDetails.Balance],
-        //         (error, result) => {
-        //             if (error) {
-        //                 reject(error);
-        //             } else {
-        //                 resolve(result);
-        //             }
-        //         });
-        // });
-
         res.json({ message: 'Card added successfully', cardId: addCard.insertId });
 
     } catch (error) {
@@ -282,6 +297,24 @@ app.post('/addCard', async (req, res) => {
     }
 });
 
+app.get('/getCardDetails', async (req, res) => {
+    const { cardNumber } = req.query;
+
+    try {
+        const sql = "SELECT COUNT(*) AS count FROM cards WHERE CardNumber = ?";
+        db.query(sql, [cardNumber], (err, result) => {
+            if (err) {
+                console.error('Error checking card:', err);
+                return res.status(500).json({ error: 'Internal Server Error' });
+            }
+            const exists = result[0].count > 0;
+            return res.json({ exists });
+        });
+    } catch (error) {
+        console.error('Error checking card:', error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
 
 
@@ -313,56 +346,23 @@ app.post('/contactUs', (req, res) => {
     });
 });
 
-// app.post('/addCard', (req, res) => {
-//     if (!req.session.username) {
-//         return res.status(401).json({ error: "Unauthorized" });
-//     }
 
-//     const CardHolderName = req.session.name;
-    
-//     const accountId = req.body.accountId;
+app.post('/getCards', (req, res) => {
+    const userID = req.session.uId; 
 
-//     if (!accountId) {
-//         return res.status(400).json({ error: "AccountID is required." });
-//     }
+    const sql = "SELECT * FROM Cards WHERE UserID = ?"; 
 
-//     const getAccountQuery = "SELECT * FROM Accounts WHERE AccountID = ?";
-    
-//     db.query(getAccountQuery, [accountId], (err, accountData) => {
-//         if (err) {
-//             console.error('Error fetching account:', err);
-//             return res.status(500).json({ error: 'An internal server error occurred.' });
-//         }
-        
-//         if (accountData.length === 0) {
-//             return res.status(404).json({ error: "Account not found." });
-//         }
-
-//         const accountID = accountData[0].AccountID;
-
-//         const sql = "INSERT INTO Cards (`AccountID`, `CardHolderName`, `CardNumber`, `ExpiryDate`, `Cvc`, `AvailableBalance`) VALUES (?, ?, ?, ?, ?, ?)";
-//         const values = [
-//             accountID,
-//             CardHolderName,
-//             req.body.number, 
-//             req.body.expiry,
-//             req.body.cvc,
-//             req.body.availableBalance,
-//         ];
-
-//         db.query(sql, values, (err, data) => {
-//             if (err) {
-//                 console.error('Error adding card:', err);
-//                 return res.status(500).json({ error: 'An internal server error occurred.' });
-//             }
-//             console.log('Card added successfully!');
-//             return res.status(201).json({ message: 'Card added successfully.' });
-//         });
-//     });
-// });
-
-
-
+    db.query(sql, [userID], (err, data) => {
+        if (err) {
+            return res.json("Error");
+        }
+        if (data.length > 0) {
+            return res.json(data);
+        } else {
+            return res.json("fail");
+        }
+    });
+});
 
 app.post('/getContactUs', (req, res) => {
     const sql = "SELECT * FROM ContactUs ";
@@ -379,6 +379,38 @@ app.post('/getContactUs', (req, res) => {
         }
     })
 })
+app.post('/getAccounts', (req, res) => {
+    const sql = "SELECT * FROM Accounts ";
+
+
+    db.query(sql, (err, data) => {
+        if (err) {
+            return res.json("Error");
+        }
+        if (data.length > 0) {
+            return res.json(data);
+        } else {
+            return res.json("faile");
+        }
+    })
+})
+
+
+
+app.delete("/deleteCard/:id", (req, res) => {
+    const contactId = req.params.id;
+    const sqlDelete = "DELETE FROM Cards WHERE CardID = ?";
+  
+    db.query(sqlDelete, contactId, (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+
+        return res.status(200).json({ message: "Message deleted successfully" });
+    });
+});
+
 
 app.delete("/deleteContacts/:id", (req, res) => {
     const contactId = req.params.id;
@@ -393,23 +425,22 @@ app.delete("/deleteContacts/:id", (req, res) => {
         return res.status(200).json({ message: "Message deleted successfully" });
     });
 });
-
-
-app.post('/addCard', (req, res) => {
-    const { AccountID, CardNumber, ExpiryDate, CardHolderName, CardType, CardStatus, AvailableBalance } = req.body;
-
-    const sql = "INSERT INTO Cards (AccountID, CardNumber, ExpiryDate, CardHolderName, CardType, CardStatus, AvailableBalance) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    const values = [AccountID, CardNumber, ExpiryDate, CardHolderName, CardType, CardStatus, AvailableBalance];
-    
-    db.query(sql, values, (err, result) => {
+app.delete("/deleteAccounts/:id", (req, res) => {
+    const AccountID = req.params.id;
+    const sqlDelete = "DELETE FROM Accounts WHERE AccountID = ?";
+  
+    db.query(sqlDelete, AccountID, (err, result) => {
         if (err) {
-            console.error('Error adding card:', err);
-            return res.status(500).json({ error: 'An internal server error occurred.' });
+            console.log(err);
+            return res.status(500).json({ error: "Internal server error" });
         }
-        console.log('Card added successfully!');
-        return res.status(201).json({ message: 'Card added successfully.' });
+
+        return res.status(200).json({ message: "Message deleted successfully" });
     });
 });
+
+
+
 
 
 app.post('/addStaff', async (req, res) => {

@@ -122,9 +122,20 @@ export default function Sidebar() {
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
                     <Dropdown.Item href="/CardsForm" onClick={handleManageClick}>Add Cards</Dropdown.Item>
-                    <Dropdown.Item href="/Cards" onClick={handleManageClick}>Manage Cards</Dropdown.Item>
+                    <Dropdown.Item href="/managecards" onClick={handleManageClick}>Manage Cards</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
+                <li>
+                <Dropdown>
+                  <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
+                  <FaCreditCard className="me-2 text-gray-300 bg-light" size={20} />
+                    Accounts
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item href="/manageaccounts" onClick={handleManageClick}>Manage Account</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </li>
               </li>
             </>
           )}

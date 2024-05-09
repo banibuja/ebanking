@@ -7,10 +7,10 @@
   font-optical-sizing: auto;
   font-weight: weight;
   font-style: normal;
-  -webkit-user-select: none;
+  /* -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
-  user-select: none;
+  user-select: none; */
 }
 
 body {
