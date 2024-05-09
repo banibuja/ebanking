@@ -30,13 +30,18 @@ CREATE TABLE Accounts (
     CONSTRAINT FK_User_Account FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
 );
 CREATE TABLE Transactions (
-    TransactionID int primary key AUTO_INCREMENT ,
-    AccountID INT NOT NULL,
+    TransactionID INT PRIMARY KEY AUTO_INCREMENT,
+    SenderAccID INT NOT NULL,
+    ReceiverAccID INT NOT NULL,
     TransactionType VARCHAR(50) NOT NULL,
-    Amount DECIMAL(18, 5) NOT NULL,
-    TransactionDate DATETIME NOT NULL,
+    TransactionAmount DECIMAL(18, 5) NOT NULL,
+    Currency VARCHAR(10) NOT NULL,
+    Statusi VARCHAR(20) NOT NULL,
     AdditionalInfo TEXT,
-    CONSTRAINT FK_Account_Transaction FOREIGN KEY (AccountID) REFERENCES Accounts(AccountID) ON DELETE CASCADE
+    TransactionFee DECIMAL(18, 5),
+    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT FK_SenderAcc_Account FOREIGN KEY (SenderAccID) REFERENCES Accounts(AccountID) ON DELETE CASCADE,
+    CONSTRAINT FK_ReceiverAcc_Account FOREIGN KEY (ReceiverAccID) REFERENCES Accounts(AccountID) ON DELETE CASCADE
 );
 
 CREATE TABLE Cards (
@@ -163,12 +168,6 @@ VALUES
 (102, 2, 'Savings', 10000.00),
 (103, 3, 'Investment', 15000.00);
 
--- Tabela Transactions
-INSERT INTO Transactions (TransactionID, AccountID, TransactionType, Amount, TransactionDate, AdditionalInfo)
-VALUES
-(201, 101, 'Deposit', 1000.00, '2024-04-20 10:30:00', 'Deposit from paycheck'),
-(202, 101, 'Withdrawal', 500.00, '2024-04-21 15:45:00', 'ATM withdrawal'),
-(203, 102, 'Transfer', 200.00, '2024-04-22 09:00:00', 'Transfer to checking account');
 
 -- Tabela Cards
 INSERT INTO Cards (CardID, AccountID, CardNumber, ExpiryDate, CardHolderName, CardType, CardStatus, AvailableBalance)
