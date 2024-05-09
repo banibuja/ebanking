@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Validation from '../../LoginSignup/SignupValidation';
 import axios from 'axios';
 import Sidebar from '../Dashboard/Sidebar';
 
 function EditClient({ id, onClose }) {
     const navigate = useNavigate();
     const [values, setValues] = useState({
+        username: '',
         name: '',
         lastname: '',
         email: '',
         password: '',
-        dateb: '',
         gender: '',
-        phonenumber: ''
+        birthday: '',
+        Country: '',
+        City: '',
+        Street: ''
     });
 
     const [errors, setErrors] = useState({});
@@ -26,22 +28,19 @@ function EditClient({ id, onClose }) {
             .catch(err => console.log(err));
     }, [id]);
 
-    const handeInput = (event) => {
+    const handleInput = (event) => {
         setValues(prev => ({ ...prev, [event.target.name]: event.target.value }));
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
         
-        setErrors(Validation(values));
-    
-        if (Object.keys(errors).length === 0) {
-            axios.put(`http://localhost:8080/updateUsers/${id}`, values)
-                .then(res => {
-                    navigate('/dashboard');
-                })
-                .catch(err => console.log(err));
-        }
+        
+        axios.put(`http://localhost:8080/updateUsers/${id}`, values)
+            .then(res => {
+                navigate('/dashboard');
+            })
+            .catch(err => console.log(err));
     };
 
     return (
@@ -56,44 +55,49 @@ function EditClient({ id, onClose }) {
                     </div>
                     <div className="modal-body">
                         <form onSubmit={handleSubmit}>
-                        <div className="form-group">
-                                <label>Name</label>
-                                <input type="text" placeholder='Enter name' name='name' onChange={handeInput} className='form-control roundend-0' value={values.name} />
-                                 {errors.name && <span className='text-danger'>{errors.name}</span>}                            </div>
                             <div className="form-group">
-                                <label>Lastname</label>
-                                <input type="text" placeholder='Enter name' name='lastname' onChange={handeInput} className='form-control roundend-0' value={values.lastname} />
-                                                        {errors.lastname && <span className='text-danger'>{errors.lastname}</span>}                            </div>
-                            <div className="form-group">
-                                <label>Email</label>
-                                <input type="email" placeholder='Enter email' name='email' onChange={handeInput} className='form-control roundend-0' value={values.email} />
-                                                        {errors.email && <span className='text-danger'>{errors.email}</span>}                            </div>
-                                                        <div className="form-group">
-                                <label>password</label>
-                                <input type="password" placeholder='Enter password' name='password' onChange={handeInput} className='form-control roundend-0' value={values.password} />
-                                                        {errors.password && <span className='text-danger'>{errors.password}</span>}                            </div>                        
-
-                            <div className="form-group">
-                                <label>Birthday</label>
-                                <input type="date"  name='dateb' className="form-control form-control-lg" placeholder="Enter Birthdate" onChange={handeInput}  />
+                                <label>Client Username</label>
+                                <input type="text" placeholder='Username' name='username' onChange={handleInput} className='form-control roundend-0' value={values.username} />
                             </div>
                             <div className="form-group">
-                                <label>Gender</label>
-                                <select name="gender" onChange={handeInput} value={values.gender} className="form-control rounded-0">
-                                                            <option value="">Select Gender</option>
-                                                            <option value="Male">Male</option>
-                                                            <option value="Female">Female</option>
-                                                        </select>
-                                                        {errors.gender && <span className="text-danger">{errors.gender}</span>}
+                                <label>Client Name</label>
+                                <input type="text" placeholder='Name' name='name' onChange={handleInput} className='form-control roundend-0' value={values.name} />
                             </div>
                             <div className="form-group">
-                                <label>Phone Number</label>
-                                <input type="text" placeholder='Enter staff number' name='phonenumber' onChange={handeInput} className='form-control roundend-0' value={values.phonenumber} />
-                            </div>                        </form>
-                    </div>
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" onClick={onClose}>Close</button>
-                        <button type="button" className="btn btn-primary" onClick={handleSubmit}>Save changes</button>
+                                <label>Client Lastname</label>
+                                <input type="text" placeholder='Lastname' name='lastname' onChange={handleInput} className='form-control roundend-0' value={values.lastname} />
+                            </div>
+                            <div className="form-group">
+                                <label>Client Email</label>
+                                <input type="email" placeholder='Email' name='email' onChange={handleInput} className='form-control roundend-0' value={values.email} />
+                            </div>
+                            <div className="form-group">
+                                <label>Client Password</label>
+                                <input type="password" placeholder='Password' name='password' onChange={handleInput} className='form-control roundend-0' value={values.password} />
+                            </div>
+                            <div className="form-group">
+                                <label>Client Gender</label>
+                                <select name="gender" onChange={handleInput} value={values.gender} className="form-control rounded-0">
+                                    <option value="">Select Gender</option>
+                                    <option value="M">Male</option>
+                                    <option value="F">Female</option>
+                                </select>
+                            </div>
+                            <div className="form-group">
+                                <label>Client Birthday</label>
+                                <input type="date" name='birthday' onChange={handleInput} className="form-control form-control-lg" value={values.birthday} />
+                            </div>
+                            <div className="form-group">
+                                <label>Client Address</label>
+                                <input type="text" placeholder='Country' name='Country' onChange={handleInput} className='form-control roundend-0' value={values.Country} />
+                                <input type="text" placeholder='City' name='City' onChange={handleInput} className='form-control roundend-0' value={values.City} />
+                                <input type="text" placeholder='Street' name='Street' onChange={handleInput} className='form-control roundend-0' value={values.Street} />
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" onClick={onClose}>Close</button>
+                                <button type="submit" className="btn btn-primary">Save changes</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

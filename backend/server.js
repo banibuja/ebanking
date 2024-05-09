@@ -14,9 +14,11 @@ app.use(cors({
     methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true
 }));
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.json());
+
 app.use(session({
     secret: 'secret',
     resave: false,
@@ -24,8 +26,13 @@ app.use(session({
     cookie: {
         secure: false
     }
+    
 
-}))
+})
+)
+
+
+  
 
 app.get('/sessionTimeRemaining',  (req, res) => {
     if (req.session && req.session.username) {
@@ -92,9 +99,9 @@ app.post('/login', (req, res) => {
             console.log(comparison);
             if(comparison){
 
-                db.query(`SELECT AccessLevel FROM accesspermissions WHERE UserId = ${result[0].userId}`, (error, results) => {
+                db.query(`SELECT AccessLevel FROM accesspermissions WHERE UserID = ${result[0].userId}`, (error, results) => {
                     if (error) throw error;
-                    req.session.role = result[0].role;
+                    req.session.role = results[0].AccessLevel; 
                 });
                 req.session.uId = result[0].userId;
                 req.session.username = result[0].username;
@@ -114,49 +121,64 @@ app.post('/login', (req, res) => {
 })
 
 
+function generateRandomAccountNumber() {
+    const prefix = '11102343'; 
+    const randomSuffix = Math.floor(10000000 + Math.random() * 90000000); 
+    return parseInt(prefix + randomSuffix); 
+}
 app.post('/addClient', async (req, res) => {
     try {
         const client = req.body;
         const hashedPassword = await bcrypt.hash(client.password, 10);
 
-        const currentAccount = generateRandomAccountNumber();
-        // const flexSaveAccount = generateRandomAccountNumber();
+        let currentAccount;
+        let accountExists = true;
+
+        while (accountExists) {
+            currentAccount = generateRandomAccountNumber();
+            accountExists = await checkAccountExists(currentAccount);
+        }
 
         const addClient = await new Promise((resolve, reject) => {
-            db.query(`INSERT INTO users (username, name, lastname, email, password, gender, birthday) VALUES ('${client.username}', '${client.name}', '${client.lastname}', '${client.email}', '${hashedPassword}', '${client.gender}', '${client.birthday}')`, (error, result) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(result);
-                }
-            });
+            db.query(`INSERT INTO users (username, name, lastname, email, password, gender, birthday) VALUES (?, ?, ?, ?, ?, ?, ?)`, 
+                [client.username, client.name, client.lastname, client.email, hashedPassword, client.gender, client.birthday], 
+                (error, result) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(result);
+                    }
+                });
         });
-
-        console.log(addClient);
 
         const addAddress = await new Promise((resolve, reject) => {
-            db.query(`INSERT INTO adresa (userId, Country, City, Street) VALUES ('${addClient.insertId}', '${client.Country}', '${client.City}', '${client.Street}')`, (error, results) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(results);
-                }
-            });
+            db.query(`INSERT INTO adresa (userId, Country, City, Street) VALUES (?, ?, ?, ?)`, 
+                [addClient.insertId, client.Country, client.City, client.Street], 
+                (error, results) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(results);
+                    }
+                });
+        });
+        
+        const addRole = await new Promise((resolve, reject) => {
+            db.query(`INSERT INTO accesspermissions (UserID, AccessLevel) VALUES (?, ?)`, 
+                [addClient.insertId, 'User'], 
+                (error, results) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(results);
+                    }
+                });
         });
 
-        const addRole = await new Promise((resolve, reject) => {
-            db.query(`INSERT INTO accesspermissions (UserID, AccessLevel) VALUES ('${addClient.insertId}', 'User')`, (error, results) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(results);
-                }
-            });
-        });
 
         const addAccounts = await new Promise((resolve, reject) => {
             const userId = addClient.insertId; 
-            db.query(`INSERT INTO accounts (UserID, CurrentAccount,  Balance) VALUES (?, ?, ?)`, [userId, currentAccount,  0], (error, results) => {
+            db.query(`INSERT INTO accounts (UserID, CurrentAccount, Balance) VALUES (?, ?, ?)`, [userId, currentAccount, 0], (error, results) => {
                 if (error) {
                     reject(error);
                 } else {
@@ -173,24 +195,23 @@ app.post('/addClient', async (req, res) => {
     }
 });
 
-function generateRandomAccountNumber() {
-    const digits = '0123456789';
-    let accountNumber = '';
-    for (let i = 0; i < 16; i++) {
-        accountNumber += digits[Math.floor(Math.random() * 10)];
-    }
-    return accountNumber;
+async function checkAccountExists(accountNumber) {
+    return new Promise((resolve, reject) => {
+        db.query(`SELECT COUNT(*) AS count FROM accounts WHERE CurrentAccount = ?`, [accountNumber], (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(result[0].count > 0);
+            }
+        });
+    });
 }
-
-
-
-
 
 app.post('/getUsers', async (req, res) => {
     var users;
     try {
         const accessPermissions = await new Promise((resolve, reject) => {
-            db.query(`SELECT UserId FROM accesspermissions WHERE AccessLevel = 'User'`, (error, results) => {
+            db.query(`SELECT UserID FROM accesspermissions WHERE AccessLevel = 'User'`, (error, results) => {
                 if (error) {
                     reject(error);
                 } else {
@@ -201,7 +222,7 @@ app.post('/getUsers', async (req, res) => {
 
         const userPromises = accessPermissions.map(accessPermission => {
             return new Promise((resolve, reject) => {
-                db.query(`SELECT * FROM users u INNER JOIN adresa a ON a.userId=u.userId WHERE u.userId = ${accessPermission.UserId}`, (error, results) => {
+                db.query(`SELECT * FROM users u INNER JOIN adresa a ON a.userID=u.userId WHERE u.userId = ${accessPermission.UserID}`, (error, results) => {
                     if (error) {
                         reject(error);
                     } else {

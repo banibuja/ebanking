@@ -30,7 +30,7 @@ export default function Sidebar() {
         if (timeRemaining === 0) {
           handleLogout(); 
         } else {
-          setSessionTimeRemaining(timeRemaining); // Update session time remaining
+          setSessionTimeRemaining(timeRemaining); 
         }
       })
       .catch(err => console.log(err));
@@ -55,7 +55,7 @@ export default function Sidebar() {
     axios.get('http://localhost:8080/logout')
       .then(res => {
         if (res.data.success) {
-          navigate('/');
+          navigate('/login');
         } else {
         }
       })
@@ -83,7 +83,7 @@ export default function Sidebar() {
         </a>
         <hr />
         <ul className="nav nav-pills flex-column mb-auto">
-          {role !== 'user' && (
+          {role !== 'User' && (
             <>
               <li>
                 <a href="/dashboard" className="nav-link link-dark" onClick={handleManageClick}>
@@ -106,7 +106,7 @@ export default function Sidebar() {
             </>
           )}
         
-          {role !== 'user' && (
+          {role !== 'User' && (
             <>
               <li>
                 <a href="/ContactUs" className="nav-link link-dark" onClick={handleManageClick}>

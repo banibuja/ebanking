@@ -44,6 +44,15 @@ export const ManageCards = () => {
         const date = new Date(dateString);
         return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
     };
+    const transferBalance = (cardId) => {
+        axios.post('http://localhost:8080/transferBalance')
+            .then(res => {
+                alert(res.data); // show response message
+                // Refresh cards after balance transfer
+                getCards();
+            })
+            .catch(err => console.log(err));
+    };
 
     return (
         <div> 
