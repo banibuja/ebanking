@@ -3,7 +3,7 @@ import axios from 'axios';
 import Sidebar from '../admin/Dashboard/Sidebar';
 import { useNavigate } from 'react-router-dom';
 
-export const ManageCards = () => {
+export const Manageclientcards = () => {
     const [cards, setCards] = useState([]);
     const [numCards, setNumCards] = useState(0); 
 
@@ -14,7 +14,7 @@ export const ManageCards = () => {
     const navigate = useNavigate();
 
     const getCards = () => {
-        axios.post('http://localhost:8080/getCards')
+        axios.post('http://localhost:8080/getCardsclients')
             .then(res => {
                 const fetchedCards = res.data;
                 setCards(fetchedCards);
@@ -104,4 +104,4 @@ export const ManageCards = () => {
     );
 };
 
-export default ManageCards;
+export default Manageclientcards;

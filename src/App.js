@@ -21,6 +21,14 @@ import CardsForm from './Cards/CardsForm';
 import ManageCards from './Cards/ManageCards';
 import ManageAccounts from './Accounts/ManageAccounts';
 import ManageYourAccount from './Accounts/ManageYourAccount';
+import Manageclientcards from './Cards/Manageclientcards';
+import AccessPermissions from './AccessPermissions/AccessPermissions';
+
+
+
+import ManageSavingsAccount from './Accounts/ManageSavingsAccount';
+import ManageYourSavings from './Accounts/ManageYourSavings';
+// import ManageAcc from './Accounts/ManageAcc';
 
 
 
@@ -49,6 +57,16 @@ function App() {
         <Route path="/ManageCards" element={<ManageCards/>} />
         <Route path="/ManageAccounts" element={<ManageAccounts/>} /> 
         <Route path="/ManageYourAccount" element={<ManageYourAccount/>} /> 
+        <Route path="/Manageclientcards" element={<Manageclientcards/>} /> 
+        <Route path="/ManageSavingsAccount" element={<ManageSavingsAccount/>} /> 
+        <Route path="/ManageYourSavings" element={<ManageYourSavings/>} /> 
+        <Route path="/AccessPermissions" element={<AccessPermissions/>} /> 
+
+        
+
+
+
+
 
 
         

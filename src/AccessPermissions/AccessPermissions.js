@@ -3,31 +3,20 @@ import axios from 'axios';
 import Sidebar from '../admin/Dashboard/Sidebar';
 import { useNavigate } from 'react-router-dom';
 
-export const ManageYourAccount = () => {
-    const [userId, setUserId] = useState('');
+export const AccessPermissions = () => {
     const [mess, setMess] = useState([]);
     const [numMess, setNumMess] = useState(0); 
 
     useEffect(() => {
         getMess();
-        axios.get('http://localhost:8080')
-        .then(res => {
-          if (res.data.valid) {
-            setUserId(res.data.uId); 
-          } else {
-            navigate('/login');
-          }
-        })
-        .catch(err => console.log(err))
     }, []);
 
     const navigate = useNavigate();
 
     const getMess = () => {
-        axios.post(`http://localhost:8080/getAccountById`)
+        axios.post('http://localhost:8080/getAccessPermissions')
             .then(res => {
                 const fetchedMess = res.data;
-                console.log(fetchedMess);
                 setMess(fetchedMess);
                 setNumMess(fetchedMess.length); 
             })
@@ -35,7 +24,7 @@ export const ManageYourAccount = () => {
     };
 
     const handleDelete = (id) => {
-        axios.delete(`http://localhost:8080/deleteAccounts/${id}`)
+        axios.delete(`http://localhost:8080/deleteAccessPermissions/${id}`)
             .then(res => {
                 getMess();
             })
@@ -48,27 +37,25 @@ export const ManageYourAccount = () => {
                 <Sidebar />
 
                 <div className="container-fluid " style={{  marginTop: '100px' }} >
-                    <h1 className=''>MANAGE  your CurrentAccounts</h1>
+                    <h1 className=''>MANAGE AccessPermissions</h1>
                     <div className="row">
                         <caption>List of Messages</caption>
                         <div className="col-md-12 d-flex justify-content-center align-items-center">
                             <table className="table table-hover table-bordered table-striped dataTable no-footer" style={{ width: '100%' }}>
                                 <thead>
                                     <tr>
-                                        <th scope="col">AccountID</th>
+                                        <th scope="col">PermissionID</th>
                                         <th scope="col">UserId</th>
-                                        <th scope="col">CurrentAccount</th>
-                                        <th scope="col">Balance</th> 
+                                        <th scope="col">AccessLevel</th>
                                         <th scope="col">Action</th> 
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {Array.isArray(mess) && mess.map((item, index) => (
-                                        <tr key={item.AccountID}>
-                                            <th scope="row">{item.AccountID}</th> 
+                                        <tr key={item.PermissionID}>
+                                            <th scope="row">{item.PermissionID}</th> 
                                             <td>{item.UserID}</td>
-                                            <td>{item.CurrentAccount}</td>
-                                            <td>{parseFloat(item.Balance).toFixed(3)}</td> 
+                                            <td>{item.AccessLevel}</td>
                                             <td>
                                                 <button onClick={() => handleDelete(item.AccountID)} className="btn btn-danger">Delete</button>
                                             </td>
@@ -85,4 +72,4 @@ export const ManageYourAccount = () => {
     )
 }
 
-export default ManageYourAccount;
+export default AccessPermissions;

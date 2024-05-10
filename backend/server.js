@@ -122,7 +122,7 @@ app.post('/login', (req, res) => {
 
 
 function generateRandomAccountNumber() {
-    const prefix = '11102343'; 
+    const prefix = '11103333'; 
     const randomSuffix = Math.floor(10000000 + Math.random() * 90000000); 
     return parseInt(prefix + randomSuffix); 
 }
@@ -132,12 +132,15 @@ app.post('/addClient', async (req, res) => {
         const hashedPassword = await bcrypt.hash(client.password, 10);
 
         let currentAccount;
+        let flexSaveAccount;
         let accountExists = true;
 
         while (accountExists) {
             currentAccount = generateRandomAccountNumber();
             accountExists = await checkAccountExists(currentAccount);
         }
+
+        flexSaveAccount = generateFlexSaveAccountNumber();
 
         const addClient = await new Promise((resolve, reject) => {
             db.query(`INSERT INTO users (username, name, lastname, email, password, gender, birthday) VALUES (?, ?, ?, ?, ?, ?, ?)`, 
@@ -151,9 +154,11 @@ app.post('/addClient', async (req, res) => {
                 });
         });
 
+        const userId = addClient.insertId;
+
         const addAddress = await new Promise((resolve, reject) => {
             db.query(`INSERT INTO adresa (userId, Country, City, Street) VALUES (?, ?, ?, ?)`, 
-                [addClient.insertId, client.Country, client.City, client.Street], 
+                [userId, client.Country, client.City, client.Street], 
                 (error, results) => {
                     if (error) {
                         reject(error);
@@ -165,7 +170,7 @@ app.post('/addClient', async (req, res) => {
         
         const addRole = await new Promise((resolve, reject) => {
             db.query(`INSERT INTO accesspermissions (UserID, AccessLevel) VALUES (?, ?)`, 
-                [addClient.insertId, 'User'], 
+                [userId, 'User'], 
                 (error, results) => {
                     if (error) {
                         reject(error);
@@ -175,10 +180,18 @@ app.post('/addClient', async (req, res) => {
                 });
         });
 
-
-        const addAccounts = await new Promise((resolve, reject) => {
-            const userId = addClient.insertId; 
+        await new Promise((resolve, reject) => {
             db.query(`INSERT INTO accounts (UserID, CurrentAccount, Balance) VALUES (?, ?, ?)`, [userId, currentAccount, 0], (error, results) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(results);
+                }
+            });
+        });
+
+        const addSavingsAccount = await new Promise((resolve, reject) => {
+            db.query(`INSERT INTO savingsaccount (UserID, FlexSaveAccount, Balance) VALUES (?, ?, ?)`, [userId, flexSaveAccount, 0], (error, results) => {
                 if (error) {
                     reject(error);
                 } else {
@@ -194,6 +207,12 @@ app.post('/addClient', async (req, res) => {
         return res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+function generateFlexSaveAccountNumber() {
+    const prefix = '11102222'; 
+    const randomSuffix = Math.floor(10000000 + Math.random() * 90000000); 
+    return parseInt(prefix + randomSuffix); 
+}
 
 async function checkAccountExists(accountNumber) {
     return new Promise((resolve, reject) => {
@@ -385,6 +404,23 @@ app.post('/getCards', (req, res) => {
     });
 });
 
+
+app.post('/getCardsclients', (req, res) => {
+    const sql = "SELECT * FROM Cards ";
+
+
+    db.query(sql, (err, data) => {
+        if (err) {
+            return res.json("Error");
+        }
+        if (data.length > 0) {
+            return res.json(data);
+        } else {
+            return res.json("faile");
+        }
+    })
+})
+
 app.post('/getContactUs', (req, res) => {
     const sql = "SELECT * FROM ContactUs ";
 
@@ -400,6 +436,60 @@ app.post('/getContactUs', (req, res) => {
         }
     })
 })
+
+app.post('/getAccessPermissions', (req, res) => {
+    const sql = "SELECT * FROM AccessPermissions ";
+
+
+    db.query(sql, (err, data) => {
+        if (err) {
+            return res.json("Error");
+        }
+        if (data.length > 0) {
+            return res.json(data);
+        } else {
+            return res.json("faile");
+        }
+    })
+})
+
+
+
+// app.post('/getAccountById/:id', (req, res) => {
+    
+//     const userId = req.params.id;
+//     const sql = `SELECT * FROM Accounts WHERE UserID = ${userId}`;
+
+
+//     db.query(sql, (err, data) => {
+//         if (err) {
+//             return res.json("Error");
+//         }
+//         if (data.length > 0) {
+//             return res.json(data);
+//         } else {
+//             return res.json("faile");
+//         }
+//     })
+// })
+
+app.post('/getSavings', (req, res) => {
+    const sql = "SELECT * FROM savingsaccount ";
+
+
+    db.query(sql, (err, data) => {
+        if (err) {
+            return res.json("Error");
+        }
+        if (data.length > 0) {
+            return res.json(data);
+        } else {
+            return res.json("faile");
+        }
+    })
+})
+
+
 app.post('/getAccounts', (req, res) => {
     const sql = "SELECT * FROM Accounts ";
 
@@ -415,23 +505,40 @@ app.post('/getAccounts', (req, res) => {
         }
     })
 })
-app.post('/getAccountById/:id', (req, res) => {
-    
-    const userId = req.params.id;
-    const sql = `SELECT * FROM Accounts WHERE UserID = ${userId}`;
 
+app.post('/getAccountById', (req, res) => {
+    const userID = req.session.uId; 
 
-    db.query(sql, (err, data) => {
+    const sql = "SELECT * FROM Accounts WHERE UserID = ?"; 
+
+    db.query(sql, [userID], (err, data) => {
         if (err) {
             return res.json("Error");
         }
         if (data.length > 0) {
             return res.json(data);
         } else {
-            return res.json("faile");
+            return res.json("fail");
         }
-    })
-})
+    });
+});
+
+app.post('/getSavingsById', (req, res) => {
+    const userID = req.session.uId; 
+
+    const sql = "SELECT * FROM savingsaccount WHERE UserID = ?"; 
+
+    db.query(sql, [userID], (err, data) => {
+        if (err) {
+            return res.json("Error");
+        }
+        if (data.length > 0) {
+            return res.json(data);
+        } else {
+            return res.json("fail");
+        }
+    });
+});
 
 
 
@@ -476,6 +583,21 @@ app.delete("/deleteAccounts/:id", (req, res) => {
         return res.status(200).json({ message: "Message deleted successfully" });
     });
 });
+
+app.delete("/deleteSavings/:id", (req, res) => {
+    const AccountID = req.params.id;
+    const sqlDelete = "DELETE FROM savingsaccount WHERE SavingsID = ?";
+  
+    db.query(sqlDelete, AccountID, (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+
+        return res.status(200).json({ message: "Message deleted successfully" });
+    });
+});
+
 
 
 

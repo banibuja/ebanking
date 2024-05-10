@@ -37,7 +37,7 @@ export const ManageAccounts = () => {
                 <Sidebar />
 
                 <div className="container-fluid " style={{  marginTop: '100px' }} >
-                    <h1 className=''>MANAGE Accounts</h1>
+                    <h1 className=''>MANAGE CurrentAccounts</h1>
                     <div className="row">
                         <caption>List of Messages</caption>
                         <div className="col-md-12 d-flex justify-content-center align-items-center">
@@ -57,7 +57,7 @@ export const ManageAccounts = () => {
                                             <th scope="row">{item.AccountID}</th> 
                                             <td>{item.UserID}</td>
                                             <td>{item.CurrentAccount}</td>
-                                            <td>{parseFloat(item.Balance).toFixed(2)}</td> 
+                                            <td>{parseFloat(item.Balance).toFixed(3)}</td> 
                                             <td>
                                                 <button onClick={() => handleDelete(item.AccountID)} className="btn btn-danger">Delete</button>
                                             </td>

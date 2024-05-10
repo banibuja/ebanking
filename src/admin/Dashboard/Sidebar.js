@@ -111,41 +111,73 @@ export default function Sidebar() {
                                 <>
               <li>
                 <a href="/ContactUs" className="nav-link link-dark" onClick={handleManageClick}>
-                  <i className="bi me-2 fas fa-user fa-1x text-gray-300"></i>
+                  <i className="bi me-2 fas fa-envelope  fa-1x text-gray-300"></i>
                   ContactUs
+                </a>
+              </li>
+              <li>
+                <a href="/AccessPermissions" className="nav-link link-dark" onClick={handleManageClick}>
+                  <i className="bi me-2 fas fa-users  fa-1x text-gray-300"></i>
+                  AccessPermissions
+                </a>
+              </li>
+              <li>
+                <a href="/manageaccounts" className="nav-link link-dark" onClick={handleManageClick}>
+                  <i className="bi me-2 fas fa-users fa-1x text-gray-300"></i>
+                  Client CurrentAccounts
+                </a>
+              </li>
+              <li>
+                <a href="/managesavingsaccount" className="nav-link link-dark" onClick={handleManageClick}>
+                  <i className="bi me-2 fas fa-users fa-1x text-gray-300"></i>
+                  Client SavingsAccounts
+                </a>
+              </li>
+              <li>
+                <a href="/Manageclientcards" className="nav-link link-dark" onClick={handleManageClick}>
+                  <i className="bi me-2 fas fa-users fa-1x text-gray-300"></i>
+                  Client Cards
                 </a>
               </li>
               </>
               )}
-          {role === 'User' && (
-            <>
+          {/* {role === 'User' && (
+            <> */}
               <li>
                 <Dropdown>
                   <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
                   <FaCreditCard className="me-2 text-gray-300 bg-light" size={20} />
-                    Cards
+                    Manage your Cards
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
-                  {role !== 'User' && (
-                    <> 
+                  {/* {role !== 'User' && (
+                    <>  */}
                       <Dropdown.Item href="/CardsForm" onClick={handleManageClick}>Add Cards</Dropdown.Item>
-                    </>
-                  )}  
+                    {/* </>
+                  )}   */}
                     <Dropdown.Item href="/managecards" onClick={handleManageClick}>Manage Cards</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
                 </li>
-                  </>
-              )}    
+                  {/* </>
+              )}     */}
+
+                      <li>
+                <a href="/manageyoursavings" className="nav-link link-dark" onClick={handleManageClick}>
+                  <i className="bi me-2 fas fa-users fa-1x text-gray-300"></i>
+                  Manage your SavingsAcc
+                </a>
+              </li>
               
               <li>
+
 
                 <Dropdown>
                   <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
                   <FaCreditCard className="me-2 text-gray-300 bg-light" size={20} />
-                    Accounts
+                    Manage your CurrentAccount
                   </Dropdown.Toggle>
-              {role !== 'User' && (
+              {role === 'admin' && (
                     <>          
                   <Dropdown.Menu>
                     <Dropdown.Item href="/manageaccounts" onClick={handleManageClick}>Manage Accounts</Dropdown.Item>
@@ -155,10 +187,13 @@ export default function Sidebar() {
                   )}  
 
                   <Dropdown.Menu>
-                    <Dropdown.Item href="/manageyouraccount" onClick={handleManageClick}>Manage your Account</Dropdown.Item>
+                    <Dropdown.Item href="/manageyouraccount" onClick={handleManageClick}>Manage your Current Account</Dropdown.Item>
                   </Dropdown.Menu>
-                </Dropdown>
-              </li>
+                  
+                </Dropdown> 
+               </li>
+
+
           
           
           <li>
