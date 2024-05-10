@@ -20,6 +20,7 @@ import Sidebar from './admin/Dashboard/Sidebar';
 import CardsForm from './Cards/CardsForm';
 import ManageCards from './Cards/ManageCards';
 import ManageAccounts from './Accounts/ManageAccounts';
+import ManageYourAccount from './Accounts/ManageYourAccount';
 
 
 
@@ -46,7 +47,8 @@ function App() {
         <Route path="/Sidebar" element={<Sidebar/>} />
         <Route path="/CardsForm" element={<CardsForm/>} />
         <Route path="/ManageCards" element={<ManageCards/>} />
-        <Route path="/ManageAccounts" element={<ManageAccounts/>} />
+        <Route path="/ManageAccounts" element={<ManageAccounts/>} /> 
+        <Route path="/ManageYourAccount" element={<ManageYourAccount/>} /> 
 
 
         

@@ -16,6 +16,7 @@ export default function Sidebar() {
       .then(res => {
         if (res.data.valid) {
           setRole(res.data.role); 
+
         } else {
           navigate('/login');
         }
@@ -106,14 +107,18 @@ export default function Sidebar() {
             </>
           )}
         
-          {role !== 'User' && (
-            <>
+                              {role !== 'User' && (
+                                <>
               <li>
                 <a href="/ContactUs" className="nav-link link-dark" onClick={handleManageClick}>
                   <i className="bi me-2 fas fa-user fa-1x text-gray-300"></i>
                   ContactUs
                 </a>
               </li>
+              </>
+              )}
+          {role === 'User' && (
+            <>
               <li>
                 <Dropdown>
                   <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
@@ -121,24 +126,40 @@ export default function Sidebar() {
                     Cards
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
-                    <Dropdown.Item href="/CardsForm" onClick={handleManageClick}>Add Cards</Dropdown.Item>
+                  {role !== 'User' && (
+                    <> 
+                      <Dropdown.Item href="/CardsForm" onClick={handleManageClick}>Add Cards</Dropdown.Item>
+                    </>
+                  )}  
                     <Dropdown.Item href="/managecards" onClick={handleManageClick}>Manage Cards</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
-                <li>
+                </li>
+                  </>
+              )}    
+              
+              <li>
+
                 <Dropdown>
                   <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
                   <FaCreditCard className="me-2 text-gray-300 bg-light" size={20} />
                     Accounts
                   </Dropdown.Toggle>
+              {role !== 'User' && (
+                    <>          
                   <Dropdown.Menu>
-                    <Dropdown.Item href="/manageaccounts" onClick={handleManageClick}>Manage Account</Dropdown.Item>
+                    <Dropdown.Item href="/manageaccounts" onClick={handleManageClick}>Manage Accounts</Dropdown.Item>
+                  </Dropdown.Menu>
+                  
+                  </>
+                  )}  
+
+                  <Dropdown.Menu>
+                    <Dropdown.Item href="/manageyouraccount" onClick={handleManageClick}>Manage your Account</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
               </li>
-              </li>
-            </>
-          )}
+          
           
           <li>
           <Dropdown>

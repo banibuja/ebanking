@@ -3,20 +3,31 @@ import axios from 'axios';
 import Sidebar from '../admin/Dashboard/Sidebar';
 import { useNavigate } from 'react-router-dom';
 
-export const ManageAccounts = () => {
+export const ManageYourAccount = () => {
+    const [userId, setUserId] = useState('');
     const [mess, setMess] = useState([]);
     const [numMess, setNumMess] = useState(0); 
 
     useEffect(() => {
         getMess();
+        axios.get('http://localhost:8080')
+        .then(res => {
+          if (res.data.valid) {
+            setUserId(res.data.uId); 
+          } else {
+            navigate('/login');
+          }
+        })
+        .catch(err => console.log(err))
     }, []);
 
     const navigate = useNavigate();
 
     const getMess = () => {
-        axios.post('http://localhost:8080/getAccounts')
+        axios.post(`http://localhost:8080/getAccountById/${userId}`)
             .then(res => {
                 const fetchedMess = res.data;
+                console.log(fetchedMess);
                 setMess(fetchedMess);
                 setNumMess(fetchedMess.length); 
             })
@@ -74,4 +85,4 @@ export const ManageAccounts = () => {
     )
 }
 
-export default ManageAccounts;
+export default ManageYourAccount;

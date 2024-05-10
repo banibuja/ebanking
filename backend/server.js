@@ -71,6 +71,7 @@ db.on('error', (err) => {
 
 app.get('/',  (req, res) => {
     if(req.session.username){
+        // console.log(req.session);
         return res.json({ valid: true, uId: req.session.uId, username: req.session.username, role: req.session.role })
     } else {
         return res.json({ valid: false, sessionExpired: req.session.expired }); 
@@ -79,7 +80,7 @@ app.get('/',  (req, res) => {
 app.get('/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) {
-            console.log(err);
+            // console.log(err);
             res.json({ success: false });
         } else {
             res.clearCookie('connect.sid'); 
@@ -96,20 +97,19 @@ app.post('/login', (req, res) => {
         
         if(result.length > 0){
             const comparison = true 
-            console.log(comparison);
+            // console.log(comparison);
             if(comparison){
 
                 db.query(`SELECT AccessLevel FROM accesspermissions WHERE UserID = ${result[0].userId}`, (error, results) => {
                     if (error) throw error;
                     req.session.role = results[0].AccessLevel; 
+                    req.session.uId = result[0].userId;
+                    req.session.username = result[0].username;
+                    req.session.name = result[0].name; 
+                    req.session.lastname = result[0].lastname; 
+                    req.session.maxAge = + expireDate;
+                    return res.json({Login: true})
                 });
-                req.session.uId = result[0].userId;
-                req.session.username = result[0].username;
-                req.session.name = result[0].name; 
-                req.session.lastname = result[0].lastname; 
-                req.session.maxAge = + expireDate;
-                console.log(req.session.username);
-                return res.json({Login: true})
             } else {
                 return res.json({Login: false});
             }
@@ -233,7 +233,7 @@ app.post('/getUsers', async (req, res) => {
         });
 
         users = await Promise.all(userPromises);
-        console.log(users);
+        // console.log(users);
     } catch (error) {
         console.error(error);
     }
@@ -402,6 +402,23 @@ app.post('/getContactUs', (req, res) => {
 })
 app.post('/getAccounts', (req, res) => {
     const sql = "SELECT * FROM Accounts ";
+
+
+    db.query(sql, (err, data) => {
+        if (err) {
+            return res.json("Error");
+        }
+        if (data.length > 0) {
+            return res.json(data);
+        } else {
+            return res.json("faile");
+        }
+    })
+})
+app.post('/getAccountById/:id', (req, res) => {
+    
+    const userId = req.params.id;
+    const sql = `SELECT * FROM Accounts WHERE UserID = ${userId}`;
 
 
     db.query(sql, (err, data) => {
