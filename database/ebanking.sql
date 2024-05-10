@@ -70,13 +70,16 @@ CREATE TABLE Reports (
     GenerationDate DATE NOT NULL,
     Description TEXT
 );
-CREATE TABLE SavingsAccounts (
-    SavingsAccountID int primary key AUTO_INCREMENT,
-    AccountID INT NOT NULL,
-    SavingsType VARCHAR(100) NOT NULL,
-    Balance DECIMAL(18, 2) NOT NULL,
-    CONSTRAINT FK_Account_SavingsAccount FOREIGN KEY (AccountID) REFERENCES Accounts(AccountID) ON DELETE CASCADE
+CREATE TABLE `savingsaccount` (
+    `SavingsID` int(11) NOT NULL AUTO_INCREMENT,
+    `UserID` int(11) NOT NULL,
+    `FlexSaveAccount` varchar(50) NOT NULL,
+    `Balance` decimal(18, 5) NOT NULL,
+    PRIMARY KEY (`SavingsID`),
+    KEY `FK_User_Savings` (`UserID`),
+    CONSTRAINT `FK_User_Savings` FOREIGN KEY (`UserID`) REFERENCES `users` (`userId`) ON DELETE CASCADE
 );
+
 CREATE TABLE Loans (
     LoanID int primary key AUTO_INCREMENT,
     AccountID INT NOT NULL,
