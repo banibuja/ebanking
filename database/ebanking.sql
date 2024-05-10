@@ -25,10 +25,12 @@ create table Adresa(
 CREATE TABLE Accounts (
     AccountID int primary key AUTO_INCREMENT ,
     UserID INT NOT NULL,
-    AccountType VARCHAR(50) NOT NULL,
+    CurrentAccount VARCHAR(50) NOT NULL,
     Balance DECIMAL(18, 5) NOT NULL,
     CONSTRAINT FK_User_Account FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
 );
+
+
 CREATE TABLE Transactions (
     TransactionID INT PRIMARY KEY AUTO_INCREMENT,
     SenderAccID INT NOT NULL,
