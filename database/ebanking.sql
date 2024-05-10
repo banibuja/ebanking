@@ -107,14 +107,20 @@ CREATE TABLE Notifications (
     CreatedDate DATETIME NOT NULL,
     CONSTRAINT FK_User_Notification FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
 );
-CREATE TABLE TransactionAuthorizations (
-    AuthorizationID int primary key AUTO_INCREMENT,
-    TransactionID INT NOT NULL,
-    UserID INT NOT NULL,
-    AuthorizationStatus VARCHAR(50) NOT NULL,
-    AuthorizationDate DATETIME,
-    CONSTRAINT FK_Transaction_Authorization FOREIGN KEY (TransactionID) REFERENCES Transactions(TransactionID)  ON DELETE CASCADE,
-    CONSTRAINT FK_User_Authorization FOREIGN KEY (UserID) REFERENCES Users(UserID)  ON DELETE CASCADE
+CREATE TABLE Transactions (
+    TransactionID INT PRIMARY KEY AUTO_INCREMENT,
+    SenderAccID INT NOT NULL,
+    ReceiverAccID INT NOT NULL,
+    TransactionType VARCHAR(50) NOT NULL,
+    TransactionAmount DECIMAL(18, 5) NOT NULL,
+    Currency VARCHAR(10) NOT NULL,
+    TransactionDate DATETIME NOT NULL,
+    Statusi VARCHAR(20) NOT NULL,
+    AdditionalInfo TEXT,
+    TransactionFee DECIMAL(18, 5),
+    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT FK_Sender_Account FOREIGN KEY (SenderAccID) REFERENCES Accounts(AccountID) ON DELETE CASCADE,
+    CONSTRAINT FK_Receiver_Account FOREIGN KEY (ReceiverAccID) REFERENCES Accounts(AccountID) ON DELETE CASCADE
 );
 CREATE TABLE Payments (
     PaymentID int primary key AUTO_INCREMENT,
