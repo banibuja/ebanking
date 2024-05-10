@@ -162,7 +162,7 @@ export default function Sidebar() {
             </a>
           </li>
           <li>
-            <a href="/" className="nav-link link-dark" onClick={handleManageClick}>
+            <a href="/Transaction" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
               Transactions
             </a>
