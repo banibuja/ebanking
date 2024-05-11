@@ -88,6 +88,8 @@ app.get('/logout', (req, res) => {
         }
     });
 });
+
+//Login Form
 app.post('/login', (req, res) => {
     const sql = "SELECT * FROM users WHERE username = ?";
     const date = new Date();
@@ -120,12 +122,15 @@ app.post('/login', (req, res) => {
     })
 })
 
-
 function generateRandomAccountNumber() {
     const prefix = '11103333'; 
     const randomSuffix = Math.floor(10000000 + Math.random() * 90000000); 
     return parseInt(prefix + randomSuffix); 
 }
+
+
+//Users
+//AddClient
 app.post('/addClient', async (req, res) => {
     try {
         const client = req.body;
@@ -226,6 +231,8 @@ async function checkAccountExists(accountNumber) {
     });
 }
 
+
+//Users
 app.post('/getUsers', async (req, res) => {
     var users;
     try {
@@ -274,8 +281,6 @@ app.delete("/deleteUsers/:id", (req, res) => {
 });
 
 
-
-
 app.put('/updateUsers/:id', (req, res) => {
     const userId = req.params.id;
     const { name, lastname, email, account, password, dateb, gender, phonenumber } = req.body;
@@ -293,6 +298,8 @@ app.put('/updateUsers/:id', (req, res) => {
 
 
 
+
+//Cards
 
 app.post('/addCard', async (req, res) => {
     try {
@@ -356,37 +363,6 @@ app.get('/getCardDetails', async (req, res) => {
     }
 });
 
-
-
-app.post('/contactUs', (req, res) => {
-    if (!req.session.username) {
-        return res.status(401).json({ error: "Unauthorized" });
-    }
-
-    const userId = req.session.uId;
-    const clientFirstName = req.session.name;
-    const clientLastName = req.session.lastname;
-    const contactDate = new Date().toISOString(); 
-
-    const sql = "INSERT INTO ContactUs (`UserID`, `ClientFirstName`, `ClientLastName`, `Subject`, `Message`, `ContactDate`) VALUES (?, ?, ?, ?, ?, ?)";
-    const values = [
-        userId,
-        clientFirstName,
-        clientLastName,
-        req.body.Subject,
-        req.body.Message,
-        contactDate, 
-    ];
-
-    db.query(sql, values, (err, data) => {
-        if (err) {
-            return res.json("Error");
-        }
-        return res.json(data);
-    });
-});
-
-
 app.post('/getCards', (req, res) => {
     const userID = req.session.uId; 
 
@@ -421,6 +397,53 @@ app.post('/getCardsclients', (req, res) => {
     })
 })
 
+app.delete("/deleteCard/:id", (req, res) => {
+    const contactId = req.params.id;
+    const sqlDelete = "DELETE FROM Cards WHERE CardID = ?";
+  
+    db.query(sqlDelete, contactId, (err, result) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+
+        return res.status(200).json({ message: "Message deleted successfully" });
+    });
+});
+
+
+//ContactUs
+app.post('/contactUs', (req, res) => {
+    if (!req.session.username) {
+        return res.status(401).json({ error: "Unauthorized" });
+    }
+
+    const userId = req.session.uId;
+    const clientFirstName = req.session.name;
+    const clientLastName = req.session.lastname;
+    const contactDate = new Date().toISOString(); 
+
+    const sql = "INSERT INTO ContactUs (`UserID`, `ClientFirstName`, `ClientLastName`, `Subject`, `Message`, `ContactDate`) VALUES (?, ?, ?, ?, ?, ?)";
+    const values = [
+        userId,
+        clientFirstName,
+        clientLastName,
+        req.body.Subject,
+        req.body.Message,
+        contactDate, 
+    ];
+
+    db.query(sql, values, (err, data) => {
+        if (err) {
+            return res.json("Error");
+        }
+        return res.json(data);
+    });
+});
+
+
+
+
 app.post('/getContactUs', (req, res) => {
     const sql = "SELECT * FROM ContactUs ";
 
@@ -438,7 +461,23 @@ app.post('/getContactUs', (req, res) => {
 })
 
 app.post('/getAccessPermissions', (req, res) => {
-    const sql = "SELECT * FROM AccessPermissions ";
+    const sql = "SELECT * FROM AccessPermissions";
+
+
+    db.query(sql, (err, data) => {
+        if (err) {
+            return res.json("Error");
+        }
+        if (data.length > 0) {
+            return res.json(data);
+        } else {
+            return res.json("faile");
+        }
+    })
+})
+
+app.post('/getCurrencies', (req, res) => {
+    const sql = "SELECT * FROM currencies";
 
 
     db.query(sql, (err, data) => {
@@ -455,23 +494,7 @@ app.post('/getAccessPermissions', (req, res) => {
 
 
 
-// app.post('/getAccountById/:id', (req, res) => {
-    
-//     const userId = req.params.id;
-//     const sql = `SELECT * FROM Accounts WHERE UserID = ${userId}`;
 
-
-//     db.query(sql, (err, data) => {
-//         if (err) {
-//             return res.json("Error");
-//         }
-//         if (data.length > 0) {
-//             return res.json(data);
-//         } else {
-//             return res.json("faile");
-//         }
-//     })
-// })
 
 app.post('/getSavings', (req, res) => {
     const sql = "SELECT * FROM savingsaccount ";
@@ -542,19 +565,7 @@ app.post('/getSavingsById', (req, res) => {
 
 
 
-app.delete("/deleteCard/:id", (req, res) => {
-    const contactId = req.params.id;
-    const sqlDelete = "DELETE FROM Cards WHERE CardID = ?";
-  
-    db.query(sqlDelete, contactId, (err, result) => {
-        if (err) {
-            console.log(err);
-            return res.status(500).json({ error: "Internal server error" });
-        }
 
-        return res.status(200).json({ message: "Message deleted successfully" });
-    });
-});
 
 
 app.delete("/deleteContacts/:id", (req, res) => {
@@ -599,140 +610,6 @@ app.delete("/deleteSavings/:id", (req, res) => {
 });
 
 
-
-
-
-
-app.post('/addStaff', async (req, res) => {
-    const banknumber = "2223" + Math.floor(1000 + Math.random() * 9000);
-    const accountNumber = '';
-    try {
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
-        const sql = "INSERT INTO users (`name`, `lastname`, `banknumber`, `account`, `email`, `password`, `dateb`, `gender`, `phonenumber`, `role`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'staff')";
-        const values = [
-            req.body.name,
-            req.body.lastname,
-            banknumber,
-            accountNumber,
-            req.body.email,
-            hashedPassword, 
-            req.body.dateb,
-            req.body.gender,
-            req.body.phonenumber,
-            req.body.role
-        ];
-
-        db.query(sql, values, (err, result) => {
-            if (err) {
-                console.error('Error inserting user:', err);
-                return res.status(500).json({ error: 'Internal Server Error' });
-            }
-            return res.json(result);
-        });
-    } catch (error) {
-        console.error('Error hashing password:', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
-app.get('/getStaff/:id', (req, res) => {
-    const staffId = req.params.id;
-    const sql = "SELECT * FROM users WHERE id = ? AND role = 'staff'";
-
-    db.query(sql, [staffId], (err, data) => {
-        if (err) {
-            console.log(err);
-            return res.status(500).json({ error: "Internal server error" });
-        }
-        if (data.length > 0) {
-            return res.json(data[0]); 
-        } else {
-            return res.status(404).json({ error: "User not found or is not a staff member" });
-        }
-    });
-});
-app.post('/getStaff', (req, res) => {
-    const sql = "SELECT * FROM users WHERE role = 'staff'";
-
-
-    db.query(sql, (err, data) => {
-        if (err) {
-            return res.json("Error");
-        }
-        if (data.length > 0) {
-            return res.json(data);
-        } else {
-            return res.json("faile");
-        }
-    })
-})
-
-app.post('/getAcc', (req, res) => {
-    const sql = "SELECT * FROM accountcategories";
-
-
-    db.query(sql, (err, data) => {
-        if (err) {
-            return res.json("Error");
-        }
-        if (data.length > 0) {
-            return res.json(data);
-        } else {
-            return res.json("faile");
-        }
-    })
-})
-app.put('/updateAcc/:id', (req, res) => {
-    const accId = req.params.id;
-    const { name,  ratings } = req.body;
-    const sqlUpdate =  "UPDATE accountcategories SET name=?,  ratings=? WHERE id=?"
-
-    db.query(sqlUpdate, [name,  ratings, accId], (err, result) => {
-        if (err) {
-            console.log(err);
-            return res.status(500).json({ error: "Internal server error" });
-        }
-
-        return res.status(200).json({ message: "User updated successfully" });
-    });
-});
-app.delete("/deleteAcc/:id", (req, res) => {
-    const id = req.params.id;
-    const sqlDelete = "DELETE FROM accountcategories WHERE id = ?";
-  
-    db.query(sqlDelete, id, (err, result) => {
-        if (err) {
-            console.log(err);
-            return res.status(500).json({ error: "Internal server error" });
-        }
-
-        return res.status(200).json({ message: "User deleted successfully" });
-    });
-});
-
-
-
-app.post('/accountsacc', (req, res) => {
-    const randomCode = Math.random().toString(36).substring(2, 6).toUpperCase();
-    
-    const code = "ACC-CAT-" + randomCode;
-
-    const sql = "INSERT INTO accountcategories (`name`, `ratings`, `code`, `description`)  VALUES (?, ?, ?, ?)";
-    const values = [
-        req.body.name,
-        req.body.ratings,
-        code,
-        req.body.description
-    ];
-
-    db.query(sql, values, (err, data) => {
-        if (err) {
-            console.error(err);
-            return res.json("Error");
-        }
-        return res.json(data);
-    });
-});
 app.get('/getUsers/:id', (req, res) => {
     const staffId = req.params.id;
     const sql = "SELECT * FROM users WHERE id = ? AND role = 'user'";
@@ -749,27 +626,27 @@ app.get('/getUsers/:id', (req, res) => {
         }
     });
 });
-app.get('/getUserData/:role/:id', (req, res) => {
-    const userRole = req.params.role;
-    const userId = req.params.id;
-    var tableName = '';
-    if (userRole == "user") tableName = `users`
-    else if (userRole == "staff") tableName = 'staffi';
-    else tableName = 'admin';
-    const sql = `SELECT * FROM ${tableName} WHERE id = ?`;
+// app.get('/getUserData/:role/:id', (req, res) => {
+//     const userRole = req.params.role;
+//     const userId = req.params.id;
+//     var tableName = '';
+//     if (userRole == "user") tableName = `users`
+//     else if (userRole == "staff") tableName = 'staffi';
+//     else tableName = 'admin';
+//     const sql = `SELECT * FROM ${tableName} WHERE id = ?`;
 
-    db.query(sql, [userId], (err, data) => {
-        if (err) {
-            console.log(err);
-            return res.status(500).json({ error: "Internal server error" });
-        }
-        if (data.length > 0) {
-            return res.json(data[0]); 
-        } else {
-            return res.status(404).json({ error: "User not found" });
-        }
-    });
-});
+//     db.query(sql, [userId], (err, data) => {
+//         if (err) {
+//             console.log(err);
+//             return res.status(500).json({ error: "Internal server error" });
+//         }
+//         if (data.length > 0) {
+//             return res.json(data[0]); 
+//         } else {
+//             return res.status(404).json({ error: "User not found" });
+//         }
+//     });
+// });
 
 app.get('/check-email', async (req, res) => {
     const { email } = req.query;
