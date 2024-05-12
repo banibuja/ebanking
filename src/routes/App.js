@@ -6,7 +6,7 @@ import Transaction from '../components/Dashboard/Transaction/Transaction';
 import Login from '../components/LoginSignup/Login'
 import Signup from '../components/LoginSignup/Signup'
 import AddClient from '../components/Dashboard/Client/AddClient';
-import ContactUs from '../components/Dashboard/ContactUs/ContactUs'
+// import ContactUs from '../components/Dashboard/ContactUs/ContactUs'
 import EditClient from '../components/Dashboard/Client/EditClient';
 import ContactForm from '../components/Dashboard/ContactUs/ContactForm';
 import Home from '../components/Home/Home';
@@ -21,6 +21,7 @@ import AccessPermissions from '../components/Dashboard/AccessPermissions/AccessP
 import ManageSavingsAccount from '../components/Dashboard/Accounts/ManageSavingsAccount';
 // import ManageYourSavings from '../components/Dashboard/Accounts/ManageYourSavings';
 import Currencies from '../components/Dashboard/Currencies/Currencies';
+// import Contact from '../components/Dashboard/ContactUs/Contact';
 
 
 
@@ -38,7 +39,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/client" element={<Client />} />
         <Route path="/addclient" element={<AddClient />} />
-        <Route path="/ContactUs" element={<ContactUs />} />
+        {/* <Route path="/ContactUs" element={<ContactUs />} /> */}
         <Route path="/editclient" element={<EditClient />} />
         <Route path="/ContactForm" element={<ContactForm />} />
         <Route path="/Profile" element={<Profile />} />
@@ -53,6 +54,10 @@ function App() {
         {/* <Route path="/ManageYourSavings" element={<ManageYourSavings/>} />  */}
         <Route path="/AccessPermissions" element={<AccessPermissions/>} /> 
         <Route path="/currencies" element={<Currencies/>} /> 
+        {/* <Route path="/Contact" element={<Contact/>} />  */}
+
+
+
 
 
 

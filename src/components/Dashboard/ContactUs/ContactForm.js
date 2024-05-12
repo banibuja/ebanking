@@ -1,21 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import Validation from '../../LoginSignup/SignupValidation';
+import React, { useRef, useEffect, useState } from "react";
+import emailjs from "@emailjs/browser";
 import axios from 'axios';
- import footerImg from '../../../imgs/black&white-logo.png';
+import { useNavigate } from 'react-router-dom';
+import footerImg from '../../../imgs/black&white-logo.png';
 import Navbar from '../../Layout/Navbar';
 
-function ContactForm() {
-    const [values, setValues] = useState({
-        Subject: '',
-        Message: '',
-    });
-    const [errors, setErrors] = useState({});
+const Contact = () => {
+    const form = useRef();
     const [isSubmitted, setIsSubmitted] = useState(false); 
     const navigate = useNavigate();
-    axios.defaults.withCredentials = true;
 
     useEffect(() => {
+        axios.defaults.withCredentials = true;
         axios.get('http://localhost:8080/')
             .then(res => {
                 if (!res.data.valid) {
@@ -24,24 +20,28 @@ function ContactForm() {
                 }
             })
             .catch(err => console.log(err));
-    }, []); 
+    }, [navigate]); 
 
-    const handleInput = (event) => {
-        setValues(prev => ({ ...prev, [event.target.name]: event.target.value }));
-    };
+    const sendEmail = (e) => {
+        e.preventDefault();
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-
-        setErrors(Validation(values));
-        if (!errors.Subject) {
-            axios.post('http://localhost:8080/contactUs', values)
-                .then(res => {
-                    setIsSubmitted(true); 
-                    setValues({  Subject: '', Message: '' }); 
-                })
-                .catch(err => console.log(err));
-        }
+        emailjs
+            .sendForm(
+                "service_3op3a8c",
+                "template_58kosfr",
+                form.current,
+                "c1JG3-cDGVIkBDuNN"
+            )
+            .then(
+                (result) => {
+                    console.log(result.text);
+                    console.log("message sent");
+                    setIsSubmitted(true);
+                },
+                (error) => {
+                    console.log(error.text);
+                }
+            );
     };
 
     return (
@@ -50,18 +50,23 @@ function ContactForm() {
             <div className="contact-us">
                 <img src={footerImg} className="contactus-img" />
                 <div className="contactus-form ">
-                    <form action="" onSubmit={handleSubmit}>
+                    <form ref={form} onSubmit={sendEmail}>
                         <div className="form-group">
-                            <label htmlFor="usr">Subject:</label>
-                            <input type="text" name='Subject' className="form-control" onChange={handleInput} value={values.name} />
-                            {errors.Subject && <span className='text-danger'> {errors.Subject}</span>}
+                            <label htmlFor="usr">Name:</label>
+                            <input type="text" name='from_name' className="form-control"  />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="usr">Email:</label>
+                            <input type="email" name='from_email' className="form-control"  />
                         </div>
                         <div className="form-group">
                             <label htmlFor="comment">Message:</label>
-                            <textarea className="form-control" rows="5" id="comment" name='Message' onChange={handleInput} value={values.message}></textarea>
+                            <textarea className="form-control" rows="5" id="comment" name='message'></textarea>
                         </div>
-                        <button type="submit" className="btn btn-danger btn-lg m-3" style={{ margin: '5px', paddingLeft: '2.5rem', paddingRight: '2.5rem', justifyContent: 'center' }}>Send</button>
+                        
+                        <button type="submit" className="btn btn-danger btn-lg m-3" value="Send" style={{ margin: '5px', paddingLeft: '2.5rem', paddingRight: '2.5rem', justifyContent: 'center' }}>Send</button>
                         {isSubmitted && <p className="text-success">Message sent successfully!</p>} 
+
                     </form>
                 </div>
             </div>
@@ -69,4 +74,4 @@ function ContactForm() {
     );
 }
 
-export default ContactForm;
+export default Contact;

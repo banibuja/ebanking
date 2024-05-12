@@ -109,12 +109,12 @@ export default function Sidebar() {
         
                               {role !== 'User' && (
                                 <>
-              <li>
+              {/* <li>
                 <a href="/ContactUs" className="nav-link link-dark" onClick={handleManageClick}>
                   <i className="bi me-2 fas fa-envelope  fa-1x text-gray-300"></i>
                   ContactUs
                 </a>
-              </li>
+              </li> */}
               <li>
                 <a href="/AccessPermissions" className="nav-link link-dark" onClick={handleManageClick}>
                   <i className="bi me-2 fas fa-users  fa-1x text-gray-300"></i>
