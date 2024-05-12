@@ -54,16 +54,14 @@ CREATE TABLE Reports (
     GenerationDate DATE NOT NULL,
     Description TEXT
 );
-CREATE TABLE SavingsAccounts (
-    SavingsAccountID int(11) NOT NULL AUTO_INCREMENT,
-    AccountID int(11) NOT NULL,
-    SavingsType varchar(50) NOT NULL,
-    Balance decimal(18, 5) NOT NULL,
-    PRIMARY KEY (SavingsAccountID),
-    KEY FK_Account_Savings (AccountID),
-    CONSTRAINT FK_Account_Savings FOREIGN KEY (AccountID) REFERENCES Accounts (AccountID) ON DELETE CASCADE
-);
-
+CREATE TABLE `savingsaccounts` (
+    `SavingsID` int(11) NOT NULL AUTO_INCREMENT,
+    `UserID` int(11) NOT NULL,
+    `SavingsType` varchar(50) NOT NULL,
+    `Balance` decimal(18, 5) NOT NULL,
+    PRIMARY KEY (`SavingsID`),
+    KEY `FK_User_Savings` (`UserID`),
+    CONSTRAINT `FK_User_Savings` FOREIGN KEY (`UserID`) REFERENCES `users` (`userId`) ON DELETE CASCADE );
 CREATE TABLE Loans (
     LoanID int primary key AUTO_INCREMENT,
     AccountID INT NOT NULL,
@@ -197,10 +195,9 @@ VALUES
 (502, 'Balance', '2024-04-22', 'Monthly account balance report');
 
 -- Tabela SavingsAccounts
-INSERT INTO SavingsAccounts (SavingsAccountID, AccountID, SavingsType, Balance)
-VALUES
-(601, 102, 'Regular', 9500.00),
-(602, 102, 'Term', 500.00);
+INSERT INTO `savingsaccounts` (`SavingsID`, `UserID`, `SavingsType`, `Balance`) 
+VALUES 
+('33', '2', '22222222222222', '222');
 
 -- Tabela Loans
 INSERT INTO Loans (LoanID, AccountID, LoanAmount, LoanConditions, Status)

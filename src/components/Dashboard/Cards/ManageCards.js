@@ -73,8 +73,8 @@ export const ManageCards = () => {
                             <table className="table table-hover table-bordered table-striped dataTable no-footer" style={{ width: '100%' }}>
                                 <thead>
                                     <tr>
-                                        <th scope="col">Card ID</th>
-                                        <th scope="col">User Id</th>
+                                        {/* <th scope="col">Card ID</th> */}
+                                        <th scope="col">Your Id</th>
                                         <th scope="col">Card Number</th>
                                         <th scope="col">Expiry Date</th>
                                         <th scope="col">Card Holder Name</th>
@@ -86,7 +86,7 @@ export const ManageCards = () => {
                                 <tbody>
                                     {Array.isArray(cards) && cards.map((card, index) => (
                                         <tr key={card.CardID}>
-                                            <th scope="row">{card.CardID}</th>
+                                            {/* <th scope="row">{card.CardID}</th> */}
                                             <td>{card.UserID}</td>
                                             <td>{maskCardNumber(card.CardNumber)}</td>
                                             <td>{formatDate(card.ExpiryDate)}</td>

@@ -137,7 +137,7 @@ app.post('/addClient', async (req, res) => {
         const hashedPassword = await bcrypt.hash(client.password, 10);
 
         let currentAccount;
-        let flexSaveAccount;
+        let SavingsType;
         let accountExists = true;
 
         while (accountExists) {
@@ -145,7 +145,7 @@ app.post('/addClient', async (req, res) => {
             accountExists = await checkAccountExists(currentAccount);
         }
 
-        flexSaveAccount = generateFlexSaveAccountNumber();
+        SavingsType = generateFlexSaveAccountNumber();
 
         const addClient = await new Promise((resolve, reject) => {
             db.query(`INSERT INTO users (username, name, lastname, email, password, gender, birthday) VALUES (?, ?, ?, ?, ?, ?, ?)`, 
@@ -196,7 +196,7 @@ app.post('/addClient', async (req, res) => {
         });
 
         const addSavingsAccount = await new Promise((resolve, reject) => {
-            db.query(`INSERT INTO savingsaccount (UserID, FlexSaveAccount, Balance) VALUES (?, ?, ?)`, [userId, flexSaveAccount, 0], (error, results) => {
+            db.query(`INSERT INTO savingsaccounts (UserID, SavingsType, Balance) VALUES (?, ?, ?)`, [userId, SavingsType, 0], (error, results) => {
                 if (error) {
                     reject(error);
                 } else {
@@ -583,7 +583,7 @@ app.post('/getCurrencies', (req, res) => {
 app.put('/updateSavingsAccounts/:id', (req, res) => {
     const Savingsid = req.params.id;
     const {  Balance } = req.body;
-    const sqlUpdate = "UPDATE savingsaccount SET   Balance=? WHERE SavingsID=?";
+    const sqlUpdate = "UPDATE savingsaccounts SET   Balance=? WHERE SavingsID=?";
 
     db.query(sqlUpdate, [ Balance, Savingsid], (err, result) => {
         if (err) {
@@ -597,7 +597,7 @@ app.put('/updateSavingsAccounts/:id', (req, res) => {
 
 app.get('/getSavingsAccounts/:id', (req, res) => {
     const Savingsid = req.params.id;
-    const sql = "SELECT UserID, FlexSaveAccount, Balance FROM savingsaccount WHERE SavingsID = ?";
+    const sql = "SELECT UserID, SavingsType, Balance FROM savingsaccounts WHERE SavingsID = ?";
 
     db.query(sql, [Savingsid], (err, data) => {
         if (err) {
@@ -612,7 +612,7 @@ app.get('/getSavingsAccounts/:id', (req, res) => {
 });
 
 app.post('/getSavings', (req, res) => {
-    const sql = "SELECT * FROM savingsaccount ";
+    const sql = "SELECT * FROM savingsaccounts ";
 
 
     db.query(sql, (err, data) => {
@@ -693,7 +693,7 @@ app.post('/getAccountById', (req, res) => {
 app.post('/getSavingsById', (req, res) => {
     const userID = req.session.uId; 
 
-    const sql = "SELECT * FROM savingsaccount WHERE UserID = ?"; 
+    const sql = "SELECT * FROM savingsaccounts WHERE UserID = ?"; 
 
     db.query(sql, [userID], (err, data) => {
         if (err) {
@@ -741,7 +741,7 @@ app.delete("/deleteAccounts/:id", (req, res) => {
 
 app.delete("/deleteSavings/:id", (req, res) => {
     const AccountID = req.params.id;
-    const sqlDelete = "DELETE FROM savingsaccount WHERE SavingsID = ?";
+    const sqlDelete = "DELETE FROM savingsaccounts WHERE SavingsID = ?";
   
     db.query(sqlDelete, AccountID, (err, result) => {
         if (err) {

@@ -81,7 +81,7 @@ export const ManageYourAccount = () => {
                             <table className="table table-hover table-bordered table-striped dataTable no-footer" style={{ width: '100%' }}>
                                 <thead>
                                     <tr>
-                                        <th scope="col">AccountID</th>
+                                        {/* <th scope="col">AccountID</th> */}
                                         <th scope="col">Your ID</th>
                                         <th scope="col">CurrentAccount</th>
                                         <th scope="col">Balance</th> 
@@ -91,7 +91,7 @@ export const ManageYourAccount = () => {
                                 <tbody>
                                     {Array.isArray(mess) && mess.map((item, index) => (
                                         <tr key={item.AccountID}>
-                                            <th scope="row">{item.AccountID}</th> 
+                                            {/* <th scope="row">{item.AccountID}</th>  */}
                                             <td>{item.UserID}</td>
                                             <td>{item.CurrentAccount}</td>
                                             <td>{parseFloat(item.Balance).toFixed(3)}</td> 
@@ -113,7 +113,7 @@ export const ManageYourAccount = () => {
                                 <table className="table table-hover table-bordered table-striped dataTable no-footer" style={{ width: '100%' }}>
                                     <thead>
                                         <tr>
-                                            <th scope="col">AccountID</th>
+                                            {/* <th scope="col">AccountID</th> */}
                                             <th scope="col">Your ID</th>
                                             <th scope="col">FlexSaveAccount</th>
                                             <th scope="col">Balance</th> 
@@ -123,9 +123,9 @@ export const ManageYourAccount = () => {
                                     <tbody>
                                         {Array.isArray(savings) && savings.map((item, index) => (
                                             <tr key={item.SavingsID}>
-                                                <th scope="row">{item.SavingsID}</th> 
+                                                {/* <th scope="row">{item.SavingsID}</th>  */}
                                                 <td>{item.UserID}</td>
-                                                <td>{item.FlexSaveAccount}</td>
+                                                <td>{item.SavingsType}</td>
                                                 <td>{parseFloat(item.Balance).toFixed(3)}</td> 
                                                 <td>
                                                     {/* <button onClick={() => handleDeletee(item.SavingsID)} className="btn btn-danger">Delete</button> */}

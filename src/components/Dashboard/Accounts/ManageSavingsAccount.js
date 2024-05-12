@@ -68,7 +68,7 @@ export const ManageSavingsAccounts = () => {
                                         <tr key={item.SavingsID}>
                                             <th scope="row">{item.SavingsID}</th> 
                                             <td>{item.UserID}</td>
-                                            <td>{item.FlexSaveAccount}</td>
+                                            <td>{item.SavingsType}</td>
                                             <td>{parseFloat(item.Balance).toFixed(3)}</td> 
                                             <td>
                                             <button onClick={() => handleEdit(item.SavingsID)} className="btn btn-primary mr-2">Edit</button>
