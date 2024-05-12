@@ -30,22 +30,6 @@ CREATE TABLE Accounts (
     CONSTRAINT FK_User_Account FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
 );
 
-
-CREATE TABLE Transactions (
-    TransactionID INT PRIMARY KEY AUTO_INCREMENT,
-    SenderAccID INT NOT NULL,
-    ReceiverAccID INT NOT NULL,
-    TransactionType VARCHAR(50) NOT NULL,
-    TransactionAmount DECIMAL(18, 5) NOT NULL,
-    Currency VARCHAR(10) NOT NULL,
-    Statusi VARCHAR(20) NOT NULL,
-    AdditionalInfo TEXT,
-    TransactionFee DECIMAL(18, 5),
-    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT FK_SenderAcc_Account FOREIGN KEY (SenderAccID) REFERENCES Accounts(AccountID) ON DELETE CASCADE,
-    CONSTRAINT FK_ReceiverAcc_Account FOREIGN KEY (ReceiverAccID) REFERENCES Accounts(AccountID) ON DELETE CASCADE
-);
-
 CREATE TABLE Cards (
     CardID int primary key AUTO_INCREMENT,
     UserID INT NOT NULL,
@@ -70,14 +54,14 @@ CREATE TABLE Reports (
     GenerationDate DATE NOT NULL,
     Description TEXT
 );
-CREATE TABLE `savingsaccount` (
-    `SavingsID` int(11) NOT NULL AUTO_INCREMENT,
-    `UserID` int(11) NOT NULL,
-    `FlexSaveAccount` varchar(50) NOT NULL,
-    `Balance` decimal(18, 5) NOT NULL,
-    PRIMARY KEY (`SavingsID`),
-    KEY `FK_User_Savings` (`UserID`),
-    CONSTRAINT `FK_User_Savings` FOREIGN KEY (`UserID`) REFERENCES `users` (`userId`) ON DELETE CASCADE
+CREATE TABLE SavingsAccounts (
+    SavingsAccountID int(11) NOT NULL AUTO_INCREMENT,
+    AccountID int(11) NOT NULL,
+    SavingsType varchar(50) NOT NULL,
+    Balance decimal(18, 5) NOT NULL,
+    PRIMARY KEY (SavingsAccountID),
+    KEY FK_Account_Savings (AccountID),
+    CONSTRAINT FK_Account_Savings FOREIGN KEY (AccountID) REFERENCES Accounts (AccountID) ON DELETE CASCADE
 );
 
 CREATE TABLE Loans (
@@ -122,9 +106,20 @@ CREATE TABLE Transactions (
     AdditionalInfo TEXT,
     TransactionFee DECIMAL(18, 5),
     CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT FK_Sender_Account FOREIGN KEY (SenderAccID) REFERENCES Accounts(AccountID) ON DELETE CASCADE,
-    CONSTRAINT FK_Receiver_Account FOREIGN KEY (ReceiverAccID) REFERENCES Accounts(AccountID) ON DELETE CASCADE
+    CONSTRAINT FK_Sender_Acc FOREIGN KEY (SenderAccID) REFERENCES Accounts(AccountID) ON DELETE CASCADE,
+    CONSTRAINT FK_Receiver_Acc FOREIGN KEY (ReceiverAccID) REFERENCES Accounts(AccountID) ON DELETE CASCADE
 );
+
+CREATE TABLE TransactionAuthorizations (
+    AuthorizationID INT PRIMARY KEY AUTO_INCREMENT, 
+    TransactionID INT NOT NULL, 
+    UserID INT NOT NULL, 
+    AuthorizationStatus VARCHAR(50) NOT NULL, 
+    AuthorizationDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT FK_TA_Transaction FOREIGN KEY (TransactionID) REFERENCES Transactions(TransactionID) ON DELETE CASCADE,
+    CONSTRAINT FK_TA_User FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
+);
+
 CREATE TABLE Payments (
     PaymentID int primary key AUTO_INCREMENT,
     SenderAccountID INT NOT NULL,
@@ -161,9 +156,11 @@ CREATE TABLE Retirements (
 -- Tabela Users
 INSERT INTO Users (userId, username, name, lastname, email, password, gender, birthday)
 VALUES 
-(1, 'john_doe', 'John', 'Doe', 'john@example.com', 'password123', 'M', '1990-05-15'),
-(2, 'jane_smith', 'Jane', 'Smith', 'jane@example.com', 'password456', 'F', '1992-08-20'),
-(3, 'alex_williams', 'Alex', 'Williams', 'alex@example.com', 'password789', 'M', '1985-11-10');
+(1, 'xentoro', 'Dior', 'Hyseni', 'dior_hyseni@gmail.com', 'xentoro', 'M', '1990-05-15'),
+(2, 'bani', 'Shaban', 'Buja', 'bani_buja@gmail.com', 'bani1234', 'F', '1992-08-20'),
+(3, 'arionR8', 'Arion', 'Rexhepi', 'arionr8@gmail.com', 'arionr8', 'M', '1985-11-10'),
+(4, 'ernita', 'Ernita', 'Rexhepi', 'ernita@gmail.com', 'ernita', 'F', '1992-08-20'),
+(5, 'elsa', 'elsa', 'Rexhepi', 'elsa@gmail.com', 'elsa1234', 'F', '1992-08-20');
 
 -- Tabela Adresa
 INSERT INTO Adresa (userId, Country, City, Street)
@@ -173,7 +170,7 @@ VALUES
 (3, 'Canada', 'Toronto', 'Bay Street');
 
 -- Tabela Accounts
-INSERT INTO Accounts (AccountID, UserID, AccountType, Balance)
+INSERT INTO Accounts (AccountID, UserID, CurrentAccount, Balance)
 VALUES
 (101, 1, 'Checking', 5000.00),
 (102, 2, 'Savings', 10000.00),
@@ -229,6 +226,14 @@ INSERT INTO Notifications (NotificationID, UserID, NotificationType, Description
 VALUES
 (1001, 1, 'Transaction', 'New deposit of $1000.00', '2024-04-22 11:30:00'),
 (1002, 2, 'Balance', 'Monthly account balance report available', '2024-04-22 09:00:00');
+
+
+INSERT INTO Transactions (TransactionID, SenderAccID, ReceiverAccID, TransactionType, TransactionAmount, Currency, TransactionDate, Statusi, AdditionalInfo, TransactionFee) 
+VALUES 
+(201, 101, 102, 'Transfer', 500.00, 'USD', '2024-05-12 08:30:00', 'Completed', 'Payment for goods', 2.50),
+(202, 103, 101, 'Transfer', 1000.00, 'EUR', '2024-05-11 15:45:00', 'Completed', 'Monthly rent payment', 5.00),
+(203, 102, 103, 'Transfer', 200.00, 'USD', '2024-05-10 10:20:00', 'Completed', 'Repayment of loan', 1.00);
+
 
 -- Tabela TransactionAuthorizations
 INSERT INTO TransactionAuthorizations (AuthorizationID, TransactionID, UserID, AuthorizationStatus, AuthorizationDate)
