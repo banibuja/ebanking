@@ -133,20 +133,25 @@ export default function Sidebar() {
                   Client SavingsAccounts
                 </a>
               </li>
-              <li>
-                <a href="/currencies" className="nav-link link-dark" onClick={handleManageClick}>
-                  <i className="bi me-2 fas fa-users fa-1x text-gray-300"></i>
-                  currencies
-                </a>
-              </li>
+             
               <li>
                 <a href="/Manageclientcards" className="nav-link link-dark" onClick={handleManageClick}>
                   <i className="bi me-2 fas fa-users fa-1x text-gray-300"></i>
                   Client Cards
                 </a>
+                
               </li>
+             
               </>
               )}
+
+
+<li>
+                <a href="/manageyouraccount" className="nav-link link-dark" onClick={handleManageClick}>
+                  <i className="bi me-2 fas fa-users fa-1x text-gray-300"></i>
+                  Manage Your Accounts
+                </a>
+              </li>
           {/* {role === 'User' && (
             <> */}
               <li>
@@ -168,20 +173,15 @@ export default function Sidebar() {
                   {/* </>
               )}     */}
 
-                      <li>
-                <a href="/manageyoursavings" className="nav-link link-dark" onClick={handleManageClick}>
-                  <i className="bi me-2 fas fa-users fa-1x text-gray-300"></i>
-                  Manage your SavingsAcc
-                </a>
-              </li>
+                  
               
-              <li>
+              {/* <li> */}
 
 
-                <Dropdown>
+                {/* <Dropdown>
                   <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
                   <FaCreditCard className="me-2 text-gray-300 bg-light" size={20} />
-                    Manage your CurrentAccount
+                    Manage your Accounts
                   </Dropdown.Toggle>
               {role === 'admin' && (
                     <>          
@@ -197,7 +197,7 @@ export default function Sidebar() {
                   </Dropdown.Menu>
                   
                 </Dropdown> 
-               </li>
+               </li> */}
 
 
           
@@ -232,11 +232,11 @@ export default function Sidebar() {
         
 
           <li>
-            <a href="currencies" className="nav-link link-dark" onClick={handleManageClick}>
-              <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
-              Currencies
-            </a>
-          </li>
+                <a href="/currencies" className="nav-link link-dark" onClick={handleManageClick}>
+                  <i className="bi me-2 fas fa-users fa-1x text-gray-300"></i>
+                  currencies
+                </a>
+              </li>
           <li>
             <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>

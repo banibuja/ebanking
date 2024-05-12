@@ -19,7 +19,7 @@ import ManageYourAccount from '../components/Dashboard/Accounts/ManageYourAccoun
 import Manageclientcards from '../components/Dashboard/Cards/Manageclientcards';
 import AccessPermissions from '../components/Dashboard/AccessPermissions/AccessPermissions';
 import ManageSavingsAccount from '../components/Dashboard/Accounts/ManageSavingsAccount';
-import ManageYourSavings from '../components/Dashboard/Accounts/ManageYourSavings';
+// import ManageYourSavings from '../components/Dashboard/Accounts/ManageYourSavings';
 import Currencies from '../components/Dashboard/Currencies/Currencies';
 
 
@@ -50,7 +50,7 @@ function App() {
         <Route path="/ManageYourAccount" element={<ManageYourAccount/>} /> 
         <Route path="/Manageclientcards" element={<Manageclientcards/>} /> 
         <Route path="/ManageSavingsAccount" element={<ManageSavingsAccount/>} /> 
-        <Route path="/ManageYourSavings" element={<ManageYourSavings/>} /> 
+        {/* <Route path="/ManageYourSavings" element={<ManageYourSavings/>} />  */}
         <Route path="/AccessPermissions" element={<AccessPermissions/>} /> 
         <Route path="/currencies" element={<Currencies/>} /> 
 

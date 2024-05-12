@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const ManageCards = () => {
     const [cards, setCards] = useState([]);
-    const [numCards, setNumCards] = useState(0); 
+    const [numCards, setNumCards] = useState(0);
 
     useEffect(() => {
         getCards();
@@ -18,7 +18,7 @@ export const ManageCards = () => {
             .then(res => {
                 const fetchedCards = res.data;
                 setCards(fetchedCards);
-                setNumCards(fetchedCards.length); 
+                setNumCards(fetchedCards.length);
             })
             .catch(err => console.log(err));
     };
@@ -31,9 +31,25 @@ export const ManageCards = () => {
             .catch(err => console.log(err));
     };
 
+    const handleBlock = (cardId) => {
+        axios.put(`http://localhost:8080/blockCard/${cardId}`)
+            .then(res => {
+                getCards();
+            })
+            .catch(err => console.log(err));
+    };
+
+    const handleEnable = (cardId) => {
+        axios.put(`http://localhost:8080/enableCard/${cardId}`)
+            .then(res => {
+                getCards();
+            })
+            .catch(err => console.log(err));
+    };
+
     const maskCardNumber = (cardNumber) => {
         if (cardNumber.length <= 10) {
-          return '****'.repeat(Math.max(0, Math.ceil(cardNumber.length / 4))); 
+            return '****'.repeat(Math.max(0, Math.ceil(cardNumber.length / 4)));
         }
         const visibleDigits = 6;
         const masked = cardNumber.slice(0, visibleDigits) + '*'.repeat(cardNumber.length - visibleDigits - 4) + cardNumber.slice(-4);
@@ -44,18 +60,9 @@ export const ManageCards = () => {
         const date = new Date(dateString);
         return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
     };
-    const transferBalance = (cardId) => {
-        axios.post('http://localhost:8080/transferBalance')
-            .then(res => {
-                alert(res.data); // show response message
-                // Refresh cards after balance transfer
-                getCards();
-            })
-            .catch(err => console.log(err));
-    };
 
     return (
-        <div> 
+        <div>
             <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
                 <Sidebar />
                 <div className="container-fluid" style={{ marginTop: '100px' }}>
@@ -73,7 +80,6 @@ export const ManageCards = () => {
                                         <th scope="col">Card Holder Name</th>
                                         <th scope="col">Card Type</th>
                                         <th scope="col">Card Status</th>
-                                        {/* <th scope="col">Available Balance</th> */}
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
@@ -87,9 +93,13 @@ export const ManageCards = () => {
                                             <td>{card.CardHolderName}</td>
                                             <td>{card.CardType}</td>
                                             <td>{card.CardStatus}</td>
-                                            {/* <td>{card.AvailableBalance}</td> */}
                                             <td>
-                                                <button onClick={() => handleDelete(card.CardID)} className="btn btn-danger">Delete</button>
+                                                {card.CardStatus === 'ACTIVE' ? (
+                                                    <button onClick={() => handleBlock(card.CardID)} className="btn btn-danger mr-2">Block</button>
+                                                ) : (
+                                                    <button onClick={() => handleEnable(card.CardID)} className="btn btn-success mr-2">Enable</button>
+                                                )}
+                                                {/* <button onClick={() => handleDelete(card.CardID)} className="btn btn-danger">Delete</button> */}
                                             </td>
                                         </tr>
                                     ))}
@@ -97,7 +107,7 @@ export const ManageCards = () => {
                             </table>
                         </div>
                     </div>
-                    <div>Total Cards: {numCards}</div> 
+                    <div>Total Cards: {numCards}</div>
                 </div>
             </main>
         </div>

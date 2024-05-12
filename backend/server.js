@@ -363,6 +363,24 @@ app.get('/getCardDetails', async (req, res) => {
     }
 });
 
+
+app.get('/getCards/:id', (req, res) => {
+    const cardsId = req.params.id;
+    const sql = "SELECT UserID, CardNumber, ExpiryDate, CardHolderName, CardType, CardStatus FROM cards WHERE CardID = ?";
+
+    db.query(sql, [cardsId], (err, data) => {
+        if (err) {
+            return res.status(500).json({ error: "Internal server error" });
+        }
+        if (data.length > 0) {
+            return res.json(data[0]); 
+        } else {
+            return res.status(404).json({ message: "Account not found" });
+        }
+    });
+});
+
+
 app.post('/getCards', (req, res) => {
     const userID = req.session.uId; 
 
@@ -410,6 +428,46 @@ app.delete("/deleteCard/:id", (req, res) => {
         return res.status(200).json({ message: "Message deleted successfully" });
     });
 });
+
+app.put('/updateCards/:id', (req, res) => {
+    const cardsId = req.params.id;
+    const {  ExpiryDate, CardHolderName, CardType, CardStatus } = req.body;
+    const sqlUpdate = "UPDATE Cards SET  ExpiryDate=?, CardHolderName=?, CardType=?,  CardStatus=?  WHERE CardID=?";
+
+    db.query(sqlUpdate, [ ExpiryDate, CardHolderName, CardType, CardStatus, cardsId], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+
+        return res.status(200).json({ message: "Account updated successfully" });
+    });
+});
+
+app.put('/blockCard/:id', (req, res) => {
+    const cardId = req.params.id;
+    const sqlUpdate = "UPDATE Cards SET CardStatus = 'BLOCKED' WHERE CardID = ?";
+    db.query(sqlUpdate, [cardId], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+        return res.status(200).json({ message: "Card blocked successfully" });
+    });
+});
+
+app.put('/enableCard/:id', (req, res) => {
+    const cardId = req.params.id;
+    const sqlUpdate = "UPDATE Cards SET CardStatus = 'ACTIVE' WHERE CardID = ?";
+    db.query(sqlUpdate, [cardId], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+        return res.status(200).json({ message: "Card enabled successfully" });
+    });
+});
+
 
 
 //ContactUs
@@ -476,6 +534,36 @@ app.post('/getAccessPermissions', (req, res) => {
     })
 })
 
+app.get('/getAccesPermissions/:id', (req, res) => {
+    const accessPermissionId = req.params.id;
+    const sql = "SELECT UserID, AccessLevel FROM AccessPermissions WHERE PermissionID = ?";
+
+    db.query(sql, [accessPermissionId], (err, data) => {
+        if (err) {
+            return res.status(500).json({ error: "Internal server error" });
+        }
+        if (data.length > 0) {
+            return res.json(data[0]); 
+        } else {
+            return res.status(404).json({ message: "Account not found" });
+        }
+    });
+});
+app.put('/updateAccessPermissions/:id', (req, res) => {
+    const accessPermissionId = req.params.id;
+    const {  AccessLevel } = req.body;
+    const sqlUpdate = "UPDATE AccessPermissions SET  AccessLevel=? WHERE PermissionID=?";
+
+    db.query(sqlUpdate, [ AccessLevel, accessPermissionId], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+
+        return res.status(200).json({ message: "Account updated successfully" });
+    });
+});
+
 app.post('/getCurrencies', (req, res) => {
     const sql = "SELECT * FROM currencies";
 
@@ -492,9 +580,36 @@ app.post('/getCurrencies', (req, res) => {
     })
 })
 
+app.put('/updateSavingsAccounts/:id', (req, res) => {
+    const Savingsid = req.params.id;
+    const {  Balance } = req.body;
+    const sqlUpdate = "UPDATE savingsaccount SET   Balance=? WHERE SavingsID=?";
 
+    db.query(sqlUpdate, [ Balance, Savingsid], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
 
+        return res.status(200).json({ message: "Account updated successfully" });
+    });
+});
 
+app.get('/getSavingsAccounts/:id', (req, res) => {
+    const Savingsid = req.params.id;
+    const sql = "SELECT UserID, FlexSaveAccount, Balance FROM savingsaccount WHERE SavingsID = ?";
+
+    db.query(sql, [Savingsid], (err, data) => {
+        if (err) {
+            return res.status(500).json({ error: "Internal server error" });
+        }
+        if (data.length > 0) {
+            return res.json(data[0]); 
+        } else {
+            return res.status(404).json({ message: "Account not found" });
+        }
+    });
+});
 
 app.post('/getSavings', (req, res) => {
     const sql = "SELECT * FROM savingsaccount ";
@@ -511,7 +626,36 @@ app.post('/getSavings', (req, res) => {
         }
     })
 })
+app.get('/getAccount/:id', (req, res) => {
+    const accountId = req.params.id;
+    const sql = "SELECT UserID, CurrentAccount, Balance FROM Accounts WHERE AccountID = ?";
 
+    db.query(sql, [accountId], (err, data) => {
+        if (err) {
+            return res.status(500).json({ error: "Internal server error" });
+        }
+        if (data.length > 0) {
+            return res.json(data[0]); 
+        } else {
+            return res.status(404).json({ message: "Account not found" });
+        }
+    });
+});
+
+app.put('/updateAccount/:id', (req, res) => {
+    const accountId = req.params.id;
+    const {  Balance } = req.body;
+    const sqlUpdate = "UPDATE Accounts SET   Balance=? WHERE AccountID=?";
+
+    db.query(sqlUpdate, [ Balance, accountId], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+
+        return res.status(200).json({ message: "Account updated successfully" });
+    });
+});
 
 app.post('/getAccounts', (req, res) => {
     const sql = "SELECT * FROM Accounts ";

@@ -2,10 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Sidebar from '../Sidebar';
 import { useNavigate } from 'react-router-dom';
+ import EditSavings from './EditSavings';
+
 
 export const ManageSavingsAccounts = () => {
     const [mess, setMess] = useState([]);
     const [numMess, setNumMess] = useState(0); 
+    const [editSavings, setEditSavingsId] = useState(null); 
+
 
     useEffect(() => {
         getMess();
@@ -31,13 +35,21 @@ export const ManageSavingsAccounts = () => {
             .catch(err => console.log(err));
     };
 
+    const handleEdit = (id) => {
+        setEditSavingsId(id); 
+    };
+
+    const handleCloseEditModal = () => {
+        setEditSavingsId(null); 
+    };
+
     return (
         <div> 
             <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
                 <Sidebar />
 
                 <div className="container-fluid " style={{  marginTop: '100px' }} >
-                    <h1 className=''>MANAGE SavingsAccounts</h1>
+                <h1 className="text-center">MANAGE Current Accounts</h1>
                     <div className="row">
                         <caption>List of Messages</caption>
                         <div className="col-md-12 d-flex justify-content-center align-items-center">
@@ -59,6 +71,7 @@ export const ManageSavingsAccounts = () => {
                                             <td>{item.FlexSaveAccount}</td>
                                             <td>{parseFloat(item.Balance).toFixed(3)}</td> 
                                             <td>
+                                            <button onClick={() => handleEdit(item.SavingsID)} className="btn btn-primary mr-2">Edit</button>
                                                 <button onClick={() => handleDelete(item.SavingsID)} className="btn btn-danger">Delete</button>
                                             </td>
                                         </tr>
@@ -68,6 +81,8 @@ export const ManageSavingsAccounts = () => {
                         </div>
                     </div>
                     <div>Total message: {numMess}</div> 
+                    {editSavings !== null && <EditSavings id={editSavings} onClose={handleCloseEditModal} />}
+
                 </div>
             </main>
         </div>

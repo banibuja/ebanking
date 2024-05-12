@@ -7,6 +7,8 @@ export const ManageYourAccount = () => {
     const [userId, setUserId] = useState('');
     const [mess, setMess] = useState([]);
     const [numMess, setNumMess] = useState(0); 
+    const [savings, setSavings] = useState([]);
+    const [numSavings, setNumSavings] = useState(0); 
 
     useEffect(() => {
         getMess();
@@ -19,6 +21,10 @@ export const ManageYourAccount = () => {
           }
         })
         .catch(err => console.log(err))
+    }, []);
+
+    useEffect(() => {
+        getSavings();
     }, []);
 
     const navigate = useNavigate();
@@ -34,6 +40,17 @@ export const ManageYourAccount = () => {
             .catch(err => console.log(err));
     };
 
+    const getSavings = () => {
+        axios.post(`http://localhost:8080/getSavingsById`)
+            .then(res => {
+                const fetchedSavings = res.data;
+                console.log(fetchedSavings);
+                setSavings(fetchedSavings);
+                setNumSavings(fetchedSavings.length); 
+            })
+            .catch(err => console.log(err));
+    };
+
     const handleDelete = (id) => {
         axios.delete(`http://localhost:8080/deleteAccounts/${id}`)
             .then(res => {
@@ -41,14 +58,23 @@ export const ManageYourAccount = () => {
             })
             .catch(err => console.log(err));
     };
+    const handleDeletee = (id) => {
+        axios.delete(`http://localhost:8080/deleteSavings/${id}`)
+            .then(res => {
+                getSavings();
+            })
+            .catch(err => console.log(err));
+    };
+    
 
     return (
         <div> 
-            <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
+            <main style={{ display: 'flex', minHeight: '10vh', backgroundColor: 'white', color: 'black' }}>
                 <Sidebar />
 
-                <div className="container-fluid " style={{  marginTop: '100px' }} >
-                    <h1 className=''>MANAGE  your CurrentAccounts</h1>
+                <div className="container-fluid" style={{ marginTop: '100px' }}>
+                {/* <h1 className="text-center">MANAGE Accounts</h1> */}
+                    <h1 className=''>Current Accounts</h1>
                     <div className="row">
                         <caption>List of Messages</caption>
                         <div className="col-md-12 d-flex justify-content-center align-items-center">
@@ -56,10 +82,10 @@ export const ManageYourAccount = () => {
                                 <thead>
                                     <tr>
                                         <th scope="col">AccountID</th>
-                                        <th scope="col">UserId</th>
+                                        <th scope="col">Your ID</th>
                                         <th scope="col">CurrentAccount</th>
                                         <th scope="col">Balance</th> 
-                                        <th scope="col">Action</th> 
+                                        {/* <th scope="col">Action</th>  */}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -70,7 +96,7 @@ export const ManageYourAccount = () => {
                                             <td>{item.CurrentAccount}</td>
                                             <td>{parseFloat(item.Balance).toFixed(3)}</td> 
                                             <td>
-                                                <button onClick={() => handleDelete(item.AccountID)} className="btn btn-danger">Delete</button>
+                                                {/* <button onClick={() => handleDelete(item.AccountID)} className="btn btn-danger">Delete</button> */}
                                             </td>
                                         </tr>
                                     ))}
@@ -79,6 +105,39 @@ export const ManageYourAccount = () => {
                         </div>
                     </div>
                     <div>Total message: {numMess}</div> 
+                    <div className="container-fluid" style={{ marginTop: '10px' }}>
+                        <h1 className=''>Savings Account</h1>
+                        <div className="row">
+                            <caption>List of Messages</caption>
+                            <div className="col-md-12 d-flex justify-content-center align-items-center">
+                                <table className="table table-hover table-bordered table-striped dataTable no-footer" style={{ width: '100%' }}>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">AccountID</th>
+                                            <th scope="col">Your ID</th>
+                                            <th scope="col">FlexSaveAccount</th>
+                                            <th scope="col">Balance</th> 
+                                            {/* <th scope="col">Action</th>  */}
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {Array.isArray(savings) && savings.map((item, index) => (
+                                            <tr key={item.SavingsID}>
+                                                <th scope="row">{item.SavingsID}</th> 
+                                                <td>{item.UserID}</td>
+                                                <td>{item.FlexSaveAccount}</td>
+                                                <td>{parseFloat(item.Balance).toFixed(3)}</td> 
+                                                <td>
+                                                    {/* <button onClick={() => handleDeletee(item.SavingsID)} className="btn btn-danger">Delete</button> */}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div>Total message: {numSavings}</div> 
+                    </div>
                 </div>
             </main>
         </div>

@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Sidebar from '../Sidebar';
 import { useNavigate } from 'react-router-dom';
-
+import EditAccesPermissions from './EditAccesPermissions';
 export const AccessPermissions = () => {
     const [mess, setMess] = useState([]);
     const [numMess, setNumMess] = useState(0); 
+    const [editAcces, setEditAccessId] = useState(null); 
+
 
     useEffect(() => {
         getMess();
@@ -29,6 +31,14 @@ export const AccessPermissions = () => {
                 getMess();
             })
             .catch(err => console.log(err));
+    };
+
+    const handleEdit = (id) => {
+        setEditAccessId(id); 
+    };
+
+    const handleCloseEditModal = () => {
+        setEditAccessId(null); 
     };
 
     return (
@@ -57,7 +67,8 @@ export const AccessPermissions = () => {
                                             <td>{item.UserID}</td>
                                             <td>{item.AccessLevel}</td>
                                             <td>
-                                                <button onClick={() => handleDelete(item.AccountID)} className="btn btn-danger">Delete</button>
+                                            <button onClick={() => handleEdit(item.PermissionID)} className="btn btn-primary mr-2">Edit</button>
+                                                <button onClick={() => handleDelete(item.PermissionID)} className="btn btn-danger">Delete</button>
                                             </td>
                                         </tr>
                                     ))}
@@ -66,6 +77,8 @@ export const AccessPermissions = () => {
                         </div>
                     </div>
                     <div>Total message: {numMess}</div> 
+                    {editAcces !== null && <EditAccesPermissions id={editAcces} onClose={handleCloseEditModal} />}
+
                 </div>
             </main>
         </div>

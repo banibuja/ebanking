@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Sidebar from '../Sidebar';
 import { useNavigate } from 'react-router-dom';
+import EditCards from './EditCards';
+
 
 export const Manageclientcards = () => {
     const [cards, setCards] = useState([]);
     const [numCards, setNumCards] = useState(0); 
+    const [editCards, setEditCardsId] = useState(null); 
 
     useEffect(() => {
         getCards();
@@ -31,6 +34,14 @@ export const Manageclientcards = () => {
             .catch(err => console.log(err));
     };
 
+    const handleEdit = (id) => {
+        setEditCardsId(id); 
+    };
+
+    const handleCloseEditModal = () => {
+        setEditCardsId(null); 
+    };
+
     const maskCardNumber = (cardNumber) => {
         if (cardNumber.length <= 10) {
           return '****'.repeat(Math.max(0, Math.ceil(cardNumber.length / 4))); 
@@ -44,15 +55,14 @@ export const Manageclientcards = () => {
         const date = new Date(dateString);
         return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
     };
-    const transferBalance = (cardId) => {
-        axios.post('http://localhost:8080/transferBalance')
-            .then(res => {
-                alert(res.data); // show response message
-                // Refresh cards after balance transfer
-                getCards();
-            })
-            .catch(err => console.log(err));
-    };
+    // const transferBalance = (cardId) => {
+    //     axios.post('http://localhost:8080/transferBalance')
+    //         .then(res => {
+    //             alert(res.data); 
+    //             getCards();
+    //         })
+    //         .catch(err => console.log(err));
+    // };
 
     return (
         <div> 
@@ -89,6 +99,7 @@ export const Manageclientcards = () => {
                                             <td>{card.CardStatus}</td>
                                             {/* <td>{card.AvailableBalance}</td> */}
                                             <td>
+                                                 <button onClick={() => handleEdit(card.CardID)} className="btn btn-primary mr-2">Edit</button>
                                                 <button onClick={() => handleDelete(card.CardID)} className="btn btn-danger">Delete</button>
                                             </td>
                                         </tr>
@@ -98,6 +109,8 @@ export const Manageclientcards = () => {
                         </div>
                     </div>
                     <div>Total Cards: {numCards}</div> 
+                    {editCards !== null && <EditCards id={editCards} onClose={handleCloseEditModal} />}
+
                 </div>
             </main>
         </div>
