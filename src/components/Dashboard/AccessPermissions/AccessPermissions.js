@@ -68,7 +68,7 @@ export const AccessPermissions = () => {
                                             <td>{item.AccessLevel}</td>
                                             <td>
                                             <button onClick={() => handleEdit(item.PermissionID)} className="btn btn-primary mr-2">Edit</button>
-                                                <button onClick={() => handleDelete(item.PermissionID)} className="btn btn-danger">Delete</button>
+                                                {/* <button onClick={() => handleDelete(item.PermissionID)} className="btn btn-danger">Delete</button> */}
                                             </td>
                                         </tr>
                                     ))}

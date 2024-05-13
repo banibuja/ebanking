@@ -7,6 +7,17 @@ const bodyParser = require("body-parser");
 const bcrypt = require('bcrypt');
 
 
+// const database = require('../src/db');
+const accessPermissionsController = require('../src/controllers/AccesPermissions/AccesPermissionsController');
+const currentAccountController = require('../src/controllers/Accounts/CurrentAccount/CurrentAccounts')
+const savingsAccountController = require('../src/controllers/Accounts/SavingsAccount/SavingsAccount');
+const cardsController = require('../src/controllers/Cards/ClientCards');
+const SessionController = require('../src/controllers/Session/sessioncontroller'); 
+
+
+
+ 
+
 
 const app = express();
 app.use(cors({
@@ -31,25 +42,38 @@ app.use(session({
 })
 )
 
+app.get('/sessionTimeRemaining', SessionController.sessionTimeRemaining);
 
-  
+////////////////////////////////////
+app.post('/getAccessPermissions', accessPermissionsController.getAccessPermissions);
+app.put('/updateAccessPermissions/:id', accessPermissionsController.updateAccessPermission);
+////////////////////////////////////
+app.get('/getAccount/:id', currentAccountController.getAccountById);
+app.put('/updateAccount/:id', currentAccountController.updateAccount);
+app.post('/getAccounts', currentAccountController.getAccounts);
+app.post('/getAccountById', currentAccountController.getAccountByUserId);
+app.delete("/deleteAccounts/:id", currentAccountController.deleteAccount);
+////////////////////////////////////
+app.get('/getSavingsAccounts/:id', savingsAccountController.getSavingsAccountById);
+app.post('/getSavings', savingsAccountController.getSavings);
+app.delete('/deleteSavings/:id', savingsAccountController.deleteSavings);
+app.put('/updateSavingsAccounts/:id', savingsAccountController.updateSavingsAccounts);
+app.post('/getSavingsById', savingsAccountController.getSavingsById);
 
-app.get('/sessionTimeRemaining',  (req, res) => {
-    if (req.session && req.session.username) {
-        const now = new Date().getTime();
-        const expireTime = req.session.maxAge;
-        if (now > expireTime) {
-            req.session.expired = true;
-            return res.json({ timeRemaining: 0 });
-        } else {
-            const timeRemaining = Math.round((expireTime - now) / 1000);
-            console.log(timeRemaining);
-            return res.json({ timeRemaining });
-        }
-    } else {
-        return res.status(401).json({ error: "User session not found" });
-    }
-});
+///////////////////////////////////
+app.post('/getCardsclients', cardsController.getCards);
+app.delete("/deleteCard/:id", cardsController.deleteCard);
+app.put('/updateCards/:id', cardsController.updateCard);
+app.put('/blockCard/:id', cardsController.blockCard);
+app.put('/enableCard/:id', cardsController.enableCard);
+app.get('/getCards/:id', cardsController.getCardById);
+app.post('/getCards', cardsController.getCardsByUserId);
+app.get('/getCardDetails', cardsController.checkCardExists);
+app.post('/addCard', cardsController.addCard);
+
+////////////////////////////////////
+
+
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -298,462 +322,6 @@ app.put('/updateUsers/:id', (req, res) => {
 
 
 
-
-//Cards
-
-app.post('/addCard', async (req, res) => {
-    try {
-        if (!req.session.username) {
-            return res.status(401).json({ error: "Unauthorized" });
-        }
-
-        const cardDetails = req.body;
-        const userID = req.session.uId; 
-
-        const existingCard = await new Promise((resolve, reject) => {
-            db.query(`SELECT * FROM Cards WHERE CardNumber = ?`, [cardDetails.CardNumber], (error, result) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(result);
-                }
-            });
-        });
-
-        if (existingCard.length > 0) {
-            return res.status(400).json({ error: "Card number already exists" });
-        }
-
-        const addCard = await new Promise((resolve, reject) => {
-            db.query(`INSERT INTO Cards (UserID, CardNumber, ExpiryDate, CardHolderName, CardType, CardStatus, AvailableBalance) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-                [userID, cardDetails.CardNumber, cardDetails.ExpiryDate, cardDetails.CardHolderName, cardDetails.CardType, cardDetails.CardStatus, cardDetails.AvailableBalance],
-                (error, result) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        resolve(result);
-                    }
-                });
-        });
-
-        res.json({ message: 'Card added successfully', cardId: addCard.insertId });
-
-    } catch (error) {
-        console.error('Error adding card:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
-
-app.get('/getCardDetails', async (req, res) => {
-    const { cardNumber } = req.query;
-
-    try {
-        const sql = "SELECT COUNT(*) AS count FROM cards WHERE CardNumber = ?";
-        db.query(sql, [cardNumber], (err, result) => {
-            if (err) {
-                console.error('Error checking card:', err);
-                return res.status(500).json({ error: 'Internal Server Error' });
-            }
-            const exists = result[0].count > 0;
-            return res.json({ exists });
-        });
-    } catch (error) {
-        console.error('Error checking card:', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
-
-
-app.get('/getCards/:id', (req, res) => {
-    const cardsId = req.params.id;
-    const sql = "SELECT UserID, CardNumber, ExpiryDate, CardHolderName, CardType, CardStatus FROM cards WHERE CardID = ?";
-
-    db.query(sql, [cardsId], (err, data) => {
-        if (err) {
-            return res.status(500).json({ error: "Internal server error" });
-        }
-        if (data.length > 0) {
-            return res.json(data[0]); 
-        } else {
-            return res.status(404).json({ message: "Account not found" });
-        }
-    });
-});
-
-
-app.post('/getCards', (req, res) => {
-    const userID = req.session.uId; 
-
-    const sql = "SELECT * FROM Cards WHERE UserID = ?"; 
-
-    db.query(sql, [userID], (err, data) => {
-        if (err) {
-            return res.json("Error");
-        }
-        if (data.length > 0) {
-            return res.json(data);
-        } else {
-            return res.json("fail");
-        }
-    });
-});
-
-
-app.post('/getCardsclients', (req, res) => {
-    const sql = "SELECT * FROM Cards ";
-
-
-    db.query(sql, (err, data) => {
-        if (err) {
-            return res.json("Error");
-        }
-        if (data.length > 0) {
-            return res.json(data);
-        } else {
-            return res.json("faile");
-        }
-    })
-})
-
-app.delete("/deleteCard/:id", (req, res) => {
-    const contactId = req.params.id;
-    const sqlDelete = "DELETE FROM Cards WHERE CardID = ?";
-  
-    db.query(sqlDelete, contactId, (err, result) => {
-        if (err) {
-            console.log(err);
-            return res.status(500).json({ error: "Internal server error" });
-        }
-
-        return res.status(200).json({ message: "Message deleted successfully" });
-    });
-});
-
-app.put('/updateCards/:id', (req, res) => {
-    const cardsId = req.params.id;
-    const {  ExpiryDate, CardHolderName, CardType, CardStatus } = req.body;
-    const sqlUpdate = "UPDATE Cards SET  ExpiryDate=?, CardHolderName=?, CardType=?,  CardStatus=?  WHERE CardID=?";
-
-    db.query(sqlUpdate, [ ExpiryDate, CardHolderName, CardType, CardStatus, cardsId], (err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: "Internal server error" });
-        }
-
-        return res.status(200).json({ message: "Account updated successfully" });
-    });
-});
-
-app.put('/blockCard/:id', (req, res) => {
-    const cardId = req.params.id;
-    const sqlUpdate = "UPDATE Cards SET CardStatus = 'BLOCKED' WHERE CardID = ?";
-    db.query(sqlUpdate, [cardId], (err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: "Internal server error" });
-        }
-        return res.status(200).json({ message: "Card blocked successfully" });
-    });
-});
-
-app.put('/enableCard/:id', (req, res) => {
-    const cardId = req.params.id;
-    const sqlUpdate = "UPDATE Cards SET CardStatus = 'ACTIVE' WHERE CardID = ?";
-    db.query(sqlUpdate, [cardId], (err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: "Internal server error" });
-        }
-        return res.status(200).json({ message: "Card enabled successfully" });
-    });
-});
-
-
-
-//ContactUs
-app.post('/contactUs', (req, res) => {
-    if (!req.session.username) {
-        return res.status(401).json({ error: "Unauthorized" });
-    }
-
-    const userId = req.session.uId;
-    const clientFirstName = req.session.name;
-    const clientLastName = req.session.lastname;
-    const contactDate = new Date().toISOString(); 
-
-    const sql = "INSERT INTO ContactUs (`UserID`, `ClientFirstName`, `ClientLastName`, `Subject`, `Message`, `ContactDate`) VALUES (?, ?, ?, ?, ?, ?)";
-    const values = [
-        userId,
-        clientFirstName,
-        clientLastName,
-        req.body.Subject,
-        req.body.Message,
-        contactDate, 
-    ];
-
-    db.query(sql, values, (err, data) => {
-        if (err) {
-            return res.json("Error");
-        }
-        return res.json(data);
-    });
-});
-
-
-
-
-app.post('/getContactUs', (req, res) => {
-    const sql = "SELECT * FROM ContactUs ";
-
-
-    db.query(sql, (err, data) => {
-        if (err) {
-            return res.json("Error");
-        }
-        if (data.length > 0) {
-            return res.json(data);
-        } else {
-            return res.json("faile");
-        }
-    })
-})
-
-app.post('/getAccessPermissions', (req, res) => {
-    const sql = "SELECT * FROM AccessPermissions";
-
-
-    db.query(sql, (err, data) => {
-        if (err) {
-            return res.json("Error");
-        }
-        if (data.length > 0) {
-            return res.json(data);
-        } else {
-            return res.json("faile");
-        }
-    })
-})
-
-app.get('/getAccesPermissions/:id', (req, res) => {
-    const accessPermissionId = req.params.id;
-    const sql = "SELECT UserID, AccessLevel FROM AccessPermissions WHERE PermissionID = ?";
-
-    db.query(sql, [accessPermissionId], (err, data) => {
-        if (err) {
-            return res.status(500).json({ error: "Internal server error" });
-        }
-        if (data.length > 0) {
-            return res.json(data[0]); 
-        } else {
-            return res.status(404).json({ message: "Account not found" });
-        }
-    });
-});
-app.put('/updateAccessPermissions/:id', (req, res) => {
-    const accessPermissionId = req.params.id;
-    const {  AccessLevel } = req.body;
-    const sqlUpdate = "UPDATE AccessPermissions SET  AccessLevel=? WHERE PermissionID=?";
-
-    db.query(sqlUpdate, [ AccessLevel, accessPermissionId], (err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: "Internal server error" });
-        }
-
-        return res.status(200).json({ message: "Account updated successfully" });
-    });
-});
-
-app.post('/getCurrencies', (req, res) => {
-    const sql = "SELECT * FROM currencies";
-
-
-    db.query(sql, (err, data) => {
-        if (err) {
-            return res.json("Error");
-        }
-        if (data.length > 0) {
-            return res.json(data);
-        } else {
-            return res.json("faile");
-        }
-    })
-})
-
-app.put('/updateSavingsAccounts/:id', (req, res) => {
-    const Savingsid = req.params.id;
-    const {  Balance } = req.body;
-    const sqlUpdate = "UPDATE savingsaccounts SET   Balance=? WHERE SavingsID=?";
-
-    db.query(sqlUpdate, [ Balance, Savingsid], (err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: "Internal server error" });
-        }
-
-        return res.status(200).json({ message: "Account updated successfully" });
-    });
-});
-
-app.get('/getSavingsAccounts/:id', (req, res) => {
-    const Savingsid = req.params.id;
-    const sql = "SELECT UserID, SavingsType, Balance FROM savingsaccounts WHERE SavingsID = ?";
-
-    db.query(sql, [Savingsid], (err, data) => {
-        if (err) {
-            return res.status(500).json({ error: "Internal server error" });
-        }
-        if (data.length > 0) {
-            return res.json(data[0]); 
-        } else {
-            return res.status(404).json({ message: "Account not found" });
-        }
-    });
-});
-
-app.post('/getSavings', (req, res) => {
-    const sql = "SELECT * FROM savingsaccounts ";
-
-
-    db.query(sql, (err, data) => {
-        if (err) {
-            return res.json("Error");
-        }
-        if (data.length > 0) {
-            return res.json(data);
-        } else {
-            return res.json("faile");
-        }
-    })
-})
-app.get('/getAccount/:id', (req, res) => {
-    const accountId = req.params.id;
-    const sql = "SELECT UserID, CurrentAccount, Balance FROM Accounts WHERE AccountID = ?";
-
-    db.query(sql, [accountId], (err, data) => {
-        if (err) {
-            return res.status(500).json({ error: "Internal server error" });
-        }
-        if (data.length > 0) {
-            return res.json(data[0]); 
-        } else {
-            return res.status(404).json({ message: "Account not found" });
-        }
-    });
-});
-
-app.put('/updateAccount/:id', (req, res) => {
-    const accountId = req.params.id;
-    const {  Balance } = req.body;
-    const sqlUpdate = "UPDATE Accounts SET   Balance=? WHERE AccountID=?";
-
-    db.query(sqlUpdate, [ Balance, accountId], (err, result) => {
-        if (err) {
-            console.error(err);
-            return res.status(500).json({ error: "Internal server error" });
-        }
-
-        return res.status(200).json({ message: "Account updated successfully" });
-    });
-});
-
-app.post('/getAccounts', (req, res) => {
-    const sql = "SELECT * FROM Accounts ";
-
-
-    db.query(sql, (err, data) => {
-        if (err) {
-            return res.json("Error");
-        }
-        if (data.length > 0) {
-            return res.json(data);
-        } else {
-            return res.json("faile");
-        }
-    })
-})
-
-app.post('/getAccountById', (req, res) => {
-    const userID = req.session.uId; 
-
-    const sql = "SELECT * FROM Accounts WHERE UserID = ?"; 
-
-    db.query(sql, [userID], (err, data) => {
-        if (err) {
-            return res.json("Error");
-        }
-        if (data.length > 0) {
-            return res.json(data);
-        } else {
-            return res.json("fail");
-        }
-    });
-});
-
-app.post('/getSavingsById', (req, res) => {
-    const userID = req.session.uId; 
-
-    const sql = "SELECT * FROM savingsaccounts WHERE UserID = ?"; 
-
-    db.query(sql, [userID], (err, data) => {
-        if (err) {
-            return res.json("Error");
-        }
-        if (data.length > 0) {
-            return res.json(data);
-        } else {
-            return res.json("fail");
-        }
-    });
-});
-
-
-
-
-
-
-app.delete("/deleteContacts/:id", (req, res) => {
-    const contactId = req.params.id;
-    const sqlDelete = "DELETE FROM ContactUs WHERE ContactID = ?";
-  
-    db.query(sqlDelete, contactId, (err, result) => {
-        if (err) {
-            console.log(err);
-            return res.status(500).json({ error: "Internal server error" });
-        }
-
-        return res.status(200).json({ message: "Message deleted successfully" });
-    });
-});
-app.delete("/deleteAccounts/:id", (req, res) => {
-    const AccountID = req.params.id;
-    const sqlDelete = "DELETE FROM Accounts WHERE AccountID = ?";
-  
-    db.query(sqlDelete, AccountID, (err, result) => {
-        if (err) {
-            console.log(err);
-            return res.status(500).json({ error: "Internal server error" });
-        }
-
-        return res.status(200).json({ message: "Message deleted successfully" });
-    });
-});
-
-app.delete("/deleteSavings/:id", (req, res) => {
-    const AccountID = req.params.id;
-    const sqlDelete = "DELETE FROM savingsaccounts WHERE SavingsID = ?";
-  
-    db.query(sqlDelete, AccountID, (err, result) => {
-        if (err) {
-            console.log(err);
-            return res.status(500).json({ error: "Internal server error" });
-        }
-
-        return res.status(200).json({ message: "Message deleted successfully" });
-    });
-});
-
-
 app.get('/getUsers/:id', (req, res) => {
     const staffId = req.params.id;
     const sql = "SELECT * FROM users WHERE id = ? AND role = 'user'";
@@ -770,27 +338,7 @@ app.get('/getUsers/:id', (req, res) => {
         }
     });
 });
-// app.get('/getUserData/:role/:id', (req, res) => {
-//     const userRole = req.params.role;
-//     const userId = req.params.id;
-//     var tableName = '';
-//     if (userRole == "user") tableName = `users`
-//     else if (userRole == "staff") tableName = 'staffi';
-//     else tableName = 'admin';
-//     const sql = `SELECT * FROM ${tableName} WHERE id = ?`;
 
-//     db.query(sql, [userId], (err, data) => {
-//         if (err) {
-//             console.log(err);
-//             return res.status(500).json({ error: "Internal server error" });
-//         }
-//         if (data.length > 0) {
-//             return res.json(data[0]); 
-//         } else {
-//             return res.status(404).json({ error: "User not found" });
-//         }
-//     });
-// });
 
 app.get('/check-email', async (req, res) => {
     const { email } = req.query;
