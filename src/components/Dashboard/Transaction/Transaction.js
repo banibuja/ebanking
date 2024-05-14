@@ -1,31 +1,40 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../Sidebar';
+import axios from 'axios';
 
 
 export const Transaction = () => {
-    const [userData, setUserData] = useState(null); // State to store user data
+    const [userId, setUserId] = useState('');
     const navigate = useNavigate();
 
-    useEffect(() => {
-        // Assuming you have an API endpoint to fetch user data
-        fetchUserData(); // Function to fetch user data
-    }, []);
-
-    const fetchUserData = async () => {
-        try {
-            // Make an API call to fetch user data
-            const response = await fetch('your_api_endpoint_here');
+        useEffect(() => {
+            fetchCards();
+            axios.get('http://localhost:8080')
+            .then(res => {
+              if (res.data.valid) {
+                setUserId(res.data.uId); 
+              } else {
+                navigate('/login');
+              }
+            })
+            .catch(err => console.log(err))
+        }, []);
+    
+       const fetchCards = async () => {
+        try{
+            const response = await fetch(`http://localhost:8080/getCardsByUserId/${userId}`);
             if (response.ok) {
                 const data = await response.json();
-                setUserData(data); // Set user data to state
+                console.log(data); // Set user data to state
             } else {
                 console.error('Failed to fetch user data');
             }
-        } catch (error) {
+        }catch (error) {
             console.error('Error fetching user data:', error);
         }
-    };
+       };
+
   return (
 
       
@@ -46,9 +55,7 @@ export const Transaction = () => {
                                                   <div className="row">
                                                       <div className="col-md-6 form-group">
                                                           <label htmlFor="name">Contributor Account</label>
-                                                          {userData && (
-                                                              <input type="text" value={userData.username} readOnly className='form-control rounded-0' />
-                                                          )}
+                                                         
                                                       </div>
                                                       <div className="col-md-6 form-group">
                                                           <label htmlFor="name">Client Name</label>

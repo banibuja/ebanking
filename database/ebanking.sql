@@ -99,7 +99,6 @@ CREATE TABLE Transactions (
     TransactionType VARCHAR(50) NOT NULL,
     TransactionAmount DECIMAL(18, 5) NOT NULL,
     Currency VARCHAR(10) NOT NULL,
-    TransactionDate DATETIME NOT NULL,
     Statusi VARCHAR(20) NOT NULL,
     AdditionalInfo TEXT,
     TransactionFee DECIMAL(18, 5),
@@ -225,11 +224,11 @@ VALUES
 (1002, 2, 'Balance', 'Monthly account balance report available', '2024-04-22 09:00:00');
 
 
-INSERT INTO Transactions (TransactionID, SenderAccID, ReceiverAccID, TransactionType, TransactionAmount, Currency, TransactionDate, Statusi, AdditionalInfo, TransactionFee) 
+INSERT INTO Transactions (TransactionID, SenderAccID, ReceiverAccID, TransactionType, TransactionAmount, Currency,  Statusi, AdditionalInfo, TransactionFee) 
 VALUES 
-(201, 101, 102, 'Transfer', 500.00, 'USD', '2024-05-12 08:30:00', 'Completed', 'Payment for goods', 2.50),
-(202, 103, 101, 'Transfer', 1000.00, 'EUR', '2024-05-11 15:45:00', 'Completed', 'Monthly rent payment', 5.00),
-(203, 102, 103, 'Transfer', 200.00, 'USD', '2024-05-10 10:20:00', 'Completed', 'Repayment of loan', 1.00);
+(201, 101, 102, 'Transfer', 500.00, 'USD',  'Completed', 'Payment for goods', 2.50),
+(202, 103, 101, 'Transfer', 1000.00, 'EUR', 'Completed', 'Monthly rent payment', 5.00),
+(203, 102, 103, 'Transfer', 200.00, 'USD',  'Completed', 'Repayment of loan', 1.00);
 
 
 -- Tabela TransactionAuthorizations
