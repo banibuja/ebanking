@@ -136,7 +136,7 @@ const getCardsByUserId = (req, res) => {
             return res.json("Error");
         }
         if (data.length > 0) {
-            return res.json(data);
+            return res.json(data[0]);
         } else {
             return res.json("fail");
         }

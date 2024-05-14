@@ -6,34 +6,35 @@ import axios from 'axios';
 
 export const Transaction = () => {
     const [userId, setUserId] = useState('');
+    const [cardsData, setCardsData] = useState();
     const navigate = useNavigate();
 
-        useEffect(() => {
-            fetchCards();
-            axios.get('http://localhost:8080')
-            .then(res => {
+    useEffect(() => {
+        getUserId();
+        getCardData();
+    });
+    const getUserId = async () => {
+        await axios.get('http://localhost:8080')
+            .then(async res => {
               if (res.data.valid) {
                 setUserId(res.data.uId); 
               } else {
                 navigate('/login');
               }
             })
-            .catch(err => console.log(err))
-        }, []);
-    
-       const fetchCards = async () => {
-        try{
-            const response = await fetch(`http://localhost:8080/getCardsByUserId/${userId}`);
-            if (response.ok) {
-                const data = await response.json();
-                console.log(data); // Set user data to state
-            } else {
-                console.error('Failed to fetch user data');
-            }
-        }catch (error) {
-            console.error('Error fetching user data:', error);
-        }
-       };
+            .catch(err => console.error(err))
+    }
+
+
+    const getCardData = async () => {
+        await axios.get(`http://localhost:8080/getCardsByUserId/${userId}`)
+            .then(res => {
+                setCardsData(res.data);
+            })
+            .catch(err => console.error(err))
+    }
+
+
 
   return (
 
@@ -55,11 +56,10 @@ export const Transaction = () => {
                                                   <div className="row">
                                                       <div className="col-md-6 form-group">
                                                           <label htmlFor="name">Contributor Account</label>
-                                                         
+                                                      <input type="text" name='name' className='form-control roundend-0' value={cardsData ? cardsData.CardNumber : ''} disabled />
                                                       </div>
                                                       <div className="col-md-6 form-group">
-                                                          <label htmlFor="name">Client Name</label>
-                                                          <input type="text" placeholder='Name' name='name' className='form-control roundend-0' />
+                                                      <label htmlFor="name">Client Name</label>
 
                                                       </div>
                                                       <div className="col-md-6 form-group">
