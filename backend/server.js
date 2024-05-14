@@ -70,6 +70,8 @@ app.get('/getCards/:id', cardsController.getCardById);
 app.get('/getCardsByUserId/:id', cardsController.getCardsByUserId);
 app.get('/getCardDetails', cardsController.checkCardExists);
 app.post('/addCard', cardsController.addCard);
+app.post('/getCards', cardsController.getCardsByUserId);
+
 
 ////////////////////////////////////
 
