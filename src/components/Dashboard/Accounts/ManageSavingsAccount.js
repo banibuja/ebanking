@@ -49,7 +49,7 @@ export const ManageSavingsAccounts = () => {
                 <Sidebar />
 
                 <div className="container-fluid " style={{  marginTop: '100px' }} >
-                <h1 className="text-center">MANAGE Current Accounts</h1>
+                <h1 className="text-center">MANAGE Savings Accounts</h1>
                     <div className="row">
                         <caption>List of Messages</caption>
                         <div className="col-md-12 d-flex justify-content-center align-items-center">
@@ -59,6 +59,7 @@ export const ManageSavingsAccounts = () => {
                                         <th scope="col">SavingsID</th>
                                         <th scope="col">UserID</th>
                                         <th scope="col">FlexSaveAccount</th>
+                                        <th scope="col">Currency</th> 
                                         <th scope="col">Balance</th> 
                                         <th scope="col">Action</th> 
                                     </tr>
@@ -69,6 +70,7 @@ export const ManageSavingsAccounts = () => {
                                             <th scope="row">{item.SavingsID}</th> 
                                             <td>{item.UserID}</td>
                                             <td>{item.SavingsType}</td>
+                                            <td>{item.CurrencyCode}</td>
                                             <td>{parseFloat(item.Balance).toFixed(3)}</td> 
                                             <td>
                                             <button onClick={() => handleEdit(item.SavingsID)} className="btn btn-primary mr-2">Edit</button>

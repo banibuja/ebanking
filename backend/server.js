@@ -173,21 +173,24 @@ app.post('/addClient', async (req, res) => {
         SavingsType = generateFlexSaveAccountNumber();
 
         const addClient = await new Promise((resolve, reject) => {
-            db.query(`INSERT INTO users (username, name, lastname, email, password, gender, birthday) VALUES (?, ?, ?, ?, ?, ?, ?)`, 
-                [client.username, client.name, client.lastname, client.email, hashedPassword, client.gender, client.birthday], 
+            db.query(
+                `INSERT INTO users (username, name, lastname, email, password, gender, birthday, CurrencyCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, 
+                [client.username, client.name, client.lastname, client.email, hashedPassword, client.gender, client.birthday, client.currency], 
                 (error, result) => {
                     if (error) {
                         reject(error);
                     } else {
                         resolve(result);
                     }
-                });
+                }
+            );
         });
 
         const userId = addClient.insertId;
 
         const addAddress = await new Promise((resolve, reject) => {
-            db.query(`INSERT INTO adresa (userId, Country, City, Street) VALUES (?, ?, ?, ?)`, 
+            db.query(
+                `INSERT INTO adresa (userId, Country, City, Street) VALUES (?, ?, ?, ?)`, 
                 [userId, client.Country, client.City, client.Street], 
                 (error, results) => {
                     if (error) {
@@ -195,11 +198,13 @@ app.post('/addClient', async (req, res) => {
                     } else {
                         resolve(results);
                     }
-                });
+                }
+            );
         });
         
         const addRole = await new Promise((resolve, reject) => {
-            db.query(`INSERT INTO accesspermissions (UserID, AccessLevel) VALUES (?, ?)`, 
+            db.query(
+                `INSERT INTO accesspermissions (UserID, AccessLevel) VALUES (?, ?)`, 
                 [userId, 'User'], 
                 (error, results) => {
                     if (error) {
@@ -207,28 +212,90 @@ app.post('/addClient', async (req, res) => {
                     } else {
                         resolve(results);
                     }
-                });
+                }
+            );
         });
 
         await new Promise((resolve, reject) => {
-            db.query(`INSERT INTO accounts (UserID, CurrentAccount, Balance) VALUES (?, ?, ?)`, [userId, currentAccount, 0], (error, results) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(results);
+            db.query(
+                `INSERT INTO currentaccounts (UserID, CurrentAccount, Balance, CurrencyCode) VALUES (?, ?, ?, ?)`, 
+                [userId, currentAccount, 0, client.currency], 
+                (error, results) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(results);
+                    }
                 }
-            });
+            );
         });
 
         const addSavingsAccount = await new Promise((resolve, reject) => {
-            db.query(`INSERT INTO savingsaccounts (UserID, SavingsType, Balance) VALUES (?, ?, ?)`, [userId, SavingsType, 0], (error, results) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(results);
+            db.query(
+                `INSERT INTO savingsaccounts (UserID, SavingsType, Balance, CurrencyCode) VALUES (?, ?, ?, ?)`, 
+                [userId, SavingsType, 0, client.currency], 
+                (error, results) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(results);
+                    }
                 }
-            });
+            );
         });
+
+        const addCurrency = await new Promise((resolve, reject) => {
+            db.query(
+                `INSERT INTO currencies (UserID, CurrencyCode, ExchangeRate) VALUES (?, ?, ?)`,
+                [userId, client.currency, 1.0], 
+                (error, results) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(results);
+                    }
+                }
+            );
+        });
+
+
+        
+
+        const addAccount = await new Promise((resolve, reject) => {
+            db.query(
+                `INSERT INTO Accounts (UserID, CurrentAccount, SavingsAccount, CurrencyCode) VALUES (?, ?, ?, ?)`, 
+                [userId, currentAccount, SavingsType, client.currency, 0, 0], 
+                (error, results) => {
+                    if (error) {
+                        reject(error);
+                    } else {
+                        resolve(results);
+                    }
+                }
+            );
+        });
+
+                const cardNumber = `53547${Math.floor(100000000000 + Math.random() * 900000000000)}`;
+               
+                 const today = new Date();
+                 const expiryDate = new Date(today);
+                 expiryDate.setFullYear(expiryDate.getFullYear() + 4);
+
+                const formattedExpiryDate = expiryDate.toISOString().split('T')[0];
+
+                 const addCard = await new Promise((resolve, reject) => {
+                db.query(
+                    `INSERT INTO cards (UserID, CardNumber, ValidFrom, ExpiryDate, CardHolderName, CardType, CardStatus, AvailableBalance) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+                    [userId, cardNumber, today.toISOString().split('T')[0], formattedExpiryDate, client.name, "DEBIT MASTER CARD", "ACTIVE", 0],
+                    (error, results) => {
+                        if (error) {
+                            reject(error);
+                        } else {
+                            resolve(results);
+            }
+        }
+    );
+});
 
         return res.json(addClient);
       
@@ -238,6 +305,7 @@ app.post('/addClient', async (req, res) => {
     }
 });
 
+
 function generateFlexSaveAccountNumber() {
     const prefix = '11102222'; 
     const randomSuffix = Math.floor(10000000 + Math.random() * 90000000); 
@@ -246,7 +314,7 @@ function generateFlexSaveAccountNumber() {
 
 async function checkAccountExists(accountNumber) {
     return new Promise((resolve, reject) => {
-        db.query(`SELECT COUNT(*) AS count FROM accounts WHERE CurrentAccount = ?`, [accountNumber], (error, result) => {
+        db.query(`SELECT COUNT(*) AS count FROM currentaccounts WHERE CurrentAccount = ?`, [accountNumber], (error, result) => {
             if (error) {
                 reject(error);
             } else {

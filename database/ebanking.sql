@@ -8,7 +8,9 @@ lastname varchar(50) not null,
 email varchar(50) not null,
 password varchar(50) not null,
 gender varchar(20) check (Gender in ('M', 'F', 'Other')),
-birthday  datetime
+birthday  datetime,
+`CurrencyCode` varchar(20) NOT NULL
+
 );
 
 create table Adresa( 
@@ -22,30 +24,39 @@ create table Adresa(
     constraint FK_Adresa_Useri FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
 );
 
-CREATE TABLE Accounts (
-    AccountID int primary key AUTO_INCREMENT ,
-    UserID INT NOT NULL,
-    CurrentAccount VARCHAR(50) NOT NULL,
-    Balance DECIMAL(18, 5) NOT NULL,
-    CONSTRAINT FK_User_Account FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
-);
+CREATE TABLE `currentaccounts` (
+    `AccountID` int(11) NOT NULL AUTO_INCREMENT,
+    `UserID` int(11) NOT NULL,
+    `CurrentAccount` varchar(50) NOT NULL,
+    `CurrencyCode` varchar(20) NOT NULL,
+    `Balance` decimal(18, 5) NOT NULL,
+    PRIMARY KEY (`AccountID`),
+    KEY `FK_User_Account` (`UserID`),
+    CONSTRAINT `FK_User_Account` FOREIGN KEY (`UserID`) REFERENCES `users` (`userId`) ON DELETE CASCADE
+) ;
 
-CREATE TABLE Cards (
-    CardID int primary key AUTO_INCREMENT,
-    UserID INT NOT NULL,
-    CardNumber VARCHAR(16) NOT NULL,
-    ExpiryDate DATE NOT NULL,
-    CardHolderName VARCHAR(100) NOT NULL,
-    CardType VARCHAR(50) NOT NULL,
-    CardStatus VARCHAR(50) NOT NULL,
-  /*  Limit DECIMAL(18, 2), */
-    AvailableBalance DECIMAL(18, 2),
-    CONSTRAINT FK_User_Card FOREIGN KEY (UserID) REFERENCES users(userId) ON DELETE CASCADE
+CREATE TABLE `cards` (
+    `CardID` int(11) NOT NULL AUTO_INCREMENT,
+    `UserID` int(11) NOT NULL,
+    `CardNumber` varchar(16) NOT NULL,
+    `ValidFrom` date DEFAULT NULL,
+    `ExpiryDate` date NOT NULL,
+    `CardHolderName` varchar(100) NOT NULL,
+    `CardType` varchar(50) NOT NULL,
+    `CardStatus` varchar(50) NOT NULL,
+    `AvailableBalance` decimal(18, 2) DEFAULT NULL,
+    PRIMARY KEY (`CardID`),
+    KEY `FK_User_Card` (`UserID`),
+    CONSTRAINT `FK_User_Card` FOREIGN KEY (`UserID`) REFERENCES `users` (`userId`) ON DELETE CASCADE
 );
-CREATE TABLE Currencies (
-    CurrencyID int primary key AUTO_INCREMENT,
-    CurrencyCode VARCHAR(3) NOT NULL,
-    ExchangeRate DECIMAL(18, 4) NOT NULL
+CREATE TABLE `currencies` (
+    `CurrencyID` int(11) NOT NULL AUTO_INCREMENT,
+    `UserID` int(11) NOT NULL,
+    `CurrencyCode` varchar(3) NOT NULL,
+    `ExchangeRate` decimal(18, 4) NOT NULL,
+    PRIMARY KEY (`CurrencyID`),
+    KEY `FK_Currency_User` (`UserID`),
+    CONSTRAINT `FK_Currency_User` FOREIGN KEY (`UserID`) REFERENCES `users` (`userId`) ON DELETE CASCADE
 );
 
 CREATE TABLE Reports (
@@ -58,17 +69,19 @@ CREATE TABLE `savingsaccounts` (
     `SavingsID` int(11) NOT NULL AUTO_INCREMENT,
     `UserID` int(11) NOT NULL,
     `SavingsType` varchar(50) NOT NULL,
+    `CurrencyCode` varchar(20) NOT NULL,
     `Balance` decimal(18, 5) NOT NULL,
     PRIMARY KEY (`SavingsID`),
     KEY `FK_User_Savings` (`UserID`),
-    CONSTRAINT `FK_User_Savings` FOREIGN KEY (`UserID`) REFERENCES `users` (`userId`) ON DELETE CASCADE );
+    CONSTRAINT `FK_User_Savings` FOREIGN KEY (`UserID`) REFERENCES `users` (`userId`) ON DELETE CASCADE
+) ;
 CREATE TABLE Loans (
     LoanID int primary key AUTO_INCREMENT,
     AccountID INT NOT NULL,
     LoanAmount DECIMAL(18, 2) NOT NULL,
     LoanConditions TEXT,
     Status VARCHAR(50) NOT NULL,
-    CONSTRAINT FK_Account_Loan FOREIGN KEY (AccountID) REFERENCES Accounts(AccountID) ON DELETE CASCADE
+CONSTRAINT FK_Account_Loan FOREIGN KEY (AccountID) REFERENCES currentaccounts(AccountID) ON DELETE CASCADE
 );
 CREATE TABLE Investments (
     InvestmentID int primary key AUTO_INCREMENT,
@@ -76,7 +89,7 @@ CREATE TABLE Investments (
     InvestmentType VARCHAR(50) NOT NULL,
     InvestmentAmount DECIMAL(18, 2) NOT NULL,
     CurrentEarnings DECIMAL(18, 2) NOT NULL,
-    CONSTRAINT FK_Account_Investment FOREIGN KEY (AccountID) REFERENCES Accounts(AccountID) ON DELETE CASCADE
+    CONSTRAINT FK_Account_Investment FOREIGN KEY (AccountID) REFERENCES currentaccounts(AccountID) ON DELETE CASCADE
 );
 CREATE TABLE AccessPermissions (
     PermissionID int primary key AUTO_INCREMENT,
@@ -103,8 +116,8 @@ CREATE TABLE Transactions (
     AdditionalInfo TEXT,
     TransactionFee DECIMAL(18, 5),
     CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT FK_Sender_Acc FOREIGN KEY (SenderAccID) REFERENCES Accounts(AccountID) ON DELETE CASCADE,
-    CONSTRAINT FK_Receiver_Acc FOREIGN KEY (ReceiverAccID) REFERENCES Accounts(AccountID) ON DELETE CASCADE
+    CONSTRAINT FK_Sender_Acc FOREIGN KEY (SenderAccID) REFERENCES currentaccounts(AccountID) ON DELETE CASCADE,
+    CONSTRAINT FK_Receiver_Acc FOREIGN KEY (ReceiverAccID) REFERENCES currentaccounts(AccountID) ON DELETE CASCADE
 );
 
 CREATE TABLE TransactionAuthorizations (
@@ -124,8 +137,8 @@ CREATE TABLE Payments (
     Amount DECIMAL(18, 2) NOT NULL,
     PaymentDate DATETIME NOT NULL,
     PaymentStatus VARCHAR(50) NOT NULL,
-    CONSTRAINT FK_Sender_Account FOREIGN KEY (SenderAccountID) REFERENCES Accounts(AccountID)  ON DELETE CASCADE,
-    CONSTRAINT FK_Receiver_Account FOREIGN KEY (ReceiverAccountID) REFERENCES Accounts(AccountID)  ON DELETE CASCADE
+    CONSTRAINT FK_Sender_Account FOREIGN KEY (SenderAccountID) REFERENCES currentaccounts(AccountID)  ON DELETE CASCADE,
+    CONSTRAINT FK_Receiver_Account FOREIGN KEY (ReceiverAccountID) REFERENCES currentaccounts(AccountID)  ON DELETE CASCADE
 );
 
 CREATE TABLE Retirements (
@@ -137,6 +150,17 @@ CREATE TABLE Retirements (
     EndDate DATE,
     CONSTRAINT FK_User_Retirement FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
 );
+CREATE TABLE `accounts` (
+    `AccountID` int(11) NOT NULL AUTO_INCREMENT,
+    `UserID` int(11) NOT NULL,
+    `CurrentAccount` varchar(50) NOT NULL,
+    `SavingsAccount` varchar(50) NOT NULL,
+    `CurrencyCode` varchar(20) NOT NULL,
+    PRIMARY KEY (`AccountID`),
+    KEY `FK_User_Accountss` (`UserID`),
+    CONSTRAINT `FK_User_Accountss` FOREIGN KEY (`UserID`) REFERENCES `users` (`userId`) ON DELETE CASCADE
+);
+
 
 
   CREATE TABLE ContactUs (
@@ -149,43 +173,36 @@ CREATE TABLE Retirements (
     ContactDate DATETIME NOT NULL,
     CONSTRAINT FK_User_Contact FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
 );
+
+INSERT INTO `users` (`userId`, `username`, `name`, `lastname`, `email`, `password`, `gender`, `birthday`, `CurrencyCode`) VALUES
+(26, 'bani', 'bani', 'bani', 'bani@gmail.com', 'bani1234', 'M', '2004-02-29 00:00:00', 'EUR'),
+(27, 'user', 'user', 'user', 'user@gmail.com', 'user', 'M', '2024-05-19 00:00:00', 'USD');
     
 -- Tabela Users
-INSERT INTO Users (userId, username, name, lastname, email, password, gender, birthday)
-VALUES 
-(1, 'xentoro', 'Dior', 'Hyseni', 'dior_hyseni@gmail.com', 'xentoro', 'M', '1990-05-15'),
-(2, 'bani', 'Shaban', 'Buja', 'bani_buja@gmail.com', 'bani1234', 'F', '1992-08-20'),
-(3, 'arionR8', 'Arion', 'Rexhepi', 'arionr8@gmail.com', 'arionr8', 'M', '1985-11-10'),
-(4, 'ernita', 'Ernita', 'Rexhepi', 'ernita@gmail.com', 'ernita', 'F', '1992-08-20'),
-(5, 'elsa', 'elsa', 'Rexhepi', 'elsa@gmail.com', 'elsa1234', 'F', '1992-08-20');
+INSERT INTO `accesspermissions` (`PermissionID`, `UserID`, `AccessLevel`) VALUES
+(923, 26, 'Admin'),
+(924, 27, 'User');
 
 -- Tabela Adresa
-INSERT INTO Adresa (userId, Country, City, Street)
-VALUES
-(1, 'USA', 'New York', 'Broadway'),
-(2, 'UK', 'London', 'Oxford Street'),
-(3, 'Canada', 'Toronto', 'Bay Street');
+INSERT INTO `adresa` (`AdresaID`, `userId`, `Country`, `City`, `Street`) VALUES
+(3, 26, 'bani', 'bani', 'bani'),
+(4, 27, 'user', 'user', 'user');
 
 -- Tabela Accounts
-INSERT INTO Accounts (AccountID, UserID, CurrentAccount, Balance)
-VALUES
-(101, 1, 'Checking', 5000.00),
-(102, 2, 'Savings', 10000.00),
-(103, 3, 'Investment', 15000.00);
+INSERT INTO `cards` (`CardID`, `UserID`, `CardNumber`, `ValidFrom`, `ExpiryDate`, `CardHolderName`, `CardType`, `CardStatus`, `AvailableBalance`) VALUES
+(315, 26, '5354730745629939', '2024-05-16', '2028-05-15', 'bani', 'DEBIT MASTER CARD', 'ACTIVE', 0.00),
+(316, 27, '5354737989116256', '2024-05-16', '2028-05-16', 'user', 'DEBIT MASTER CARD', 'ACTIVE', 0.00);
 
 
 -- Tabela Cards
-INSERT INTO Cards (CardID, UserId, CardNumber, ExpiryDate, CardHolderName, CardType, CardStatus, AvailableBalance)
-VALUES
-(301, 1, '1234567812345678', '2026-12-31', 'John Doe', 'Debit', 'Active', 4000.00),
-(302, 2, '8765432187654321', '2025-10-31', 'Jane Smith', 'Credit', 'Active', 8000.00);
+INSERT INTO `currencies` (`CurrencyID`, `UserID`, `CurrencyCode`, `ExchangeRate`) VALUES
+(7, 26, 'EUR', 1.0000),
+(8, 27, 'USD', 1.0000);
 
 -- Tabela Currencies
-INSERT INTO Currencies (CurrencyID, CurrencyCode, ExchangeRate)
-VALUES
-(401, 'USD', 1.00),
-(402, 'EUR', 0.85),
-(403, 'GBP', 0.72);
+INSERT INTO `currentaccounts` (`AccountID`, `UserID`, `CurrentAccount`, `CurrencyCode`, `Balance`) VALUES
+(122, 26, '1110333377416494', 'EUR', 0.00000),
+(123, 27, '1110333322429080', 'USD', 0.00000);
 
 -- Tabela Reports
 INSERT INTO Reports (ReportID, ReportType, GenerationDate, Description)
@@ -194,57 +211,7 @@ VALUES
 (502, 'Balance', '2024-04-22', 'Monthly account balance report');
 
 -- Tabela SavingsAccounts
-INSERT INTO `savingsaccounts` (`SavingsID`, `UserID`, `SavingsType`, `Balance`) 
-VALUES 
-('33', '2', '22222222222222', '222');
+INSERT INTO `savingsaccounts` (`SavingsID`, `UserID`, `SavingsType`, `CurrencyCode`, `Balance`) VALUES
+(50, 26, '1110222243416638', 'EUR', 0.00000),
+(51, 27, '1110222287108464', 'USD', 0.00000);
 
--- Tabela Loans
-INSERT INTO Loans (LoanID, AccountID, LoanAmount, LoanConditions, Status)
-VALUES
-(701, 103, 2000.00, 'Interest rate: 5%', 'Active'),
-(702, 103, 5000.00, 'Interest rate: 6%', 'Closed');
-
--- Tabela Investments
-INSERT INTO Investments (InvestmentID, AccountID, InvestmentType, InvestmentAmount, CurrentEarnings)
-VALUES
-(801, 103, 'Stocks', 10000.00, 1500.00),
-(802, 103, 'Bonds', 5000.00, 300.00);
-
--- Tabela AccessPermissions
-INSERT INTO AccessPermissions (PermissionID, UserID, AccessLevel)
-VALUES
-(901, 1, 'Admin'),
-(902, 2, 'User'),
-(903, 3, 'User');
-
--- Tabela Notifications
-INSERT INTO Notifications (NotificationID, UserID, NotificationType, Description, CreatedDate)
-VALUES
-(1001, 1, 'Transaction', 'New deposit of $1000.00', '2024-04-22 11:30:00'),
-(1002, 2, 'Balance', 'Monthly account balance report available', '2024-04-22 09:00:00');
-
-
-INSERT INTO Transactions (TransactionID, SenderAccID, ReceiverAccID, TransactionType, TransactionAmount, Currency,  Statusi, AdditionalInfo, TransactionFee) 
-VALUES 
-(201, 101, 102, 'Transfer', 500.00, 'USD',  'Completed', 'Payment for goods', 2.50),
-(202, 103, 101, 'Transfer', 1000.00, 'EUR', 'Completed', 'Monthly rent payment', 5.00),
-(203, 102, 103, 'Transfer', 200.00, 'USD',  'Completed', 'Repayment of loan', 1.00);
-
-
--- Tabela TransactionAuthorizations
-INSERT INTO TransactionAuthorizations (AuthorizationID, TransactionID, UserID, AuthorizationStatus, AuthorizationDate)
-VALUES
-(1101, 201, 1, 'Approved', '2024-04-20 11:00:00'),
-(1102, 203, 2, 'Pending', NULL);
-
--- Tabela Payments
-INSERT INTO Payments (PaymentID, SenderAccountID, ReceiverAccountID, Amount, PaymentDate, PaymentStatus)
-VALUES
-(1201, 101, 102, 300.00, '2024-04-21 14:00:00', 'Completed'),
-(1202, 102, 101, 100.00, '2024-04-22 10:00:00', 'Completed');
-
--- Tabela Retirements
-INSERT INTO Retirements (RetirementID, UserID, RetirementType, Balance, StartDate, EndDate)
-VALUES
-(1301, 1, '401(k)', 50000.00, '2030-01-01', '2050-12-31'),
-(1302, 2, 'Pension Fund', 75000.00, '2040-01-01', '2070-12-31');

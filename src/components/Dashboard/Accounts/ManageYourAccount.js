@@ -84,6 +84,7 @@ export const ManageYourAccount = () => {
                                         {/* <th scope="col">AccountID</th> */}
                                         <th scope="col">Your ID</th>
                                         <th scope="col">CurrentAccount</th>
+                                        <th scope="col">Currency</th>
                                         <th scope="col">Balance</th> 
                                         {/* <th scope="col">Action</th>  */}
                                     </tr>
@@ -94,6 +95,7 @@ export const ManageYourAccount = () => {
                                             {/* <th scope="row">{item.AccountID}</th>  */}
                                             <td>{item.UserID}</td>
                                             <td>{item.CurrentAccount}</td>
+                                            <td>{item.CurrencyCode}</td>
                                             <td>{parseFloat(item.Balance).toFixed(3)}</td> 
                                             <td>
                                                 {/* <button onClick={() => handleDelete(item.AccountID)} className="btn btn-danger">Delete</button> */}
@@ -116,6 +118,7 @@ export const ManageYourAccount = () => {
                                             {/* <th scope="col">AccountID</th> */}
                                             <th scope="col">Your ID</th>
                                             <th scope="col">FlexSaveAccount</th>
+                                            <th scope="col">Currency</th>
                                             <th scope="col">Balance</th> 
                                             {/* <th scope="col">Action</th>  */}
                                         </tr>
@@ -126,6 +129,7 @@ export const ManageYourAccount = () => {
                                                 {/* <th scope="row">{item.SavingsID}</th>  */}
                                                 <td>{item.UserID}</td>
                                                 <td>{item.SavingsType}</td>
+                                                <td>{item.CurrencyCode}</td>
                                                 <td>{parseFloat(item.Balance).toFixed(3)}</td> 
                                                 <td>
                                                     {/* <button onClick={() => handleDeletee(item.SavingsID)} className="btn btn-danger">Delete</button> */}

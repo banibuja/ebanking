@@ -79,8 +79,9 @@ export const Manageclientcards = () => {
                                         <th scope="col">Card ID</th>
                                         <th scope="col">User Id</th>
                                         <th scope="col">Card Number</th>
-                                        <th scope="col">Expiry Date</th>
                                         <th scope="col">Card Holder Name</th>
+                                        <th scope="col">Valid From</th>
+                                        <th scope="col">Valid Util</th>
                                         <th scope="col">Card Type</th>
                                         <th scope="col">Card Status</th>
                                         {/* <th scope="col">Available Balance</th> */}
@@ -93,8 +94,9 @@ export const Manageclientcards = () => {
                                             <th scope="row">{card.CardID}</th>
                                             <td>{card.UserID}</td>
                                             <td>{maskCardNumber(card.CardNumber)}</td>
-                                            <td>{formatDate(card.ExpiryDate)}</td>
                                             <td>{card.CardHolderName}</td>
+                                            <td>{formatDate(card.ValidFrom)}</td>
+                                            <td>{formatDate(card.ExpiryDate)}</td>
                                             <td>{card.CardType}</td>
                                             <td>{card.CardStatus}</td>
                                             {/* <td>{card.AvailableBalance}</td> */}

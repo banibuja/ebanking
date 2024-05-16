@@ -2,7 +2,7 @@ const db = require('../../../db');
 
 const getAccountById = (req, res) => {
     const accountId = req.params.id;
-    const sql = "SELECT UserID, CurrentAccount, Balance FROM Accounts WHERE AccountID = ?";
+    const sql = "SELECT UserID, CurrentAccount, Balance FROM currentaccounts WHERE AccountID = ?";
 
     db.query(sql, [accountId], (err, data) => {
         if (err) {
@@ -19,7 +19,7 @@ const getAccountById = (req, res) => {
 const updateAccount = (req, res) => {
     const accountId = req.params.id;
     const { Balance } = req.body;
-    const sqlUpdate = "UPDATE Accounts SET Balance=? WHERE AccountID=?";
+    const sqlUpdate = "UPDATE currentaccounts SET Balance=? WHERE AccountID=?";
 
     db.query(sqlUpdate, [Balance, accountId], (err, result) => {
         if (err) {
@@ -31,7 +31,7 @@ const updateAccount = (req, res) => {
 };
 
 const getAccounts = (req, res) => {
-    const sql = "SELECT * FROM Accounts";
+    const sql = "SELECT * FROM currentaccounts";
 
     db.query(sql, (err, data) => {
         if (err) {
@@ -47,7 +47,7 @@ const getAccounts = (req, res) => {
 
 const getAccountByUserId = (req, res) => {
     const userID = req.session.uId; 
-    const sql = "SELECT * FROM Accounts WHERE UserID = ?";
+    const sql = "SELECT * FROM currentaccounts WHERE UserID = ?";
 
     db.query(sql, [userID], (err, data) => {
         if (err) {
@@ -63,7 +63,7 @@ const getAccountByUserId = (req, res) => {
 
 const deleteAccount = (req, res) => {
     const accountId = req.params.id;
-    const sqlDelete = "DELETE FROM Accounts WHERE AccountID = ?";
+    const sqlDelete = "DELETE FROM currentaccounts WHERE AccountID = ?";
 
     db.query(sqlDelete, accountId, (err, result) => {
         if (err) {

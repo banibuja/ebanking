@@ -17,6 +17,7 @@ function AddClient() {
         Country: '',
         City: '',
         Street: '',
+        currency: '',
         emailExists: false 
     });
 
@@ -120,6 +121,16 @@ function AddClient() {
                                                         <input type="text" placeholder='City' name='City' onChange={handeInput} className='form-control roundend-0' />
                                                         <input type="text" placeholder='Street' name='Street' onChange={handeInput} className='form-control roundend-0' />
                                                     </div>
+                                                    <div className="form-group">
+                                                            <label>Selecr Currency</label>
+                                                              <select name='currency' onChange={handeInput}  className='form-control roundend-0' >
+                                                                 <option value="">Select Currency</option>
+                                                                  <option value="EUR">EUR</option>
+                                                                   <option value="USD">USD</option>
+                                                                       <option value="GBP">GBP</option>
+
+                                </select>
+                            </div>
                                                 </div>
                                             </div>
                                             <center>

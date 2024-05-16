@@ -58,6 +58,7 @@ export const ManageAccounts = () => {
                                         <th scope="col">AccountID</th>
                                         <th scope="col">UserId</th>
                                         <th scope="col">CurrentAccount</th>
+                                        <th scope="col">Currency</th>
                                         <th scope="col">Balance</th> 
                                         <th scope="col">Action</th> 
                                     </tr>
@@ -68,6 +69,7 @@ export const ManageAccounts = () => {
                                             <th scope="row">{account.AccountID}</th> 
                                             <td>{account.UserID}</td>
                                             <td>{account.CurrentAccount}</td>
+                                            <td>{account.CurrencyCode}</td>
                                             <td>{parseFloat(account.Balance).toFixed(3)}</td> 
                                             <td>
                                             <button onClick={() => handleEdit(account.AccountID)} className="btn btn-primary mr-2">Edit</button>
