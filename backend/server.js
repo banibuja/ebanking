@@ -42,6 +42,7 @@ app.use(session({
 })
 )
 
+
 app.get('/sessionTimeRemaining', SessionController.sessionTimeRemaining);
 
 ////////////////////////////////////
@@ -67,11 +68,9 @@ app.put('/updateCards/:id', cardsController.updateCard);
 app.put('/blockCard/:id', cardsController.blockCard);
 app.put('/enableCard/:id', cardsController.enableCard);
 app.get('/getCards/:id', cardsController.getCardById);
-app.get('/getCardsByUserId/:id', cardsController.getCardsByUserId);
+app.post('/getCards', cardsController.getCardsByUserId);
 app.get('/getCardDetails', cardsController.checkCardExists);
 app.post('/addCard', cardsController.addCard);
-app.post('/getCards', cardsController.getCardsByUserId);
-
 
 ////////////////////////////////////
 
