@@ -130,7 +130,7 @@ export const ManageYourAccount = () => {
                                                 <td>{item.UserID}</td>
                                                 <td>{item.SavingsType}</td>
                                                 <td>{item.CurrencyCode}</td>
-                                                <td>{parseFloat(item.Balance).toFixed(3)}</td> 
+                                                <td>{parseFloat(item.Balance).toFixed(2)}</td> 
                                                 <td>
                                                     {/* <button onClick={() => handleDeletee(item.SavingsID)} className="btn btn-danger">Delete</button> */}
                                                 </td>

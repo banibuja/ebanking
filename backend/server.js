@@ -13,6 +13,7 @@ const currentAccountController = require('../src/controllers/Accounts/CurrentAcc
 const savingsAccountController = require('../src/controllers/Accounts/SavingsAccount/SavingsAccount');
 const cardsController = require('../src/controllers/Cards/ClientCards');
 const SessionController = require('../src/controllers/Session/sessioncontroller'); 
+const transctionController = require('../src/controllers/Transcation/Transaction')
 
 
 
@@ -54,12 +55,17 @@ app.put('/updateAccount/:id', currentAccountController.updateAccount);
 app.post('/getAccounts', currentAccountController.getAccounts);
 app.post('/getAccountById', currentAccountController.getAccountByUserId);
 app.delete("/deleteAccounts/:id", currentAccountController.deleteAccount);
+// app.post('/getCurrentAccount', currentAccountController.getAccountByUserId);
+
+
+
 ////////////////////////////////////
 app.get('/getSavingsAccounts/:id', savingsAccountController.getSavingsAccountById);
 app.post('/getSavings', savingsAccountController.getSavings);
 app.delete('/deleteSavings/:id', savingsAccountController.deleteSavings);
 app.put('/updateSavingsAccounts/:id', savingsAccountController.updateSavingsAccounts);
 app.post('/getSavingsById', savingsAccountController.getSavingsById);
+
 
 ///////////////////////////////////
 app.post('/getCardsclients', cardsController.getCards);
@@ -72,7 +78,14 @@ app.post('/getCards', cardsController.getCardsByUserId);
 app.get('/getCardDetails', cardsController.checkCardExists);
 app.post('/addCard', cardsController.addCard);
 
+
+
+
 ////////////////////////////////////
+app.post('/getCurrentAccounts', transctionController.getAccountByUserId);
+
+
+
 
 
 
@@ -113,6 +126,27 @@ app.get('/logout', (req, res) => {
         }
     });
 });
+// app.post('/getacc', (req, res) => {
+//     const userID = req.session.uId;
+//     if (!userID) {
+//         return res.json("fail");
+//     }
+
+//     const sql = "SELECT * FROM currentaccounts WHERE UserID = ?";
+//     db.query(sql, [userID], (err, data) => {
+//         if (err) {
+//             return res.json("Error");
+//         }
+//         if (data.length > 0) {
+//             return res.json(data);
+//         } else {
+//             return res.json("fail");
+//         }
+//     });
+// });
+
+
+
 
 //Login Form
 app.post('/login', (req, res) => {
@@ -286,7 +320,7 @@ app.post('/addClient', async (req, res) => {
                  const addCard = await new Promise((resolve, reject) => {
                 db.query(
                     `INSERT INTO cards (UserID, CardNumber, ValidFrom, ExpiryDate, CardHolderName, CardType, CardStatus, AvailableBalance) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-                    [userId, cardNumber, today.toISOString().split('T')[0], formattedExpiryDate, client.name, "DEBIT MASTER CARD", "ACTIVE", 0],
+                    [userId, cardNumber, today.toISOString().split('T')[0], formattedExpiryDate, client.name, "DEBIT MASTER CARD", "ACTIVE", "0"],
                     (error, results) => {
                         if (error) {
                             reject(error);

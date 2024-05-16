@@ -71,7 +71,7 @@ export const ManageSavingsAccounts = () => {
                                             <td>{item.UserID}</td>
                                             <td>{item.SavingsType}</td>
                                             <td>{item.CurrencyCode}</td>
-                                            <td>{parseFloat(item.Balance).toFixed(3)}</td> 
+                                            <td>{parseFloat(item.Balance).toFixed(2)}</td> 
                                             <td>
                                             <button onClick={() => handleEdit(item.SavingsID)} className="btn btn-primary mr-2">Edit</button>
                                                 <button onClick={() => handleDelete(item.SavingsID)} className="btn btn-danger">Delete</button>

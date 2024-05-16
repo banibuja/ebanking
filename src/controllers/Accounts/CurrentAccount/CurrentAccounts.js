@@ -1,5 +1,7 @@
 const db = require('../../../db');
 
+
+
 const getAccountById = (req, res) => {
     const accountId = req.params.id;
     const sql = "SELECT UserID, CurrentAccount, Balance FROM currentaccounts WHERE AccountID = ?";
