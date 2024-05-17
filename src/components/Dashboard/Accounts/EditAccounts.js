@@ -19,19 +19,17 @@ function EditAccount({ id, onClose }) {
             .catch(err => console.log(err));
     }, [id]);
 
-    const handleInput = (event) => {
-        const { name, value } = event.target;
-        const parsedValue = name === 'Balance' ? parseFloat(value) : value; 
-        setValues(prev => ({ ...prev, [name]: parsedValue }));
-    };
-    
+    const handleInput = (e) => {
+        const { name, value } = e.target;
+        setValues((prev) => ({ ...prev, [name]: value }));
+  };
 
     const handleSubmit = (event) => {
         event.preventDefault();
         
         axios.put(`http://localhost:8080/updateAccount/${id}`, values)
             .then(res => {
-                console.log('Update APi', res.data)
+                console.log('Update API', res.data);
                 
                 window.location.reload(); 
             })
@@ -52,15 +50,15 @@ function EditAccount({ id, onClose }) {
                         <form onSubmit={handleSubmit}>
                             <div className="form-group">
                                 <label>Client ID</label>
-                                <input type="text" placeholder='User ID' name='UserID' onChange={handleInput} className='form-control roundend-0' value={values.UserID} disabled/>
+                                <input type="text" placeholder='User ID' name='UserID' onChange={handleInput} className='form-control rounded-0' value={values.UserID} disabled />
                             </div>
                             <div className="form-group">
                                 <label>Current Account</label>
-                                <input type="text" placeholder='Current Account' name='CurrentAccount' onChange={handleInput} className='form-control roundend-0' value={values.CurrentAccount} disabled />
+                                <input type="text" placeholder='Current Account' name='CurrentAccount' onChange={handleInput} className='form-control rounded-0' value={values.CurrentAccount} disabled />
                             </div>
                             <div className="form-group">
                                 <label>Balance</label>
-                                <input type="text" placeholder='Balance' name='Balance' onChange={handleInput} className='form-control roundend-0' value={values.Balance} />
+                                <input type="text" placeholder='Balance' name='Balance' onChange={handleInput} className='form-control rounded-0' value={values.Balance} />
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" onClick={onClose}>Close</button>
@@ -73,6 +71,5 @@ function EditAccount({ id, onClose }) {
         </div>
     );
 };
-
 
 export default EditAccount;
