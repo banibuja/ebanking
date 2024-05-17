@@ -74,6 +74,7 @@ app.post('/addCard', cardsController.addCard);
 
 ////////////////////////////////////
 app.post('/getCurrentAcc', TransactionController.getCurrentAccount);
+app.post('/insertTransaction', TransactionController.insertTransaction);
 
 
 const db = mysql.createConnection({

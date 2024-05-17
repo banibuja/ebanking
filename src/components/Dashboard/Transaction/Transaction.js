@@ -1,30 +1,58 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Sidebar from '../Sidebar';
 import axios from 'axios';
 
 function Transaction() {
+    const navigate = useNavigate();
 
+    const [currentAccount, setCurrentAccount] = useState({CurrentAccount: ''});
     const [values, setValues] = useState({
-        CurrentAccount: ''
+        SenderAccID: currentAccount,
+        ReceiverAccID: '',
+        TransactionType: '',
+        TransactionAmount: '',
+        Currency: '',
+        AdditionalInfo: '',
+        TransactionFee: ''
     });
-
     useEffect(() => {
-        axios.post('http://localhost:8080/getCurrentAcc')
+        CurrentAccount();
+    }, []);
+
+    const [errors, setErrors] = useState({});
+
+    const CurrentAccount = async () => {
+        await axios.post('http://localhost:8080/getCurrentAcc')
             .then(res => {
                 console.log('Edit Cards API', res.data);
                 if (res.data !== "fail") {
-                    setValues(res.data[0]); 
+                    setCurrentAccount(res.data[0]); 
                 } else {
                     console.error('Failed to fetch current account');
                 }
             })
             .catch(err => console.log(err));
-    }, []);
+    }
 
     const handleInput = (event) => {
         setValues(prev => ({ ...prev, [event.target.name]: event.target.value }));
     };
+    const handleSubmit = (event) => {
+        event.preventDefault();
 
+        setErrors({});
+
+        if (Object.keys(errors).length === 0) {
+            console.log(values);
+            axios.post(`http://localhost:8080/insertTransaction`, values)
+                .then(res => {
+                    console.log(res);
+                    // navigate('/dashboard');
+                })
+                .catch(err => console.log(err));
+        }
+    };
     return (
         <div>
             <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
@@ -38,51 +66,45 @@ function Transaction() {
                                         <div className="card-header">
                                             <h3 className="card-title">Interbank Money Transfer</h3>
                                         </div>
-                                        <form>
+                                        <form onSubmit={handleSubmit}>
                                             <div className="card-body">
-                                                <div className="row">
-                                                    <div className="col-md-6 form-group">
-                                                        <label htmlFor="CurrentAccount">Contributor Account</label>
-                                                        <input type="text" name='CurrentAccount' className='form-control roundend-0' value={values.CurrentAccount} disabled />
-                                                    </div>
-                                                    <div className="col-md-6 form-group">
-                                                        <label htmlFor="ClientName">Client Name</label>
-                                                        {/* Additional input fields for client information */}
-                                                    </div>
-                                                    <div className="col-md-6 form-group">
-                                                        <label htmlFor="lastname">Client Lastname</label>
-                                                        <input type="text" placeholder='Lastname' name='lastname' className='form-control roundend-0' onChange={handleInput} />
-                                                    </div>
-                                                    <div className="col-md-6 form-group">
-                                                        <label htmlFor="email">Client Email</label>
-                                                        <input type="email" placeholder='Email' name='email' className='form-control roundend-0' onChange={handleInput} />
-                                                    </div>
-                                                    <div className="col-md-6 form-group">
-                                                        <label htmlFor="password">Client Password</label>
-                                                        <input type="password" placeholder='Password' name='password' className='form-control roundend-0' onChange={handleInput} />
-                                                    </div>
-                                                    <div className="col-md-6 form-group">
-                                                        <label htmlFor="gender">Client Gender</label>
-                                                        <select name="gender" className="form-control rounded-0" onChange={handleInput}>
-                                                            <option value="">Select Gender</option>
-                                                            <option value="M">Male</option>
-                                                            <option value="F">Female</option>
-                                                        </select>
-                                                    </div>
-                                                    <div className="col-md-6 form-group">
-                                                        <input type="date" name='birthday' className="form-control form-control-lg" placeholder="Birthdate" onChange={handleInput} />
-                                                    </div>
-                                                    <div className="col-md-6 form-group">
-                                                        <label htmlFor="Country">Client Address</label>
-                                                        <input type="text" placeholder='Country' name='Country' className='form-control roundend-0' onChange={handleInput} />
-                                                        <input type="text" placeholder='City' name='City' className='form-control roundend-0' onChange={handleInput} />
-                                                        <input type="text" placeholder='Street' name='Street' className='form-control roundend-0' onChange={handleInput} />
-                                                    </div>
+                                                <div className="form-group">
+                                                    <label htmlFor="CurrentAccount">Contributor Account</label>
+                                                    <input type="text" name='CurrentAccount' className='form-control roundend-0' value={currentAccount.CurrentAccount} disabled />
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor="ClientName">Beneficiary account</label>
+                                                    <input type="numbers" placeholder='Beneficiary Account' name='ReceiverAccID' className='form-control roundend-0' onChange={handleInput}  value={currentAccount.ReceiverAccID}/>
+                                                    {errors.ReceiverAccID && <span className='text-danger'>{errors.ReceiverAccID}</span>}
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor="details">Details</label>
+                                                    <input type="text" placeholder='Details' name='AdditionalInfo' className='form-control roundend-0' onChange={handleInput}  value={currentAccount.AdditionalInfo}/>
+                                                    {errors.AdditionalInfo && <span className='text-danger'>{errors.AdditionalInfo}</span>}
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor="vlera">Amount</label>
+                                                    <input type="text" placeholder='Vlera' name='TransactionAmount' className='form-control roundend-0' onChange={handleInput} value={currentAccount.TransactionAmount}/>
+                                                    {errors.TransactionAmount && <span className='text-danger'>{errors.TransactionAmount}</span>}
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor="currency">Currency</label>
+                                                    <select name="Currency" className="form-control roundend-0" onChange={handleInput} value={currentAccount.Currency}>
+                                                        <option value="Euro">Euro</option>
+                                                        <option value="Dollar">Dollar</option>
+                                                        <option value="Frang">Frang</option>
+                                                    </select>
+                                                    {errors.Currency && <span className='text-danger'>{errors.Currency}</span>}
+                                                </div>
+                                                <div className="form-group">
+                                                    <label htmlFor="transferType">Transfer type</label>
+                                                    <input type="text" placeholder='Transfer Type' name='TransactionType' className='form-control roundend-0' onChange={handleInput} value={currentAccount.TransactionType}/>
+                                                    {errors.TransactionType && <span className='text-danger'>{errors.TransactionType}</span>}
                                                 </div>
                                             </div>
                                             <center>
                                                 <div className="card-footer">
-                                                    <button type="submit" className="btn btn-success">Add Client</button>
+                                                    <button type="submit" className="btn btn-success">Transfer</button>
                                                 </div>
                                             </center>
                                         </form>
