@@ -6,39 +6,63 @@ const getCurrentAccount = (req, res) => {
         return res.json("fail");
     }
 
-    const sql = "SELECT * FROM currentaccounts WHERE UserID = ?";
+    var sql = "SELECT * FROM currentaccounts WHERE UserID = ?";
     db.query(sql, [userID], (err, data) => {
         if (err) {
-            console.log(err);
             return res.status(500).end();
         }
         if (data.length > 0) {
-            console.log(data);
-            return res.json(data).end();
+            return res.status(200).json(data).end();
         } else {
-            console.log(data);
             return res.status(404).end();
         }
     });
-    console.log("userID");
 }
 const insertTransaction = (req, res) => {
     const Statusi = 1;
     const TransactionFee = 0;
     const { SenderAccID, ReceiverAccID, TransactionType, TransactionAmount, Currency, AdditionalInfo } = req.body;
-
-    if (!SenderAccID || !ReceiverAccID || !TransactionType || !TransactionAmount || !Currency || !AdditionalInfo) {
-        return res.json("Missing parameters");
-    }
-    const sql = `INSERT INTO transactions (SenderAccID, ReceiverAccID, TransactionType, TransactionAmount, Currency, Statusi, AdditionalInfo, TransactionFee) 
-                 VALUES (?, ?, ?, ?, ?, 'true', ?, ?)`;
-
-    db.query(sql, [SenderAccID, ReceiverAccID, TransactionType, TransactionAmount, Currency, Statusi, AdditionalInfo, TransactionFee], (err, result) => {
+    db.query(`SELECT * FROM currentaccounts WHERE CurrentAccount IN (?, ?)`, [ReceiverAccID, SenderAccID], (err, results) => {
         if (err) {
-            return res.json(err);
+            return res.status(500).json({ error: 'Database query error' }).end();
         }
-        console.log(result);
-        return res.json("Success");
+
+        const receiverAccount = results.find(account => account.CurrentAccount === parseInt(ReceiverAccID));
+        const senderAccount = results.find(account => account.CurrentAccount === parseInt(SenderAccID));
+        if (!receiverAccount) {
+            return res.status(404).json("receiver account not found").end();
+        }
+        if (!senderAccount || senderAccount.Balance < TransactionAmount) {
+            return res.status(404).json("not enough balance").end();
+        }
+        if (!SenderAccID || !ReceiverAccID || !TransactionType || !TransactionAmount || !Currency || !AdditionalInfo) {
+            return res.json("Missing parameters");
+        }
+
+        const newSenderBalance = senderAccount.Balance - TransactionAmount;
+        db.query('UPDATE currentaccounts SET Balance = ? WHERE CurrentAccount = ?', [newSenderBalance, parseInt(SenderAccID)], (err, result) => {
+            if (err) {
+                return res.status(500).json({ error: 'Database update error' });
+            }
+
+            // Update receiver balance
+            const receiverBalance = receiverAccount.Balance;
+            const newReceiverBalance = +receiverBalance + +TransactionAmount;
+            db.query('UPDATE currentaccounts SET Balance = ? WHERE CurrentAccount = ?', [newReceiverBalance, parseInt(ReceiverAccID)], (err, result) => {
+                if (err) {
+                    return res.status(500).json({ error: 'Database update error' });
+                }
+
+            });
+        });
+
+    })
+
+    db.query(`INSERT INTO transactions (SenderAccID, ReceiverAccID, TransactionType, TransactionAmount, Currency, Statusi, AdditionalInfo, TransactionFee) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, [SenderAccID, ReceiverAccID, TransactionType, TransactionAmount, Currency, Statusi, AdditionalInfo, TransactionFee], (err, result) => {
+        if (err) {
+            return res.status(500).end();
+        }
+        res.status(200).json({ message: 'Transaction completed successfully' }).end();
     });
 }
 

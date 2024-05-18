@@ -8,10 +8,10 @@ function Transaction() {
 
     const [currentAccount, setCurrentAccount] = useState();
     const [values, setValues] = useState({
-        ReceiverAccID: '',
+        ReceiverAccID: 0,
         TransactionType: '',
-        TransactionAmount: '',
-        Currency: '',
+        TransactionAmount: 0,
+        Currency: 'Euro',
         AdditionalInfo: ''
     });
     useEffect(() => {
@@ -31,14 +31,13 @@ function Transaction() {
     };
     const handleSubmit = (event) => {
         event.preventDefault();
-
-        setErrors({});
+        // setErrors({});
 
         if (Object.keys(errors).length === 0) {
             axios.post(`http://localhost:8080/insertTransaction`, { SenderAccID: currentAccount, ...values })
                 .then(res => {
                     console.log(res);
-                    // navigate('/Transaction');
+                    navigate('/Dashboard');
                 })
                 .catch(err => console.log(err));
         }
@@ -60,11 +59,11 @@ function Transaction() {
                                             <div className="card-body">
                                                 <div className="form-group">
                                                     <label htmlFor="CurrentAccount">Contributor Account</label>
-                                                    <input type="text" name='CurrentAccount' className='form-control roundend-0' value={currentAccount} disabled />
+                                                    <input type="number" name='CurrentAccount' className='form-control roundend-0' value={currentAccount} disabled />
                                                 </div>
                                                 <div className="form-group">
                                                     <label htmlFor="ClientName">Beneficiary account</label>
-                                                    <input type="numbers" placeholder='Beneficiary Account' name='ReceiverAccID' className='form-control roundend-0' onChange={handleInput} value={values.ReceiverAccID} />
+                                                    <input type="number" placeholder='Beneficiary Account' name='ReceiverAccID' className='form-control roundend-0' onChange={handleInput} />
                                                     {errors.ReceiverAccID && <span className='text-danger'>{errors.ReceiverAccID}</span>}
                                                 </div>
                                                 <div className="form-group">
@@ -80,7 +79,7 @@ function Transaction() {
                                                 <div className="form-group">
                                                     <label htmlFor="currency">Currency</label>
                                                     <select name="Currency" className="form-control roundend-0" onChange={handleInput}>
-                                                        <option value="Euro">Euro</option>
+                                                        <option value="Euro" selected>Euro</option>
                                                         <option value="Dollar">Dollar</option>
                                                         <option value="Frang">Frang</option>
                                                     </select>
