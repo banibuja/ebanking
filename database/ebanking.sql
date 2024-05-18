@@ -184,19 +184,21 @@ CREATE TABLE `accounts` (
         
  );
 
-INSERT INTO `users` (`userId`, `username`, `name`, `lastname`, `email`, `password`, `gender`, `birthday`, `CurrencyCode`) VALUES
-(26, 'bani', 'bani', 'bani', 'bani@gmail.com', 'bani1234', 'M', '2004-02-29 00:00:00', 'EUR'),
-(27, 'user', 'user', 'user', 'user@gmail.com', 'user', 'M', '2024-05-19 00:00:00', 'USD');
+INSERT INTO `users` (`username`, `name`, `lastname`, `email`, `password`, `gender`, `birthday`, `CurrencyCode`) VALUES
+('bani', 'bani', 'bani', 'bani@gmail.com', 'bani1234', 'M', '2004-02-29 00:00:00', 'EUR'),
+('xentoro', 'dior', 'hyseni', 'dior_hyseni@gmail.com', 'xentoro', 'M', '2004-02-29 00:00:00', 'EUR'),
+('user', 'user', 'user', 'user@gmail.com', 'user', 'M', '2024-05-19 00:00:00', 'USD');
     
 -- Tabela Users
 INSERT INTO `accesspermissions` (`PermissionID`, `UserID`, `AccessLevel`) VALUES
-(923, 26, 'Admin'),
-(924, 27, 'User');
+(923, 1, 'Admin'),
+(923, 2, 'Admin'),
+(924, 3, 'User');
 
 -- Tabela Adresa
-INSERT INTO `adresa` (`AdresaID`, `userId`, `Country`, `City`, `Street`) VALUES
-(3, 26, 'bani', 'bani', 'bani'),
-(4, 27, 'user', 'user', 'user');
+INSERT INTO `adresa` (`userId`, `Country`, `City`, `Street`) VALUES
+(26, 'bani', 'bani', 'bani'),
+(27, 'user', 'user', 'user');
 
 -- Tabela Accounts
 INSERT INTO `cards` (`CardID`, `UserID`, `CardNumber`, `ValidFrom`, `ExpiryDate`, `CardHolderName`, `CardType`, `CardStatus`, `AvailableBalance`) VALUES
@@ -205,9 +207,9 @@ INSERT INTO `cards` (`CardID`, `UserID`, `CardNumber`, `ValidFrom`, `ExpiryDate`
 
 
 -- Tabela Cards
-INSERT INTO `currencies` (`CurrencyID`, `UserID`, `CurrencyCode`, `ExchangeRate`) VALUES
-(7, 26, 'EUR', 1.0000),
-(8, 27, 'USD', 1.0000);
+INSERT INTO `currencies` (`UserID`, `CurrencyCode`, `ExchangeRate`) VALUES
+(26, 'EUR', 1.0000),
+(27, 'USD', 1.0000);
 
 -- Tabela Currencies
 INSERT INTO `currentaccounts` (`AccountID`, `UserID`, `CurrentAccount`, `CurrencyCode`, `Balance`) VALUES
