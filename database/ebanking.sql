@@ -173,6 +173,16 @@ CREATE TABLE `accounts` (
     ContactDate DATETIME NOT NULL,
     CONSTRAINT FK_User_Contact FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
 );
+    CREATE TABLE InvestmentsGoals (
+        InvestmentGoalID int primary key AUTO_INCREMENT,
+        UserID INT NOT NULL,
+        GoalName VARCHAR(50) NOT NULL,
+        GoalAmount DECIMAL(18, 2) NOT NULL,
+        Deadline DATE NOT NULL,
+        Impact INT NOT NULL,
+        constraint FK_User_InvestmentsGoals FOREIGN KEY (UserID) REFERENCES Users(UserID) ON DELETE CASCADE
+        
+ );
 
 INSERT INTO `users` (`userId`, `username`, `name`, `lastname`, `email`, `password`, `gender`, `birthday`, `CurrencyCode`) VALUES
 (26, 'bani', 'bani', 'bani', 'bani@gmail.com', 'bani1234', 'M', '2004-02-29 00:00:00', 'EUR'),

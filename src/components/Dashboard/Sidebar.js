@@ -206,13 +206,12 @@ export default function Sidebar() {
           <Dropdown>
                   <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
                     <i className="bi me-2 fas fa-money-bill-wave fa-1x text-gray-300 bg-light"></i>
-                    Finances
+                    Manage Finances
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
-                    <Dropdown.Item href="#" onClick={handleManageClick}>Deposists</Dropdown.Item>
-                    <Dropdown.Item href="#" onClick={handleManageClick}>Withdrawals</Dropdown.Item>
-                    <Dropdown.Item href="#" onClick={handleManageClick}>Funds Transfers</Dropdown.Item>
-                    <Dropdown.Item href="#" onClick={handleManageClick}>Balanace</Dropdown.Item>
+                    <Dropdown.Item href="#" onClick={handleManageClick}>Financial analysis</Dropdown.Item>
+                    <Dropdown.Item href="/Goals" onClick={handleManageClick}>Goals</Dropdown.Item>
+                    <Dropdown.Item href="#" onClick={handleManageClick}>My budget</Dropdown.Item>
 
                   </Dropdown.Menu>
                 </Dropdown>

@@ -14,7 +14,7 @@ const savingsAccountController = require('../src/controllers/Accounts/SavingsAcc
 const cardsController = require('../src/controllers/Cards/ClientCards');
 const SessionController = require('../src/controllers/Session/sessioncontroller'); 
 const TransactionController = require('../src/controllers/Transaction/Transaction');
-
+const FinancesController = require('../src/controllers/Finances/Goals');
 
  
 
@@ -76,6 +76,10 @@ app.get('/getCards/:id', cardsController.getCardById);
 app.post('/getCards', cardsController.getCardsByUserId);
 app.get('/getCardDetails', cardsController.checkCardExists);
 app.post('/addCard', cardsController.addCard);
+
+
+//////////////////////////////////
+
 
 
 
