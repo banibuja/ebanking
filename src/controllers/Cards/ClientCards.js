@@ -45,7 +45,7 @@ const addCard = async (req, res) => {
 };
 
 
-const getCards = (req, res) => {
+const getCardsclients = (req, res) => {
     const sql = "SELECT * FROM Cards";
 
     db.query(sql, (err, data) => {
@@ -111,7 +111,7 @@ const enableCard = (req, res) => {
     });
 };
 
-const getCardById = (req, res) => {
+const getCardsForEdit = (req, res) => {
     const cardId = req.params.id;
     const sql = "SELECT UserID, CardNumber, ExpiryDate, CardHolderName, CardType, CardStatus FROM Cards WHERE CardID = ?";
 
@@ -127,7 +127,7 @@ const getCardById = (req, res) => {
     });
 };
 
-const getCardsByUserId = (req, res) => {
+const getCardsWithSession = (req, res) => {
     const userID = req.session.uId;
     const sql = "SELECT * FROM Cards WHERE UserID = ?";
 
@@ -161,4 +161,21 @@ const checkCardExists = (req, res) => {
     }
 };
 
-module.exports = {addCard, getCards, deleteCard, updateCard, blockCard, enableCard, getCardById, getCardsByUserId, checkCardExists  };
+
+const getCardsByUserID = (req, res) => {
+    const { UserID } = req.body;
+    const sql = "SELECT * FROM cards WHERE UserID = ?";
+
+    db.query(sql, [UserID], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+        return res.json(data);
+    });
+};
+
+
+
+
+module.exports = {addCard, getCardsclients, deleteCard, updateCard, blockCard, enableCard, getCardsForEdit, getCardsWithSession, checkCardExists, getCardsByUserID  };

@@ -29,7 +29,23 @@ const updateAccessPermission = (req, res) => {
     });
 };
 
+
+
+const getAccountByUserID = (req, res) => {
+    const { UserID } = req.body;
+    const sql = "SELECT * FROM accesspermissions WHERE UserID = ?";
+
+    db.query(sql, [UserID], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+        return res.json(data);
+    });
+};
+
 module.exports = {
     getAccessPermissions,
-    updateAccessPermission
+    updateAccessPermission,
+    getAccountByUserID
 };

@@ -48,34 +48,39 @@ app.get('/sessionTimeRemaining', SessionController.sessionTimeRemaining);
 ////////////////////////////////////
 app.post('/getAccessPermissions', accessPermissionsController.getAccessPermissions);
 app.put('/updateAccessPermissions/:id', accessPermissionsController.updateAccessPermission);
+app.post('/searchAccessPermissionss', savingsAccountController.getAccountByUserID);
+
 ////////////////////////////////////
-app.get('/getAccount/:id', currentAccountController.getAccountById);
+app.get('/getAccountForEdit/:id', currentAccountController.getAccountForEdit);
 app.put('/updateAccount/:id', currentAccountController.updateAccount);
-app.post('/getAccounts', currentAccountController.getAccounts);
-app.post('/getAccountById', currentAccountController.getAccountByUserId);
+app.post('/getAllAccounts', currentAccountController.getAllAccounts);
+app.post('/getAccountBySession', currentAccountController.getAccountBySession);
 app.delete("/deleteAccounts/:id", currentAccountController.deleteAccount);
+app.post('/searchAccounts', currentAccountController.getAccountByUserID);
 // app.post('/getCurrentAccount', currentAccountController.getAccountByUserId);
 
 
 
 ////////////////////////////////////
+app.post('/getAllSavingAccount', savingsAccountController.getAllSavingAccount);
 app.get('/getSavingsAccounts/:id', savingsAccountController.getSavingsAccountById);
-app.post('/getSavings', savingsAccountController.getSavings);
 app.delete('/deleteSavings/:id', savingsAccountController.deleteSavings);
 app.put('/updateSavingsAccounts/:id', savingsAccountController.updateSavingsAccounts);
-app.post('/getSavingsById', savingsAccountController.getSavingsById);
-
+app.post('/getSavingsBySesison', savingsAccountController.getSavingsBySesison);
+app.post('/searchSavingsAccounts', savingsAccountController.getAccountByUserID);
 
 ///////////////////////////////////
-app.post('/getCardsclients', cardsController.getCards);
+app.post('/getCardsclients', cardsController.getCardsclients);
 app.delete("/deleteCard/:id", cardsController.deleteCard);
 app.put('/updateCards/:id', cardsController.updateCard);
 app.put('/blockCard/:id', cardsController.blockCard);
 app.put('/enableCard/:id', cardsController.enableCard);
-app.get('/getCards/:id', cardsController.getCardById);
-app.post('/getCards', cardsController.getCardsByUserId);
-app.get('/getCardDetails', cardsController.checkCardExists);
+app.get('/getCardsForEdit/:id', cardsController.getCardsForEdit);
+app.post('/getCardsWithSession', cardsController.getCardsWithSession);
+app.get('/checkCardExists', cardsController.checkCardExists);
 app.post('/addCard', cardsController.addCard);
+app.post('/searchCards', cardsController.getCardsByUserID);
+
 
 
 //////////////////////////////////
@@ -441,6 +446,25 @@ app.get('/getUsers/:id', (req, res) => {
         }
     });
 });
+
+app.get('/getUsersForAcces', (req, res) => {
+    const staffId = req.params.id;
+    const sql = "SELECT * FROM users WHERE userId = ?";
+
+    db.query(sql, [staffId], (err, data) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+        if (data.length > 0) {
+            return res.json(data[0]); 
+        } else {
+            return res.status(404).json({ error: "User not found" });
+        }
+    });
+});
+
+
 
 
 app.get('/check-email', async (req, res) => {

@@ -2,10 +2,20 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Sidebar from '../Sidebar';
 import { useNavigate } from 'react-router-dom';
+import Cards from "react-credit-cards-2";
+import './Cards.css';
 
-export const ManageCards = () => {
+const ManageCards = () => {
     const [cards, setCards] = useState([]);
     const [numCards, setNumCards] = useState(0);
+    const [state, setState] = useState({
+        number: "",
+        name: "",
+        expiry: "",
+        cvc: "",
+        focus: "",
+        cardType: "",
+    });
 
     useEffect(() => {
         getCards();
@@ -14,11 +24,23 @@ export const ManageCards = () => {
     const navigate = useNavigate();
 
     const getCards = () => {
-        axios.post('http://localhost:8080/getCards')
+        axios.post('http://localhost:8080/getCardsWithSession')
             .then(res => {
                 const fetchedCards = res.data;
-                setCards(fetchedCards);
-                setNumCards(fetchedCards.length);
+                if (fetchedCards !== "fail") {
+                    setCards(fetchedCards);
+                    setNumCards(fetchedCards.length);
+                    if (fetchedCards.length > 0) {
+                        setState({
+                            number: fetchedCards[0].CardNumber,
+                            name: fetchedCards[0].CardHolderName,
+                            expiry: fetchedCards[0].ExpiryDate.substring(2, 7).replace('-', '/'),
+                            cvc: "", 
+                            focus: "",
+                            cardType: fetchedCards[0].CardType,
+                        });
+                    }
+                }
             })
             .catch(err => console.log(err));
     };
@@ -61,6 +83,10 @@ export const ManageCards = () => {
         return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
     };
 
+    const handleCardAdded = () => {
+        getCards();  
+    };
+
     return (
         <div>
             <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
@@ -73,21 +99,19 @@ export const ManageCards = () => {
                             <table className="table table-hover table-bordered table-striped dataTable no-footer" style={{ width: '100%' }}>
                                 <thead>
                                     <tr>
-                                        {/* <th scope="col">Card ID</th> */}
                                         <th scope="col">Your Id</th>
                                         <th scope="col">Card Number</th>
                                         <th scope="col">Card Holder Name</th>
                                         <th scope="col">Valid From</th>
-                                        <th scope="col">Valid Util</th>
+                                        <th scope="col">Valid Until</th>
                                         <th scope="col">Card Type</th>
                                         <th scope="col">Card Status</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Array.isArray(cards) && cards.map((card, index) => (
+                                    {Array.isArray(cards) && cards.map((card) => (
                                         <tr key={card.CardID}>
-                                            {/* <th scope="row">{card.CardID}</th> */}
                                             <td>{card.UserID}</td>
                                             <td>{maskCardNumber(card.CardNumber)}</td>
                                             <td>{card.CardHolderName}</td>
@@ -101,7 +125,6 @@ export const ManageCards = () => {
                                                 ) : (
                                                     <button onClick={() => handleEnable(card.CardID)} className="btn btn-success mr-2">Enable</button>
                                                 )}
-                                                {/* <button onClick={() => handleDelete(card.CardID)} className="btn btn-danger">Delete</button> */}
                                             </td>
                                         </tr>
                                     ))}
@@ -110,6 +133,13 @@ export const ManageCards = () => {
                         </div>
                     </div>
                     <div>Total Cards: {numCards}</div>
+                    <Cards
+                        number={maskCardNumber(state.number)}
+                        expiry={state.expiry}
+                        cvc={state.cvc}
+                        name={state.name}
+                        focused={state.focus}
+                    />
                 </div>
             </main>
         </div>

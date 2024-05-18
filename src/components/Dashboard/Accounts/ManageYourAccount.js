@@ -30,7 +30,7 @@ export const ManageYourAccount = () => {
     const navigate = useNavigate();
 
     const getMess = () => {
-        axios.post(`http://localhost:8080/getAccountById`)
+        axios.post(`http://localhost:8080/getAccountBySession`)
             .then(res => {
                 const fetchedMess = res.data;
                 console.log(fetchedMess);
@@ -41,7 +41,7 @@ export const ManageYourAccount = () => {
     };
 
     const getSavings = () => {
-        axios.post(`http://localhost:8080/getSavingsById`)
+        axios.post(`http://localhost:8080/getSavingsBySesison`)
             .then(res => {
                 const fetchedSavings = res.data;
                 console.log(fetchedSavings);

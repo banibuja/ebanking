@@ -11,7 +11,7 @@ function EditAccount({ id, onClose }) {
     });
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/getAccount/${id}`)
+        axios.get(`http://localhost:8080/getAccountForEdit/${id}`)
             .then(res => {
                 console.log('Edit Account API', res.data);
                 setValues(res.data);

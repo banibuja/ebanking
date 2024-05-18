@@ -34,7 +34,7 @@ const CreditCardForm = () => {
 
   const checkCard = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/getCardDetails', {
+      const response = await axios.get('http://localhost:8080/checkCardExists', {
         params: {
           cardNumber: state.number
         }

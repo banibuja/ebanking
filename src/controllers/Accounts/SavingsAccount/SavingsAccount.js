@@ -33,7 +33,7 @@ const getSavingsAccountById = (req, res) => {
 };
 
 
-const getSavings = (req, res) => {
+const getAllSavingAccount = (req, res) => {
     const sql = "SELECT * FROM savingsaccounts";
 
     db.query(sql, (err, data) => {
@@ -63,7 +63,7 @@ const deleteSavings = (req, res) => {
     });
 };
 
-const getSavingsById = (req, res) => {
+const getSavingsBySesison = (req, res) => {
     const userID = req.session.uId; 
 
     const sql = "SELECT * FROM savingsaccounts WHERE UserID = ?"; 
@@ -80,5 +80,16 @@ const getSavingsById = (req, res) => {
     });
 };
 
+const getAccountByUserID = (req, res) => {
+    const { UserID } = req.body;
+    const sql = "SELECT * FROM savingsaccounts WHERE UserID = ?";
 
-module.exports = { updateSavingsAccounts, getSavingsAccountById, getSavings, deleteSavings, getSavingsById };
+    db.query(sql, [UserID], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+        return res.json(data);
+    });
+};
+module.exports = { updateSavingsAccounts, getSavingsAccountById, getAllSavingAccount, deleteSavings, getSavingsBySesison,getAccountByUserID };

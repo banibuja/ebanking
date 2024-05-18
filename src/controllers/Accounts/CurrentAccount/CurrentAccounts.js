@@ -2,7 +2,7 @@ const db = require('../../../db');
 
 
 
-const getAccountById = (req, res) => {
+const getAccountForEdit = (req, res) => {
     const accountId = req.params.id;
     const sql = "SELECT UserID, CurrentAccount, Balance FROM currentaccounts WHERE AccountID = ?";
 
@@ -32,7 +32,7 @@ const updateAccount = (req, res) => {
     });
 };
 
-const getAccounts = (req, res) => {
+const getAllAccounts = (req, res) => {
     const sql = "SELECT * FROM currentaccounts";
 
     db.query(sql, (err, data) => {
@@ -47,7 +47,7 @@ const getAccounts = (req, res) => {
     });
 };
 
-const getAccountByUserId = (req, res) => {
+const getAccountBySession = (req, res) => {
     const userID = req.session.uId; 
     const sql = "SELECT * FROM currentaccounts WHERE UserID = ?";
 
@@ -76,5 +76,20 @@ const deleteAccount = (req, res) => {
     });
 };
 
-module.exports = { getAccountById, updateAccount, getAccounts, getAccountByUserId, deleteAccount };
+
+const getAccountByUserID = (req, res) => {
+    const { UserID } = req.body;
+    const sql = "SELECT * FROM currentaccounts WHERE UserID = ?";
+
+    db.query(sql, [UserID], (err, data) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+        return res.json(data);
+    });
+};
+
+
+module.exports = { getAccountForEdit, updateAccount, getAllAccounts, getAccountBySession, deleteAccount, getAccountByUserID };
 
