@@ -44,11 +44,9 @@ function Transaction() {
         setErrors({});
 
         if (Object.keys(errors).length === 0) {
-            console.log(values);
             axios.post(`http://localhost:8080/insertTransaction`, values)
                 .then(res => {
                     console.log(res);
-                    // navigate('/dashboard');
                 })
                 .catch(err => console.log(err));
         }
