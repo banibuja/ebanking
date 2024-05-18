@@ -108,8 +108,7 @@ db.on('error', (err) => {
 });
 
 app.get('/',  (req, res) => {
-    if(req.session.username){
-        // console.log(req.session);
+    if (req.session.username) {
         return res.json({ valid: true, uId: req.session.uId, username: req.session.username, role: req.session.role })
     } else {
         return res.json({ valid: false, sessionExpired: req.session.expired }); 
@@ -118,7 +117,6 @@ app.get('/',  (req, res) => {
 app.get('/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) {
-            // console.log(err);
             res.json({ success: false });
         } else {
             res.clearCookie('connect.sid'); 
@@ -126,24 +124,7 @@ app.get('/logout', (req, res) => {
         }
     });
 });
-// app.post('/getacc', (req, res) => {
-//     const userID = req.session.uId;
-//     if (!userID) {
-//         return res.json("fail");
-//     }
 
-//     const sql = "SELECT * FROM currentaccounts WHERE UserID = ?";
-//     db.query(sql, [userID], (err, data) => {
-//         if (err) {
-//             return res.json("Error");
-//         }
-//         if (data.length > 0) {
-//             return res.json(data);
-//         } else {
-//             return res.json("fail");
-//         }
-//     });
-// });
 
 
 
@@ -158,7 +139,6 @@ app.post('/login', (req, res) => {
         
         if(result.length > 0){
             const comparison = true 
-            // console.log(comparison);
             if(comparison){
 
                 db.query(`SELECT AccessLevel FROM accesspermissions WHERE UserID = ${result[0].userId}`, (error, results) => {
@@ -386,7 +366,6 @@ app.post('/getUsers', async (req, res) => {
         });
 
         users = await Promise.all(userPromises);
-        // console.log(users);
     } catch (error) {
         console.error(error);
     }

@@ -8,7 +8,6 @@ const sessionTimeRemaining = (req, res) => {
             return res.json({ timeRemaining: 0 });
         } else {
             const timeRemaining = Math.round((expireTime - now) / 1000);
-            console.log(timeRemaining);
             return res.json({ timeRemaining });
         }
     } else {

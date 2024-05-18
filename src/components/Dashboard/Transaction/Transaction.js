@@ -6,15 +6,13 @@ import axios from 'axios';
 function Transaction() {
     const navigate = useNavigate();
 
-    const [currentAccount, setCurrentAccount] = useState({CurrentAccount: ''});
+    const [currentAccount, setCurrentAccount] = useState();
     const [values, setValues] = useState({
-        SenderAccID: currentAccount,
         ReceiverAccID: '',
         TransactionType: '',
         TransactionAmount: '',
         Currency: '',
-        AdditionalInfo: '',
-        TransactionFee: ''
+        AdditionalInfo: ''
     });
     useEffect(() => {
         CurrentAccount();
@@ -24,14 +22,7 @@ function Transaction() {
 
     const CurrentAccount = async () => {
         await axios.post('http://localhost:8080/getCurrentAcc')
-            .then(res => {
-                console.log('Edit Cards API', res.data);
-                if (res.data !== "fail") {
-                    setCurrentAccount(res.data[0]); 
-                } else {
-                    console.error('Failed to fetch current account');
-                }
-            })
+            .then(res => { setCurrentAccount(res.data[0].CurrentAccount) })
             .catch(err => console.log(err));
     }
 
@@ -44,9 +35,10 @@ function Transaction() {
         setErrors({});
 
         if (Object.keys(errors).length === 0) {
-            axios.post(`http://localhost:8080/insertTransaction`, values)
+            axios.post(`http://localhost:8080/insertTransaction`, { SenderAccID: currentAccount, ...values })
                 .then(res => {
                     console.log(res);
+                    // navigate('/Transaction');
                 })
                 .catch(err => console.log(err));
         }
@@ -68,26 +60,26 @@ function Transaction() {
                                             <div className="card-body">
                                                 <div className="form-group">
                                                     <label htmlFor="CurrentAccount">Contributor Account</label>
-                                                    <input type="text" name='CurrentAccount' className='form-control roundend-0' value={currentAccount.CurrentAccount} disabled />
+                                                    <input type="text" name='CurrentAccount' className='form-control roundend-0' value={currentAccount} disabled />
                                                 </div>
                                                 <div className="form-group">
                                                     <label htmlFor="ClientName">Beneficiary account</label>
-                                                    <input type="numbers" placeholder='Beneficiary Account' name='ReceiverAccID' className='form-control roundend-0' onChange={handleInput}  value={currentAccount.ReceiverAccID}/>
+                                                    <input type="numbers" placeholder='Beneficiary Account' name='ReceiverAccID' className='form-control roundend-0' onChange={handleInput} value={values.ReceiverAccID} />
                                                     {errors.ReceiverAccID && <span className='text-danger'>{errors.ReceiverAccID}</span>}
                                                 </div>
                                                 <div className="form-group">
                                                     <label htmlFor="details">Details</label>
-                                                    <input type="text" placeholder='Details' name='AdditionalInfo' className='form-control roundend-0' onChange={handleInput}  value={currentAccount.AdditionalInfo}/>
+                                                    <input type="text" placeholder='Details' name='AdditionalInfo' className='form-control roundend-0' onChange={handleInput} value={values.AdditionalInfo} />
                                                     {errors.AdditionalInfo && <span className='text-danger'>{errors.AdditionalInfo}</span>}
                                                 </div>
                                                 <div className="form-group">
                                                     <label htmlFor="vlera">Amount</label>
-                                                    <input type="text" placeholder='Vlera' name='TransactionAmount' className='form-control roundend-0' onChange={handleInput} value={currentAccount.TransactionAmount}/>
+                                                    <input type="text" placeholder='Vlera' name='TransactionAmount' className='form-control roundend-0' onChange={handleInput} value={values.TransactionAmount} />
                                                     {errors.TransactionAmount && <span className='text-danger'>{errors.TransactionAmount}</span>}
                                                 </div>
                                                 <div className="form-group">
                                                     <label htmlFor="currency">Currency</label>
-                                                    <select name="Currency" className="form-control roundend-0" onChange={handleInput} value={currentAccount.Currency}>
+                                                    <select name="Currency" className="form-control roundend-0" onChange={handleInput}>
                                                         <option value="Euro">Euro</option>
                                                         <option value="Dollar">Dollar</option>
                                                         <option value="Frang">Frang</option>
@@ -96,7 +88,7 @@ function Transaction() {
                                                 </div>
                                                 <div className="form-group">
                                                     <label htmlFor="transferType">Transfer type</label>
-                                                    <input type="text" placeholder='Transfer Type' name='TransactionType' className='form-control roundend-0' onChange={handleInput} value={currentAccount.TransactionType}/>
+                                                    <input type="text" placeholder='Transfer Type' name='TransactionType' className='form-control roundend-0' onChange={handleInput} value={values.TransactionType} />
                                                     {errors.TransactionType && <span className='text-danger'>{errors.TransactionType}</span>}
                                                 </div>
                                             </div>
