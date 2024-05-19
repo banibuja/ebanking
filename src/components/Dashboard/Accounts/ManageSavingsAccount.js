@@ -96,7 +96,7 @@ export const ManageSavingsAccounts = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {Array.isArray(savingsAccounts) && savingsAccounts.map((savingsAccount, index) => (
+                                {Array.isArray(renderData) && renderData.map((savingsAccount, index) => (
 
                                         <tr key={savingsAccount.SavingsID}>
                                             {/* <th scope="row">{savingsAccount.SavingsID}</th> */}

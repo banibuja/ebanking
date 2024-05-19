@@ -84,8 +84,7 @@ export const AccessPermissions = () => {
                             <table className="table table-hover table-bordered table-striped dataTable no-footer" style={{ width: '100%' }}>
                                 <thead>
                                     <tr>
-                                        <th scope="col">PermissionID</th>
-                                        <th scope="col">UserId</th>
+                                        <th scope="col">Client ID</th>
                                         <th scope="col">AccessLevel</th>
                                         <th scope="col">Action</th>
                                     </tr>
@@ -93,7 +92,7 @@ export const AccessPermissions = () => {
                                 <tbody>
                                     {Array.isArray(renderData) && renderData.map((item, index) => (
                                         <tr key={item.PermissionID}>
-                                            <th scope="row">{item.PermissionID}</th>
+                                            {/* <th scope="row">{item.PermissionID}</th> */}
                                             <td>{item.UserID}</td>
                                             <td>{item.AccessLevel}</td>
                                             <td>

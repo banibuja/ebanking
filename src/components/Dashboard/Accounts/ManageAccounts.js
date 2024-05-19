@@ -97,7 +97,7 @@ export const ManageAccounts = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {Array.isArray(accounts) && accounts.map((account, index) => (
+                                {Array.isArray(renderData) && renderData.map((account, index) => (
                                         <tr key={account.CurrentAccount}>
                                              {/* <th scope="row">{account.CurrentAccount}</th> */}
                                             <td>{account.UserID}</td>

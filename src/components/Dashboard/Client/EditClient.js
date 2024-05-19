@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Sidebar from '../Sidebar';
 
 function EditClient({ id, onClose }) {
     const navigate = useNavigate();
@@ -18,12 +17,14 @@ function EditClient({ id, onClose }) {
         Street: ''
     });
 
-    const [errors, setErrors] = useState({});
-
     useEffect(() => {
-        axios.get(`http://localhost:8080/getUsers/${id}`)
+        axios.get(`http://localhost:8080/getClientForEdit/${id}`)
             .then(res => {
-                setValues(res.data);
+                const data = res.data;
+                setValues({
+                    ...data,
+                    birthday: formatDate(data.birthday)
+                });
             })
             .catch(err => console.log(err));
     }, [id]);
@@ -35,13 +36,17 @@ function EditClient({ id, onClose }) {
     const handleSubmit = (event) => {
         event.preventDefault();
         
-        
-        axios.put(`http://localhost:8080/updateUsers/${id}`, values)
+        axios.put(`http://localhost:8080/updateUser/${id}`, values)
             .then(res => {
-                navigate('/dashboard');
+                window.location.reload(); 
             })
             .catch(err => console.log(err));
     };
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+    };
+    
 
     return (
         <div className="modal fade show text-black" style={{ display: 'block' }} aria-modal="true">
@@ -72,10 +77,6 @@ function EditClient({ id, onClose }) {
                                 <input type="email" placeholder='Email' name='email' onChange={handleInput} className='form-control roundend-0' value={values.email} />
                             </div>
                             <div className="form-group">
-                                <label>Client Password</label>
-                                <input type="password" placeholder='Password' name='password' onChange={handleInput} className='form-control roundend-0' value={values.password} />
-                            </div>
-                            <div className="form-group">
                                 <label>Client Gender</label>
                                 <select name="gender" onChange={handleInput} value={values.gender} className="form-control rounded-0">
                                     <option value="">Select Gender</option>
@@ -85,7 +86,7 @@ function EditClient({ id, onClose }) {
                             </div>
                             <div className="form-group">
                                 <label>Client Birthday</label>
-                                <input type="date" name='birthday' onChange={handleInput} className="form-control form-control-lg" value={values.birthday} />
+                                <input type="text" name='birthday' onChange={handleInput} className="form-control form-control-lg" value={values.birthday} />
                             </div>
                             <div className="form-group">
                                 <label>Client Address</label>
