@@ -16,6 +16,8 @@ const SessionController = require('../src/controllers/Session/sessioncontroller'
 const TransactionController = require('../src/controllers/Transaction/Transaction');
 const FinancesController = require('../src/controllers/Finances/Goals');
 
+const currenciesController = require('../src/controllers/Currencies/Currencies')
+
  
 
 
@@ -83,14 +85,14 @@ app.post('/searchCards', cardsController.getCardsByUserID);
 
 
 
-//////////////////////////////////
 
+////////////////////////////////////Loans
+app.post('/getCurrencies', currenciesController.getCurrencies);
+app.get('/getCurrenciesForEdit/:id', currenciesController.getCurrenciesForEdit);
+app.put('/updateCurrencies/:id', currenciesController.updateCurrencies);
 
+app.delete("/deleteCurrencies/:id", currenciesController.deleteCurrencies);
 
-
-
-////////////////////////////////////
-app.post('/getCurrentAcc', TransactionController.getCurrentAccount);
 app.post('/insertTransaction', TransactionController.insertTransaction);
 
 

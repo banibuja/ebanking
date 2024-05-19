@@ -22,6 +22,8 @@ import ManageSavingsAccount from '../components/Dashboard/Accounts/ManageSavings
 // import ManageYourSavings from '../components/Dashboard/Accounts/ManageYourSavings';
 import Currencies from '../components/Dashboard/Currencies/Currencies';
 // import Contact from '../components/Dashboard/ContactUs/Contact';
+import Loans from '../components/Dashboard/Loans/Loans';
+
 
 
 
@@ -55,6 +57,7 @@ function App() {
         <Route path="/AccessPermissions" element={<AccessPermissions/>} /> 
         <Route path="/currencies" element={<Currencies/>} /> 
         {/* <Route path="/Contact" element={<Contact/>} />  */}
+        <Route path="/Loans" element={<Loans/>}/>
 
 
 

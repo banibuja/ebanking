@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Sidebar from '../Sidebar';
 import { useNavigate } from 'react-router-dom';
-
+import EditCurrencies from './EditCurrencies';
 export const Currencies = () => {
     const [mess, setMess] = useState([]);
     const [numMess, setNumMess] = useState(0); 
+    const [editCurrencies, setCurrencies] = useState(null);
+
 
     useEffect(() => {
         getMess();
@@ -24,11 +26,19 @@ export const Currencies = () => {
     };
 
     const handleDelete = (id) => {
-        axios.delete(`http://localhost:8080/deleteAccessPermissions/${id}`)
+        axios.delete(`http://localhost:8080/deleteCurrencies/${id}`)
             .then(res => {
                 getMess();
             })
             .catch(err => console.log(err));
+    };
+
+    const handleEdit = (id) => {
+        setCurrencies(id);
+    };
+
+    const handleCloseEditModal = () => {
+        setCurrencies(null);
     };
 
     return (
@@ -44,7 +54,7 @@ export const Currencies = () => {
                             <table className="table table-hover table-bordered table-striped dataTable no-footer" style={{ width: '100%' }}>
                                 <thead>
                                     <tr>
-                                        <th scope="col">CurrencyID</th>
+                                        <th scope="col">ClientID</th>
                                         <th scope="col">CurrencyCode</th>
                                         <th scope="col">ExchangeRate</th>
                                         <th scope="col">Action</th> 
@@ -53,10 +63,11 @@ export const Currencies = () => {
                                 <tbody>
                                     {Array.isArray(mess) && mess.map((item, index) => (
                                         <tr key={item.CurrencyID}>
-                                            <th scope="row">{item.CurrencyID}</th> 
+                                            <td>{item.UserID}</td>
                                             <td>{item.CurrencyCode}</td>
                                             <td>{item.ExchangeRate}</td>
                                             <td>
+                                            <button onClick={() => handleEdit(item.CurrencyID)} className="btn btn-primary mr-2">Edit</button>
                                                 <button onClick={() => handleDelete(item.CurrencyID)} className="btn btn-danger">Delete</button>
                                             </td>
                                         </tr>
@@ -66,6 +77,8 @@ export const Currencies = () => {
                         </div>
                     </div>
                     <div>Total message: {numMess}</div> 
+                    {editCurrencies !== null && <EditCurrencies id={editCurrencies} onClose={handleCloseEditModal} />}
+
                 </div>
             </main>
         </div>
