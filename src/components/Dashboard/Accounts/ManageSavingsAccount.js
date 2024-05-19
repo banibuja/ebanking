@@ -87,7 +87,7 @@ export const ManageSavingsAccounts = () => {
                             <table className="table table-hover table-bordered table-striped dataTable no-footer" style={{ width: '100%' }}>
                                 <thead>
                                     <tr>
-                                        <th scope="col">SavingsID</th>
+                                        {/* <th scope="col">SavingsID</th> */}
                                         <th scope="col">Client ID</th>
                                         <th scope="col">Savings Type</th>
                                         <th scope="col">Currency</th>
@@ -96,9 +96,10 @@ export const ManageSavingsAccounts = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {renderData.map((savingsAccount, index) => (
+                                {Array.isArray(savingsAccounts) && savingsAccounts.map((savingsAccount, index) => (
+
                                         <tr key={savingsAccount.SavingsID}>
-                                            <th scope="row">{savingsAccount.SavingsID}</th>
+                                            {/* <th scope="row">{savingsAccount.SavingsID}</th> */}
                                             <td>{savingsAccount.UserID}</td>
                                             <td>{savingsAccount.SavingsType}</td>
                                             <td>{savingsAccount.CurrencyCode}</td>

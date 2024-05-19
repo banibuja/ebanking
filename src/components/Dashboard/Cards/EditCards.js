@@ -14,8 +14,11 @@ function EditCards({ id, onClose }) {
     });
 
     useEffect(() => {
+        console.log(id)
         axios.get(`http://localhost:8080/getCardsForEdit/${id}`)
+
             .then(res => {
+                
                 console.log('Edit Cards API', res.data);
                 setValues(res.data);
             })

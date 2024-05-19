@@ -88,7 +88,7 @@ CREATE TABLE Loans (
 
 CREATE TABLE Investments (
     InvestmentID int primary key AUTO_INCREMENT,
-    AccountID INT NOT NULL,
+    AccountID BIGINT NOT NULL,
     InvestmentType VARCHAR(50) NOT NULL,
     InvestmentAmount DECIMAL(18, 2) NOT NULL,
     CurrentEarnings DECIMAL(18, 2) NOT NULL,
@@ -113,8 +113,8 @@ CREATE TABLE Notifications (
 
 CREATE TABLE Transactions (
     TransactionID INT PRIMARY KEY AUTO_INCREMENT,
-    SenderAccID INT NOT NULL,
-    ReceiverAccID INT NOT NULL,
+    SenderAccID BIGINT NOT NULL,
+    ReceiverAccID BIGINT NOT NULL,
     TransactionType VARCHAR(50) NOT NULL,
     TransactionAmount DECIMAL(18, 5) NOT NULL,
     Currency VARCHAR(10) NOT NULL,
@@ -138,8 +138,8 @@ CREATE TABLE TransactionAuthorizations (
 
 CREATE TABLE Payments (
     PaymentID int primary key AUTO_INCREMENT,
-    SenderAccountID INT NOT NULL,
-    ReceiverAccountID INT NOT NULL,
+    SenderAccountID BIGINT NOT NULL,
+    ReceiverAccountID BIGINT NOT NULL,
     Amount DECIMAL(18, 2) NOT NULL,
     PaymentDate DATETIME NOT NULL,
     PaymentStatus VARCHAR(50) NOT NULL,
@@ -186,7 +186,8 @@ CREATE TABLE InvestmentsGoals (
     GoalAmount DECIMAL(18, 2) NOT NULL,
     Deadline DATE NOT NULL,
     Impact INT NOT NULL,
-    CONSTRAINT FK_User_InvestmentsGoals FOREIGN KEY (UserID) REFERENCES users (userId) ON DELETE CASCAD
+    CONSTRAINT FK_User_InvestmentsGoals FOREIGN KEY (UserID) REFERENCES users (userId) ON DELETE CASCADE
+);
 
 INSERT INTO `users` (`username`, `name`, `lastname`, `email`, `password`, `gender`, `birthday`, `CurrencyCode`) VALUES
 ('bani', 'bani', 'bani', 'bani@gmail.com', 'bani1234', 'M', '2004-02-29 00:00:00', 'EUR'),

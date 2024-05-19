@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Sidebar from '../Sidebar';
-import EditClient from './EditClient'; 
+import EditClient from './EditClient';
 
 export const Client = () => {
     const [users, setUsers] = useState([]);
     const [numClients, setNumClients] = useState(0);
-    const [editClientId, setEditClientId] = useState(null); 
+    const [editClientId, setEditClientId] = useState(null);
 
     useEffect(() => {
         getUsers();
@@ -19,7 +19,11 @@ export const Client = () => {
                 setUsers(fetchedUsers);
                 setNumClients(fetchedUsers.length);
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                console.error('Error fetching users:', err);
+                setUsers([]); 
+                setNumClients(0);
+            });
     };
 
     const handleDelete = (id) => {
@@ -31,25 +35,22 @@ export const Client = () => {
     };
 
     const handleEdit = (id) => {
-        setEditClientId(id); 
+        setEditClientId(id);
     };
 
     const handleCloseEditModal = () => {
-        setEditClientId(null); 
+        setEditClientId(null);
     };
 
     return (
         <div>
             <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
                 <Sidebar />
-                <div className="container-fluid" style={{  marginTop: '100px' }} >
-
+                <div className="container-fluid" style={{ marginTop: '100px' }}>
                     <h1 className=''>MANAGE Client</h1>
-
                     <div className="row">
-
                         <div className="col-md-12 d-flex justify-content-center align-items-center">
-                        <table className="table table-hover table-bordered table-striped dataTable no-footer" style={{ width: '100%' }}>
+                            <table className="table table-hover table-bordered table-striped dataTable no-footer" style={{ width: '100%' }}>
                                 <caption>List of client</caption>
                                 <thead>
                                     <tr>
@@ -68,8 +69,7 @@ export const Client = () => {
                                 <tbody>
                                     {Array.isArray(users) && users.map((item, index) => (
                                         <tr key={item.userId}>
-                                            <th scope="row">
-                                                {index + 1}</th>
+                                            <th scope="row">{index + 1}</th>
                                             <td>{item.username}</td>
                                             <td>{item.name + ' ' + item.lastname}</td>
                                             <td>{item.email}</td>
@@ -84,13 +84,21 @@ export const Client = () => {
                                             </td>
                                         </tr>
                                     ))}
+                                    {!Array.isArray(users) || users.length === 0 ? (
+                                        <tr>
+                                            <td colSpan="10" className="text-center">No clients found</td>
+                                        </tr>
+                                    ) : null}
                                 </tbody>
                             </table>
                         </div>
-                    </div><div>Total Client: {numClients}</div> 
+                    </div>
+                    <div>Total Client: {numClients}</div>
                 </div>
             </main>
             {editClientId !== null && <EditClient id={editClientId} onClose={handleCloseEditModal} />}
         </div>
-    )
-}
+    );
+};
+
+export default Client;
