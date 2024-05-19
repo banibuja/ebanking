@@ -206,11 +206,11 @@ export default function Sidebar() {
           <Dropdown>
                   <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
                     <i className="bi me-2 fas fa-money-bill-wave fa-1x text-gray-300 bg-light"></i>
-                    Manage Finances
+                    Invesments
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
-                    <Dropdown.Item href="#" onClick={handleManageClick}>Financial analysis</Dropdown.Item>
-                    <Dropdown.Item href="/Goals" onClick={handleManageClick}>Goals</Dropdown.Item>
+                    <Dropdown.Item href="/InvesmentsGoals" onClick={handleManageClick}>Add Goal</Dropdown.Item>
+                    <Dropdown.Item href="/InvestmentsTable" onClick={handleManageClick}>Goals</Dropdown.Item>
                     <Dropdown.Item href="#" onClick={handleManageClick}>My budget</Dropdown.Item>
 
                   </Dropdown.Menu>
@@ -228,6 +228,7 @@ export default function Sidebar() {
               Transactions
             </a>
           </li>
+         
         
 
           <li>
@@ -244,7 +245,7 @@ export default function Sidebar() {
           </li>
         
           <li>
-            <a href="/Loans" className="nav-link link-dark" onClick={handleManageClick}>
+            <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
               Loans
             </a>

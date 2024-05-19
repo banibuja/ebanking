@@ -23,7 +23,8 @@ import ManageSavingsAccount from '../components/Dashboard/Accounts/ManageSavings
 import Currencies from '../components/Dashboard/Currencies/Currencies';
 // import Contact from '../components/Dashboard/ContactUs/Contact';
 import Loans from '../components/Dashboard/Loans/Loans';
-
+import InvesmentsGoals from '../components/Dashboard/InvestmentsGoals/InvestmentsGoals';
+import InvestmentsTable from '../components/Dashboard/InvestmentsGoals/InvestmentsTable';
 
 
 
@@ -58,6 +59,8 @@ function App() {
         <Route path="/currencies" element={<Currencies/>} /> 
         {/* <Route path="/Contact" element={<Contact/>} />  */}
         <Route path="/Loans" element={<Loans/>}/>
+        <Route path="/InvesmentsGoals" element={<InvesmentsGoals/>} /> 
+        <Route path="/InvestmentsTable" element={<InvestmentsTable/>} /> 
 
 
 

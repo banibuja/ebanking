@@ -15,6 +15,7 @@ const cardsController = require('../src/controllers/Cards/ClientCards');
 const SessionController = require('../src/controllers/Session/sessioncontroller'); 
 const TransactionController = require('../src/controllers/Transaction/Transaction');
 const FinancesController = require('../src/controllers/Finances/Goals');
+const investmentsGoals = require('../src/controllers/Investments/InvestmentsGoals')
 
 const currenciesController = require('../src/controllers/Currencies/Currencies')
 
@@ -94,6 +95,14 @@ app.put('/updateCurrencies/:id', currenciesController.updateCurrencies);
 app.delete("/deleteCurrencies/:id", currenciesController.deleteCurrencies);
 
 app.post('/insertTransaction', TransactionController.insertTransaction);
+
+
+//
+app.post('/getGoalsWithSession', investmentsGoals.getGoalsBySession);
+app.post('/addGoal', investmentsGoals.addGoal);
+app.get('/getGoalsForEdit/:id', investmentsGoals.getGoalsForEdit);
+app.put('/updateGoal/:id', investmentsGoals.updateGoal);
+app.delete("/deleteGoals/:id", investmentsGoals.deleteGoals);
 
 
 const db = mysql.createConnection({
