@@ -94,6 +94,9 @@ app.put('/updateCurrencies/:id', currenciesController.updateCurrencies);
 
 app.delete("/deleteCurrencies/:id", currenciesController.deleteCurrencies);
 
+
+//
+app.post('/getCurrentAcc', TransactionController.getCurrentAccount);
 app.post('/insertTransaction', TransactionController.insertTransaction);
 
 
@@ -316,7 +319,7 @@ app.post('/addClient', async (req, res) => {
                  const addCard = await new Promise((resolve, reject) => {
                 db.query(
                     `INSERT INTO cards (UserID, CardNumber, ValidFrom, ExpiryDate, CardHolderName, CardType, CardStatus, AvailableBalance) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-                    [userId, cardNumber, today.toISOString().split('T')[0], formattedExpiryDate, client.name, "DEBIT MASTER CARD", "ACTIVE", "0"],
+                    [userId, cardNumber, today.toISOString().split('T')[0], formattedExpiryDate, client.name + ' ' +  client.lastname, "DEBIT MASTER CARD", "ACTIVE", "0"],
                     (error, results) => {
                         if (error) {
                             reject(error);
