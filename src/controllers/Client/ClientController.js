@@ -6,7 +6,7 @@ const { generateRandomAccountNumber, generateFlexSaveAccountNumber, checkAccount
 const addClient = async (req, res) => {
     try {
         const client = req.body;
-        // const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const hashedPassword = await bcrypt.hash(client.password, 10);
 
         let currentAccount;
         let accountExists = true;
@@ -21,7 +21,7 @@ const addClient = async (req, res) => {
         const addClient = await new Promise((resolve, reject) => {
             db.query(
                 `INSERT INTO users (username, name, lastname, email, password, gender, birthday, CurrencyCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, 
-                [client.username, client.name, client.lastname, client.email, client.password, client.gender, client.birthday, client.currency], 
+                [client.username, client.name, client.lastname, client.email, hashedPassword, client.gender, client.birthday, client.currency], 
                 (error, result) => {
                     if (error) {
                         reject(error);
