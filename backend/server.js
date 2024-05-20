@@ -64,10 +64,12 @@ app.get('/checkEmail', clientController.checkEmail);
 
 
 ////////////////////////////////////
-app.post('/getAccessPermissions', accessPermissionsController.getAccessPermissions);
+app.post('/getAllPermissions', accessPermissionsController.getAllPermissions);
 app.put('/updateAccessPermissions/:id', accessPermissionsController.updateAccessPermission);
-app.post('/searchAccessPermissionss', savingsAccountController.getAccountByUserID);
-app.get('/getAccessForEdit/:id', accessPermissionsController.getAccessForEdit);
+app.post('/searchAccessPermissionss', accessPermissionsController.searchAccessPermissionss);
+app.get('/getAccesForEdit/:id', accessPermissionsController.getAccesForEdit);
+
+// app.get('/getAccessForEdit/:id', accessPermissionsController.getAccessForEdit);
 ////////////////////////////////////
 app.get('/getAccountForEdit/:id', currentAccountController.getAccountForEdit);
 app.put('/updateAccount/:id', currentAccountController.updateAccount);

@@ -56,8 +56,8 @@ function EditCards({ id, onClose }) {
                     <div className="modal-body">
                         <form onSubmit={handleSubmit}>
                             <div className="form-group">
-                                <label>Client ID</label>
-                                <input type="text" placeholder='User ID' name='UserID' onChange={handleInput} className='form-control roundend-0' value={values.UserID} disabled/>
+                                <label>Username</label>
+                                <input type="text" placeholder='Username' name='username' onChange={handleInput} className='form-control roundend-0' value={values.username} disabled/>
                             </div>
                             <div className="form-group">
                                 <label>CardNumber</label>
@@ -86,7 +86,7 @@ function EditCards({ id, onClose }) {
                                 <select name='CardStatus' onChange={handleInput} className='form-control roundend-0' value={values.CardStatus}>
                                     <option value="">Select CardStatus</option>
                                     <option value="ACTIVE">ACTIVE</option>
-                                    <option value="OFFLINE">OFFLINE</option>
+                                    <option value="BLOCKED">BLOCKED</option>
 
                                 </select>
                             </div>

@@ -8,7 +8,7 @@ export const Manageclientcards = () => {
     const [cards, setCards] = useState([]);
     const [numCards, setNumCards] = useState(0); 
     const [editCards, setEditCardsId] = useState(null);
-    const [recordsPerPage, setRecordsPerPage] = useState(10); // Initial value set to 10
+    const [recordsPerPage, setRecordsPerPage] = useState(10); 
     const [showAll, setShowAll] = useState(false);
     const [searchUserID, setSearchUserID] = useState('');
     const [searchResult, setSearchResult] = useState([]);

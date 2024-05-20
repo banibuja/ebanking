@@ -10,6 +10,7 @@ const getAccountForEdit = (req, res) => {
     FROM users u 
     INNER JOIN currentaccounts a ON a.userId = u.userId 
     
+    
 `;
 
     db.query(sql, [accountId], (err, data) => {
@@ -85,7 +86,6 @@ const deleteAccount = (req, res) => {
         return res.status(200).json({ message: "Account deleted successfully" });
     });
 };
-
 
 const getAccountByUserID = (req, res) => {
     const { username } = req.body;

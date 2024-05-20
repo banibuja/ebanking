@@ -117,7 +117,12 @@ const enableCard = (req, res) => {
 
 const getCardsForEdit = (req, res) => {
     const cardId = req.params.id;
-    const sql = "SELECT UserID, CardNumber, ExpiryDate, CardHolderName, CardType, CardStatus FROM Cards WHERE CardID = ?";
+    // const sql = "SELECT UserID, CardNumber, ExpiryDate, CardHolderName, CardType, CardStatus FROM Cards WHERE CardID = ?";
+
+    const sql = `
+    SELECT s.*, u.username FROM cards s inner join users u  on s.UserID = u.userId
+    WHERE s.CardID = ?
+  `;
 
     db.query(sql, [cardId], (err, data) => {
         if (err) {
@@ -167,14 +172,13 @@ const checkCardExists = (req, res) => {
 
 
 const getCardsByUserID = (req, res) => {
-    const { UserID } = req.body;
-    const sql = `
-    SELECT u.*, a.CardNumber, a.ValidFrom, a.ExpiryDate, a.CardHolderName,
-     a.CardType, a.CardStatus, a.AvailableBalance 
-    FROM users u INNER JOIN cards a ON a.UserID = u.userId
+    const { username } = req.body;
+
+const sql = `
+    SELECT s.*, u.username FROM cards s inner join users u  on s.UserID = u.userId
     WHERE u.username = ?
-`;
-    db.query(sql, [UserID], (err, data) => {
+  `;
+    db.query(sql, [username], (err, data) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: "Internal server error" });

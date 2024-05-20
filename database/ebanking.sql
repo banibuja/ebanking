@@ -158,16 +158,16 @@ CREATE TABLE Retirements (
     CONSTRAINT FK_User_Retirement FOREIGN KEY (UserID) REFERENCES users (userId) ON DELETE CASCADE
 );
 
-CREATE TABLE accounts (
-    AccountID int(11) NOT NULL AUTO_INCREMENT,
-    UserID int(11) NOT NULL,
-    CurrentAccount varchar(50) NOT NULL,
-    SavingsAccount varchar(50) NOT NULL,
-    CurrencyCode varchar(20) NOT NULL,
-    PRIMARY KEY (AccountID),
-    KEY FK_User_Accountss (UserID),
-    CONSTRAINT FK_User_Accountss FOREIGN KEY (UserID) REFERENCES users (userId) ON DELETE CASCADE
-);
+-- CREATE TABLE accounts (
+--     AccountID int(11) NOT NULL AUTO_INCREMENT,
+--     UserID int(11) NOT NULL,
+--     CurrentAccount varchar(50) NOT NULL,
+--     SavingsAccount varchar(50) NOT NULL,
+--     CurrencyCode varchar(20) NOT NULL,
+--     PRIMARY KEY (AccountID),
+--     KEY FK_User_Accountss (UserID),
+--     CONSTRAINT FK_User_Accountss FOREIGN KEY (UserID) REFERENCES users (userId) ON DELETE CASCADE
+-- );
 
 CREATE TABLE ContactUs (
     ContactID int primary key AUTO_INCREMENT,
