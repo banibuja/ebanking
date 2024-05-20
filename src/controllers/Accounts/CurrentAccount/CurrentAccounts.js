@@ -4,7 +4,13 @@ const db = require('../../../db');
 
 const getAccountForEdit = (req, res) => {
     const accountId = req.params.id;
-    const sql = "SELECT CurrentAccount, UserID, Balance FROM currentaccounts WHERE CurrentAccount = ?";
+
+    const sql = `
+    SELECT u.*, a.CurrentAccount, a.CurrencyCode, a.Balance
+    FROM users u 
+    INNER JOIN currentaccounts a ON a.userId = u.userId 
+    
+`;
 
     db.query(sql, [accountId], (err, data) => {
         if (err) {

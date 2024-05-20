@@ -67,7 +67,7 @@ app.get('/checkEmail', clientController.checkEmail);
 app.post('/getAccessPermissions', accessPermissionsController.getAccessPermissions);
 app.put('/updateAccessPermissions/:id', accessPermissionsController.updateAccessPermission);
 app.post('/searchAccessPermissionss', savingsAccountController.getAccountByUserID);
-
+app.get('/getAccessForEdit/:id', accessPermissionsController.getAccessForEdit);
 ////////////////////////////////////
 app.get('/getAccountForEdit/:id', currentAccountController.getAccountForEdit);
 app.put('/updateAccount/:id', currentAccountController.updateAccount);

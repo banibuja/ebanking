@@ -5,8 +5,7 @@ import { useNavigate } from 'react-router-dom';
 function EditSavings({ id, onClose }) {
     const navigate = useNavigate();
     const [values, setValues] = useState({
-        UserID: '',
-        FlexSaveAccount: '',
+        SavingsType: '',
         Balance: ''
     });
 
@@ -51,13 +50,18 @@ function EditSavings({ id, onClose }) {
                     <div className="modal-body">
                         <form onSubmit={handleSubmit}>
                             <div className="form-group">
-                                <label>Client ID</label>
-                                <input type="text" placeholder='User ID' name='UserID' onChange={handleInput} className='form-control roundend-0' value={values.UserID} disabled/>
+                                <label>username</label>
+                                <input type="text" placeholder='username' name='username' onChange={handleInput} className='form-control roundend-0' value={values.username} disabled/>
+                            </div>
+                            <div className="form-group">
+                                <label>Client FullName</label>
+                                <input type="text" placeholder='fullname' name='name' onChange={handleInput} className='form-control rounded-0' value={values.name + ' ' + values.lastname} disabled />
                             </div>
                             <div className="form-group">
                                 <label>FlexSaveAccount</label>
-                                <input type="text" placeholder='FlexSaveAccount' name='FlexSaveAccount' onChange={handleInput} className='form-control roundend-0' value={values.FlexSaveAccount} disabled />
+                                <input type="text" placeholder='FlexSaveAccount' name='SavingsType' onChange={handleInput} className='form-control roundend-0' value={values.SavingsType} disabled />
                             </div>
+                           
                             <div className="form-group">
                                 <label>Balance</label>
                                 <input type="text" placeholder='Balance' name='Balance' onChange={handleInput} className='form-control roundend-0' value={values.Balance} />

@@ -18,8 +18,13 @@ const updateSavingsAccounts = (req, res) => {
 
 const getSavingsAccountById = (req, res) => {
     const Savingsid = req.params.id;
-    const sql = "SELECT UserID, SavingsType, Balance FROM savingsaccounts WHERE SavingsType = ?";
-
+    // const sql = "SELECT UserID, SavingsType, Balance FROM savingsaccounts WHERE SavingsType = ?";
+    const sql = `
+    SELECT u.*, a.SavingsType, a.CurrencyCode, a.Balance
+    FROM users u 
+    INNER JOIN savingsaccounts a ON a.userId = u.userId 
+    
+`;
     db.query(sql, [Savingsid], (err, data) => {
         if (err) {
             return res.status(500).json({ error: "Internal server error" });
