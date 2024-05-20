@@ -19,6 +19,9 @@ const FinancesController = require('../src/controllers/Finances/Goals');
 const investmentsGoals = require('../src/controllers/Investments/InvestmentsGoals')
 const currenciesController = require('../src/controllers/Currencies/Currencies')
 
+const profileController = require('../src/controllers/Profile/Profile')
+
+
  
 
 
@@ -124,6 +127,12 @@ app.get('/getGoalsForEdit/:id', investmentsGoals.getGoalsForEdit);
 app.put('/updateGoal/:id', investmentsGoals.updateGoal);
 app.delete("/deleteGoals/:id", investmentsGoals.deleteGoals);
 
+//
+
+
+app.post('/getClientforProfile', profileController.getClientforProfile);
+app.put('/updateProfile', profileController.updateProfile);
+
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -165,17 +174,18 @@ app.get('/logout', (req, res) => {
 
 
 
-//Login Form
-app.post('/login', (req, res) => {
+
+app.post('/loginform', (req, res) => {
     const sql = "SELECT * FROM users WHERE username = ?";
     const date = new Date();
     expireDate = date.setMinutes(date.getMinutes() + 15)
-    db.query(sql,[req.body.username], async (err,result) => {
-        if (err) return res.json({ Message: "bad connection " });
+
+    db.query(sql,[req.body.username], (err,result) => {
+        if (err) return res.json({ Message: "bad connection", Login: false });
         
         if(result.length > 0){
-            const comparison = true 
-            if(comparison){
+            const storedPassword = result[0].password;
+            if(req.body.password === storedPassword){
 
                 db.query(`SELECT AccessLevel FROM accesspermissions WHERE UserID = ${result[0].userId}`, (error, results) => {
                     if (error) throw error;
@@ -185,17 +195,23 @@ app.post('/login', (req, res) => {
                     req.session.name = result[0].name; 
                     req.session.lastname = result[0].lastname; 
                     req.session.maxAge = + expireDate;
-                    return res.json({Login: true})
+                    return res.json({Message: "Login successful", Login: true})
                 });
             } else {
-                return res.json({Login: false});
+                return res.json({Message: "Incorrect password", Login: false});
             }
         } else {
-            return res.json({Login: false});
+            return res.json({Message: "Username not found", Login: false});
         }
         
     })
 })
+
+
+
+
+
+
 
 
 

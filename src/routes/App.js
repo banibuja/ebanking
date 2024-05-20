@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Dashboard } from '../components/Dashboard/Dashboard';
 import { Client } from '../components/Dashboard/Client/Client';
 import Transaction from '../components/Dashboard/Transaction/Transaction';
-import Login from '../components/LoginSignup/Login'
+// import Login from '../components/LoginSignup/Login'
 import Signup from '../components/LoginSignup/Signup'
 import AddClient from '../components/Dashboard/Client/AddClient';
 // import ContactUs from '../components/Dashboard/ContactUs/ContactUs'
@@ -25,8 +25,9 @@ import Currencies from '../components/Dashboard/Currencies/Currencies';
 import Loans from '../components/Dashboard/Loans/Loans';
 import InvesmentsGoals from '../components/Dashboard/InvestmentsGoals/InvestmentsGoals';
 import InvestmentsTable from '../components/Dashboard/InvestmentsGoals/InvestmentsTable';
+import ProfileRoutes  from './ProfileRoutes'; // Import ProfileRoutes
 
-
+import Login from './Login';
 
 
 
@@ -37,7 +38,7 @@ function App() {
       <Routes>
 
         <Route path="/Transaction" element={<Transaction/>}></Route> 
-        <Route path="/login" element={<Login />} />
+        {/* <Route path="/login" element={<Login />} /> */}
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/client" element={<Client />} />
@@ -62,6 +63,9 @@ function App() {
         <Route path="/InvesmentsGoals" element={<InvesmentsGoals/>} /> 
         <Route path="/InvestmentsTable" element={<InvestmentsTable/>} /> 
 
+        {/* <Route path="/Profi" element={<Profi/>} />  */}
+
+
 
 
 
@@ -69,6 +73,8 @@ function App() {
 
 
       </Routes>
+      <ProfileRoutes  />
+      <Login   />
     </BrowserRouter>
   );
 }

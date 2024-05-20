@@ -34,7 +34,7 @@ function Login() {
       event.preventDefault();
 
     axios.defaults.withCredentials = true;
-      axios.post('http://localhost:8080/login', values)
+      axios.post('http://localhost:8080/loginform', values)
           .then(res => {
             console.log(res.data)
               if (res.data.Login) {
@@ -67,7 +67,7 @@ function Login() {
                 </div>
                 {/* <!-- Password input --> */}
                 <div className="form-outline mb-3">
-                  <input type="password" name='password' id="form3Example4" className="form-control form-control-lg" placeholder="Enter password" onChange={handleInput}  />
+                  <input type="password" name='password' className="form-control form-control-lg" placeholder="Enter password" onChange={handleInput}  />
                 </div>
                 {/* <!-- Birthday --> */}
                

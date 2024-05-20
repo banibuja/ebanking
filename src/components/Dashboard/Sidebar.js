@@ -217,7 +217,7 @@ export default function Sidebar() {
                 </Dropdown>
           </li>
           <li>
-            <a href="/Profile" className="nav-link link-dark" onClick={handleManageClick}>
+            <a href="/profi" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-user fa-1x text-gray-300" ></i>
               Profile
             </a>
