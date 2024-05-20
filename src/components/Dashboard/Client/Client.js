@@ -63,7 +63,7 @@ export const Client = () => {
         if (searchUserID.trim() === '') {
             return;
         }
-        axios.post('http://localhost:8080/searchUsers', { UserID: searchUserID })
+        axios.post('http://localhost:8080/searchUsers', { username: searchUserID })
             .then(res => {
                 setSearchResult(res.data);
             })
@@ -79,7 +79,7 @@ export const Client = () => {
                 <Sidebar />
                 <div className="container-fluid" style={{ marginTop: '100px' }}>
                     <h1 className=''>MANAGE Client</h1>
-                    <input type="text" value={searchUserID} onChange={(e) => setSearchUserID(e.target.value)} placeholder="Search by Client ID" />
+                    <input type="text" value={searchUserID} onChange={(e) => setSearchUserID(e.target.value)} placeholder="Search by username" />
                                 <button onClick={handleSearch}>Search</button>
                     <div className="row">
                         <div className="col-md-12 d-flex justify-content-center align-items-center">

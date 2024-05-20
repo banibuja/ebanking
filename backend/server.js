@@ -197,29 +197,6 @@ app.post('/login', (req, res) => {
 
 
 
-
-
-// app.get('/check-email', async (req, res) => {
-//     const { email } = req.query;
-
-//     try {
-//         const sql = "SELECT COUNT(*) AS count FROM users WHERE email = ?";
-//         db.query(sql, [email], (err, result) => {
-//             if (err) {
-//                 console.error('Error checking email:', err);
-//                 return res.status(500).json({ error: 'Internal Server Error' });
-//             }
-//             const exists = result[0].count > 0;
-//             return res.json({ exists });
-//         });
-//     } catch (error) {
-//         console.error('Error checking email:', error);
-//         return res.status(500).json({ error: 'Internal Server Error' });
-//     }
-// });
-
-
-
 app.listen(8080, () => {
     console.log("Server is running");
     });

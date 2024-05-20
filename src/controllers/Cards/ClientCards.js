@@ -46,7 +46,11 @@ const addCard = async (req, res) => {
 
 
 const getCardsclients = (req, res) => {
-    const sql = "SELECT * FROM Cards";
+    const sql = `
+    SELECT s.*, u.username FROM cards s inner join users u  on s.UserID = u.userId
+  `;
+    
+
 
     db.query(sql, (err, data) => {
         if (err) {
@@ -164,8 +168,12 @@ const checkCardExists = (req, res) => {
 
 const getCardsByUserID = (req, res) => {
     const { UserID } = req.body;
-    const sql = "SELECT * FROM cards WHERE UserID = ?";
-
+    const sql = `
+    SELECT u.*, a.CardNumber, a.ValidFrom, a.ExpiryDate, a.CardHolderName,
+     a.CardType, a.CardStatus, a.AvailableBalance 
+    FROM users u INNER JOIN cards a ON a.UserID = u.userId
+    WHERE u.username = ?
+`;
     db.query(sql, [UserID], (err, data) => {
         if (err) {
             console.error(err);

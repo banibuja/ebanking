@@ -99,7 +99,7 @@ const ManageCards = () => {
                             <table className="table table-hover table-bordered table-striped dataTable no-footer" style={{ width: '100%' }}>
                                 <thead>
                                     <tr>
-                                        <th scope="col">Your Id</th>
+                                        {/* <th scope="col">Your Id</th> */}
                                         <th scope="col">Card Number</th>
                                         <th scope="col">Card Holder Name</th>
                                         <th scope="col">Valid From</th>
@@ -112,7 +112,7 @@ const ManageCards = () => {
                                 <tbody>
                                     {Array.isArray(cards) && cards.map((card) => (
                                         <tr key={card.CardID}>
-                                            <td>{card.UserID}</td>
+                                            {/* <td>{card.UserID}</td> */}
                                             <td>{maskCardNumber(card.CardNumber)}</td>
                                             <td>{card.CardHolderName}</td>
                                             <td>{formatDate(card.ValidFrom)}</td>

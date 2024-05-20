@@ -234,14 +234,14 @@ const updateUser = async (req, res) => {
 };
 
 const getByUserID = (req, res) => {
-    const { UserID } = req.body;
+    const { username } = req.body;
     const sql = `
     SELECT u.*, a.Country, a.City, a.Street 
     FROM users u 
     INNER JOIN adresa a ON a.userId = u.userId 
-    WHERE u.userId = ?
+    WHERE u.username = ?
 `;
-    db.query(sql, [UserID], (err, data) => {
+    db.query(sql, [username], (err, data) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: "Internal server error" });

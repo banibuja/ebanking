@@ -33,6 +33,14 @@ CREATE TABLE currentaccounts (
     PRIMARY KEY (CurrentAccount),
     CONSTRAINT FK_User_Account FOREIGN KEY (UserID) REFERENCES users (userId) ON DELETE CASCADE
 );
+CREATE TABLE savingsaccounts (
+    SavingsType bigint NOT NULL,
+    UserID int(11) NOT NULL,
+    CurrencyCode varchar(20) NOT NULL,
+    Balance decimal(18, 5) NOT NULL,
+    PRIMARY KEY (SavingsType),
+    CONSTRAINT FK_User_Savings FOREIGN KEY (UserID) REFERENCES users (userId) ON DELETE CASCADE
+);
 
 CREATE TABLE cards (
     CardID int(11) NOT NULL AUTO_INCREMENT,
@@ -66,16 +74,7 @@ CREATE TABLE Reports (
     Description TEXT
 );
 
-CREATE TABLE savingsaccounts (
-    SavingsID int(11) NOT NULL AUTO_INCREMENT,
-    UserID int(11) NOT NULL,
-    SavingsType varchar(50) NOT NULL,
-    CurrencyCode varchar(20) NOT NULL,
-    Balance decimal(18, 5) NOT NULL,
-    PRIMARY KEY (SavingsID),
-    KEY FK_User_Savings (UserID),
-    CONSTRAINT FK_User_Savings FOREIGN KEY (UserID) REFERENCES users (userId) ON DELETE CASCADE
-);
+
 
 CREATE TABLE Loans (
     LoanID int primary key AUTO_INCREMENT,

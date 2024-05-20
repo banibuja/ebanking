@@ -82,7 +82,7 @@ export const ManageYourAccount = () => {
                                 <thead>
                                     <tr>
                                         {/* <th scope="col">AccountID</th> */}
-                                        <th scope="col">Your ID</th>
+                                        {/* <th scope="col">Your ID</th> */}
                                         <th scope="col">CurrentAccount</th>
                                         <th scope="col">Currency</th>
                                         <th scope="col">Balance</th> 
@@ -93,7 +93,7 @@ export const ManageYourAccount = () => {
                                     {Array.isArray(mess) && mess.map((item, index) => (
                                         <tr key={item.AccountID}>
                                             {/* <th scope="row">{item.AccountID}</th>  */}
-                                            <td>{item.UserID}</td>
+                                            {/* <td>{item.UserID}</td> */}
                                             <td>{item.CurrentAccount}</td>
                                             <td>{item.CurrencyCode}</td>
                                             <td>{parseFloat(item.Balance).toFixed(2)}</td> 

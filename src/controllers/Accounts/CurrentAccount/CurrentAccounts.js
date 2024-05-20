@@ -33,8 +33,12 @@ const updateAccount = (req, res) => {
 };
 
 const getAllAccounts = (req, res) => {
-    const sql = "SELECT * FROM currentaccounts";
-
+    const sql = `
+    SELECT u.*, a.CurrentAccount, a.CurrencyCode, a.Balance
+    FROM users u 
+    INNER JOIN currentaccounts a ON a.userId = u.userId 
+    
+`;
     db.query(sql, (err, data) => {
         if (err) {
             return res.json("Error");
@@ -78,10 +82,14 @@ const deleteAccount = (req, res) => {
 
 
 const getAccountByUserID = (req, res) => {
-    const { UserID } = req.body;
-    const sql = "SELECT * FROM currentaccounts WHERE UserID = ?";
-
-    db.query(sql, [UserID], (err, data) => {
+    const { username } = req.body;
+    const sql = `
+    SELECT u.*, a.CurrentAccount, a.CurrencyCode, a.Balance
+    FROM users u 
+    INNER JOIN currentaccounts a ON a.userId = u.userId 
+    WHERE u.username = ?
+`;
+    db.query(sql, [username], (err, data) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: "Internal server error" });
@@ -92,4 +100,5 @@ const getAccountByUserID = (req, res) => {
 
 
 module.exports = { getAccountForEdit, updateAccount, getAllAccounts, getAccountBySession, deleteAccount, getAccountByUserID };
+
 
