@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar from '../Sidebar';
 import axios from 'axios';
 
-function NewTransaction() {
+function Transaction() {
     const navigate = useNavigate();
 
     const [currentAccount, setCurrentAccount] = useState();
@@ -108,4 +108,4 @@ function NewTransaction() {
     );
 }
 
-export default NewTransaction;
+export default Transaction;
