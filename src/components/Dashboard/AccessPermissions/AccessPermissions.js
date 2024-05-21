@@ -3,6 +3,7 @@ import axios from 'axios';
 import Sidebar from '../Sidebar';
 import { useNavigate } from 'react-router-dom';
 import EditAccesPermissions from './EditAccesPermissions';
+import Nav from '../Nav';
 
 export const AccesPermissions = () => {
     const [acces, setAcces] = useState([]);
@@ -76,7 +77,9 @@ export const AccesPermissions = () => {
                 <Sidebar />
 
                 <div className="container-fluid" style={{ marginTop: '100px' }}>
-                    <h1 className="text-center">MANAGE AccesPermissions</h1>
+                <Nav />
+
+                    <h2 className="text-center" style={{ marginTop: '20px', color: 'grey' }}>Manage AccesPermissions</h2>
                     <div className="row">
                         <caption>List of Access</caption>
                         <div className="search-container">
@@ -85,7 +88,7 @@ export const AccesPermissions = () => {
                         </div>
                         <div className="col-md-12 d-flex justify-content-center align-items-center">
 
-                            <table className="table table-hover table-bordered table-striped dataTable no-footer" style={{ width: '100%' }}>
+                            <table className="table table-hover border-table dataTable no-footer" style={{ width: '100%' }}>
                                 <thead>
                                     <tr>
                                         <th scope="col">username</th>

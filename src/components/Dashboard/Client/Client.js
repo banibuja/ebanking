@@ -77,13 +77,13 @@ export const Client = () => {
 
     return (
         <div>
-            <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'rgb(233, 233, 233)', color: 'black' }}>
+            <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
                 <Sidebar />
                 <div className="container-fluid" style={{ marginTop: '100px' }}>
                     <div style={{marginBottom: '30px'}}>
                 <Nav />
                 </div>
-                    <h1>MANAGE Client</h1>
+                <h2 className="text-center" style={{ marginTop: '20px', color: 'grey' }}>Manage Client</h2>
                     <input 
                         type="text" 
                         value={searchUserID} 

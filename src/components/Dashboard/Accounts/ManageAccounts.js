@@ -3,6 +3,7 @@ import axios from 'axios';
 import Sidebar from '../Sidebar';
 import { useNavigate } from 'react-router-dom';
 import EditAccounts from './EditAccounts';
+import Nav from '../Nav';
 
 export const ManageAccounts = () => {
     const [accounts, setAccounts] = useState([]);
@@ -76,7 +77,8 @@ export const ManageAccounts = () => {
                 <Sidebar />
 
                 <div className="container-fluid" style={{ marginTop: '100px' }}>
-                    <h1 className="text-center">MANAGE Current Accounts</h1>
+                    <Nav  />
+                    <h2 className="text-center" style={{ marginTop: '20px', color: 'grey' }}>Manage Current Account</h2>
                     <div className="row">
                         <caption>List of Accounts</caption>
                         <div className="search-container">
@@ -95,6 +97,7 @@ export const ManageAccounts = () => {
                                         <th scope="col">CurrentAccount</th>
                                         <th scope="col">Currency</th>
                                         <th scope="col">Balance</th>
+                                        <th scope="col">Status</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
@@ -108,6 +111,8 @@ export const ManageAccounts = () => {
                                             <td>{account.CurrentAccount}</td>
                                             <td>{account.CurrencyCode}</td>
                                             <td>{parseFloat(account.Balance).toFixed(2)}</td>
+                                            <td>{account.AccountStatus}</td>
+
                                             <td>
                                                 <button onClick={() => handleEdit(account.CurrentAccount)} className="btn btn-primary mr-2">Edit</button>
                                                 <button onClick={() => handleDelete(account.CurrentAccount)} className="btn btn-danger">Delete</button>

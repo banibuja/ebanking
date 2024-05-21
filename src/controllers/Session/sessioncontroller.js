@@ -16,8 +16,12 @@ const sessionTimeRemaining = (req, res) => {
 };
 
 const resetSession = (req, res) => {
+    
     if (req.session) {
+        const date = new Date();
+        expireDate = date.setMinutes(date.getMinutes() + 15)
         req.session.touch(); 
+        req.session.maxAge = +expireDate;
         res.json({ success: true });
     } else {
         res.status(401).json({ error: "User session not found" });

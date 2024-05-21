@@ -5,30 +5,48 @@ import { useNavigate } from 'react-router-dom';
 import Nav from './Nav';
 
 export const Dashboard = () => {
-  const [name, setName] = useState('');
   const [numClients, setNumClients] = useState(0);
-  const [role, setRole] = useState('');
-  const navigate = useNavigate();
-
+  const [numAcc, setNumAcc] = useState(0);
+  const [role, setRole] = useState(0);
+  const [numStaff, setNumStaff] = useState(0);
+  const navigate = useNavigate()
   useEffect(() => {
     axios.get('http://localhost:8080')
       .then(res => {
         if (res.data.valid) {
           setRole(res.data.role);
-          axios.post('http://localhost:8080/getUsersWithSession')
-            .then(res => {
-              const userData = res.data;
-              if (userData && userData.length > 0) {
-                setName(userData[0].name);
-              }
-            })
-            .catch(err => console.log(err));
         } else {
           navigate('/login');
         }
       })
+      .catch(err => console.log(err))
+  }, [])
+
+
+  useEffect(() => {
+    axios.post('http://localhost:8080/getUsers')
+      .then(res => {
+        const fetchedUsers = res.data;
+        setNumClients(fetchedUsers.length);
+      })
       .catch(err => console.log(err));
-  }, []);
+
+    //   axios.post('http://localhost:8080/getAcc')
+    //   .then(res => {
+    //     const fetchedAcc = res.data;
+    //     setNumAcc(fetchedAcc.length);
+    //   })
+    //   .catch(err => console.log(err));
+
+    // axios.post('http://localhost:8080/getStaff')
+    //   .then(res => {
+    //     const fetchedStaff = res.data;
+    //     setNumStaff(fetchedStaff.length);
+    //   })
+    //   .catch(err => console.log(err));
+  },
+    []);
+
 
   return (
     <div>

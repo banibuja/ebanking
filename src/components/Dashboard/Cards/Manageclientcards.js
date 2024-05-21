@@ -3,6 +3,7 @@ import axios from 'axios';
 import Sidebar from '../Sidebar';
 import { useNavigate } from 'react-router-dom';
 import EditCards from './EditCards';
+import Nav from '../Nav';
 
 export const Manageclientcards = () => {
     const [cards, setCards] = useState([]);
@@ -89,7 +90,8 @@ export const Manageclientcards = () => {
             <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
                 <Sidebar />
                 <div className="container-fluid" style={{ marginTop: '100px' }}>
-                    <h1>MANAGE CARDS</h1>
+                    <Nav />
+                <h2 className="text-center" style={{ marginTop: '20px', color: 'grey' }}>Manage Cards</h2>
                     <div className="row">
                         <caption>List of Cards</caption>
                         <div className="search-container">

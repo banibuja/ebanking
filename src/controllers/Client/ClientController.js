@@ -64,8 +64,8 @@ const addClient = async (req, res) => {
 
         await new Promise((resolve, reject) => {
             db.query(
-                `INSERT INTO currentaccounts (UserID, CurrentAccount, Balance, CurrencyCode) VALUES (?, ?, ?, ?)`, 
-                [userId, currentAccount, 0, client.currency], 
+                `INSERT INTO currentaccounts (UserID, CurrentAccount, Balance, CurrencyCode, AccountStatus) VALUES (?, ?, ?, ?, ?)`, 
+                [userId, currentAccount, 0, client.currency , 'Open'], 
                 (error, results) => {
                     if (error) {
                         reject(error);
@@ -78,8 +78,8 @@ const addClient = async (req, res) => {
 
         await new Promise((resolve, reject) => {
             db.query(
-                `INSERT INTO savingsaccounts (UserID, SavingsType, Balance, CurrencyCode) VALUES (?, ?, ?, ?)`, 
-                [userId, SavingsType, 0, client.currency], 
+                `INSERT INTO savingsaccounts (UserID, SavingsType, Balance, CurrencyCode, AccountStatus) VALUES (?, ?, ?, ?, ?)`, 
+                [userId, SavingsType, 0, client.currency, 'Open'], 
                 (error, results) => {
                     if (error) {
                         reject(error);

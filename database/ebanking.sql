@@ -30,6 +30,7 @@ CREATE TABLE currentaccounts (
     UserID int(11) NOT NULL,
     CurrencyCode varchar(20) NOT NULL,
     Balance decimal(18, 2) NOT NULL,
+    AccountStatus varchar(50) NOT NULL,
     PRIMARY KEY (CurrentAccount),
     CONSTRAINT FK_User_Account FOREIGN KEY (UserID) REFERENCES users (userId) ON DELETE CASCADE
 );
@@ -38,6 +39,7 @@ CREATE TABLE savingsaccounts (
     UserID int(11) NOT NULL,
     CurrencyCode varchar(20) NOT NULL,
     Balance decimal(18, 2) NOT NULL,
+    AccountStatus varchar(50) NOT NULL,
     PRIMARY KEY (SavingsType),
     CONSTRAINT FK_User_Savings FOREIGN KEY (UserID) REFERENCES users (userId) ON DELETE CASCADE
 );
@@ -190,55 +192,63 @@ CREATE TABLE InvestmentsGoals (
     CONSTRAINT FK_User_InvestmentsGoals FOREIGN KEY (UserID) REFERENCES users (userId) ON DELETE CASCADE
 );
 
-INSERT INTO `users` (`username`, `name`, `lastname`, `email`, `password`, `gender`, `birthday`, `CurrencyCode`) VALUES
-('bani', 'bani', 'bani', 'bani@gmail.com', '$2a$10$b06RSiqhMsRo/2CIHfNh1u0RAiZjlqzwz7ofZ5WSEdTphTfY9v/b.', 'M', '2004-02-29 00:00:00', 'EUR'),
-('xentoro', 'xentoro', 'xentoro', 'xentoro@gmail.com', '$2a$10$Z14YcdLzpCsbJAU33RyG9.p9OEPj.BfZHXIM5.Y27QCTMjsjctxOS', 'M', '2024-05-11 00:00:00', 'EUR'),
-('user', 'user', 'user', 'user@gmail.com', '$2a$10$iN8gSUAoyHmKSMDkMCM46O9MF7XaqBT1BxUynFRStzwpp3t4R2zne', 'M', '2024-05-18 00:00:00', 'EUR');
 
--- Tabela Users
+
+INSERT INTO `users` (`userId`, `username`, `name`, `lastname`, `email`, `password`, `gender`, `birthday`, `CurrencyCode`) VALUES
+(1, 'bani', 'Shaban', 'bani', 'bani@gmail.com', '$2b$10$4MJwUqchW9Eo8PsMen73W.aNg9rwWzqvY2C4J9YOrolGPj4v6pTuq', 'M', '2004-02-29 00:00:00', 'EUR'),
+(2, 'xentoro', 'xentoro', 'xentoro', 'xentoro@gmail.com', '$2a$10$Z14YcdLzpCsbJAU33RyG9.p9OEPj.BfZHXIM5.Y27QCTMjsjctxOS', 'M', '2024-05-11 00:00:00', 'EUR'),
+(9, 'user', 'user', 'user', 'user@gmail.com', '$2b$10$3GTXxuu5I/LdxBi3nAj7NelLgmop0Fa7QomwKffF2k.to/gV6njhq', 'M', '2024-05-22 00:00:00', 'EUR');
+
+
+
+
 INSERT INTO `accesspermissions` (`PermissionID`, `UserID`, `AccessLevel`) VALUES
 (923, 1, 'Admin'),
 (929, 2, 'Admin'),
-(930, 3, 'Admin');
+(936, 9, 'User');
 
--- Tabela Adresa
-INSERT INTO `adresa` (`userId`, `Country`, `City`, `Street`) VALUES
-(1, 'bani', 'bani', 'bani'),
-(2, 'xentoro', 'xentoro', 'xentoro'),
-(3, 'user', 'user', 'user');
 
--- Tabela Accounts
+INSERT INTO `adresa` (`AdresaID`, `userId`, `Country`, `City`, `Street`) VALUES
+(0, 1, 'bani', 'bani', 'bani'),
+(0, 2, 'xentoro', 'xentoro', 'xentoro'),
+(0, 9, 'user', 'user', 'user');
+
 INSERT INTO `cards` (`CardID`, `UserID`, `CardNumber`, `ValidFrom`, `ExpiryDate`, `CardHolderName`, `CardType`, `CardStatus`, `AvailableBalance`) VALUES
-(315, 1, '5354730745629939', '2024-05-16', '2028-05-15', 'bani', 'DEBIT MASTER CARD', 'ACTIVE', 0.00),
+(315, 1, '5354730745629939', '2024-05-16', '2028-05-14', 'bani', 'DEBIT MASTER CARD', 'ACTIVE', 0.00),
 (319, 2, '5354717708725505', '2024-05-20', '2028-05-20', 'xentoro xentoro', 'DEBIT MASTER CARD', 'ACTIVE', 0.00),
-(320, 3, '5354762187015692', '2024-05-20', '2028-05-20', 'user user', 'DEBIT MASTER CARD', 'ACTIVE', 0.00);
+(326, 9, '5354769851528585', '2024-05-21', '2028-05-21', 'user user', 'DEBIT MASTER CARD', 'ACTIVE', 0.00);
 
 
--- Tabela Cards
-INSERT INTO `currencies` (`UserID`, `CurrencyCode`, `ExchangeRate`) VALUES
-(1, 'EUR', 1.0000),
-(3, 'EUR', 1.0000);
+INSERT INTO `currencies` (`CurrencyID`, `UserID`, `CurrencyCode`, `ExchangeRate`) VALUES
+(1, 1, 'EUR', 1.0000),
+(8, 9, 'EUR', 1.0000);
 
--- Tabela Currencies
-INSERT INTO `currentaccounts` (`CurrentAccount`, `UserID`, `CurrencyCode`, `Balance`) VALUES
-(1110333322429080, 1, 'USD', 15000.00),
-(1110333377647573, 2, 'EUR', 25000.00),
-(1110333388276400, 3, 'EUR', 3500.00);
 
--- Tabela Reports
+INSERT INTO `currentaccounts` (`CurrentAccount`, `UserID`, `CurrencyCode`, `Balance`, `AccountStatus`) VALUES
+(1110333318977557, 9, 'EUR', 0.00, 'Open'),
+(1110333322429080, 1, 'EUR', 15000.00, 'Open'),
+(1110333377647573, 2, 'EUR', 0.00, 'Closed');
+
+
+
+
+
 INSERT INTO `reports` (`ReportID`, `ReportType`, `GenerationDate`, `Description`) VALUES
 (501, 'Transaction', '2024-04-22', 'Daily transaction report'),
 (502, 'Balance', '2024-04-22', 'Monthly account balance report');
 
--- Tabela SavingsAccounts
-INSERT INTO `savingsaccounts` (`SavingsType`, `UserID`, `CurrencyCode`, `Balance`) VALUES
-(1110222221564010, 2, 'EUR', 0.00000),
-(1110222243416638, 1, 'EUR', 0.00000),
-(1110222265790724, 3, 'EUR', 0.00000);
 
 
-INSERT INTO `transactions` (`SenderAccID`, `ReceiverAccID`, `TransactionType`, `TransactionAmount`, `Currency`, `Statusi`, `AdditionalInfo`, `TransactionFee`, `CreatedAt`) VALUES
-(1110333322429080, 1110333377647573, 'zbbz', 1500.00000, 'Euro', 1, 'rroga', 0.00000, '2024-05-20 17:15:31');
+INSERT INTO `savingsaccounts` (`SavingsType`, `UserID`, `CurrencyCode`, `Balance`, `AccountStatus`) VALUES
+(1110222221564010, 2, 'EUR', 0.00, 'Closed'),
+(1110222243416638, 1, 'EUR', 0.00, 'Open'),
+(1110222252481452, 9, 'EUR', 0.00, 'Open');
+
+
+
+INSERT INTO `transactions` (`TransactionID`, `SenderAccID`, `ReceiverAccID`, `TransactionType`, `TransactionAmount`, `Currency`, `Statusi`, `AdditionalInfo`, `TransactionFee`, `CreatedAt`) VALUES
+(1, 1110333322429080, 1110333377647573, 'zbbz', 1500.00000, 'Euro', 1, 'rroga', 0.00000, '2024-05-20 17:15:31');
+
 
 
 INSERT INTO `investmentsgoals` (`UserID`, `GoalName`, `GoalAmount`, `Deadline`, `Impact`) VALUES

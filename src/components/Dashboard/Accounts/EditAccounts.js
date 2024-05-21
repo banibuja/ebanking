@@ -63,6 +63,14 @@ function EditAccount({ id, onClose }) {
                                 <label>Balance</label>
                                 <input type="text" placeholder='Balance' name='Balance' onChange={handleInput} className='form-control rounded-0' value={values.Balance} />
                             </div>
+                            <div className="form-group">
+                                                              <select name='AccountStatus' onChange={handleInput}  className='form-control roundend-0' value={values.AccountStatus} >
+                                                                 <option value="">Select Status</option>
+                                                                  <option value="Open">Open</option>
+                                                                   <option value="Closed">Closed</option>
+
+                                                                         </select>
+                                                                         </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" onClick={onClose}>Close</button>
                                 <button type="submit" className="btn btn-primary">Save changes</button>

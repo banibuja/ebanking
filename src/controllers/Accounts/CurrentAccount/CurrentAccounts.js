@@ -6,7 +6,7 @@ const getAccountForEdit = (req, res) => {
     const accountId = req.params.id;
 
     const sql = `
-    SELECT u.*, a.CurrentAccount, a.CurrencyCode, a.Balance
+    SELECT u.*, a.CurrentAccount, a.CurrencyCode, a.Balance, a.AccountStatus
     FROM users u 
     INNER JOIN currentaccounts a ON a.userId = u.userId 
     
@@ -27,10 +27,10 @@ const getAccountForEdit = (req, res) => {
 
 const updateAccount = (req, res) => {
     const accountId = req.params.id;
-    const { Balance } = req.body;
-    const sqlUpdate = "UPDATE currentaccounts SET Balance=? WHERE CurrentAccount=?";
+    const { Balance, AccountStatus } = req.body;
+    const sqlUpdate = "UPDATE currentaccounts SET Balance=?,AccountStatus=?  WHERE CurrentAccount=?";
 
-    db.query(sqlUpdate, [Balance, accountId], (err, result) => {
+    db.query(sqlUpdate, [Balance,AccountStatus, accountId], (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: "Internal server error" });
@@ -41,7 +41,7 @@ const updateAccount = (req, res) => {
 
 const getAllAccounts = (req, res) => {
     const sql = `
-    SELECT u.*, a.CurrentAccount, a.CurrencyCode, a.Balance
+    SELECT u.*, a.CurrentAccount, a.CurrencyCode, a.Balance, a.AccountStatus
     FROM users u 
     INNER JOIN currentaccounts a ON a.userId = u.userId 
     
@@ -96,7 +96,7 @@ const deleteAccount = (req, res) => {
 const getAccountByUserID = (req, res) => {
     const { username } = req.body;
     const sql = `
-    SELECT u.*, a.CurrentAccount, a.CurrencyCode, a.Balance
+    SELECT u.*, a.CurrentAccount, a.CurrencyCode, a.Balance, a.AccountStatus
     FROM users u 
     INNER JOIN currentaccounts a ON a.userId = u.userId 
     WHERE u.username = ?
