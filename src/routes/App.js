@@ -29,6 +29,7 @@ import ProfileRoutes  from './ProfileRoutes'; // Import ProfileRoutes
 import Nav from '../components/Dashboard/Nav';
 
 import Login from './Login';
+import NewTransaction from '../components/Dashboard/Transaction/NewTransaction';
 
 
 
@@ -64,6 +65,7 @@ function App() {
         <Route path="/InvesmentsGoals" element={<InvesmentsGoals/>} /> 
         <Route path="/InvestmentsTable" element={<InvestmentsTable/>} /> 
         <Route path="/Nav" element={<Nav/>} /> 
+        <Route path="/NewTransaction" element={<NewTransaction/>} /> 
 
 
         {/* <Route path="/Profi" element={<Profi/>} />  */}

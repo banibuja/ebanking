@@ -227,11 +227,20 @@ export default function Sidebar() {
             </a>
           </li>
           <li>
-            <a href="/Transaction" className="nav-link link-dark" onClick={handleManageClick}>
-              <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
-              Transactions
-            </a>
+          <Dropdown>
+                  <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
+                    <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300 bg-light"></i>
+                    Transactions
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item href="/Transaction" onClick={handleManageClick}>Transactions </Dropdown.Item>
+                    <Dropdown.Item href="/NewTransaction" onClick={handleManageClick}>NewTransaction</Dropdown.Item>
+
+                  </Dropdown.Menu>
+                </Dropdown>
           </li>
+         
+          
          
         
 

@@ -93,7 +93,7 @@ export const Client = () => {
                     <button onClick={handleSearch}>Search</button>
                     <div className="row">
                         <div className="col-md-12 d-flex justify-content-center align-items-center">
-                            <table className="table table-hover table-bordered table-striped dataTable no-footer" style={{ width: '100%' }}>
+                        <table className="table table-hover border-table dataTable no-footer" style={{ width: '100%' }}>
                                 <caption>List of clients</caption>
                                 <thead>
                                     <tr>
@@ -104,8 +104,8 @@ export const Client = () => {
                                         <th scope="col">Birthday</th>
                                         <th scope="col">Gender</th>
                                         <th scope="col">Country</th>
-                                        <th scope="col">City</th>
-                                        <th scope="col">Address</th>
+                                        {/* <th scope="col">City</th> */}
+                                        {/* <th scope="col">Address</th> */}
                                         <th scope="col">Edit</th>
                                     </tr>
                                 </thead>
@@ -121,8 +121,8 @@ export const Client = () => {
                                                     <td>{formatDate(item.birthday)}</td>
                                                     <td>{item.gender}</td>
                                                     <td>{item.Country}</td>
-                                                    <td>{item.City}</td>
-                                                    <td>{item.Street}</td>
+                                                    {/* <td>{item.City}</td> */}
+                                                    {/* <td>{item.Street}</td> */}
                                                     <td>
                                                         <button 
                                                             onClick={() => handleEdit(item.userId)} 
