@@ -75,7 +75,13 @@ const deleteSavings = (req, res) => {
 const getSavingsBySesison = (req, res) => {
     const userID = req.session.uId; 
 
-    const sql = "SELECT * FROM savingsaccounts WHERE UserID = ?"; 
+    // const sql = "SELECT * FROM savingsaccounts WHERE UserID = ?"; 
+    const sql = `
+    SELECT u.*, a.SavingsType, a.CurrencyCode, a.Balance
+    FROM users u 
+    INNER JOIN savingsaccounts a ON a.UserID = u.userId 
+    WHERE u.userId = ?
+`;
 
     db.query(sql, [userID], (err, data) => {
         if (err) {

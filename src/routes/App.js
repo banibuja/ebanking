@@ -13,7 +13,7 @@ import Home from '../components/Home/Home';
 import Profile from '../components/Dashboard/Profile/Profile';
 import Sidebar from '../components/Dashboard/Sidebar';
 import CardsForm from '../components/Dashboard/Cards/CardsForm';
-import ManageCards from '../components/Dashboard/Cards/ManageCards';
+// import ManageCards from '../components/Dashboard/Cards/ManageCards';
 import ManageAccounts from '../components/Dashboard/Accounts/ManageAccounts';
 import ManageYourAccount from '../components/Dashboard/Accounts/ManageYourAccount';
 import Manageclientcards from '../components/Dashboard/Cards/Manageclientcards';
@@ -50,7 +50,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/Sidebar" element={<Sidebar/>} />
         <Route path="/CardsForm" element={<CardsForm/>} />
-        <Route path="/ManageCards" element={<ManageCards/>} />
+        {/* <Route path="/ManageCards" element={<ManageCards/>} /> */}
         <Route path="/ManageAccounts" element={<ManageAccounts/>} /> 
         <Route path="/ManageYourAccount" element={<ManageYourAccount/>} /> 
         <Route path="/Manageclientcards" element={<Manageclientcards/>} /> 

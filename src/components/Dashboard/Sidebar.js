@@ -101,6 +101,13 @@ export default function Sidebar() {
                   <Dropdown.Menu>
                     <Dropdown.Item href="/addclient" onClick={handleManageClick}>Add Client</Dropdown.Item>
                     <Dropdown.Item href="/client" onClick={handleManageClick}>Manage Clients</Dropdown.Item>
+                    <Dropdown.Item href="/manageaccounts" onClick={handleManageClick}>Manage CurrentAccounts</Dropdown.Item>
+                    <Dropdown.Item href="/managesavingsaccount" onClick={handleManageClick}>Manage SavingsAccounts</Dropdown.Item>
+                    <Dropdown.Item href="/Manageclientcards" onClick={handleManageClick}>Manage ClientCards</Dropdown.Item>
+                    <Dropdown.Item href="/CardsForm" onClick={handleManageClick}>Add Cards</Dropdown.Item>
+
+                    {/* <Dropdown.Item href="/client" onClick={handleManageClick}>Manage Clients</Dropdown.Item> */}
+
                   </Dropdown.Menu>
                 </Dropdown>
               </li>
@@ -121,24 +128,24 @@ export default function Sidebar() {
                   AccessPermissions
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <a href="/manageaccounts" className="nav-link link-dark" onClick={handleManageClick}>
                   <i className="bi me-2 fas fa-users fa-1x text-gray-300"></i>
                   Client CurrentAccounts
                 </a>
-              </li>
-              <li>
+              </li> */}
+              {/* <li>
                 <a href="/managesavingsaccount" className="nav-link link-dark" onClick={handleManageClick}>
                   <i className="bi me-2 fas fa-users fa-1x text-gray-300"></i>
                   Client SavingsAccounts
                 </a>
-              </li>
+              </li> */}
              
               <li>
-                <a href="/Manageclientcards" className="nav-link link-dark" onClick={handleManageClick}>
+                {/* <a href="/Manageclientcards" className="nav-link link-dark" onClick={handleManageClick}>
                   <i className="bi me-2 fas fa-users fa-1x text-gray-300"></i>
                   Client Cards
-                </a>
+                </a> */}
                 
               </li>
              
@@ -147,29 +154,24 @@ export default function Sidebar() {
 
 
 <li>
-                <a href="/manageyouraccount" className="nav-link link-dark" onClick={handleManageClick}>
-                  <i className="bi me-2 fas fa-users fa-1x text-gray-300"></i>
-                  Manage Your Accounts
-                </a>
+                <Dropdown>
+                  <Dropdown.Toggle variant="link" id="dropdown-clients" className="nav-link link-dark">
+                    <i className="bi me-2 fas fa-user fa-1x text-gray-300 bg-light"></i>
+                    Accounts
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item href="/manageyouraccount" onClick={handleManageClick}>Product summary</Dropdown.Item>
+                    {/* <Dropdown.Item href="/client" onClick={handleManageClick}>Manage Clients</Dropdown.Item> */}
+                    
+
+                    {/* <Dropdown.Item href="/client" onClick={handleManageClick}>Manage Clients</Dropdown.Item> */}
+
+                  </Dropdown.Menu>
+                </Dropdown>
               </li>
           {/* {role === 'User' && (
             <> */}
-              <li>
-                <Dropdown>
-                  <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
-                  <FaCreditCard className="me-2 text-gray-300 bg-light" size={20} />
-                    Manage your Cards
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                  {/* {role !== 'User' && (
-                    <>  */}
-                      <Dropdown.Item href="/CardsForm" onClick={handleManageClick}>Add Cards</Dropdown.Item>
-                    {/* </>
-                  )}   */}
-                    <Dropdown.Item href="/managecards" onClick={handleManageClick}>Manage Cards</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-                </li>
+            
                   {/* </>
               )}     */}
 

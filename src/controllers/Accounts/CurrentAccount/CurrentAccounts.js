@@ -60,7 +60,13 @@ const getAllAccounts = (req, res) => {
 
 const getAccountBySession = (req, res) => {
     const userID = req.session.uId; 
-    const sql = "SELECT * FROM currentaccounts WHERE UserID = ?";
+    // const sql = "SELECT * FROM currentaccounts WHERE UserID = ?";
+    const sql = `
+    SELECT u.*, a.CurrentAccount, a.CurrencyCode, a.Balance
+    FROM users u 
+    INNER JOIN currentaccounts a ON a.userId = u.userId 
+    WHERE u.userId = ?
+`;
 
     db.query(sql, [userID], (err, data) => {
         if (err) {

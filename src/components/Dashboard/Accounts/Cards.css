@@ -1,11 +1,14 @@
 .rccs__card--front {
-    margin-top: 250px;
+    margin-top: 100px;
     margin-left: 500px;
+    background-color: rgb(233, 233, 233);
+
 }
 
 .rccs__card--back {
-    margin-top: 250px;
+    margin-top: 100px;
     margin-right: 100px !important;
+    background-color: rgb(233, 233, 233);
 
 }
 
@@ -27,9 +30,18 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 .rccs__card {
-    background: white; 
+    /* background: white;  */
     color: #333; 
     transition: background-color 0.3s ease; 
 
 }
+.no-border-table {
+    border-collapse: collapse;
+  }
+  
+  .no-border-table th,
+  .no-border-table td {
+    border: none;
+  }
 
+ 
