@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Dashboard } from '../components/Dashboard/Dashboard';
 import { Client } from '../components/Dashboard/Client/Client';
-import Transaction from '../components/Dashboard/Transaction/Transaction';
+import Transaction from '../components/Dashboard/Transaction/Transactions';
 // import Login from '../components/LoginSignup/Login'
 import Signup from '../components/LoginSignup/Signup'
 import AddClient from '../components/Dashboard/Client/AddClient';
