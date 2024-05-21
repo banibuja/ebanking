@@ -122,6 +122,7 @@ app.delete("/deleteCurrencies/:id", currenciesController.deleteCurrencies);
 //
 app.post('/getCurrentAcc', TransactionController.getCurrentAccount);
 app.post('/insertTransaction', TransactionController.insertTransaction);
+app.post('/getAllTransactions', TransactionController.getAllTransactions);
 
 
 //
