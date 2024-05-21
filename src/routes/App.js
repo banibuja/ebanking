@@ -26,6 +26,7 @@ import Loans from '../components/Dashboard/Loans/Loans';
 import InvesmentsGoals from '../components/Dashboard/InvestmentsGoals/InvestmentsGoals';
 import InvestmentsTable from '../components/Dashboard/InvestmentsGoals/InvestmentsTable';
 import ProfileRoutes  from './ProfileRoutes'; // Import ProfileRoutes
+import Nav from '../components/Dashboard/Nav';
 
 import Login from './Login';
 
@@ -62,6 +63,8 @@ function App() {
         <Route path="/Loans" element={<Loans/>}/>
         <Route path="/InvesmentsGoals" element={<InvesmentsGoals/>} /> 
         <Route path="/InvestmentsTable" element={<InvestmentsTable/>} /> 
+        <Route path="/Nav" element={<Nav/>} /> 
+
 
         {/* <Route path="/Profi" element={<Profi/>} />  */}
 

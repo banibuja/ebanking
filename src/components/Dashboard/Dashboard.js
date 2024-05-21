@@ -1,66 +1,46 @@
 import Sidebar from './Sidebar';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Client } from './Client/Client';
-import { useNavigate } from 'react-router-dom'
-
-
-
+import { useNavigate } from 'react-router-dom';
+import Nav from './Nav';
 
 export const Dashboard = () => {
-
+  const [name, setName] = useState('');
   const [numClients, setNumClients] = useState(0);
-  const [numAcc, setNumAcc] = useState(0);
-  const [role, setRole] = useState(0);
-  const [numStaff, setNumStaff] = useState(0);
-  const navigate = useNavigate()
+  const [role, setRole] = useState('');
+  const navigate = useNavigate();
+
   useEffect(() => {
     axios.get('http://localhost:8080')
       .then(res => {
         if (res.data.valid) {
           setRole(res.data.role);
+          axios.post('http://localhost:8080/getUsersWithSession')
+            .then(res => {
+              const userData = res.data;
+              if (userData && userData.length > 0) {
+                setName(userData[0].name);
+              }
+            })
+            .catch(err => console.log(err));
         } else {
           navigate('/login');
         }
       })
-      .catch(err => console.log(err))
-  }, [])
-
-
-  useEffect(() => {
-    axios.post('http://localhost:8080/getUsers')
-      .then(res => {
-        const fetchedUsers = res.data;
-        setNumClients(fetchedUsers.length);
-      })
       .catch(err => console.log(err));
-
-      axios.post('http://localhost:8080/getAcc')
-      .then(res => {
-        const fetchedAcc = res.data;
-        setNumAcc(fetchedAcc.length);
-      })
-      .catch(err => console.log(err));
-
-    axios.post('http://localhost:8080/getStaff')
-      .then(res => {
-        const fetchedStaff = res.data;
-        setNumStaff(fetchedStaff.length);
-      })
-      .catch(err => console.log(err));
-  },
-    []);
-
-
-
-
+  }, []);
 
   return (
     <div>
-      <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black'}}>
+      <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'rgb(233, 233, 233)', color: 'black' }}>
+        
         <Sidebar />
 
-        <div className="container-fluid  " style={{ marginRight: '120px' }}>
+        <div className="container-fluid" style={{ marginTop: '100px'}}>
+        <Nav />
+
+          {/* <h2 style={{ color: 'grey' }}>Welcome, {name}</h2> */}
+
           <div className="row justify-content-center">
             <header>
               <h1>Dashboard</h1>
@@ -104,7 +84,7 @@ export const Dashboard = () => {
                         <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
                           Account types
                         </div>
-                        <div className="h5 mb-0 font-weight-bold text-gray-800">{numAcc}</div>
+                        <div className="h5 mb-0 font-weight-bold text-gray-800"></div>
                       </div>
                       <div className="col-auto">
                         <i className="fas fa-calendar fa-2x text-gray-300"></i>

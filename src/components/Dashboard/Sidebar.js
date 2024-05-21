@@ -25,31 +25,31 @@ export default function Sidebar() {
   }, [navigate]);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/sessionTimeRemaining')
-      .then(res => {
-        const { timeRemaining } = res.data;
-        if (timeRemaining === 0) {
-          handleLogout(); 
-        } else {
-          setSessionTimeRemaining(timeRemaining); 
-        }
-      })
-      .catch(err => console.log(err));
+    // axios.get('http://localhost:8080/sessionTimeRemaining')
+    //   .then(res => {
+    //     const { timeRemaining } = res.data;
+    //     if (timeRemaining === 0) {
+    //       handleLogout(); 
+    //     } else {
+    //       setSessionTimeRemaining(timeRemaining); 
+    //     }
+    //   })
+    //   .catch(err => console.log(err));
   
-    const timer = setInterval(() => {
-      setSessionTimeRemaining(prevTime => {
-        if (prevTime > 0) {
-          return prevTime - 1; 
-        } else {
-          clearInterval(timer); 
-          handleLogout(); 
-          return 0;
-        }
-      });
+    // const timer = setInterval(() => {
+    //   setSessionTimeRemaining(prevTime => {
+    //     if (prevTime > 0) {
+    //       return prevTime - 1; 
+    //     } else {
+    //       clearInterval(timer); 
+    //       handleLogout(); 
+    //       return 0;
+    //     }
+    //   });
 
-    }, 1000);
+    // }, 1000);
   
-    return () => clearInterval(timer);
+    // return () => clearInterval(timer);
   }, []);
 
   const handleLogout = () => {
@@ -64,19 +64,21 @@ export default function Sidebar() {
       });
   };
 
-  const formatTime = (timeInSeconds) => {
-    const minutes = Math.floor(timeInSeconds / 60);
-    // const seconds = timeInSeconds % 60;
-    return minutes;  
-  };
+  // const formatTime = (timeInSeconds) => {
+  //   const minutes = Math.floor(timeInSeconds / 60);
+  //   // const seconds = timeInSeconds % 60;
+  //   return minutes;  
+  // };
 
-  const handleManageClick = (e) => {
-    e.preventDefault(); 
+  const handleManageClick = async (e) => {
+    e.preventDefault();
+    await axios.get('http://localhost:8080/resetSession'); 
     navigate(e.target.getAttribute('href'));
   };
 
   return (
     <div>
+
       <div className="d-flex flex-column flex-shrink-0 p-3 bg-light" style={{ width: '300px', height: '100%', color: 'black', backgroundColor: 'white'}}>
         <a href="/" className="d-flex align-items-center mb-3 link-dark text-decoration-none">
           <i className="bi me-2 fas fa-university fa-2x text-gray-300" ></i>
@@ -339,7 +341,7 @@ export default function Sidebar() {
             <Dropdown.Item href="/ContactUs" onClick={handleManageClick}>ContactUs</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-        <small>Session Time Remaining: {formatTime(sessionTimeRemaining)}</small>
+        {/* <small>Session Time Remaining: {formatTime(sessionTimeRemaining)}</small> */}
       </div>
     </div>
   );

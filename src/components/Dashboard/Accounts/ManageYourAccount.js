@@ -4,6 +4,7 @@ import Sidebar from '../Sidebar';
 import { useNavigate } from 'react-router-dom';
 import Cards from "react-credit-cards-2";
 import './Cards.css';
+import Nav from '../Nav';
 
 export const ManageYourAccount = () => {
     const [userId, setUserId] = useState('');
@@ -149,6 +150,8 @@ export const ManageYourAccount = () => {
             <main style={{ display: 'flex', minHeight: '10vh', backgroundColor: 'rgb(233, 233, 233)', color: 'black' }}>
                 <Sidebar />
                 <div className="container-fluid" style={{ marginTop: '100px' }}>
+                <Nav />
+
                     <h2 className='' style={{ color: 'grey', padding: '5px' }}>Account summary</h2>
                     <div className="row">
                         <div className="col-md-12 d-flex justify-content-center align-items-center">

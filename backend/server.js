@@ -50,6 +50,8 @@ app.use(session({
 
 /////
 app.get('/sessionTimeRemaining', SessionController.sessionTimeRemaining);
+app.get('/resetSession', SessionController.resetSession);
+
 
 
 ///////
@@ -62,6 +64,8 @@ app.post('/searchUsers', clientController.getByUserID);
 app.delete("/deleteClient/:id", clientController.deleteClient);
 app.get('/checkUsername', clientController.checkUsername);
 app.get('/checkEmail', clientController.checkEmail);
+app.post('/getUsersWithSession', clientController.getUsersWithSession);
+
 
 
 

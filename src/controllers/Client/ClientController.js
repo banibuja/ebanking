@@ -301,7 +301,23 @@ const checkUsername = async (req, res) => {
     }
 };
 
-module.exports = { addClient, getUsers, getClientForEdit, checkEmail, checkUsername, updateUser, getByUserID, deleteClient };
+const getUsersWithSession = (req, res) => {
+    const userID = req.session.uId;
+    const sql = "SELECT * FROM users WHERE userId = ?";
+
+    db.query(sql, [userID], (err, data) => {
+        if (err) {
+            return res.json("Error");
+        }
+        if (data.length > 0) {
+            return res.json(data);
+        } else {
+            return res.json("fail");
+        }
+    });
+};
+
+module.exports = { addClient, getUsers, getUsersWithSession, getClientForEdit, checkEmail, checkUsername, updateUser, getByUserID, deleteClient };
 
 
 

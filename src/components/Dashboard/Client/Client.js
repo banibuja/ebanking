@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Sidebar from '../Sidebar';
 import EditClient from './EditClient';
+import Nav from '../Nav';
 
 export const Client = () => {
     const [users, setUsers] = useState([]);
@@ -76,9 +77,12 @@ export const Client = () => {
 
     return (
         <div>
-            <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
+            <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'rgb(233, 233, 233)', color: 'black' }}>
                 <Sidebar />
                 <div className="container-fluid" style={{ marginTop: '100px' }}>
+                    <div style={{marginBottom: '30px'}}>
+                <Nav />
+                </div>
                     <h1>MANAGE Client</h1>
                     <input 
                         type="text" 
