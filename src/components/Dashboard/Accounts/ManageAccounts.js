@@ -60,7 +60,7 @@ export const ManageAccounts = () => {
             fetchAccounts();
             return;
         }
-        axios.post('http://localhost:8080/searchAccounts', { UserID: clientID })
+        axios.post('http://localhost:8080/searchAccounts', { username: clientID })
             .then(res => {
                 setSearchResult(res.data);
             })
@@ -80,7 +80,7 @@ export const ManageAccounts = () => {
                     <div className="row">
                         <caption>List of Accounts</caption>
                         <div className="search-container">
-                            <input type="text" value={clientID} onChange={(e) => setclientID(e.target.value)} placeholder="Search by clientID" />
+                            <input type="text" value={clientID} onChange={(e) => setclientID(e.target.value)} placeholder="Search by username" />
                             <button onClick={handleSearch}>Search</button>
                         </div>
                         <div className="col-md-12 d-flex justify-content-center align-items-center">
@@ -88,8 +88,10 @@ export const ManageAccounts = () => {
                             <table className="table table-hover table-bordered table-striped dataTable no-footer" style={{ width: '100%' }}>
                                 <thead>
                                     <tr>
-                                        <th scope="col">AccountID</th>
-                                        <th scope="col">Client ID</th>
+                                        {/* <th scope="col">AccountID</th> */}
+                                        {/* <th scope="col">Client ID</th> */}
+                                        <th scope="col">username</th>
+                                        <th scope="col">Name Lastname</th>
                                         <th scope="col">CurrentAccount</th>
                                         <th scope="col">Currency</th>
                                         <th scope="col">Balance</th>
@@ -97,16 +99,18 @@ export const ManageAccounts = () => {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {renderData.map((account, index) => (
-                                        <tr key={account.AccountID}>
-                                            <th scope="row">{account.AccountID}</th>
-                                            <td>{account.UserID}</td>
+                                {Array.isArray(renderData) && renderData.map((account, index) => (
+                                        <tr key={account.CurrentAccount}>
+                                             {/* <th scope="row">{account.CurrentAccount}</th> */}
+                                            {/* <td>{account.UserID}</td> */}
+                                            <td>{account.username}</td>
+                                            <td>{account.name + '  ' + account.lastname}</td>
                                             <td>{account.CurrentAccount}</td>
                                             <td>{account.CurrencyCode}</td>
                                             <td>{parseFloat(account.Balance).toFixed(2)}</td>
                                             <td>
-                                                <button onClick={() => handleEdit(account.AccountID)} className="btn btn-primary mr-2">Edit</button>
-                                                <button onClick={() => handleDelete(account.AccountID)} className="btn btn-danger">Delete</button>
+                                                <button onClick={() => handleEdit(account.CurrentAccount)} className="btn btn-primary mr-2">Edit</button>
+                                                <button onClick={() => handleDelete(account.CurrentAccount)} className="btn btn-danger">Delete</button>
                                             </td>
                                         </tr>
                                     ))}

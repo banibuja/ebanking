@@ -25,31 +25,31 @@ export default function Sidebar() {
   }, [navigate]);
 
   useEffect(() => {
-    axios.get('http://localhost:8080/sessionTimeRemaining')
-      .then(res => {
-        const { timeRemaining } = res.data;
-        if (timeRemaining === 0) {
-          handleLogout(); 
-        } else {
-          setSessionTimeRemaining(timeRemaining); 
-        }
-      })
-      .catch(err => console.log(err));
+    // axios.get('http://localhost:8080/sessionTimeRemaining')
+    //   .then(res => {
+    //     const { timeRemaining } = res.data;
+    //     if (timeRemaining === 0) {
+    //       handleLogout(); 
+    //     } else {
+    //       setSessionTimeRemaining(timeRemaining); 
+    //     }
+    //   })
+    //   .catch(err => console.log(err));
   
-    const timer = setInterval(() => {
-      setSessionTimeRemaining(prevTime => {
-        if (prevTime > 0) {
-          return prevTime - 1; 
-        } else {
-          clearInterval(timer); 
-          handleLogout(); 
-          return 0;
-        }
-      });
+    // const timer = setInterval(() => {
+    //   setSessionTimeRemaining(prevTime => {
+    //     if (prevTime > 0) {
+    //       return prevTime - 1; 
+    //     } else {
+    //       clearInterval(timer); 
+    //       handleLogout(); 
+    //       return 0;
+    //     }
+    //   });
 
-    }, 1000);
+    // }, 1000);
   
-    return () => clearInterval(timer);
+    // return () => clearInterval(timer);
   }, []);
 
   const handleLogout = () => {
@@ -64,19 +64,21 @@ export default function Sidebar() {
       });
   };
 
-  const formatTime = (timeInSeconds) => {
-    const minutes = Math.floor(timeInSeconds / 60);
-    // const seconds = timeInSeconds % 60;
-    return minutes;  
-  };
+  // const formatTime = (timeInSeconds) => {
+  //   const minutes = Math.floor(timeInSeconds / 60);
+  //   // const seconds = timeInSeconds % 60;
+  //   return minutes;  
+  // };
 
-  const handleManageClick = (e) => {
-    e.preventDefault(); 
+  const handleManageClick = async (e) => {
+    e.preventDefault();
+    await axios.get('http://localhost:8080/resetSession'); 
     navigate(e.target.getAttribute('href'));
   };
 
   return (
     <div>
+
       <div className="d-flex flex-column flex-shrink-0 p-3 bg-light" style={{ width: '300px', height: '100%', color: 'black', backgroundColor: 'white'}}>
         <a href="/" className="d-flex align-items-center mb-3 link-dark text-decoration-none">
           <i className="bi me-2 fas fa-university fa-2x text-gray-300" ></i>
@@ -101,6 +103,13 @@ export default function Sidebar() {
                   <Dropdown.Menu>
                     <Dropdown.Item href="/addclient" onClick={handleManageClick}>Add Client</Dropdown.Item>
                     <Dropdown.Item href="/client" onClick={handleManageClick}>Manage Clients</Dropdown.Item>
+                    <Dropdown.Item href="/manageaccounts" onClick={handleManageClick}>Manage CurrentAccounts</Dropdown.Item>
+                    <Dropdown.Item href="/managesavingsaccount" onClick={handleManageClick}>Manage SavingsAccounts</Dropdown.Item>
+                    <Dropdown.Item href="/Manageclientcards" onClick={handleManageClick}>Manage ClientCards</Dropdown.Item>
+                    <Dropdown.Item href="/CardsForm" onClick={handleManageClick}>Add Cards</Dropdown.Item>
+
+                    {/* <Dropdown.Item href="/client" onClick={handleManageClick}>Manage Clients</Dropdown.Item> */}
+
                   </Dropdown.Menu>
                 </Dropdown>
               </li>
@@ -121,24 +130,24 @@ export default function Sidebar() {
                   AccessPermissions
                 </a>
               </li>
-              <li>
+              {/* <li>
                 <a href="/manageaccounts" className="nav-link link-dark" onClick={handleManageClick}>
                   <i className="bi me-2 fas fa-users fa-1x text-gray-300"></i>
                   Client CurrentAccounts
                 </a>
-              </li>
-              <li>
+              </li> */}
+              {/* <li>
                 <a href="/managesavingsaccount" className="nav-link link-dark" onClick={handleManageClick}>
                   <i className="bi me-2 fas fa-users fa-1x text-gray-300"></i>
                   Client SavingsAccounts
                 </a>
-              </li>
+              </li> */}
              
               <li>
-                <a href="/Manageclientcards" className="nav-link link-dark" onClick={handleManageClick}>
+                {/* <a href="/Manageclientcards" className="nav-link link-dark" onClick={handleManageClick}>
                   <i className="bi me-2 fas fa-users fa-1x text-gray-300"></i>
                   Client Cards
-                </a>
+                </a> */}
                 
               </li>
              
@@ -147,29 +156,24 @@ export default function Sidebar() {
 
 
 <li>
-                <a href="/manageyouraccount" className="nav-link link-dark" onClick={handleManageClick}>
-                  <i className="bi me-2 fas fa-users fa-1x text-gray-300"></i>
-                  Manage Your Accounts
-                </a>
+                <Dropdown>
+                  <Dropdown.Toggle variant="link" id="dropdown-clients" className="nav-link link-dark">
+                    <i className="bi me-2 fas fa-user fa-1x text-gray-300 bg-light"></i>
+                    Accounts
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item href="/manageyouraccount" onClick={handleManageClick}>Product summary</Dropdown.Item>
+                    {/* <Dropdown.Item href="/client" onClick={handleManageClick}>Manage Clients</Dropdown.Item> */}
+                    
+
+                    {/* <Dropdown.Item href="/client" onClick={handleManageClick}>Manage Clients</Dropdown.Item> */}
+
+                  </Dropdown.Menu>
+                </Dropdown>
               </li>
           {/* {role === 'User' && (
             <> */}
-              <li>
-                <Dropdown>
-                  <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
-                  <FaCreditCard className="me-2 text-gray-300 bg-light" size={20} />
-                    Manage your Cards
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                  {/* {role !== 'User' && (
-                    <>  */}
-                      <Dropdown.Item href="/CardsForm" onClick={handleManageClick}>Add Cards</Dropdown.Item>
-                    {/* </>
-                  )}   */}
-                    <Dropdown.Item href="/managecards" onClick={handleManageClick}>Manage Cards</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-                </li>
+            
                   {/* </>
               )}     */}
 
@@ -206,18 +210,18 @@ export default function Sidebar() {
           <Dropdown>
                   <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
                     <i className="bi me-2 fas fa-money-bill-wave fa-1x text-gray-300 bg-light"></i>
-                    Manage Finances
+                    Invesments
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
-                    <Dropdown.Item href="#" onClick={handleManageClick}>Financial analysis</Dropdown.Item>
-                    <Dropdown.Item href="/Goals" onClick={handleManageClick}>Goals</Dropdown.Item>
+                    <Dropdown.Item href="/InvesmentsGoals" onClick={handleManageClick}>Add Goal</Dropdown.Item>
+                    <Dropdown.Item href="/InvestmentsTable" onClick={handleManageClick}>Goals</Dropdown.Item>
                     <Dropdown.Item href="#" onClick={handleManageClick}>My budget</Dropdown.Item>
 
                   </Dropdown.Menu>
                 </Dropdown>
           </li>
           <li>
-            <a href="/Profile" className="nav-link link-dark" onClick={handleManageClick}>
+            <a href="/profi" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-user fa-1x text-gray-300" ></i>
               Profile
             </a>
@@ -228,6 +232,7 @@ export default function Sidebar() {
               Transactions
             </a>
           </li>
+         
         
 
           <li>
@@ -336,7 +341,7 @@ export default function Sidebar() {
             <Dropdown.Item href="/ContactUs" onClick={handleManageClick}>ContactUs</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>
-        <small>Session Time Remaining: {formatTime(sessionTimeRemaining)}</small>
+        {/* <small>Session Time Remaining: {formatTime(sessionTimeRemaining)}</small> */}
       </div>
     </div>
   );

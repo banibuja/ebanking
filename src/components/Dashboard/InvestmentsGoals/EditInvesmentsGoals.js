@@ -2,17 +2,19 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-function EditSavings({ id, onClose }) {
+function EditInvesmentsGoals({ id, onClose }) {
     const navigate = useNavigate();
     const [values, setValues] = useState({
-        SavingsType: '',
-        Balance: ''
+        UserID: '',
+        GoalName: '',
+        GoalAmount: '',
+        Deadline: '',
+        Impact: ''
     });
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/getSavingsAccounts/${id}`)
+        axios.get(`http://localhost:8080/getGoalsForEdit/${id}`)
             .then(res => {
-                console.log('Edit Account API', res.data);
                 setValues(res.data);
             })
             .catch(err => console.log(err));
@@ -20,19 +22,15 @@ function EditSavings({ id, onClose }) {
 
     const handleInput = (event) => {
         const { name, value } = event.target;
-        const parsedValue = name === 'Balance' ? parseFloat(value) : value; 
-        setValues(prev => ({ ...prev, [name]: parsedValue }));
+        setValues(prev => ({ ...prev, [name]: value }));
     };
-    
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        
-        axios.put(`http://localhost:8080/updateSavingsAccounts/${id}`, values)
+        axios.put(`http://localhost:8080/updateGoal/${id}`, values)
             .then(res => {
-                console.log('Update APi', res.data)
-                
                 window.location.reload(); 
+                onClose(); 
             })
             .catch(err => console.log(err));
     };
@@ -42,7 +40,7 @@ function EditSavings({ id, onClose }) {
             <div className="modal-dialog">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title">Edit Savings Account</h5>
+                        <h5 className="modal-title">Edit Goal </h5>
                         <button type="button" className="close" onClick={onClose}>
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -50,22 +48,25 @@ function EditSavings({ id, onClose }) {
                     <div className="modal-body">
                         <form onSubmit={handleSubmit}>
                             <div className="form-group">
-                                <label>username</label>
-                                <input type="text" placeholder='username' name='username' onChange={handleInput} className='form-control roundend-0' value={values.username} disabled/>
+                                <label>Client ID</label>
+                                <input type="text" placeholder='User ID' name='UserID' onChange={handleInput} className='form-control roundend-0' value={values.UserID} disabled/>
                             </div>
                             <div className="form-group">
-                                <label>Client FullName</label>
-                                <input type="text" placeholder='fullname' name='name' onChange={handleInput} className='form-control rounded-0' value={values.name + ' ' + values.lastname} disabled />
+                                <label>GoalName</label>
+                                <input type="text" placeholder='goalname' name='GoalName' onChange={handleInput} className='form-control roundend-0' value={values.GoalName}  />
                             </div>
                             <div className="form-group">
-                                <label>FlexSaveAccount</label>
-                                <input type="text" placeholder='FlexSaveAccount' name='SavingsType' onChange={handleInput} className='form-control roundend-0' value={values.SavingsType} disabled />
+                                <label>GoalAmount</label>
+                                <input type="text" placeholder='GoalAmount' name='GoalAmount' onChange={handleInput} className='form-control roundend-0' value={values.GoalAmount} />
                             </div>
-                           
                             <div className="form-group">
-                                <label>Balance</label>
-                                <input type="text" placeholder='Balance' name='Balance' onChange={handleInput} className='form-control roundend-0' value={values.Balance} />
+                                <label>Deadline</label>
+                                <input type="date" placeholder='deadline' name='Deadline' onChange={handleInput} className='form-control roundend-0' value={values.Deadline} />
                             </div>
+                            <div className="form-group">
+                                                    <label for="important" class="form-label">Impact</label>
+                                                    <input type="range" class="form-range" name='Impact' onChange={handleInput} className='form-control roundend-0' value={values.Impact} />
+                                                </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" onClick={onClose}>Close</button>
                                 <button type="submit" className="btn btn-primary">Save changes</button>
@@ -78,5 +79,5 @@ function EditSavings({ id, onClose }) {
     );
 };
 
-
-export default EditSavings;
+export default EditInvesmentsGoals;
+//InvestmentsTable

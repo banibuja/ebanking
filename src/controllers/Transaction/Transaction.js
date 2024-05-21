@@ -1,5 +1,32 @@
 const db = require('../../db');
-
+const getAllTransactions = (req, res) =>{
+    const userID = req.session.uId;
+    if (!userID) {
+        return res.json("fail");
+    }
+    var sql = "SELECT CurrentAccount FROM currentaccounts WHERE UserID = ?";
+    db.query(sql, [userID], (err, data) => {
+        if (err) {
+            return res.status(500).end();
+        }
+        if (data.length > 0) {
+            const accountID = data[0];
+            var sql = "SELECT * FROM transactions WHERE SenderAccID = ?";
+            db.query(sql, [accountID], (err, data) => {
+                if (err) {
+                    return res.status(500).end();
+                }
+                if (data.length > 0) {
+                    console.log(data);
+                } else {
+                    return res.status(404).end();
+                }
+            });
+        } else {
+            return res.status(404).end();
+        }
+    });
+}
 const getCurrentAccount = (req, res) => {
     const userID = req.session.uId;
     if (!userID) {

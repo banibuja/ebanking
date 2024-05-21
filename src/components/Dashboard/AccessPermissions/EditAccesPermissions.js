@@ -5,13 +5,12 @@ import { useNavigate } from 'react-router-dom';
 function EditAccesPermissions({ id, onClose }) {
     const navigate = useNavigate();
     const [values, setValues] = useState({
-        UserId: '',
         AccessLevel: '',
         Balance: ''
     });
 
     useEffect(() => {
-        axios.get(`http://localhost:8080/getAccesPermissions/${id}`)
+        axios.get(`http://localhost:8080/getAccesForEdit/${id}`)
             .then(res => {
                 console.log('Edit Acces API', res.data);
                 setValues(res.data);
@@ -49,8 +48,12 @@ function EditAccesPermissions({ id, onClose }) {
                     <div className="modal-body">
                         <form onSubmit={handleSubmit}>
                             <div className="form-group">
-                                <label>Client ID</label>
-                                <input type="text" placeholder='User ID' name='UserId' onChange={handleInput} className='form-control roundend-0' value={values.UserId} disabled/>
+                                <label>username</label>
+                                <input type="text" placeholder='username' name='username' onChange={handleInput} className='form-control roundend-0' value={values.username} disabled/>
+                            </div>
+                            <div className="form-group">
+                                <label>Full name</label>
+                                <input type="text" placeholder='full name' name='fullname' onChange={handleInput} className='form-control roundend-0' value={values.name + ' ' + values.lastname} disabled/>
                             </div>
                             <div className="form-group">
                                 <label>Access Level</label>

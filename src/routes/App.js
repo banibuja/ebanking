@@ -2,8 +2,8 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Dashboard } from '../components/Dashboard/Dashboard';
 import { Client } from '../components/Dashboard/Client/Client';
-import Transaction from '../components/Dashboard/Transaction/Transaction';
-import Login from '../components/LoginSignup/Login'
+import Transaction from '../components/Dashboard/Transaction/Transactions';
+// import Login from '../components/LoginSignup/Login'
 import Signup from '../components/LoginSignup/Signup'
 import AddClient from '../components/Dashboard/Client/AddClient';
 // import ContactUs from '../components/Dashboard/ContactUs/ContactUs'
@@ -13,7 +13,7 @@ import Home from '../components/Home/Home';
 import Profile from '../components/Dashboard/Profile/Profile';
 import Sidebar from '../components/Dashboard/Sidebar';
 import CardsForm from '../components/Dashboard/Cards/CardsForm';
-import ManageCards from '../components/Dashboard/Cards/ManageCards';
+// import ManageCards from '../components/Dashboard/Cards/ManageCards';
 import ManageAccounts from '../components/Dashboard/Accounts/ManageAccounts';
 import ManageYourAccount from '../components/Dashboard/Accounts/ManageYourAccount';
 import Manageclientcards from '../components/Dashboard/Cards/Manageclientcards';
@@ -22,8 +22,13 @@ import ManageSavingsAccount from '../components/Dashboard/Accounts/ManageSavings
 // import ManageYourSavings from '../components/Dashboard/Accounts/ManageYourSavings';
 import Currencies from '../components/Dashboard/Currencies/Currencies';
 // import Contact from '../components/Dashboard/ContactUs/Contact';
+import Loans from '../components/Dashboard/Loans/Loans';
+import InvesmentsGoals from '../components/Dashboard/InvestmentsGoals/InvestmentsGoals';
+import InvestmentsTable from '../components/Dashboard/InvestmentsGoals/InvestmentsTable';
+import ProfileRoutes  from './ProfileRoutes'; // Import ProfileRoutes
+import Nav from '../components/Dashboard/Nav';
 
-
+import Login from './Login';
 
 
 
@@ -34,7 +39,7 @@ function App() {
       <Routes>
 
         <Route path="/Transaction" element={<Transaction/>}></Route> 
-        <Route path="/login" element={<Login />} />
+        {/* <Route path="/login" element={<Login />} /> */}
         <Route path="/signup" element={<Signup />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/client" element={<Client />} />
@@ -46,7 +51,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/Sidebar" element={<Sidebar/>} />
         <Route path="/CardsForm" element={<CardsForm/>} />
-        <Route path="/ManageCards" element={<ManageCards/>} />
+        {/* <Route path="/ManageCards" element={<ManageCards/>} /> */}
         <Route path="/ManageAccounts" element={<ManageAccounts/>} /> 
         <Route path="/ManageYourAccount" element={<ManageYourAccount/>} /> 
         <Route path="/Manageclientcards" element={<Manageclientcards/>} /> 
@@ -55,6 +60,14 @@ function App() {
         <Route path="/AccessPermissions" element={<AccessPermissions/>} /> 
         <Route path="/currencies" element={<Currencies/>} /> 
         {/* <Route path="/Contact" element={<Contact/>} />  */}
+        <Route path="/Loans" element={<Loans/>}/>
+        <Route path="/InvesmentsGoals" element={<InvesmentsGoals/>} /> 
+        <Route path="/InvestmentsTable" element={<InvestmentsTable/>} /> 
+        <Route path="/Nav" element={<Nav/>} /> 
+
+
+        {/* <Route path="/Profi" element={<Profi/>} />  */}
+
 
 
 
@@ -63,6 +76,8 @@ function App() {
 
 
       </Routes>
+      <ProfileRoutes  />
+      <Login   />
     </BrowserRouter>
   );
 }

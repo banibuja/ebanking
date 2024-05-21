@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 function EditAccount({ id, onClose }) {
     const navigate = useNavigate();
     const [values, setValues] = useState({
-        UserID: '',
         CurrentAccount: '',
         Balance: ''
     });
@@ -49,8 +48,12 @@ function EditAccount({ id, onClose }) {
                     <div className="modal-body">
                         <form onSubmit={handleSubmit}>
                             <div className="form-group">
-                                <label>Client ID</label>
-                                <input type="text" placeholder='User ID' name='UserID' onChange={handleInput} className='form-control rounded-0' value={values.UserID} disabled />
+                                <label>Client username</label>
+                                <input type="text" placeholder='User ID' name='username' onChange={handleInput} className='form-control rounded-0' value={values.username} disabled />
+                            </div>
+                            <div className="form-group">
+                                <label>Client FullName</label>
+                                <input type="text" placeholder='fullname' name='name' onChange={handleInput} className='form-control rounded-0' value={values.name + ' ' + values.lastname} disabled />
                             </div>
                             <div className="form-group">
                                 <label>Current Account</label>

@@ -4,7 +4,7 @@ const db = require('../../../db');
 const updateSavingsAccounts = (req, res) => {
     const Savingsid = req.params.id;
     const { Balance } = req.body;
-    const sqlUpdate = "UPDATE savingsaccounts SET Balance=? WHERE SavingsID=?";
+    const sqlUpdate = "UPDATE savingsaccounts SET Balance=? WHERE SavingsType=?";
 
     db.query(sqlUpdate, [Balance, Savingsid], (err, result) => {
         if (err) {
@@ -18,8 +18,13 @@ const updateSavingsAccounts = (req, res) => {
 
 const getSavingsAccountById = (req, res) => {
     const Savingsid = req.params.id;
-    const sql = "SELECT UserID, SavingsType, Balance FROM savingsaccounts WHERE SavingsID = ?";
-
+    // const sql = "SELECT UserID, SavingsType, Balance FROM savingsaccounts WHERE SavingsType = ?";
+    const sql = `
+    SELECT u.*, a.SavingsType, a.CurrencyCode, a.Balance
+    FROM users u 
+    INNER JOIN savingsaccounts a ON a.userId = u.userId 
+    
+`;
     db.query(sql, [Savingsid], (err, data) => {
         if (err) {
             return res.status(500).json({ error: "Internal server error" });
@@ -34,8 +39,12 @@ const getSavingsAccountById = (req, res) => {
 
 
 const getAllSavingAccount = (req, res) => {
-    const sql = "SELECT * FROM savingsaccounts";
-
+    const sql = `
+    SELECT u.*, a.SavingsType, a.CurrencyCode, a.Balance
+    FROM users u 
+    INNER JOIN savingsaccounts a ON a.userId = u.userId 
+    
+`;
     db.query(sql, (err, data) => {
         if (err) {
             return res.json("Error");
@@ -51,7 +60,7 @@ const getAllSavingAccount = (req, res) => {
 const deleteSavings = (req, res) => {
 
     const AccountID = req.params.id;
-    const sqlDelete = "DELETE FROM savingsaccounts WHERE SavingsID = ?";
+    const sqlDelete = "DELETE FROM savingsaccounts WHERE SavingsType = ?";
   
     db.query(sqlDelete, AccountID, (err, result) => {
         if (err) {
@@ -66,7 +75,13 @@ const deleteSavings = (req, res) => {
 const getSavingsBySesison = (req, res) => {
     const userID = req.session.uId; 
 
-    const sql = "SELECT * FROM savingsaccounts WHERE UserID = ?"; 
+    // const sql = "SELECT * FROM savingsaccounts WHERE UserID = ?"; 
+    const sql = `
+    SELECT u.*, a.SavingsType, a.CurrencyCode, a.Balance
+    FROM users u 
+    INNER JOIN savingsaccounts a ON a.UserID = u.userId 
+    WHERE u.userId = ?
+`;
 
     db.query(sql, [userID], (err, data) => {
         if (err) {
@@ -81,10 +96,14 @@ const getSavingsBySesison = (req, res) => {
 };
 
 const getAccountByUserID = (req, res) => {
-    const { UserID } = req.body;
-    const sql = "SELECT * FROM savingsaccounts WHERE UserID = ?";
-
-    db.query(sql, [UserID], (err, data) => {
+    const { username } = req.body;
+    const sql = `
+    SELECT u.*, a.SavingsType, a.CurrencyCode, a.Balance
+    FROM users u 
+    INNER JOIN savingsaccounts a ON a.UserID = u.userId 
+    WHERE u.username = ?
+`;
+    db.query(sql, [username], (err, data) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: "Internal server error" });

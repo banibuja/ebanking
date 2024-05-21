@@ -8,7 +8,7 @@ export const Manageclientcards = () => {
     const [cards, setCards] = useState([]);
     const [numCards, setNumCards] = useState(0); 
     const [editCards, setEditCardsId] = useState(null);
-    const [recordsPerPage, setRecordsPerPage] = useState(10); // Initial value set to 10
+    const [recordsPerPage, setRecordsPerPage] = useState(10); 
     const [showAll, setShowAll] = useState(false);
     const [searchUserID, setSearchUserID] = useState('');
     const [searchResult, setSearchResult] = useState([]);
@@ -29,8 +29,8 @@ export const Manageclientcards = () => {
             .catch(err => console.log(err));
     };
 
-    const handleDelete = (cardId) => {
-        axios.delete(`http://localhost:8080/deleteCard/${cardId}`)
+    const handleDelete = (id) => {
+        axios.delete(`http://localhost:8080/deleteCard/${id}`)
             .then(res => {
                 getCards();
             })
@@ -74,7 +74,7 @@ export const Manageclientcards = () => {
             getCards();
             return;
         }
-        axios.post('http://localhost:8080/searchCards', { UserID: searchUserID })
+        axios.post('http://localhost:8080/searchCards', { username: searchUserID })
             .then(res => {
                 setSearchResult(res.data);
             })
@@ -93,15 +93,14 @@ export const Manageclientcards = () => {
                     <div className="row">
                         <caption>List of Cards</caption>
                         <div className="search-container">
-                            <input type="text" value={searchUserID} onChange={(e) => setSearchUserID(e.target.value)} placeholder="Search by Client ID" />
+                            <input type="text" value={searchUserID} onChange={(e) => setSearchUserID(e.target.value)} placeholder="Search by username" />
                             <button onClick={handleSearch}>Search</button>
                         </div>
                         <div className="col-md-12 d-flex justify-content-center align-items-center">
                             <table className="table table-hover table-bordered table-striped dataTable no-footer" style={{ width: '100%' }}>
                                 <thead>
                                     <tr>
-                                        <th scope="col">Card ID</th>
-                                        <th scope="col">Client Id</th>
+                                        <th scope="col">username</th>
                                         <th scope="col">Card Number</th>
                                         <th scope="col">Card Holder Name</th>
                                         <th scope="col">Valid From</th>
@@ -114,8 +113,8 @@ export const Manageclientcards = () => {
                                 <tbody>
                                     {Array.isArray(renderData) && renderData.map((card, index) => (
                                         <tr key={card.CardID}>
-                                            <th scope="row">{card.CardID}</th>
-                                            <td>{card.UserID}</td>
+                                            {/* <th scope="row">{card.CardID}</th> */}
+                                            <td>{card.username}</td>
                                             <td>{maskCardNumber(card.CardNumber)}</td>
                                             <td>{card.CardHolderName}</td>
                                             <td>{formatDate(card.ValidFrom)}</td>

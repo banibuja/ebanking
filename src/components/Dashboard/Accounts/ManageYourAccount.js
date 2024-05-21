@@ -2,16 +2,33 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Sidebar from '../Sidebar';
 import { useNavigate } from 'react-router-dom';
+import Cards from "react-credit-cards-2";
+import './Cards.css';
+import Nav from '../Nav';
 
 export const ManageYourAccount = () => {
     const [userId, setUserId] = useState('');
-    const [mess, setMess] = useState([]);
-    const [numMess, setNumMess] = useState(0); 
+    const [account, setAccount] = useState([]);
+    const [cards, setCards] = useState([]);
+    const [numAccount, setNumAccount] = useState(0); 
     const [savings, setSavings] = useState([]);
     const [numSavings, setNumSavings] = useState(0); 
+    const [numCards, setNumCards] = useState(0);
+    const [state, setState] = useState({
+        number: "",
+        name: "",
+        expiry: "",
+        cvc: "",
+        focus: "",
+        cardType: "",
+    });
 
     useEffect(() => {
-        getMess();
+        getCards();
+    }, []);
+
+    useEffect(() => {
+        getaccount();
         axios.get('http://localhost:8080')
         .then(res => {
           if (res.data.valid) {
@@ -28,14 +45,35 @@ export const ManageYourAccount = () => {
     }, []);
 
     const navigate = useNavigate();
+    const getCards = () => {
+        axios.post('http://localhost:8080/getCardsWithSession')
+            .then(res => {
+                const fetchedCards = res.data;
+                if (fetchedCards !== "fail") {
+                    setCards(fetchedCards);
+                    setNumCards(fetchedCards.length);
+                    if (fetchedCards.length > 0) {
+                        setState({
+                            number: fetchedCards[0].CardNumber,
+                            name: fetchedCards[0].CardHolderName,
+                            expiry: fetchedCards[0].ExpiryDate.substring(2, 7).replace('-', '/'),
+                            cvc: "", 
+                            focus: "",
+                            cardType: fetchedCards[0].CardType,
+                        });
+                    }
+                }
+            })
+            .catch(err => console.log(err));
+    };
 
-    const getMess = () => {
+    const getaccount = () => {
         axios.post(`http://localhost:8080/getAccountBySession`)
             .then(res => {
                 const fetchedMess = res.data;
                 console.log(fetchedMess);
-                setMess(fetchedMess);
-                setNumMess(fetchedMess.length); 
+                setAccount(fetchedMess);
+                setNumAccount(fetchedMess.length); 
             })
             .catch(err => console.log(err));
     };
@@ -54,7 +92,7 @@ export const ManageYourAccount = () => {
     const handleDelete = (id) => {
         axios.delete(`http://localhost:8080/deleteAccounts/${id}`)
             .then(res => {
-                getMess();
+                getaccount();
             })
             .catch(err => console.log(err));
     };
@@ -65,82 +103,151 @@ export const ManageYourAccount = () => {
             })
             .catch(err => console.log(err));
     };
-    
+    const handleDeletet = (cardId) => {
+        axios.delete(`http://localhost:8080/deleteCard/${cardId}`)
+            .then(res => {
+                getCards();
+            })
+            .catch(err => console.log(err));
+    };
 
+    const handleBlock = (cardId) => {
+        axios.put(`http://localhost:8080/blockCard/${cardId}`)
+            .then(res => {
+                getCards();
+            })
+            .catch(err => console.log(err));
+    };
+
+    const handleEnable = (cardId) => {
+        axios.put(`http://localhost:8080/enableCard/${cardId}`)
+            .then(res => {
+                getCards();
+            })
+            .catch(err => console.log(err));
+    };
+
+    const maskCardNumber = (cardNumber) => {
+        if (cardNumber.length <= 10) {
+            return '****'.repeat(Math.max(0, Math.ceil(cardNumber.length / 4)));
+        }
+        const visibleDigits = 6;
+        const masked = cardNumber.slice(0, visibleDigits) + '*'.repeat(cardNumber.length - visibleDigits - 4) + cardNumber.slice(-4);
+        return masked;
+    };
+
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+    };
+
+    const handleCardAdded = () => {
+        getCards();  
+    };
+    
     return (
         <div> 
-            <main style={{ display: 'flex', minHeight: '10vh', backgroundColor: 'white', color: 'black' }}>
+            <main style={{ display: 'flex', minHeight: '10vh', backgroundColor: 'rgb(233, 233, 233)', color: 'black' }}>
                 <Sidebar />
-
                 <div className="container-fluid" style={{ marginTop: '100px' }}>
-                {/* <h1 className="text-center">MANAGE Accounts</h1> */}
-                    <h1 className=''>Current Accounts</h1>
+                <Nav />
+
+                    <h2 className='' style={{ color: 'grey', padding: '5px' }}>Account summary</h2>
                     <div className="row">
-                        <caption>List of Messages</caption>
                         <div className="col-md-12 d-flex justify-content-center align-items-center">
-                            <table className="table table-hover table-bordered table-striped dataTable no-footer" style={{ width: '100%' }}>
+                            <table className="table table-hover no-border-table dataTable no-footer" style={{ width: '100%', marginLeft: '9px' }}>
                                 <thead>
                                     <tr>
-                                        {/* <th scope="col">AccountID</th> */}
-                                        <th scope="col">Your ID</th>
                                         <th scope="col">CurrentAccount</th>
+                                        <th scope="col">Account name</th>
                                         <th scope="col">Currency</th>
                                         <th scope="col">Balance</th> 
-                                        {/* <th scope="col">Action</th>  */}
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Array.isArray(mess) && mess.map((item, index) => (
+                                    {Array.isArray(account) && account.map((item) => (
                                         <tr key={item.AccountID}>
-                                            {/* <th scope="row">{item.AccountID}</th>  */}
-                                            <td>{item.UserID}</td>
                                             <td>{item.CurrentAccount}</td>
+                                            <td>{item.name + ' ' + item.lastname}</td>
                                             <td>{item.CurrencyCode}</td>
-                                            <td>{parseFloat(item.Balance).toFixed(3)}</td> 
-                                            <td>
-                                                {/* <button onClick={() => handleDelete(item.AccountID)} className="btn btn-danger">Delete</button> */}
-                                            </td>
+                                            <td>{parseFloat(item.Balance).toFixed(2)}</td> 
                                         </tr>
                                     ))}
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                    <div>Total message: {numMess}</div> 
-                    <div className="container-fluid" style={{ marginTop: '10px' }}>
-                        <h1 className=''>Savings Account</h1>
+                    <div className="container-fluid" style={{ marginTop: '20px' }}>
                         <div className="row">
-                            <caption>List of Messages</caption>
                             <div className="col-md-12 d-flex justify-content-center align-items-center">
-                                <table className="table table-hover table-bordered table-striped dataTable no-footer" style={{ width: '100%' }}>
+                                <table className="table table-hover no-border-table dataTable no-footer" style={{ width: '100%' }}>
                                     <thead>
                                         <tr>
-                                            {/* <th scope="col">AccountID</th> */}
-                                            <th scope="col">Your ID</th>
                                             <th scope="col">FlexSaveAccount</th>
+                                            <th scope="col">Account name</th>
                                             <th scope="col">Currency</th>
                                             <th scope="col">Balance</th> 
-                                            {/* <th scope="col">Action</th>  */}
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {Array.isArray(savings) && savings.map((item, index) => (
+                                        {Array.isArray(savings) && savings.map((item) => (
                                             <tr key={item.SavingsID}>
-                                                {/* <th scope="row">{item.SavingsID}</th>  */}
-                                                <td>{item.UserID}</td>
                                                 <td>{item.SavingsType}</td>
+                                                <td>{item.name + ' ' + item.lastname}</td>
                                                 <td>{item.CurrencyCode}</td>
                                                 <td>{parseFloat(item.Balance).toFixed(2)}</td> 
-                                                <td>
-                                                    {/* <button onClick={() => handleDeletee(item.SavingsID)} className="btn btn-danger">Delete</button> */}
-                                                </td>
                                             </tr>
                                         ))}
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-                        <div>Total message: {numSavings}</div> 
+                    </div>
+                    <div className="container-fluid" style={{ marginTop: '90px' }}>
+                        <h2 className='' style={{ color: 'grey', padding: '5px' }}>Card summary</h2>
+                        <div className="row">
+                            <div className="col-md-12 d-flex justify-content-center align-items-center">
+                                <table className="table table-hover no-border-table dataTable no-footer" style={{ width: '100%' }}>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Card Number</th>
+                                            <th scope="col">Card Holder Name</th>
+                                            <th scope="col">Valid From</th>
+                                            <th scope="col">Valid Until</th>
+                                            <th scope="col">Card Type</th>
+                                            <th scope="col">Card Status</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {Array.isArray(cards) && cards.map((card) => (
+                                        <tr key={card.CardID}>
+                                            <td>{maskCardNumber(card.CardNumber)}</td>
+                                            <td>{card.CardHolderName}</td>
+                                            <td>{formatDate(card.ValidFrom)}</td>
+                                            <td>{formatDate(card.ExpiryDate)}</td>
+                                            <td>{card.CardType}</td>
+                                            <td>{card.CardStatus}</td>
+                                            <td>
+                                                {card.CardStatus === 'ACTIVE' ? (
+                                                    <button onClick={() => handleBlock(card.CardID)} className="btn btn-danger mr-2">Block</button>
+                                                ) : (
+                                                    <button onClick={() => handleEnable(card.CardID)} className="btn btn-success mr-2">Enable</button>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <Cards
+                            number={maskCardNumber(state.number)}
+                            expiry={state.expiry}
+                            cvc={state.cvc}
+                            name={state.name}
+                            focused={state.focus}
+                        />
                     </div>
                 </div>
             </main>

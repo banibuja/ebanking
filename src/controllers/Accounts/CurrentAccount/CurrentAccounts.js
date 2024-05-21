@@ -4,7 +4,14 @@ const db = require('../../../db');
 
 const getAccountForEdit = (req, res) => {
     const accountId = req.params.id;
-    const sql = "SELECT UserID, CurrentAccount, Balance FROM currentaccounts WHERE AccountID = ?";
+
+    const sql = `
+    SELECT u.*, a.CurrentAccount, a.CurrencyCode, a.Balance
+    FROM users u 
+    INNER JOIN currentaccounts a ON a.userId = u.userId 
+    
+    
+`;
 
     db.query(sql, [accountId], (err, data) => {
         if (err) {
@@ -21,7 +28,7 @@ const getAccountForEdit = (req, res) => {
 const updateAccount = (req, res) => {
     const accountId = req.params.id;
     const { Balance } = req.body;
-    const sqlUpdate = "UPDATE currentaccounts SET Balance=? WHERE AccountID=?";
+    const sqlUpdate = "UPDATE currentaccounts SET Balance=? WHERE CurrentAccount=?";
 
     db.query(sqlUpdate, [Balance, accountId], (err, result) => {
         if (err) {
@@ -33,8 +40,12 @@ const updateAccount = (req, res) => {
 };
 
 const getAllAccounts = (req, res) => {
-    const sql = "SELECT * FROM currentaccounts";
-
+    const sql = `
+    SELECT u.*, a.CurrentAccount, a.CurrencyCode, a.Balance
+    FROM users u 
+    INNER JOIN currentaccounts a ON a.userId = u.userId 
+    
+`;
     db.query(sql, (err, data) => {
         if (err) {
             return res.json("Error");
@@ -49,7 +60,13 @@ const getAllAccounts = (req, res) => {
 
 const getAccountBySession = (req, res) => {
     const userID = req.session.uId; 
-    const sql = "SELECT * FROM currentaccounts WHERE UserID = ?";
+    // const sql = "SELECT * FROM currentaccounts WHERE UserID = ?";
+    const sql = `
+    SELECT u.*, a.CurrentAccount, a.CurrencyCode, a.Balance
+    FROM users u 
+    INNER JOIN currentaccounts a ON a.userId = u.userId 
+    WHERE u.userId = ?
+`;
 
     db.query(sql, [userID], (err, data) => {
         if (err) {
@@ -65,7 +82,7 @@ const getAccountBySession = (req, res) => {
 
 const deleteAccount = (req, res) => {
     const accountId = req.params.id;
-    const sqlDelete = "DELETE FROM currentaccounts WHERE AccountID = ?";
+    const sqlDelete = "DELETE FROM currentaccounts WHERE CurrentAccount = ?";
 
     db.query(sqlDelete, accountId, (err, result) => {
         if (err) {
@@ -76,12 +93,15 @@ const deleteAccount = (req, res) => {
     });
 };
 
-
 const getAccountByUserID = (req, res) => {
-    const { UserID } = req.body;
-    const sql = "SELECT * FROM currentaccounts WHERE UserID = ?";
-
-    db.query(sql, [UserID], (err, data) => {
+    const { username } = req.body;
+    const sql = `
+    SELECT u.*, a.CurrentAccount, a.CurrencyCode, a.Balance
+    FROM users u 
+    INNER JOIN currentaccounts a ON a.userId = u.userId 
+    WHERE u.username = ?
+`;
+    db.query(sql, [username], (err, data) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: "Internal server error" });
@@ -92,4 +112,5 @@ const getAccountByUserID = (req, res) => {
 
 
 module.exports = { getAccountForEdit, updateAccount, getAllAccounts, getAccountBySession, deleteAccount, getAccountByUserID };
+
 

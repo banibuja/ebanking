@@ -15,4 +15,14 @@ const sessionTimeRemaining = (req, res) => {
     }
 };
 
-module.exports = { sessionTimeRemaining };
+const resetSession = (req, res) => {
+    if (req.session) {
+        req.session.touch(); 
+        res.json({ success: true });
+    } else {
+        res.status(401).json({ error: "User session not found" });
+    }
+};
+
+module.exports = { sessionTimeRemaining, resetSession };
+
