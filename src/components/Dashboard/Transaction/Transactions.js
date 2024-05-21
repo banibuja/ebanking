@@ -6,6 +6,7 @@ import NewTransaction from './NewTransaction';
 
 export const Transactions = () => {
     const [transactions, setTransactions] = useState([]);
+    const [numTransactions, setNumTransactions] = useState(0);
 
        useEffect(() => {
         fetchTransactions();
@@ -16,9 +17,9 @@ export const Transactions = () => {
     const fetchTransactions = () => {
         axios.post('http://localhost:8080/getAllTransactions')
             .then(res => {
-                // const fetchedTransactions = res.data;
-                // setTransactions(fetchedTransactions);
-                // setNumTransactions(fetchedTransactions.length);
+                const fetchedTransactions = res.data;
+                setTransactions(fetchedTransactions);
+                setNumTransactions(fetchedTransactions.length);
             })
             .catch(err => console.log(err));
     };
@@ -51,7 +52,7 @@ export const Transactions = () => {
 
     return (
         <div>
-            {/* <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
+            <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
                 <Sidebar />
 
                 <div className="container-fluid" style={{ marginTop: '100px' }}>
@@ -59,8 +60,8 @@ export const Transactions = () => {
                     <div className="row">
                         <caption>List of Transactions</caption>
                         <div className="search-container">
-                            <input type="text" value={clientID} onChange={(e) => setClientID(e.target.value)} placeholder="Search by username" />
-                            <button onClick={handleSearch}>Search</button>
+                            {/* <input type="text" value={clientID} onChange={(e) => setClientID(e.target.value)} placeholder="Search by username" /> */}
+                            {/* <button onClick={handleSearch}>Search</button> */}
                         </div>
                         <div className="col-md-12 d-flex justify-content-center align-items-center">
 
@@ -77,12 +78,11 @@ export const Transactions = () => {
                                         <th scope="col">Additional Info</th>
                                         <th scope="col">Transaction Fee</th>
                                         <th scope="col">Created At</th>
-                                        <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Array.isArray(renderData) && renderData.map((transaction, index) => (
-                                        <tr key={transaction.TransactionID}>
+                                    {Array.isArray(transactions) && transactions.map((transaction, index) => (
+                                        <tr key={index}>
                                             <td>{transaction.TransactionID}</td>
                                             <td>{transaction.SenderAccID}</td>
                                             <td>{transaction.ReceiverAccID}</td>
@@ -100,14 +100,14 @@ export const Transactions = () => {
                         </div>
                     </div>
                     <div>Total transactions: {numTransactions}</div>
-                    <div>
+                    {/*<div>
                         <button onClick={() => handleChangeRecordsPerPage(10)}>Show 10 records</button>
                         <button onClick={() => handleChangeRecordsPerPage(30)}>Show 30 records</button>
                         <button onClick={() => handleChangeRecordsPerPage(50)}>Show 50 records</button>
-                        <button onClick={handleShowAll}>Show All</button>
-                    </div>
+                        <button onClick={handleShowAll}>Show All</button> */}
+                    {/* </div> */}
                 </div>
-            </main> */}
+            </main> 
         </div>
     );
 }

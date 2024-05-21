@@ -10,16 +10,16 @@ const getAllTransactions = (req, res) =>{
             return res.status(500).end();
         }
         if (data.length > 0) {
-            const accountID = data[0];
+            const accountID = data[0].CurrentAccount;
             var sql = "SELECT * FROM transactions WHERE SenderAccID = ?";
             db.query(sql, [accountID], (err, data) => {
                 if (err) {
                     return res.status(500).end();
                 }
                 if (data.length > 0) {
-                    console.log(data);
+                    return res.status(200).json(data).end();
                 } else {
-                    return res.status(404).end();
+                    return res.status(404).json("No Transactions found").end();
                 }
             });
         } else {
@@ -93,4 +93,4 @@ const insertTransaction = (req, res) => {
     });
 }
 
-module.exports = {getCurrentAccount,insertTransaction};
+module.exports = { getCurrentAccount, insertTransaction, getAllTransactions };
