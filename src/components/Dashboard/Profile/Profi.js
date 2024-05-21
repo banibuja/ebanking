@@ -10,11 +10,7 @@ function Profile() {
         name: '',
         lastname: '',
         email: '',
-        gender: '',
         birthday: '',
-        Country: '',
-        City: '',
-        Street: '',
         currentPassword: '',
         newPassword: '',
         confirmPassword: ''
@@ -32,11 +28,7 @@ function Profile() {
                     name: data.name || '',
                     lastname: data.lastname || '',
                     email: data.email || '',
-                    gender: data.gender || '',
                     birthday: formatDate(data.birthday) || '',
-                    Country: data.Country || '',
-                    City: data.City || '',
-                    Street: data.Street || ''
                 }));
             })
             .catch(err => console.error(err));

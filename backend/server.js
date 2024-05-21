@@ -175,89 +175,90 @@ app.get('/logout', (req, res) => {
 
 
 
-app.post('/loginform', (req, res) => {
-    const sql = "SELECT * FROM users WHERE username = ?";
-    const date = new Date();
-    expireDate = date.setMinutes(date.getMinutes() + 15)
+// app.post('/loginform', (req, res) => {
+//     const sql = "SELECT * FROM users WHERE username = ?";
+//     const date = new Date();
+//     expireDate = date.setMinutes(date.getMinutes() + 15)
 
-    db.query(sql,[req.body.username], (err,result) => {
-        if (err) return res.json({ Message: "bad connection", Login: false });
+//     db.query(sql,[req.body.username], (err,result) => {
+//         if (err) return res.json({ Message: "bad connection", Login: false });
         
-        if(result.length > 0){
-            const storedPassword = result[0].password;
-            if(req.body.password === storedPassword){
+//         if(result.length > 0){
+//             const storedPassword = result[0].password;
+//             if(req.body.password === storedPassword){
 
-                db.query(`SELECT AccessLevel FROM accesspermissions WHERE UserID = ${result[0].userId}`, (error, results) => {
-                    if (error) throw error;
-                    req.session.role = results[0].AccessLevel; 
-                    req.session.uId = result[0].userId;
-                    req.session.username = result[0].username;
-                    req.session.name = result[0].name; 
-                    req.session.lastname = result[0].lastname; 
-                    req.session.maxAge = + expireDate;
-                    return res.json({Message: "Login successful", Login: true})
-                });
-            } else {
-                return res.json({Message: "Incorrect password", Login: false});
-            }
-        } else {
-            return res.json({Message: "Username not found", Login: false});
-        }
+//                 db.query(`SELECT AccessLevel FROM accesspermissions WHERE UserID = ${result[0].userId}`, (error, results) => {
+//                     if (error) throw error;
+//                     req.session.role = results[0].AccessLevel; 
+//                     req.session.uId = result[0].userId;
+//                     req.session.username = result[0].username;
+//                     req.session.name = result[0].name; 
+//                     req.session.lastname = result[0].lastname; 
+//                     req.session.maxAge = + expireDate;
+//                     return res.json({Message: "Login successful", Login: true})
+//                 });
+//             } else {
+//                 return res.json({Message: "Incorrect password", Login: false});
+//             }
+//         } else {
+//             return res.json({Message: "Username not found", Login: false});
+//         }
         
-    })
-})
+//     })
+// })
 
 
 
 // 
 
 
-// app.post('/loginform', async (req, res) => {
-//     const sql = "SELECT * FROM users WHERE username = ?";
-//     const date = new Date();
-//     expireDate = date.setMinutes(date.getMinutes() + 15)
+app.post('/loginform', async (req, res) => {
+    const sql = "SELECT * FROM users WHERE username = ?";
+    const date = new Date();
+    expireDate = date.setMinutes(date.getMinutes() + 15)
 
-//     db.query(sql, [req.body.username], async (err, result) => {
-//         if (err) {
-//             console.error("Error connecting to database:", err);
-//             return res.json({ Message: "bad connection", Login: false });
-//         }
+    db.query(sql, [req.body.username], async (err, result) => {
+        if (err) {
+            console.error("Error connecting to database:", err);
+            return res.json({ Message: "bad connection", Login: false });
+        }
 
-//         if (result.length > 0) {
-//             const storedHashedPassword = result[0].password;
-//             console.log("Stored hashed password:", storedHashedPassword);
+        if (result.length > 0) {
+            const storedHashedPassword = result[0].password;
+            console.log("Stored hashed password:", storedHashedPassword);
             
-//             // Compare hashed password
-//             bcrypt.compare(req.body.password, storedHashedPassword, (compareErr, comparison) => {
-//                 if (compareErr) {
-//                     console.error("Error comparing passwords:", compareErr);
-//                     return res.json({ Message: "Error during login", Login: false });
-//                 }
+            // Compare hashed password
+            bcrypt.compare(req.body.password, storedHashedPassword, (compareErr, comparison) => {
+                if (compareErr) {
+                    console.error("Error comparing passwords:", compareErr);
+                    return res.json({ Message: "Error during login", Login: false });
+                }
 
-//                 if (comparison) {
-//                     db.query(`SELECT AccessLevel FROM accesspermissions WHERE UserID = ${result[0].userId}`, (error, results) => {
-//                         if (error) {
-//                             console.error("Error querying access permissions:", error);
-//                             return res.json({ Message: "Error during login", Login: false });
-//                         }
+                if (comparison) {
+                    db.query(`SELECT AccessLevel FROM accesspermissions WHERE UserID = ${result[0].userId}`, (error, results) => {
+                        if (error) {
+                            console.error("Error querying access permissions:", error);
+                            return res.json({ Message: "Error during login", Login: false });
+                        }
                         
-//                         req.session.role = results[0].AccessLevel;
-//                         req.session.uId = result[0].userId;
-//                         req.session.username = result[0].username;
-//                         req.session.name = result[0].name;
-//                         req.session.lastname = result[0].lastname;
-//                         req.session.maxAge = +expireDate;
-//                         return res.json({ Message: "Login successful", Login: true });
-//                     });
-//                 } else {
-//                     return res.json({ Message: "Incorrect password", Login: false });
-//                 }
-//             });
-//         } else {
-//             return res.json({ Message: "Username not found", Login: false });
-//         }
-//     });
-// });
+                        req.session.role = results[0].AccessLevel;
+                        req.session.uId = result[0].userId;
+                        req.session.username = result[0].username;
+                        req.session.name = result[0].name;
+                        req.session.lastname = result[0].lastname;
+                        req.session.maxAge = +expireDate;
+                        return res.json({ Message: "Login successful", Login: true });
+                    });
+                } else {
+                    console.log(comparison);
+                    return res.json({ Message: "Incorrect password", Login: false });
+                }
+            });
+        } else {
+            return res.json({ Message: "Username not found", Login: false });
+        }
+    });
+});
 
 
 

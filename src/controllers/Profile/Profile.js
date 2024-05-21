@@ -22,7 +22,7 @@ const getClientforProfile = (req, res) => {
 };
 
 const updateProfile = async (req, res) => {
-    const { userId } = req.session;
+    const userId  = req.session.uId;
     const { currentPassword, newPassword, confirmPassword, ...otherDetails } = req.body;
 
     if (newPassword !== confirmPassword) {
@@ -31,26 +31,30 @@ const updateProfile = async (req, res) => {
 
     try {
         const sqlGetUser = "SELECT password FROM users WHERE userId = ?";
-        const [userResults] = await db.query(sqlGetUser, [userId]);
+        db.query(sqlGetUser, [userId], async (err, data) => {
 
-        if (userResults.length === 0) {
+
+        if (data.length === 0) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        const user = userResults[0];
+        const user = data[0];
 
         const isMatch = await bcrypt.compare(currentPassword, user.password);
 
         if (!isMatch) {
-            return res.status(400).json({ message: 'Current password is incorrect' });
+            return res.status(400).json({message: 'Current password is incorrect' });
         }
 
         const hashedPassword = await bcrypt.hash(newPassword, 10);
 
+        console.log(otherDetails);
         const sqlUpdateUser = "UPDATE users SET ? WHERE userId = ?";
-        await db.query(sqlUpdateUser, [{ ...otherDetails, password: hashedPassword }, userId]);
-
-        return res.json({ message: 'Profile updated successfully' });
+        db.query(sqlUpdateUser, [{ ...otherDetails, password: hashedPassword }, userId], (err, data) => {
+            if(err) res.status(404).json(err);
+            return res.json({ message: 'Profile updated successfully' });
+        });
+    });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: 'Server error' });
