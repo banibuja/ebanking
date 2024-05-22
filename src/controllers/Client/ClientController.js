@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const db = require('../../db');
 const { generateRandomAccountNumber, generateFlexSaveAccountNumber, checkAccountExists } = require('./helpers');
 
+
 const addClient = async (req, res) => {
     try {
         const client = req.body;
@@ -65,7 +66,7 @@ const addClient = async (req, res) => {
         await new Promise((resolve, reject) => {
             db.query(
                 `INSERT INTO currentaccounts (UserID, CurrentAccount, Balance, CurrencyCode, AccountStatus) VALUES (?, ?, ?, ?, ?)`, 
-                [userId, currentAccount, 0, client.currency , 'Open'], 
+                [userId, currentAccount, 0, client.currency, 'Open'], 
                 (error, results) => {
                     if (error) {
                         reject(error);
@@ -112,8 +113,8 @@ const addClient = async (req, res) => {
 
         await new Promise((resolve, reject) => {
             db.query(
-                `INSERT INTO cards (UserID, CardNumber, ValidFrom, ExpiryDate, CardHolderName, CardType, CardStatus, AvailableBalance) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-                [userId, cardNumber, today.toISOString().split('T')[0], formattedExpiryDate, `${client.name} ${client.lastname}`, "DEBIT MASTER CARD", "ACTIVE", "0"],
+                `INSERT INTO cards (UserID, CurrentAccount, CardNumber, ValidFrom, ExpiryDate, CardHolderName, CardType, CardStatus) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+                [userId, currentAccount, cardNumber, today.toISOString().split('T')[0], formattedExpiryDate, `${client.name} ${client.lastname}`, "DEBIT MASTER CARD", "ACTIVE"],
                 (error, results) => {
                     if (error) {
                         reject(error);

@@ -21,6 +21,8 @@ export const ManageYourAccount = () => {
         cvc: "",
         focus: "",
         cardType: "",
+        CurrentAccount: "",
+
     });
 
     useEffect(() => {
@@ -60,6 +62,8 @@ export const ManageYourAccount = () => {
                             cvc: "", 
                             focus: "",
                             cardType: fetchedCards[0].CardType,
+                            CurrentAccount: fetchedCards[0].CurrentAccount,
+
                         });
                     }
                 }
@@ -216,6 +220,7 @@ export const ManageYourAccount = () => {
                                             <th scope="col">Valid Until</th>
                                             <th scope="col">Card Type</th>
                                             <th scope="col">Card Status</th>
+                                            <th scope="col">Balance</th>
                                             <th scope="col">Action</th>
                                         </tr>
                                     </thead>
@@ -228,6 +233,7 @@ export const ManageYourAccount = () => {
                                             <td>{formatDate(card.ExpiryDate)}</td>
                                             <td>{card.CardType}</td>
                                             <td>{card.CardStatus}</td>
+                                            <td>{parseFloat(card.Balance).toFixed(2)}</td> 
                                             <td>
                                                 {card.CardStatus === 'ACTIVE' ? (
                                                     <button onClick={() => handleBlock(card.CardID)} className="btn btn-danger mr-2">Block</button>

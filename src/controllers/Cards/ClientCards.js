@@ -138,16 +138,21 @@ const getCardsForEdit = (req, res) => {
 
 const getCardsWithSession = (req, res) => {
     const userID = req.session.uId;
-    const sql = "SELECT * FROM Cards WHERE UserID = ?";
+    const sql = `
+        SELECT c.*, ca.Balance 
+        FROM cards c 
+        INNER JOIN currentaccounts ca ON c.CurrentAccount = ca.CurrentAccount
+        WHERE c.UserID = ?
+    `;
 
     db.query(sql, [userID], (err, data) => {
         if (err) {
-            return res.json("Error");
+            return res.status(500).json({ error: "Internal server error" });
         }
         if (data.length > 0) {
             return res.json(data);
         } else {
-            return res.json("fail");
+            return res.status(404).json({ message: "No cards found for the user" });
         }
     });
 };
