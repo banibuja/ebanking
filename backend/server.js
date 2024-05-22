@@ -15,12 +15,10 @@ const savingsAccountController = require('../src/controllers/Accounts/SavingsAcc
 const cardsController = require('../src/controllers/Cards/ClientCards');
 const SessionController = require('../src/controllers/Session/sessioncontroller'); 
 const TransactionController = require('../src/controllers/Transaction/Transaction');
-const FinancesController = require('../src/controllers/Finances/Goals');
 const investmentsGoals = require('../src/controllers/Investments/InvestmentsGoals')
 const currenciesController = require('../src/controllers/Currencies/Currencies')
-
-
 const profileController = require('../src/controllers/Profile/Profile')
+const loansController = require('../src/controllers/Loans/Loans')
 
 
  
@@ -138,6 +136,10 @@ app.delete("/deleteGoals/:id", investmentsGoals.deleteGoals);
 
 app.post('/getClientforProfile', profileController.getClientforProfile);
 app.put('/updateProfile', profileController.updateProfile);
+
+
+app.post('/getAllLoans', loansController.getAllLoans);
+
 
 
 const db = mysql.createConnection({

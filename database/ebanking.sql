@@ -308,7 +308,6 @@ INSERT INTO `cards` (`CardID`, `UserID`, `CardNumber`, `ValidFrom`, `ExpiryDate`
 (22, 22, '2211222233334444', '2025-10-01', '2029-10-01', 'Amelia Baker', 'DEBIT', 'ACTIVE', 26000.00),
 (23, 23, '2311222233334444', '2025-11-01', '2029-11-01', 'Jack Wilson', 'DEBIT', 'ACTIVE', 27000.00),
 (24, 24, '2411222233334444', '2025-12-01', '2029-12-01', 'Mia Morris', 'DEBIT', 'ACTIVE', 28000.00),
-(25, 1, '1111222233334444', '2024-01-01', '2028-01-01', 'John Doe', 'DEBIT', 'ACTIVE', 5000.00);
 
 
 INSERT INTO `currencies` (`CurrencyID`, `UserID`, `CurrencyCode`, `ExchangeRate`) VALUES
