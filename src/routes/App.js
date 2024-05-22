@@ -4,7 +4,7 @@ import { Dashboard } from '../components/Dashboard/Dashboard';
 import { Client } from '../components/Dashboard/Client/Client';
 import Transaction from '../components/Dashboard/Transaction/Transactions';
 // import Login from '../components/LoginSignup/Login'
-import Signup from '../components/LoginSignup/Signup'
+import ApplyOnline from '../components/ApplyOnline/ApplyOnline'
 import AddClient from '../components/Dashboard/Client/AddClient';
 // import ContactUs from '../components/Dashboard/ContactUs/ContactUs'
 import EditClient from '../components/Dashboard/Client/EditClient';
@@ -30,6 +30,7 @@ import Nav from '../components/Dashboard/Nav';
 
 import Login from './Login';
 import NewTransaction from '../components/Dashboard/Transaction/NewTransaction';
+import ManagaeApplicantsOnline from '../components/ApplyOnline/ManagaeApplicantsOnline';
 
 
 
@@ -41,7 +42,7 @@ function App() {
 
         <Route path="/Transaction" element={<Transaction/>}></Route> 
         {/* <Route path="/login" element={<Login />} /> */}
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/ApplyOnline" element={<ApplyOnline />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/client" element={<Client />} />
         <Route path="/addclient" element={<AddClient />} />
@@ -66,7 +67,7 @@ function App() {
         <Route path="/InvestmentsTable" element={<InvestmentsTable/>} /> 
         <Route path="/Nav" element={<Nav/>} /> 
         <Route path="/NewTransaction" element={<NewTransaction/>} /> 
-
+        <Route path="/ManagaeApplicantsOnline" element={<ManagaeApplicantsOnline/>} /> 
 
         {/* <Route path="/Profi" element={<Profi/>} />  */}
 

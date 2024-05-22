@@ -21,8 +21,9 @@ const addClient = async (req, res) => {
 
         const addClient = await new Promise((resolve, reject) => {
             db.query(
-                `INSERT INTO users (username, name, lastname, email, password, gender, birthday, CurrencyCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, 
-                [client.username, client.name, client.lastname, client.email, hashedPassword, client.gender, client.birthday, client.currency], 
+                `INSERT INTO users (username, name, lastname, email, password, gender, birthday, CurrencyCode, Status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Active')`, 
+
+                [client.username, client.name, client.lastname, client.email, hashedPassword, client.gender, client.birthday, 'EUR'], 
                 (error, result) => {
                     if (error) {
                         reject(error);
@@ -66,7 +67,7 @@ const addClient = async (req, res) => {
         await new Promise((resolve, reject) => {
             db.query(
                 `INSERT INTO currentaccounts (UserID, CurrentAccount, Balance, CurrencyCode, AccountStatus) VALUES (?, ?, ?, ?, ?)`, 
-                [userId, currentAccount, 0, client.currency, 'Open'], 
+                [userId, currentAccount, 0, 'EUR', 'Open'], 
                 (error, results) => {
                     if (error) {
                         reject(error);
@@ -80,7 +81,7 @@ const addClient = async (req, res) => {
         await new Promise((resolve, reject) => {
             db.query(
                 `INSERT INTO savingsaccounts (UserID, SavingsType, Balance, CurrencyCode, AccountStatus) VALUES (?, ?, ?, ?, ?)`, 
-                [userId, SavingsType, 0, client.currency, 'Open'], 
+                [userId, SavingsType, 0, 'EUR', 'Open'], 
                 (error, results) => {
                     if (error) {
                         reject(error);
@@ -94,7 +95,7 @@ const addClient = async (req, res) => {
         await new Promise((resolve, reject) => {
             db.query(
                 `INSERT INTO currencies (UserID, CurrencyCode, ExchangeRate) VALUES (?, ?, ?)`,
-                [userId, client.currency, 1.0], 
+                [userId, 'EUR', 1.0], 
                 (error, results) => {
                     if (error) {
                         reject(error);

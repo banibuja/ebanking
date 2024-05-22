@@ -25,6 +25,7 @@ const Navbar = () => {
         <Menu right isOpen={menuOpen} onStateChange={handleStateChange}>
           <a id='a' href="/" onClick={closeMenu}>Home</a>
           <a href="/contactform" onClick={closeMenu}>ContactUs</a>
+          <a href="/applyonline" onClick={closeMenu}>Apply Online</a>
           <a href="/login" onClick={closeMenu}>Login</a>
         </Menu>
         <ul className="nav navbar-nav navbar-right">

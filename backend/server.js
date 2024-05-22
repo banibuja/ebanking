@@ -21,6 +21,9 @@ const profileController = require('../src/controllers/Profile/Profile')
 const loansController = require('../src/controllers/Loans/Loans')
 
 
+const applyOnlineController = require('../src/controllers/ApplyOnline/ApplyOnline')
+
+
  
 
 
@@ -51,6 +54,15 @@ app.use(session({
 app.get('/sessionTimeRemaining', SessionController.sessionTimeRemaining);
 app.get('/resetSession', SessionController.resetSession);
 
+///
+app.post('/addApply', applyOnlineController.addApply);
+app.post('/getApply', applyOnlineController.getApply);
+app.put('/updateStatus/:id', applyOnlineController.updateStatus);
+app.delete("/deleteApplicant/:id", applyOnlineController.deleteApplicant);
+app.get('/getApplicantForEdit/:id', applyOnlineController.getApplicantForEdit);
+app.put('/updateAplicant/:id', applyOnlineController.updateAplicant);
+app.post('/searchApplicant', applyOnlineController.searchApplicant);
+
 
 
 ///////
@@ -64,6 +76,7 @@ app.delete("/deleteClient/:id", clientController.deleteClient);
 app.get('/checkUsername', clientController.checkUsername);
 app.get('/checkEmail', clientController.checkEmail);
 app.post('/getUsersWithSession', clientController.getUsersWithSession);
+
 
 
 
