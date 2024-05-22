@@ -35,6 +35,8 @@ export const Client = () => {
         axios.delete(`http://localhost:8080/deleteClient/${id}`)
             .then(res => {
                 getUsers();
+                // window.location.reload(); 
+
             })
             .catch(err => console.log(err));
     };

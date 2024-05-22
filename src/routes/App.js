@@ -10,7 +10,7 @@ import AddClient from '../components/Dashboard/Client/AddClient';
 import EditClient from '../components/Dashboard/Client/EditClient';
 import ContactForm from '../components/Dashboard/ContactUs/ContactForm';
 import Home from '../components/Home/Home';
-import Profile from '../components/Dashboard/Profile/Profile';
+// import Profile from '../components/Dashboard/Profile/Profile';
 import Sidebar from '../components/Dashboard/Sidebar';
 import CardsForm from '../components/Dashboard/Cards/CardsForm';
 // import ManageCards from '../components/Dashboard/Cards/ManageCards';
@@ -48,7 +48,7 @@ function App() {
         {/* <Route path="/ContactUs" element={<ContactUs />} /> */}
         <Route path="/editclient" element={<EditClient />} />
         <Route path="/ContactForm" element={<ContactForm />} />
-        <Route path="/Profile" element={<Profile />} />
+        {/* <Route path="/Profile" element={<Profile />} /> */}
         <Route path="/" element={<Home />} />
         <Route path="/Sidebar" element={<Sidebar/>} />
         <Route path="/CardsForm" element={<CardsForm/>} />

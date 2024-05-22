@@ -61,9 +61,10 @@ function EditAccount({ id, onClose }) {
                             </div>
                             <div className="form-group">
                                 <label>Balance</label>
-                                <input type="text" placeholder='Balance' name='Balance' onChange={handleInput} className='form-control rounded-0' value={values.Balance} />
+                                <input type="text" placeholder='Balance' name='Balance' onChange={handleInput} className='form-control rounded-0' value={values.Balance} disabled/>
                             </div>
                             <div className="form-group">
+                                <label>Account Status</label>
                                                               <select name='AccountStatus' onChange={handleInput}  className='form-control roundend-0' value={values.AccountStatus} >
                                                                  <option value="">Select Status</option>
                                                                   <option value="Open">Open</option>

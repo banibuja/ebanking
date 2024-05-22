@@ -99,7 +99,7 @@ export const Manageclientcards = () => {
                             <button onClick={handleSearch}>Search</button>
                         </div>
                         <div className="col-md-12 d-flex justify-content-center align-items-center">
-                            <table className="table table-hover table-bordered table-striped dataTable no-footer" style={{ width: '100%' }}>
+                        <table className="table table-hover border-table dataTable no-footer" style={{ width: '100%' }}>
                                 <thead>
                                     <tr>
                                         <th scope="col">username</th>
