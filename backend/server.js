@@ -19,6 +19,7 @@ const FinancesController = require('../src/controllers/Finances/Goals');
 const investmentsGoals = require('../src/controllers/Investments/InvestmentsGoals')
 const currenciesController = require('../src/controllers/Currencies/Currencies')
 
+
 const profileController = require('../src/controllers/Profile/Profile')
 
 

@@ -1,40 +1,76 @@
 const db = require('../../db');
 
-// Get all loans
-const getLoans = (req, res) => {
-    const userID = req.session.uId;
-    if (!userID) {
-        return res.json("fail");
-    }
+const getAllLoans = (req, res) => {
+    const sql = "SELECT * FROM loans";
 
-    var sql = "SELECT * FROM loans WHERE AccountID = ?";
-    db.query(sql, [userID], (err, data) => {
+    db.query(sql, (err, data) => {
         if (err) {
-            return res.status(500).json({ error: 'Database query error' });
+            return res.status(500).json({ error: "Internal server error" });
         }
         if (data.length > 0) {
-            return res.status(200).json(data);
+            return res.json(data);
         } else {
-            return res.status(404).json({ message: 'No loans found' });
+            return res.json({ message: "No loans found" });
         }
     });
 };
 
-// Insert a new loan
-const insertLoan = (req, res) => {
-    const { AccountID, LoanAmount, LoanConditions, Status, ClientName } = req.body;
+const getLoanForEdit = (req, res) => {
+    const loanID = req.params.id;
+    const sql = "SELECT AccountID, LoanAmount, LoanConditions, Status FROM loans WHERE LoanID = ?";
 
-    if (!AccountID || !LoanAmount || !LoanConditions || !Status || !ClientName) {
-        return res.json("Missing parameters");
-    }
-
-    var sql = `INSERT INTO loans (AccountID, LoanAmount, LoanConditions, Status, ClientName) VALUES (?, ?, ?, ?, ?)`;
-    db.query(sql, [AccountID, LoanAmount, LoanConditions, Status, ClientName], (err, result) => {
+    db.query(sql, [loanID], (err, data) => {
         if (err) {
-            return res.status(500).json({ error: 'Database insert error' });
+            return res.status(500).json({ error: "Internal server error" });
         }
-        res.status(200).json({ message: 'Loan created successfully' });
+        if (data.length > 0) {
+            return res.json(data[0]);
+        } else {
+            return res.status(404).json({ message: "Loan not found" });
+        }
     });
 };
 
-module.exports = { getLoans, insertLoan };
+const addLoan = (req, res) => {
+    const { AccountID, LoanAmount, LoanConditions, Status } = req.body;
+    const sql = "INSERT INTO loans (AccountID, LoanAmount, LoanConditions, Status) VALUES (?, ?, ?, ?)";
+
+    db.query(sql, [AccountID, LoanAmount, LoanConditions, Status], (err, result) => {
+        if (err) {
+            console.error("Error adding loan:", err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+        console.log("Loan added successfully");
+        return res.json({ message: "Loan added successfully" });
+    });
+};
+
+const updateLoan = (req, res) => {
+    const { AccountID, LoanAmount, LoanConditions, Status } = req.body;
+    const loanID = req.params.id;
+
+    const sql = "UPDATE loans SET AccountID = ?, LoanAmount = ?, LoanConditions = ?, Status = ? WHERE LoanID = ?";
+    db.query(sql, [AccountID, LoanAmount, LoanConditions, Status, loanID], (err, result) => {
+        if (err) {
+            console.error("Error updating loan:", err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+        console.log("Loan updated successfully");
+        return res.json({ message: "Loan updated successfully" });
+    });
+};
+
+const deleteLoan = (req, res) => {
+    const loanID = req.params.id;
+    const sqlDelete = "DELETE FROM loans WHERE LoanID = ?";
+
+    db.query(sqlDelete, loanID, (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+        return res.status(200).json({ message: "Loan deleted successfully" });
+    });
+};
+
+module.exports = { getAllLoans, getLoanForEdit, addLoan, updateLoan, deleteLoan };
