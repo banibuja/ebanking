@@ -1,37 +1,7 @@
 const bcrypt = require('bcrypt');
-const nodemailer = require('nodemailer');
 const db = require('../../db');
+const sendEmail = require('../Client/sendEmail');
 const { generateRandomAccountNumber, generateFlexSaveAccountNumber, checkAccountExists } = require('./helpers');
-
-
-    const sendEmail = (email, username, password) => {
-
-        const nodemailer = require('nodemailer');
-
-        const transporter = nodemailer.createTransport({
-          service: 'gmail',
-          auth: {
-            user: 'ebankingebanking7@gmail.com',
-            pass: 'xobu guxn ubtv smdg'
-          }
-        });
-
-        const mailOptions = {
-        from: 'ebankingebanking7@gmail.com',
-        to: email,
-        subject: 'Application Accepted',
-        text: `Dear ${username},\n\nYour application has been accepted.\n\nUsername: ${username}\nPassword: ${password}\n\nThank you!`
-    };
-
-    return new Promise((resolve, reject) => {
-        transporter.sendMail(mailOptions, (error, info) => {
-            if (error) {
-                return reject(error);
-            }
-            resolve(info);
-        });
-    });
-};
 
 const addClient = async (req, res) => {
     try {
@@ -154,18 +124,20 @@ const addClient = async (req, res) => {
             );
         });
 
-        await sendEmail(client.email, client.username, client.password);
+        // Send email to the client
+        try {
+            await sendEmail(client.email, client.username, client.password);
+            console.log('Email sent successfully');
+        } catch (emailError) {
+            console.error('Error sending email:', emailError);
+        }
 
         return res.json(addClient);
-      
     } catch (error) {
         console.error('Error adding client:', error);
         return res.status(500).json({ error: 'Internal Server Error' });
     }
 };
-
-// other functions remain unchanged
-
 
 
 const getUsers = async (req, res) => {
@@ -353,7 +325,7 @@ const getUsersWithSession = (req, res) => {
     });
 };
 
-module.exports = {sendEmail, addClient, getUsers, getUsersWithSession, getClientForEdit, checkEmail, checkUsername, updateUser, getByUserID, deleteClient };
+module.exports = { addClient, getUsers, getUsersWithSession, getClientForEdit, checkEmail, checkUsername, updateUser, getByUserID, deleteClient };
 
 
 
