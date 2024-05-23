@@ -1,7 +1,7 @@
 const nodemailer = require('nodemailer');
 
-const sendEmail = async (req, res) => {
-    const { from_name, from_email, message } = req.body;
+const sendEmailContactUs = async (req, res) => {
+    const { name, email, message } = req.body;
 
     const transporter = nodemailer.createTransport({
         service: 'gmail',
@@ -10,22 +10,22 @@ const sendEmail = async (req, res) => {
             pass: 'uxvu cmya xiqw nwcc',
         },
     });
-
     const mailOptions = {
-        from: from_email,
-        to: email,
-        subject: `New message from ${from_name}`,
-        text: message,
+        from: email, 
+        to: 'ebankingebanking7@gmail.com', 
+        replyTo: email,
+        subject: `New message from ${name}`,
+        text: `From: ${name}\nMessage: ${message}`, 
     };
-
+    
     try {
         await transporter.sendMail(mailOptions);
         res.status(200).send('Email sent successfully');
+
     } catch (error) {
         console.error('Error sending email:', error);
         res.status(500).send('Error sending email');
     }
 };
 
-
-module.exports = sendEmail;
+module.exports = {sendEmailContactUs};

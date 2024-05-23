@@ -94,36 +94,59 @@ function AplikimiOnline() {
                                     <form onSubmit={handleSubmit}>
                                         <div className="card-body">
                                             <div className="row">
-                                                <div className="form-group">
-                                                    <div className="col-md-6 form-group">
-                                                        <label htmlFor="name">Nr. Personal</label>
-                                                        <input type="text" placeholder=' write your Nr. Personal ID' name='username' onChange={handleInput} className="form-control form-control-lg" required />
-                                                        {errors.username && <span className='text-danger'>{errors.username}</span>}
-                                                        {values.username && (
-                                                            <span style={{ marginLeft: '10px' }}>
-                                                                {values.usernameExists ? (
-                                                                    <span style={{ color: 'red' }}>This username is already taken.</span>
-                                                                ) : (
-                                                                    <span style={{ color: 'green' }}>Username is available.</span>
-                                                                )}
-                                                            </span>
-                                                        )}
-                                                    </div>
+                                                <div className="col-md-6 form-group">
+                                                    <label htmlFor="username">Nr. Personal</label>
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Write your Nr. Personal ID"
+                                                        name="username"
+                                                        onChange={handleInput}
+                                                        className="form-control form-control-lg"
+                                                        required
+                                                    />
+                                                    {errors.username && <span className="text-danger">{errors.username}</span>}
+                                                    {values.username && (
+                                                        <span style={{ marginLeft: '10px' }}>
+                                                            {values.usernameExists ? (
+                                                                <span style={{ color: 'red' }}>This username is already taken.</span>
+                                                            ) : (
+                                                                <span style={{ color: 'green' }}>Username is available.</span>
+                                                            )}
+                                                        </span>
+                                                    )}
                                                 </div>
                                                 <div className="col-md-6 form-group">
                                                     <label htmlFor="name">Client Name</label>
-                                                    <input type="text" placeholder='Name' name='name' onChange={handleInput} className="form-control form-control-lg" />
-                                                    {errors.name && <span className='text-danger'>{errors.name}</span>}
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Name"
+                                                        name="name"
+                                                        onChange={handleInput}
+                                                        className="form-control form-control-lg"
+                                                    />
+                                                    {errors.name && <span className="text-danger">{errors.name}</span>}
                                                 </div>
                                                 <div className="col-md-6 form-group">
-                                                    <label htmlFor="name">Client Lastname</label>
-                                                    <input type="text" placeholder='Lastname' name='lastname' onChange={handleInput} className="form-control form-control-lg" />
-                                                    {errors.lastname && <span className='text-danger'>{errors.lastname}</span>}
+                                                    <label htmlFor="lastname">Client Lastname</label>
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Lastname"
+                                                        name="lastname"
+                                                        onChange={handleInput}
+                                                        className="form-control form-control-lg"
+                                                    />
+                                                    {errors.lastname && <span className="text-danger">{errors.lastname}</span>}
                                                 </div>
                                                 <div className="col-md-6 form-group">
-                                                    <label htmlFor="name">Client Email</label>
-                                                    <input type="email" placeholder='Email' name='email' onChange={handleInput} className="form-control form-control-lg" />
-                                                    {errors.email && <span className='text-danger'>{errors.email}</span>}
+                                                    <label htmlFor="email">Client Email</label>
+                                                    <input
+                                                        type="email"
+                                                        placeholder="Email"
+                                                        name="email"
+                                                        onChange={handleInput}
+                                                        className="form-control form-control-lg"
+                                                    />
+                                                    {errors.email && <span className="text-danger">{errors.email}</span>}
                                                     {values.email && (
                                                         <span style={{ marginLeft: '10px' }}>
                                                             {values.emailExists ? (
@@ -134,14 +157,14 @@ function AplikimiOnline() {
                                                         </span>
                                                     )}
                                                 </div>
-                                                {/* <div className="col-md-6 form-group">
-                                                    <label htmlFor="name">Client Password</label>
-                                                    <input type="password" placeholder='Password' name='password' onChange={handleInput} className="form-control form-control-lg" />
-                                                    {errors.password && <span className='text-danger'>{errors.password}</span>}
-                                                </div> */}
                                                 <div className="col-md-6 form-group">
                                                     <label htmlFor="gender">Client Gender</label>
-                                                    <select name="gender" onChange={handleInput} value={values.gender} className="form-control form-control-lg">
+                                                    <select
+                                                        name="gender"
+                                                        onChange={handleInput}
+                                                        value={values.gender}
+                                                        className="form-control form-control-lg"
+                                                    >
                                                         <option value="">Select Gender</option>
                                                         <option value="M">Male</option>
                                                         <option value="F">Female</option>
@@ -149,12 +172,22 @@ function AplikimiOnline() {
                                                     {errors.gender && <span className="text-danger">{errors.gender}</span>}
                                                 </div>
                                                 <div className="col-md-6 form-group">
-                                                    <label htmlFor="name">Client Birthday</label>
-                                                    <input type="date" name='birthday' className="form-control form-control-lg" placeholder="Birthdate" onChange={handleInput} />
+                                                    <label htmlFor="birthday">Client Birthday</label>
+                                                    <input
+                                                        type="date"
+                                                        name="birthday"
+                                                        className="form-control form-control-lg"
+                                                        placeholder="Birthdate"
+                                                        onChange={handleInput}
+                                                    />
                                                 </div>
                                                 <div className="col-md-6 form-group">
                                                     <label>Select Package</label>
-                                                    <select name='package' onChange={handleInput} className="form-control form-control-lg">
+                                                    <select
+                                                        name="package"
+                                                        onChange={handleInput}
+                                                        className="form-control form-control-lg"
+                                                    >
                                                         <option value="">Select Package</option>
                                                         <option value="StudentPackage">Student Package</option>
                                                         <option value="Advanced">Advanced Package</option>
@@ -163,10 +196,28 @@ function AplikimiOnline() {
                                                     </select>
                                                 </div>
                                                 <div className="col-md-6 form-group">
-                                                    <label htmlFor="name">Client Address</label>
-                                                    <input type="text" placeholder='Country' name='Country' onChange={handleInput} className='form-control roundend-0' />
-                                                    <input type="text" placeholder='City' name='City' onChange={handleInput} className='form-control roundend-0' />
-                                                    <input type="text" placeholder='Street' name='Street' onChange={handleInput} className='form-control roundend-0' />
+                                                    <label htmlFor="Country">Client Address</label>
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Country"
+                                                        name="Country"
+                                                        onChange={handleInput}
+                                                        className="form-control roundend-0"
+                                                    />
+                                                    <input
+                                                        type="text"
+                                                        placeholder="City"
+                                                        name="City"
+                                                        onChange={handleInput}
+                                                        className="form-control roundend-0"
+                                                    />
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Street"
+                                                        name="Street"
+                                                        onChange={handleInput}
+                                                        className="form-control roundend-0"
+                                                    />
                                                 </div>
                                             </div>
                                         </div>
@@ -189,6 +240,6 @@ function AplikimiOnline() {
             </div>
         </div>
     );
-}
+};
 
 export default AplikimiOnline;

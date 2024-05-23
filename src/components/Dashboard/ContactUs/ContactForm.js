@@ -1,47 +1,39 @@
-import React, { useRef, useEffect, useState } from "react";
-import emailjs from "@emailjs/browser";
+import React, { useRef, useState } from "react";
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import footerImg from '../../../imgs/black&white-logo.png';
 import Navbar from '../../Layout/Navbar';
 
 const Contact = () => {
     const form = useRef();
     const [isSubmitted, setIsSubmitted] = useState(false); 
-    const navigate = useNavigate();
+    const [values, setValues] = useState({
+        name: '',
+        email: '',
+        message: ''
+    });
+    
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setValues(prevValues => ({
+            ...prevValues,
+            [name]: value,
+        }));
+    };
 
-    useEffect(() => {
-        axios.defaults.withCredentials = true;
-        axios.get('http://localhost:8080/')
-            .then(res => {
-                if (!res.data.valid) {
-                    alert("You need to log in to send a message");
-                    navigate('/login'); 
-                }
-            })
-            .catch(err => console.log(err));
-    }, [navigate]); 
-
-    const sendEmail = (e) => {
+    const sendEmail = async (e) => {
         e.preventDefault();
+    
+        const { name, email, message } = values;
+    
+        try {
+            await axios.post('http://localhost:8080/sendEmailContactUs', { name, email, message });
+            console.log('Email sent successfully');
+            setIsSubmitted(true);
+            // sendEmail(values.name, values.email, values.message);
 
-        emailjs
-            .sendForm(
-                "service_3op3a8c",
-                "template_58kosfr",
-                form.current,
-                "c1JG3-cDGVIkBDuNN"
-            )
-            .then(
-                (result) => {
-                    console.log(result.text);
-                    console.log("message sent");
-                    setIsSubmitted(true);
-                },
-                (error) => {
-                    console.log(error.text);
-                }
-            );
+        } catch (error) {
+            console.error('Error sending email', error);
+        }
     };
 
     return (
@@ -52,21 +44,20 @@ const Contact = () => {
                 <div className="contactus-form ">
                     <form ref={form} onSubmit={sendEmail}>
                         <div className="form-group">
-                            <label htmlFor="usr">Name:</label>
-                            <input type="text" name='from_name' className="form-control"  />
+                            <label htmlFor="from_name">Name:</label>
+                            <input type="text" name="name" className="form-control" onChange={handleChange} />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="usr">Email:</label>
-                            <input type="email" name='from_email' className="form-control"  />
+                            <label htmlFor="from_email">Email:</label>
+                            <input type="email" name="email" className="form-control" onChange={handleChange} />
                         </div>
                         <div className="form-group">
-                            <label htmlFor="comment">Message:</label>
-                            <textarea className="form-control" rows="5" id="comment" name='message'></textarea>
+                            <label htmlFor="message">Message:</label>
+                            <textarea className="form-control" rows="5" id="message" name="message" onChange={handleChange}></textarea>
                         </div>
                         
-                        <button type="submit" className="btn btn-danger btn-lg m-3" value="Send" style={{ margin: '5px', paddingLeft: '2.5rem', paddingRight: '2.5rem', justifyContent: 'center' }}>Send</button>
+                        <button type="submit" className="btn btn-danger btn-lg m-3">Send</button>
                         {isSubmitted && <p className="text-success">Message sent successfully!</p>} 
-
                     </form>
                 </div>
             </div>

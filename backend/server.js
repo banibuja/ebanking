@@ -5,6 +5,8 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const bcrypt = require('bcrypt');
+
+
 const clientController = require('../src/controllers/Client/ClientController');
 const applyOnlineController = require('../src/controllers/ApplyOnline/ApplyOnline');
 const accessPermissionsController = require('../src/controllers/AccesPermissions/AccesPermissionsController');
@@ -17,6 +19,8 @@ const investmentsGoals = require('../src/controllers/Investments/InvestmentsGoal
 const currenciesController = require('../src/controllers/Currencies/Currencies');
 const profileController = require('../src/controllers/Profile/Profile');
 const loansController = require('../src/controllers/Loans/Loans');
+const contactusController = require('../src/controllers/Contact/sendEmailContactForm');
+
 
 const app = express();
 app.use(cors({
@@ -38,6 +42,7 @@ app.use(session({
     }
 }));
 
+app.post('/sendEmailContactUs', contactusController.sendEmailContactUs);
 
 
 app.get('/sessionTimeRemaining', SessionController.sessionTimeRemaining);
@@ -110,6 +115,8 @@ app.post('/getClientforProfile', profileController.getClientforProfile);
 app.put('/updateProfile', profileController.updateProfile);
 
 app.post('/getAllLoans', loansController.getAllLoans);
+
+
 
 const db = mysql.createConnection({
     host: "localhost",
