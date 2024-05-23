@@ -1,5 +1,7 @@
 const db = require('../../db');
-const getAllTransactions = (req, res) =>{
+const sendTransactionEmail = require('../Transaction/sendEmailTransaction');
+
+const getAllTransactions = (req, res) => {
     const userID = req.session.uId;
     if (!userID) {
         return res.json("fail");
@@ -27,6 +29,7 @@ const getAllTransactions = (req, res) =>{
         }
     });
 }
+
 const getCurrentAccount = (req, res) => {
     const userID = req.session.uId;
     if (!userID) {
@@ -45,10 +48,12 @@ const getCurrentAccount = (req, res) => {
         }
     });
 }
+
 const insertTransaction = (req, res) => {
     const Statusi = 1;
     const TransactionFee = 0;
     const { SenderAccID, ReceiverAccID, TransactionType, TransactionAmount, Currency, AdditionalInfo } = req.body;
+
     db.query(`SELECT * FROM currentaccounts WHERE CurrentAccount IN (?, ?)`, [ReceiverAccID, SenderAccID], (err, results) => {
         if (err) {
             return res.status(500).json({ error: 'Database query error' }).end();
@@ -57,10 +62,10 @@ const insertTransaction = (req, res) => {
         const receiverAccount = results.find(account => account.CurrentAccount === parseInt(ReceiverAccID));
         const senderAccount = results.find(account => account.CurrentAccount === parseInt(SenderAccID));
         if (!receiverAccount) {
-            return res.status(404).json("receiver account not found").end();
+            return res.status(404).json("Receiver account not found").end();
         }
         if (!senderAccount || senderAccount.Balance < TransactionAmount) {
-            return res.status(404).json("not enough balance").end();
+            return res.status(404).json("Not enough balance").end();
         }
         if (!SenderAccID || !ReceiverAccID || !TransactionType || !TransactionAmount || !Currency || !AdditionalInfo) {
             return res.json("Missing parameters");
@@ -72,25 +77,38 @@ const insertTransaction = (req, res) => {
                 return res.status(500).json({ error: 'Database update error' });
             }
 
-            // Update receiver balance
-            const receiverBalance = receiverAccount.Balance;
-            const newReceiverBalance = +receiverBalance + +TransactionAmount;
+            const newReceiverBalance = +receiverAccount.Balance + +TransactionAmount;
             db.query('UPDATE currentaccounts SET Balance = ? WHERE CurrentAccount = ?', [newReceiverBalance, parseInt(ReceiverAccID)], (err, result) => {
                 if (err) {
                     return res.status(500).json({ error: 'Database update error' });
                 }
 
+                db.query(`INSERT INTO transactions (SenderAccID, ReceiverAccID, TransactionType, TransactionAmount, Currency, Statusi, AdditionalInfo, TransactionFee) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, 
+                [SenderAccID, ReceiverAccID, TransactionType, TransactionAmount, Currency, Statusi, AdditionalInfo, TransactionFee], 
+                async (err, result) => {
+                    if (err) {
+                        return res.status(500).end();
+                    }
+                    try {
+                        const senderEmail = 'ebankingebanking7@gmail.com'; 
+                        const transactionDetails = {
+                            senderEmail,
+                            receiverAccID: ReceiverAccID,
+                            transactionType: TransactionType,
+                            transactionAmount: TransactionAmount,
+                            currency: Currency,
+                            additionalInfo: AdditionalInfo
+                        };
+                        await sendTransactionEmail(transactionDetails);
+                        res.status(200).json({ message: 'Transaction completed and email sent successfully' }).end();
+                    } catch (emailError) {
+                        console.error('Error sending email:', emailError);
+                        res.status(500).json({ error: 'Transaction completed but failed to send email' }).end();
+                    }
+                });
             });
         });
-
-    })
-
-    db.query(`INSERT INTO transactions (SenderAccID, ReceiverAccID, TransactionType, TransactionAmount, Currency, Statusi, AdditionalInfo, TransactionFee) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, [SenderAccID, ReceiverAccID, TransactionType, TransactionAmount, Currency, Statusi, AdditionalInfo, TransactionFee], (err, result) => {
-        if (err) {
-            return res.status(500).end();
-        }
-        res.status(200).json({ message: 'Transaction completed successfully' }).end();
     });
-}
+};
 
 module.exports = { getCurrentAccount, insertTransaction, getAllTransactions };
