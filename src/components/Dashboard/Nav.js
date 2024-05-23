@@ -31,21 +31,22 @@ function Nav() {
       .catch(err => console.log(err));
   
     const timer = setInterval(() => {
-      setSessionTimeRemaining(prevTime => {
-        if (prevTime > 0) {
-          return prevTime - 1; 
-        } else {
-          clearInterval(timer); 
-          handleLogout(); 
-          return 0;
-        }
-      });
+      setSessionTimeRemaining(prevTime => {return prevTime - 1})
+       
 
     }, 1000);
   
     return () => clearInterval(timer);
   }, []);
 
+  useEffect(() => {
+    if(sessionTimeRemaining < 1){
+
+      handleLogout();
+
+    }
+  
+  }, [sessionTimeRemaining])
   const handleLogout = () => {
     axios.get('http://localhost:8080/logout')
       .then(res => {

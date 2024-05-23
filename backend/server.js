@@ -5,6 +5,10 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const bcrypt = require('bcrypt');
+const multer = require('multer');
+const storage = multer.memoryStorage(); // Store files in memory
+const upload = multer({ storage: storage, limits: { fileSize: 50 * 1024 * 1024 } }); // 50 MB limit
+
 
 
 // const database = require('../src/db');
@@ -33,7 +37,8 @@ app.use(cors({
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '100mb' }));
+app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
 
 app.use(session({
     secret: 'secret',
@@ -134,8 +139,10 @@ app.delete("/deleteGoals/:id", investmentsGoals.deleteGoals);
 //
 
 
-app.post('/getClientforProfile', profileController.getClientforProfile);
+app.get('/getClientforProfile', profileController.getClientforProfile);
+app.get('/getProfilePicture', profileController.getProfilePicture);
 app.put('/updateProfile', profileController.updateProfile);
+app.post('/updateProfilePicture', profileController.updateProfilePicture);
 
 
 app.post('/getAllLoans', loansController.getAllLoans);

@@ -28,8 +28,34 @@ function AddClient() {
     }, []);
 
     const handleInput = (event) => {
-        setValues(prev => ({ ...prev, [event.target.name]: event.target.value }));
-    };
+  const { name, value } = event.target;
+
+  setValues(prev => ({ ...prev, [name]: value }));
+
+  setTimeout(() => {
+    if (name === 'username') {
+      axios.get(`http://localhost:8080/checkUsername?username=${value}`)
+        .then(response => {
+          setValues(prev => ({
+            ...prev,
+            usernameExists: response.data.exists
+          }));
+        });
+    }
+
+    if (name === 'email') {
+      axios.get(`http://localhost:8080/checkEmail?email=${value}`)
+        .then(response => {
+          setValues(prev => ({
+            ...prev,
+            emailExists: response.data.exists
+          }));
+        });
+    }
+  }, 0);
+};
+
+      
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -83,15 +109,15 @@ function AddClient() {
                                                         <label htmlFor="name">Client Username</label>
                                                         <input type="text" placeholder='Username' name='username' onChange={handleInput} className='form-control roundend-0' />
                                                         {errors.username && <span className='text-danger'>{errors.username}</span>}
-                                                        {values.username && (
-                                                            <span style={{ marginLeft: '10px' }}>
-                                                                {values.usernameExists ? (
-                                                                    <span style={{ color: 'red' }}>This username is already taken.</span>
-                                                                ) : (
-                                                                    <span style={{ color: 'green' }}>Username is available.</span>
-                                                                )}
-                                                            </span>
-                                                        )}
+{values.username && (
+    <span style={{ marginLeft: '10px' }}>
+        { values.usernameExists ? (
+            <span style={{ color: 'red' }}>This username is already taken.</span>
+        ) : (
+            <span style={{ color: 'green' }}>Username is available.</span>
+        )}
+    </span>
+)}
                                                     </div>
                                                     <div className="col-md-6 form-group">
                                                         <label htmlFor="name">Client Name</label>

@@ -54,7 +54,7 @@ export const Currencies = () => {
                             <table className="table table-hover table-bordered table-striped dataTable no-footer" style={{ width: '100%' }}>
                                 <thead>
                                     <tr>
-                                        <th scope="col">ClientID</th>
+                                        <th scope="col">Currency ID</th>
                                         <th scope="col">CurrencyCode</th>
                                         <th scope="col">ExchangeRate</th>
                                         <th scope="col">Action</th> 
