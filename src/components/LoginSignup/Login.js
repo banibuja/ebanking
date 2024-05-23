@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './Login.css';
+import arrowImage from '../../imgs/arrow.png';
 // import Header from '../HeaderNav/Header';
 import Navbar from '../Layout/Navbar';
 
@@ -73,7 +74,7 @@ function Login() {
                
                  <div className="text-center text-lg-start mt-4 pt-2">
                   <button type="submit" className="btn btn-primary btn-lg" style={{ paddingLeft: '2.5rem', paddingRight: '2.5rem' }}>Login</button>
-                  {/* <p className="small fw-bold mt-2 pt-1 mb-0">Dont Have an account? <a href="/signup" className="link-danger">Register</a></p> */}
+                  <p className="small fw-bold mt-2 pt-1 mb-0">Dont Have an account? <a href="/applyonline" className="link-danger">Apply Online </a></p>
                 </div>
                 {/* <div className="divider d-flex align-items-center my-4">
                   <p className="text-center fw-bold mx-3 mb-0">Or</p>
@@ -81,6 +82,11 @@ function Login() {
                 <div className="d-flex flex-row align-items-center justify-content-center justify-content-lg-start">
                    {/* <p className="lead fw-normal mb-0 me-3">Register with</p>
                   <div className="g-signin2" data-onsuccess="onSignIn"></div> */}
+                  <a href="/applyonline" className="StartBanking-button">
+            <span className="arrow-slide"></span>
+            <img src={arrowImage} className="arrow-img" alt="Arrow" />
+            <p className="start-banking-text">ApplyOnline</p>
+          </a>
                   <script src="https://apis.google.com/js/platform.js" async defer></script> *
                 </div>
               </form>

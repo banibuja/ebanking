@@ -95,14 +95,14 @@ export const Manageclientcards = () => {
                     <div className="row">
                         <caption>List of Cards</caption>
                         <div className="search-container">
-                            <input type="text" value={searchUserID} onChange={(e) => setSearchUserID(e.target.value)} placeholder="Search by username" />
+                            <input type="text" value={searchUserID} onChange={(e) => setSearchUserID(e.target.value)} placeholder="Search by Nr. personal" />
                             <button onClick={handleSearch}>Search</button>
                         </div>
                         <div className="col-md-12 d-flex justify-content-center align-items-center">
                         <table className="table table-hover border-table dataTable no-footer" style={{ width: '100%' }}>
                                 <thead>
                                     <tr>
-                                        <th scope="col">username</th>
+                                        <th scope="col">Nr. Personal</th>
                                         <th scope="col">Card Number</th>
                                         <th scope="col">Card Holder Name</th>
                                         <th scope="col">Valid From</th>

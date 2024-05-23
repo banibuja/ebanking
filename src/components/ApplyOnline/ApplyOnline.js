@@ -96,8 +96,8 @@ function AplikimiOnline() {
                                             <div className="row">
                                                 <div className="form-group">
                                                     <div className="col-md-6 form-group">
-                                                        <label htmlFor="name">Client Username</label>
-                                                        <input type="text" placeholder='Username' name='username' onChange={handleInput} className="form-control form-control-lg" required />
+                                                        <label htmlFor="name">Nr. Personal</label>
+                                                        <input type="text" placeholder=' write your Nr. Personal ID' name='username' onChange={handleInput} className="form-control form-control-lg" required />
                                                         {errors.username && <span className='text-danger'>{errors.username}</span>}
                                                         {values.username && (
                                                             <span style={{ marginLeft: '10px' }}>
@@ -134,11 +134,11 @@ function AplikimiOnline() {
                                                         </span>
                                                     )}
                                                 </div>
-                                                <div className="col-md-6 form-group">
+                                                {/* <div className="col-md-6 form-group">
                                                     <label htmlFor="name">Client Password</label>
                                                     <input type="password" placeholder='Password' name='password' onChange={handleInput} className="form-control form-control-lg" />
                                                     {errors.password && <span className='text-danger'>{errors.password}</span>}
-                                                </div>
+                                                </div> */}
                                                 <div className="col-md-6 form-group">
                                                     <label htmlFor="gender">Client Gender</label>
                                                     <select name="gender" onChange={handleInput} value={values.gender} className="form-control form-control-lg">
