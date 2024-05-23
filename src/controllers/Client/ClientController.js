@@ -1,8 +1,37 @@
-
 const bcrypt = require('bcrypt');
+const nodemailer = require('nodemailer');
 const db = require('../../db');
 const { generateRandomAccountNumber, generateFlexSaveAccountNumber, checkAccountExists } = require('./helpers');
 
+
+    const sendEmail = (email, username, password) => {
+
+        const nodemailer = require('nodemailer');
+
+        const transporter = nodemailer.createTransport({
+          service: 'gmail',
+          auth: {
+            user: 'ebankingebanking7@gmail.com',
+            pass: 'xobu guxn ubtv smdg'
+          }
+        });
+
+        const mailOptions = {
+        from: 'ebankingebanking7@gmail.com',
+        to: email,
+        subject: 'Application Accepted',
+        text: `Dear ${username},\n\nYour application has been accepted.\n\nUsername: ${username}\nPassword: ${password}\n\nThank you!`
+    };
+
+    return new Promise((resolve, reject) => {
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                return reject(error);
+            }
+            resolve(info);
+        });
+    });
+};
 
 const addClient = async (req, res) => {
     try {
@@ -22,7 +51,6 @@ const addClient = async (req, res) => {
         const addClient = await new Promise((resolve, reject) => {
             db.query(
                 `INSERT INTO users (username, name, lastname, email, password, gender, birthday, CurrencyCode, Status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Active')`, 
-
                 [client.username, client.name, client.lastname, client.email, hashedPassword, client.gender, client.birthday, 'EUR'], 
                 (error, result) => {
                     if (error) {
@@ -126,6 +154,8 @@ const addClient = async (req, res) => {
             );
         });
 
+        await sendEmail(client.email, client.username, client.password);
+
         return res.json(addClient);
       
     } catch (error) {
@@ -133,6 +163,10 @@ const addClient = async (req, res) => {
         return res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+
+// other functions remain unchanged
+
+
 
 const getUsers = async (req, res) => {
     try {
@@ -319,7 +353,7 @@ const getUsersWithSession = (req, res) => {
     });
 };
 
-module.exports = { addClient, getUsers, getUsersWithSession, getClientForEdit, checkEmail, checkUsername, updateUser, getByUserID, deleteClient };
+module.exports = {sendEmail, addClient, getUsers, getUsersWithSession, getClientForEdit, checkEmail, checkUsername, updateUser, getByUserID, deleteClient };
 
 
 

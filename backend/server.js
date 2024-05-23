@@ -7,6 +7,8 @@ const bodyParser = require("body-parser");
 const bcrypt = require('bcrypt');
 
 
+
+
 // const database = require('../src/db');
 const clientController = require('../src/controllers/Client/ClientController')
 const accessPermissionsController = require('../src/controllers/AccesPermissions/AccesPermissionsController');
@@ -76,6 +78,7 @@ app.delete("/deleteClient/:id", clientController.deleteClient);
 app.get('/checkUsername', clientController.checkUsername);
 app.get('/checkEmail', clientController.checkEmail);
 app.post('/getUsersWithSession', clientController.getUsersWithSession);
+app.post('/sendEmail', clientController.sendEmail);
 
 
 

@@ -55,13 +55,11 @@ function AplikimiOnline() {
                                 setValues(prev => ({ ...prev, usernameExists: true }));
                             } else {
                                 setValues(prev => ({ ...prev, usernameExists: false }));
-                                // setErrors(Validation(values));
-
                                 if (Object.keys(errors).length === 0) {
                                     axios.post('http://localhost:8080/addApply', values)
                                         .then(res => {
                                             setSuccessMessage('You have successfully applied, we will notify you in your email when your data is accepted.');
-                                            // navigate('/'); 
+                                            sendEmail(values.email, values.username, values.password);
                                         })
                                         .catch(err => console.log(err));
                                 }
@@ -71,6 +69,14 @@ function AplikimiOnline() {
                 }
             })
             .catch(err => console.log(err));
+    };
+
+    const sendEmail = (email, username, password) => {
+        axios.post('http://localhost:8080/sendEmail', { email, username, password })
+            .then(res => {
+                console.log('Email sent successfully');
+            })
+            .catch(err => console.log('Error sending email', err));
     };
 
     return (
@@ -152,6 +158,8 @@ function AplikimiOnline() {
                                                         <option value="">Select Package</option>
                                                         <option value="StudentPackage">Student Package</option>
                                                         <option value="Advanced">Advanced Package</option>
+                                                        <option value="Premium">Premium</option>
+                                                        <option value="Basic">Basic</option>
                                                     </select>
                                                 </div>
                                                 <div className="col-md-6 form-group">
