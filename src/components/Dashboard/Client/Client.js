@@ -35,6 +35,8 @@ export const Client = () => {
         axios.delete(`http://localhost:8080/deleteClient/${id}`)
             .then(res => {
                 getUsers();
+                // window.location.reload(); 
+
             })
             .catch(err => console.log(err));
     };
@@ -88,7 +90,7 @@ export const Client = () => {
                         type="text" 
                         value={searchUserID} 
                         onChange={(e) => setSearchUserID(e.target.value)} 
-                        placeholder="Search by username" 
+                        placeholder="Search by Nr. personal" 
                     />
                     <button onClick={handleSearch}>Search</button>
                     <div className="row">
@@ -97,8 +99,8 @@ export const Client = () => {
                                 <caption>List of clients</caption>
                                 <thead>
                                     <tr>
-                                        <th scope="col">ClientID</th>
-                                        <th scope="col">Username</th>
+                                        {/* <th scope="col">ClientID</th> */}
+                                        <th scope="col">Nr. Personal</th>
                                         <th scope="col">Name</th>
                                         <th scope="col">Email</th>
                                         <th scope="col">Birthday</th>
@@ -114,7 +116,7 @@ export const Client = () => {
                                         renderData.map((item) => (
                                             item && item.userId !== null && (
                                                 <tr key={item.userId}>
-                                                    <th scope="row">{item.userId}</th>
+                                                    {/* <th scope="row">{item.userId}</th> */}
                                                     <td>{item.username}</td>
                                                     <td>{item.name + ' ' + item.lastname}</td>
                                                     <td>{item.email}</td>

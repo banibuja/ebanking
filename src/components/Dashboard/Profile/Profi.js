@@ -14,6 +14,7 @@ function Profile() {
         currentPassword: '',
         newPassword: '',
         confirmPassword: ''
+      
     });
 
     const [showPasswordFields, setShowPasswordFields] = useState(false);
@@ -29,6 +30,8 @@ function Profile() {
                     lastname: data.lastname || '',
                     email: data.email || '',
                     birthday: formatDate(data.birthday) || '',
+                    
+
                 }));
             })
             .catch(err => console.error(err));
@@ -43,6 +46,7 @@ function Profile() {
         axios.put('http://localhost:8080/updateProfile', values, { withCredentials: true })
             .then(res => {
                 console.log('Profile updated successfully');
+                 window.location.reload(); 
             })
             .catch(err => {
                 console.error(err);
@@ -104,6 +108,20 @@ function Profile() {
                                                 <input className="form-control" id="inputBirthday" name="birthday" type="text" placeholder="Enter your birthday" value={values.birthday} onChange={handleChange} disabled />
                                             </div>
                                         </div>
+                                        {/* <div className="row gx-3 mb-3">
+                                            <div className="col-md-3">
+                                                <label className="small mb-1" htmlFor="inputCountry">Country</label>
+                                                <input className="form-control" id="inputCountry" name="Country" type="text" placeholder="Enter your Country" value={values.Country} onChange={handleChange} disabled />
+                                            </div>
+                                            <div className="col-md-3">
+                                                <label className="small mb-1" htmlFor="inputCity">City</label>
+                                                <input className="form-control" id="inputCity" name="City" type="text" placeholder="Enter your last City" value={values.City} onChange={handleChange} disabled />
+                                            </div>
+                                            <div className="col-md-3">
+                                                <label className="small mb-1" htmlFor="inputStreet">Street</label>
+                                                <input className="form-control" id="inputStreet" name="Street" type="text" placeholder="Enter your last Street" value={values.Street} onChange={handleChange} disabled />
+                                            </div>
+                                        </div> */}
                                         <button type="button" className="btn btn-secondary mb-3" onClick={togglePasswordFields}>
                                             Change Password
                                         </button>

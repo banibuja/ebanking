@@ -14,6 +14,19 @@ CREATE TABLE Users (
     CurrencyCode varchar(20) NOT NULL
 );
 
+CREATE TABLE applyonline (
+    userId int NOT NULL primary key AUTO_INCREMENT,
+    username varchar(50) unique not null,
+    name varchar(50) not null,
+    lastname varchar(50) not null,
+    email varchar(50) not null,
+    password varchar(255) not null,
+    package varchar(255) not null,
+    gender varchar(20) check (gender in ('M', 'F', 'Other')),
+    birthday datetime,
+    CurrencyCode varchar(20) NOT NULL
+);
+
 CREATE TABLE Adresa (
     AdresaID int,
     userId INT NOT NULL,
@@ -218,7 +231,7 @@ INSERT INTO `currencies` (`CurrencyID`, `UserID`, `CurrencyCode`, `ExchangeRate`
 
 INSERT INTO `currentaccounts` (`CurrentAccount`, `UserID`, `CurrencyCode`, `Balance`, `AccountStatus`) VALUES
 (222222222, 2, 'EUR', 2000.00, 'Closed'),
-(1110333326506512, 4, 'EUR', 50534.00, 'Closed'),
+(1110333326506512, 4, 'EUR', 50534.00, 'Open'),
 (1110333373365772, 8, 'EUR', 350000.00, 'Open'),
 (1110333378802226, 7, 'EUR', 20000.00, 'Open');
 

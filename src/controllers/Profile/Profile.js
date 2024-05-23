@@ -7,8 +7,12 @@ const getClientforProfile = (req, res) => {
         return res.status(401).json("User not logged in");
     }
     
-    const sql = "SELECT * FROM users WHERE userId = ?";
-
+    const sql = `
+    SELECT u.*, a.Country, a.City, a.Street
+    FROM users u 
+    INNER JOIN adresa a ON a.userId = u.userId
+    WHERE u.userId = ?
+    `;
     db.query(sql, [userID], (err, data) => {
         if (err) {
             return res.status(500).json("Error");

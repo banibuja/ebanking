@@ -4,13 +4,13 @@ import { Dashboard } from '../components/Dashboard/Dashboard';
 import { Client } from '../components/Dashboard/Client/Client';
 import Transaction from '../components/Dashboard/Transaction/Transactions';
 // import Login from '../components/LoginSignup/Login'
-import Signup from '../components/LoginSignup/Signup'
+import ApplyOnline from '../components/ApplyOnline/ApplyOnline'
 import AddClient from '../components/Dashboard/Client/AddClient';
 // import ContactUs from '../components/Dashboard/ContactUs/ContactUs'
 import EditClient from '../components/Dashboard/Client/EditClient';
 import ContactForm from '../components/Dashboard/ContactUs/ContactForm';
 import Home from '../components/Home/Home';
-import Profile from '../components/Dashboard/Profile/Profile';
+// import Profile from '../components/Dashboard/Profile/Profile';
 import Sidebar from '../components/Dashboard/Sidebar';
 import CardsForm from '../components/Dashboard/Cards/CardsForm';
 // import ManageCards from '../components/Dashboard/Cards/ManageCards';
@@ -30,6 +30,7 @@ import Nav from '../components/Dashboard/Nav';
 
 import Login from './Login';
 import NewTransaction from '../components/Dashboard/Transaction/NewTransaction';
+import ManagaeApplicantsOnline from '../components/ApplyOnline/ManagaeApplicantsOnline';
 
 
 
@@ -41,14 +42,14 @@ function App() {
 
         <Route path="/Transaction" element={<Transaction/>}></Route> 
         {/* <Route path="/login" element={<Login />} /> */}
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/ApplyOnline" element={<ApplyOnline />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/client" element={<Client />} />
         <Route path="/addclient" element={<AddClient />} />
         {/* <Route path="/ContactUs" element={<ContactUs />} /> */}
         <Route path="/editclient" element={<EditClient />} />
         <Route path="/ContactForm" element={<ContactForm />} />
-        <Route path="/Profile" element={<Profile />} />
+        {/* <Route path="/Profile" element={<Profile />} /> */}
         <Route path="/" element={<Home />} />
         <Route path="/Sidebar" element={<Sidebar/>} />
         <Route path="/CardsForm" element={<CardsForm/>} />
@@ -66,7 +67,7 @@ function App() {
         <Route path="/InvestmentsTable" element={<InvestmentsTable/>} /> 
         <Route path="/Nav" element={<Nav/>} /> 
         <Route path="/NewTransaction" element={<NewTransaction/>} /> 
-
+        <Route path="/ManagaeApplicantsOnline" element={<ManagaeApplicantsOnline/>} /> 
 
         {/* <Route path="/Profi" element={<Profi/>} />  */}
 

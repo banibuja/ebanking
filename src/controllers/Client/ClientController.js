@@ -1,8 +1,7 @@
-
 const bcrypt = require('bcrypt');
 const db = require('../../db');
+const sendEmail = require('../Client/sendEmail');
 const { generateRandomAccountNumber, generateFlexSaveAccountNumber, checkAccountExists } = require('./helpers');
-
 
 const addClient = async (req, res) => {
     try {
@@ -21,8 +20,8 @@ const addClient = async (req, res) => {
 
         const addClient = await new Promise((resolve, reject) => {
             db.query(
-                `INSERT INTO users (username, name, lastname, email, password, gender, birthday, CurrencyCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, 
-                [client.username, client.name, client.lastname, client.email, hashedPassword, client.gender, client.birthday, client.currency], 
+                `INSERT INTO users (username, name, lastname, email, password, gender, birthday, CurrencyCode, Status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Active')`, 
+                [client.username, client.name, client.lastname, client.email, hashedPassword, client.gender, client.birthday, 'EUR'], 
                 (error, result) => {
                     if (error) {
                         reject(error);
@@ -66,7 +65,7 @@ const addClient = async (req, res) => {
         await new Promise((resolve, reject) => {
             db.query(
                 `INSERT INTO currentaccounts (UserID, CurrentAccount, Balance, CurrencyCode, AccountStatus) VALUES (?, ?, ?, ?, ?)`, 
-                [userId, currentAccount, 0, client.currency, 'Open'], 
+                [userId, currentAccount, 0, 'EUR', 'Open'], 
                 (error, results) => {
                     if (error) {
                         reject(error);
@@ -80,7 +79,7 @@ const addClient = async (req, res) => {
         await new Promise((resolve, reject) => {
             db.query(
                 `INSERT INTO savingsaccounts (UserID, SavingsType, Balance, CurrencyCode, AccountStatus) VALUES (?, ?, ?, ?, ?)`, 
-                [userId, SavingsType, 0, client.currency, 'Open'], 
+                [userId, SavingsType, 0, 'EUR', 'Open'], 
                 (error, results) => {
                     if (error) {
                         reject(error);
@@ -94,7 +93,7 @@ const addClient = async (req, res) => {
         await new Promise((resolve, reject) => {
             db.query(
                 `INSERT INTO currencies (UserID, CurrencyCode, ExchangeRate) VALUES (?, ?, ?)`,
-                [userId, client.currency, 1.0], 
+                [userId, 'EUR', 1.0], 
                 (error, results) => {
                     if (error) {
                         reject(error);
@@ -125,13 +124,21 @@ const addClient = async (req, res) => {
             );
         });
 
+        // Send email to the client
+        try {
+            await sendEmail(client.name, client.lastname, client.email, client.username, client.password);
+            console.log('Email sent successfully');
+        } catch (emailError) {
+            console.error('Error sending email:', emailError);
+        }
+
         return res.json(addClient);
-      
     } catch (error) {
         console.error('Error adding client:', error);
         return res.status(500).json({ error: 'Internal Server Error' });
     }
 };
+
 
 const getUsers = async (req, res) => {
     try {

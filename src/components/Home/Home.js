@@ -37,6 +37,7 @@ export const Home = () => {
           <h1 className="-banking">-Banking</h1>
         </div>
       </div>
+      
 
       <Container className="carusel-space">
         <Carousel>

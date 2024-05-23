@@ -82,7 +82,7 @@ export const ManageSavingsAccount = () => {
                     <div className="row">
                         <caption>List of Accounts</caption>
                         <div className="search-container">
-                            <input type="text" value={clientID} onChange={(e) => setclientID(e.target.value)} placeholder="Search by username" />
+                            <input type="text" value={clientID} onChange={(e) => setclientID(e.target.value)} placeholder="Search by Nr. personal" />
                             <button onClick={handleSearch}>Search</button>
                         </div>
                         <div className="col-md-12 d-flex justify-content-center align-items-center">
@@ -92,7 +92,7 @@ export const ManageSavingsAccount = () => {
                                     <tr>
                                         {/* <th scope="col">AccountID</th> */}
                                         {/* <th scope="col">Client ID</th> */}
-                                        <th scope="col">username</th>
+                                        <th scope="col">Nr. Personal</th>
                                         <th scope="col">Name Lastname</th>
                                         <th scope="col">SavingsType</th>
                                         <th scope="col">Currency</th>
