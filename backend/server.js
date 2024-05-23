@@ -5,6 +5,9 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const bcrypt = require('bcrypt');
+const multer = require('multer');
+const storage = multer.memoryStorage(); // Store files in memory
+const upload = multer({ storage: storage, limits: { fileSize: 50 * 1024 * 1024 } }); // 50 MB limit
 
 
 const clientController = require('../src/controllers/Client/ClientController');
