@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 
-const sendEmail = (email, username, password) => {
+const sendEmail = (name, lastname, email, username, password) => {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -13,7 +13,7 @@ const sendEmail = (email, username, password) => {
         from: 'ebankingebanking7@gmail.com',
         to: email,
         subject: 'Application Accepted',
-        text: `Dear ${username},\n\nYour application has been accepted.\n\nUsername: ${username}\nPassword: ${password}\n\nThank you!`
+        text: `Dear ${name + ' ' + lastname},\n\nYour application has been accepted.\n\nUsername: ${username}\nPassword: ${password}\n\nThank you!`
     };
 
     return new Promise((resolve, reject) => {

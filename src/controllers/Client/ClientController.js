@@ -126,7 +126,7 @@ const addClient = async (req, res) => {
 
         // Send email to the client
         try {
-            await sendEmail(client.email, client.username, client.password);
+            await sendEmail(client.name, client.lastname, client.email, client.username, client.password);
             console.log('Email sent successfully');
         } catch (emailError) {
             console.error('Error sending email:', emailError);
