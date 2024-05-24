@@ -27,7 +27,10 @@ import InvesmentsGoals from '../components/Dashboard/InvestmentsGoals/Investment
 import InvestmentsTable from '../components/Dashboard/InvestmentsGoals/InvestmentsTable';
 import ProfileRoutes  from './ProfileRoutes'; // Import ProfileRoutes
 import Nav from '../components/Dashboard/Nav';
+// Make sure the file path is correct
 
+
+//
 import Login from './Login';
 import NewTransaction from '../components/Dashboard/Transaction/NewTransaction';
 import ManagaeApplicantsOnline from '../components/ApplyOnline/ManagaeApplicantsOnline';
@@ -68,6 +71,8 @@ function App() {
         <Route path="/Nav" element={<Nav/>} /> 
         <Route path="/NewTransaction" element={<NewTransaction/>} /> 
         <Route path="/ManagaeApplicantsOnline" element={<ManagaeApplicantsOnline/>} /> 
+        
+
 
         {/* <Route path="/Profi" element={<Profi/>} />  */}
 
