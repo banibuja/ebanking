@@ -5,10 +5,39 @@ const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const bcrypt = require('bcrypt');
-const multer = require('multer');
-const storage = multer.memoryStorage(); // Store files in memory
-const upload = multer({ storage: storage, limits: { fileSize: 50 * 1024 * 1024 } }); // 50 MB limit
 
+// const multer = require('multer');
+// const storage = multer.memoryStorage(); // Store files in memory
+// const upload = multer({ storage: storage, limits: { fileSize: 50 * 1024 * 1024 } }); // 50 MB limit
+
+
+const multer = require('multer');
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/')
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname)
+    }
+});
+const upload = multer({ storage: storage, limits: { fileSize: 50 * 1024 * 1024 } }); // 50 MB limit
+const upload1 = multer({
+    storage: multer.diskStorage({
+        destination: function (req, file, cb) {
+            if (file.fieldname === 'frontPhoto') {
+                cb(null, 'uploads/frontPhoto/');
+            } else if (file.fieldname === 'backPhoto') {
+                cb(null, 'uploads/backPhoto/');
+            } else {
+                cb(new Error('Invalid fieldname'), false);
+            }
+        },
+        filename: function (req, file, cb) {
+            cb(null, Date.now() + '-' + file.originalname);
+        }
+    }),
+    limits: { fileSize: 50 * 1024 * 1024 }
+}).fields([{ name: 'frontPhoto', maxCount: 1 }, { name: 'backPhoto', maxCount: 1 }]);
 
 const clientController = require('../src/controllers/Client/ClientController');
 const applyOnlineController = require('../src/controllers/ApplyOnline/ApplyOnline');
@@ -31,7 +60,7 @@ app.use(cors({
     methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true
 }));
-
+app.use('/uploads', express.static('uploads'));
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -45,8 +74,10 @@ app.use(session({
     }
 }));
 
+
 app.post('/sendEmailContactUs', contactusController.sendEmailContactUs);
 
+app.post('/addApply', upload1, applyOnlineController.addApply);
 
 app.get('/sessionTimeRemaining', SessionController.sessionTimeRemaining);
 app.get('/resetSession', SessionController.resetSession);
@@ -205,6 +236,31 @@ app.post('/loginform', async (req, res) => {
         }
     });
 });
+
+
+app.post('/uploadPhoto', upload.single('photo'), (req, res) => {
+    const { filename } = req.file;
+    const sql = "INSERT INTO photos (filename) VALUES (?)";
+    db.query(sql, [filename], (err, result) => {
+        if (err) {
+            console.error("Error inserting photo into database:", err);
+            return res.status(500).json({ message: "Database error", success: false });
+        }
+        res.status(200).json({ message: "Photo uploaded successfully", success: true, filename });
+    });
+});
+
+app.get('/photos', (req, res) => {
+    const sql = "SELECT * FROM photos";
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error("Error fetching photos:", err);
+            return res.status(500).json({ message: "Database error", success: false });
+        }
+        res.status(200).json({ photos: results });
+    });
+});
+
 
 app.listen(8080, () => {
     console.log("Server is running");

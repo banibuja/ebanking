@@ -35,11 +35,14 @@ import Login from './Login';
 import NewTransaction from '../components/Dashboard/Transaction/NewTransaction';
 import ManagaeApplicantsOnline from '../components/ApplyOnline/ManagaeApplicantsOnline';
 import ApplyLoans from '../components/Dashboard/Loans/ApplyLoans';
-
+// import PhotoUpload from '../components/PhotoUpload';
+// import PhotoGallery from '../components/PhotoGallery';
 
 
 function App() {
   return (
+
+    
 
     <BrowserRouter>
       <Routes>
@@ -73,8 +76,10 @@ function App() {
         <Route path="/NewTransaction" element={<NewTransaction/>} /> 
         <Route path="/ManagaeApplicantsOnline" element={<ManagaeApplicantsOnline/>} /> 
         <Route path="/ApplyLoans" element={<ApplyLoans/>} /> 
-
+{/* 
         
+        <Route path="/PhotoUpload" element={<PhotoUpload/>} /> 
+        <Route path="/PhotoGallery" element={<PhotoGallery/>} />  */}
 
 
         {/* <Route path="/Profi" element={<Profi/>} />  */}
@@ -89,6 +94,7 @@ function App() {
       </Routes>
       <ProfileRoutes  />
       <Login   />
+     
     </BrowserRouter>
   );
 }

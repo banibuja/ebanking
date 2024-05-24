@@ -2,31 +2,32 @@ const bcrypt = require('bcrypt');
 const db = require('../../db');
 
 const addApply = (req, res) => {
-    const { username, name, lastname, email, password, package, gender, birthday, Country, City, Street,  } = req.body;
+    const { username, name, lastname, email, password, package, gender, birthday, Country, City, Street } = req.body;
+    
+    const frontPhoto = req.files['frontPhoto'] ? req.files['frontPhoto'][0].filename : null;
+    const backPhoto = req.files['backPhoto'] ? req.files['backPhoto'][0].filename : null;
 
     bcrypt.hash(password, 10, (err, hash) => {
         if (err) {
             console.error('Error hashing password:', err);
-            res.status(500).json({ error: 'Error hashing password' });
-        } else {
-            const hashedPassword = hash;
-
-            const query = `INSERT INTO applyonline (username, name, lastname, email, password, package, gender, birthday, Country, City, Street, Status) 
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending')`;
-
-
-            const values = [username, name, lastname, email, hashedPassword, package, gender, birthday, Country, City, Street];
-
-            db.query(query, values, (err, result) => {
-                if (err) {
-                    console.error('Error inserting data:', err);
-                    res.status(500).json({ error: 'Error inserting data' });
-                } else {
-                    console.log('Data inserted successfully:', result);
-                    res.status(200).json({ message: 'Data inserted successfully' });
-                }
-            });
+            return res.status(500).json({ error: 'Error hashing password' });
         }
+
+        const hashedPassword = hash;
+        const query = `INSERT INTO applyonline (username, name, lastname, email, password, package, gender, birthday, Country, City, Street, frontPhoto, backPhoto, Status) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending')`;
+
+        const values = [username, name, lastname, email, hashedPassword, package, gender, birthday, Country, City, Street, frontPhoto, backPhoto];
+
+        db.query(query, values, (err, result) => {
+            if (err) {
+                console.error('Error inserting data:', err);
+                return res.status(500).json({ error: 'Error inserting data' });
+            }
+
+            console.log('Data inserted successfully:', result);
+            res.status(200).json({ message: 'Data inserted successfully' });
+        });
     });
 };
 
