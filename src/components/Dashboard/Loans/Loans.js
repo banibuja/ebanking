@@ -66,21 +66,7 @@ export const Loans = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        axios.post('http://localhost:8080/applyLoan', newLoan)
-            .then(res => {
-                fetchLoans();
-                setNewLoan({
-                    AccountID: '',
-                    LoanAmount: '',
-                    LoanType: '', // Reset LoanType
-                    LoanConditions: '',
-                    Status: ''
-                });
-            })
-            .catch(err => console.log(err));
-    };
+    
 
     return (
         <div> 
@@ -98,7 +84,6 @@ export const Loans = () => {
                                         <th scope="col">Loan ID</th>
                                         <th scope="col">Account ID</th>
                                         <th scope="col">Loan Amount</th>
-                                        <th scope="col">Loan Type</th> {/* Added LoanType column */}
                                         <th scope="col">Loan Conditions</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Action</th>
@@ -110,7 +95,6 @@ export const Loans = () => {
                                             <td>{loan.LoanID}</td>
                                             <td>{loan.AccountID}</td>
                                             <td>{loan.LoanAmount}</td>
-                                            <td>{loan.LoanType}</td> {/* Added LoanType column */}
                                             <td>{loan.LoanConditions}</td>
                                             <td>{loan.Status}</td>
                                             <td>
@@ -126,75 +110,13 @@ export const Loans = () => {
                     <div>Total loans: {numLoans}</div> 
                     {editLoan !== null && <EditLoan id={editLoan} onClose={handleCloseEditModal} />}
 
-                    <div className="row" style={{ marginTop: '50px' }}>
-                        <h2>Apply for a New Loan</h2>
-                        <form onSubmit={handleSubmit} style={{ width: '100%' }}>
-                            <div className="form-group">
-                                <label>Account ID:</label>
-                                <input
-                                    type="text"
-                                    name="AccountID"
-                                    value={newLoan.AccountID}
-                                    onChange={handleInputChange}
-                                    className="form-control"
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Loan Amount:</label>
-                                <input
-                                    type="number"
-                                    name="LoanAmount"
-                                    value={newLoan.LoanAmount}
-                                    onChange={handleInputChange}
-                                    className="form-control"
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Loan Type:</label>
-                                <select
-                                    name="LoanType"
-                                    value={newLoan.LoanType}
-                                    onChange={handleInputChange}
-                                    className="form-control"
-                                    required
-                                >
-                                    {loanTypes.map(type => (
-                                        <option key={type.value} value={type.value}>
-                                            {type.label}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                            <div className="form-group">
-                                <label>Loan Conditions:</label>
-                                <input
-                                    type="text"
-                                    name="LoanConditions"
-                                    value={newLoan.LoanConditions}
-                                    onChange={handleInputChange}
-                                    className="form-control"
-                                    required
-                                />
-                            </div>
-                            <div className="form-group">
-                                <label>Status:</label>
-                                <input
-                                    type="text"
-                                    name="Status"
-                                    value={newLoan.Status}
-                                    onChange={handleInputChange}
-                                    className="form-control"
-                                    required
-                                />
-                            </div>
-                            <button type="submit" className="btn btn-success">Apply</button>
-                        </form>
                     </div>
-                </div>
-            </main>
-        </div>
+
+                    </main>
+
+                    </div>
+
+                   
     );
 }
 

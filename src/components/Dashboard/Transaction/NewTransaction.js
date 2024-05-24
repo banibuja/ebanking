@@ -38,7 +38,7 @@ function NewTransaction() {
             axios.post(`http://localhost:8080/insertTransaction`, { SenderAccID: currentAccount, ...values })
                 .then(res => {
                     console.log(res);
-                    navigate('/Dashboard');
+                    navigate('/Loans');
                 })
                 .catch(err => console.log(err));
         }

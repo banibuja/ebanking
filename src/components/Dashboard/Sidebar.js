@@ -257,13 +257,27 @@ export default function Sidebar() {
               Reports
             </a>
           </li>
-        
+
           <li>
-            <a href="/Loans" className="nav-link link-dark" onClick={handleManageClick}>
+          <Dropdown>
+                  <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
+                    <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300 bg-light"></i>
+                    Loans
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item href="/applyloans" onClick={handleManageClick}>New Loans </Dropdown.Item>
+                    <Dropdown.Item href="/loans" onClick={handleManageClick}>Loans</Dropdown.Item>
+
+                  </Dropdown.Menu>
+                </Dropdown>
+          </li>
+        
+          {/* <li>
+            <a href="/ApplyLoans" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
               Loans
             </a>
-          </li>
+          </li> */}
           
           {/* <li>
             <a href="#" className="nav-link link-dark" onClick={handleManageClick}>

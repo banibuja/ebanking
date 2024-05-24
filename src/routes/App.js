@@ -34,6 +34,7 @@ import Nav from '../components/Dashboard/Nav';
 import Login from './Login';
 import NewTransaction from '../components/Dashboard/Transaction/NewTransaction';
 import ManagaeApplicantsOnline from '../components/ApplyOnline/ManagaeApplicantsOnline';
+import ApplyLoans from '../components/Dashboard/Loans/ApplyLoans';
 
 
 
@@ -71,6 +72,8 @@ function App() {
         <Route path="/Nav" element={<Nav/>} /> 
         <Route path="/NewTransaction" element={<NewTransaction/>} /> 
         <Route path="/ManagaeApplicantsOnline" element={<ManagaeApplicantsOnline/>} /> 
+        <Route path="/ApplyLoans" element={<ApplyLoans/>} /> 
+
         
 
 

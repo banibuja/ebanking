@@ -118,6 +118,8 @@ app.post('/getClientforProfile', profileController.getClientforProfile);
 app.put('/updateProfile', profileController.updateProfile);
 
 app.post('/getAllLoans', loansController.getAllLoans);
+app.post('/addLoan', loansController.addLoan);
+app.get('/getAccountNumber/', loansController.getAccountNumber);
 
 
 
