@@ -265,12 +265,12 @@ export default function Sidebar() {
             </a>
           </li>
           
-          <li>
+          {/* <li>
             <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
               Investments
             </a>
-          </li>
+          </li> */}
 
          
           <li>
@@ -280,26 +280,26 @@ export default function Sidebar() {
             </a>
           </li>
 
-          <li>
+          {/* <li>
             <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
               TransactionAuthorizations
             </a>
-          </li>
+          </li> */}
 
-          <li>
+          {/* <li>
             <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
               Payments
             </a>
-          </li>
-          <li>
+          </li> */}
+          {/* <li>
             <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
               Retirements
             </a>
           </li>
-         
+          */}
 
           
 
@@ -318,18 +318,18 @@ export default function Sidebar() {
               Transactions History
             </a>
           </li>
-          <li>
+          {/* <li>
             <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-chart-line fa-1x text-gray-300" ></i>
               Financial Reports
             </a>
-          </li>
-          <li>
+          </li> */}
+          {/* <li>
             <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-cogs fa-1x text-gray-300" ></i>
               System Settings
             </a>
-          </li>
+          </li> */}
           <li>
             <a href="#" className="nav-link link-dark" onClick={handleLogout}> 
               <i className="bi me-2 fas fa-sign-out-alt fa-1x text-gray-300" ></i>

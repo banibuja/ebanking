@@ -83,7 +83,8 @@ export const Client = () => {
                 <Sidebar />
                 <div className="container-fluid" style={{ marginTop: '100px' }}>
                     <div style={{marginBottom: '30px'}}>
-                <Nav />
+                    <Nav />
+
                 </div>
                 <h2 className="text-center" style={{ marginTop: '20px', color: 'grey' }}>Manage Client</h2>
                     <input 
