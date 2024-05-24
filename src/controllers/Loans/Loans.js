@@ -17,7 +17,7 @@ const getAllLoans = (req, res) => {
 
 const getLoanForEdit = (req, res) => {
     const loanID = req.params.id;
-    const sql = "SELECT AccountID, LoanAmount, LoanConditions, Status FROM loans WHERE LoanID = ?";
+    const sql = "SELECT AccountID, LoanAmount, LoanType, LoanConditions, Status FROM loans WHERE LoanID = ?";
 
     db.query(sql, [loanID], (err, data) => {
         if (err) {
@@ -32,10 +32,10 @@ const getLoanForEdit = (req, res) => {
 };
 
 const addLoan = (req, res) => {
-    const { AccountID, LoanAmount, LoanConditions, Status } = req.body;
-    const sql = "INSERT INTO loans (AccountID, LoanAmount, LoanConditions, Status) VALUES (?, ?, ?, ?)";
+    const { AccountID, LoanAmount, LoanType, LoanConditions, Status } = req.body;
+    const sql = "INSERT INTO loans (AccountID, LoanAmount, LoanType, LoanConditions, Status) VALUES (?, ?, ?, ?, ?)";
 
-    db.query(sql, [AccountID, LoanAmount, LoanConditions, Status], (err, result) => {
+    db.query(sql, [AccountID, LoanAmount, LoanType, LoanConditions, Status], (err, result) => {
         if (err) {
             console.error("Error adding loan:", err);
             return res.status(500).json({ error: "Internal server error" });
@@ -46,11 +46,11 @@ const addLoan = (req, res) => {
 };
 
 const updateLoan = (req, res) => {
-    const { AccountID, LoanAmount, LoanConditions, Status } = req.body;
+    const { AccountID, LoanAmount, LoanType, LoanConditions, Status } = req.body;
     const loanID = req.params.id;
 
-    const sql = "UPDATE loans SET AccountID = ?, LoanAmount = ?, LoanConditions = ?, Status = ? WHERE LoanID = ?";
-    db.query(sql, [AccountID, LoanAmount, LoanConditions, Status, loanID], (err, result) => {
+    const sql = "UPDATE loans SET AccountID = ?, LoanAmount = ?, LoanType = ?, LoanConditions = ?, Status = ? WHERE LoanID = ?";
+    db.query(sql, [AccountID, LoanAmount, LoanType, LoanConditions, Status, loanID], (err, result) => {
         if (err) {
             console.error("Error updating loan:", err);
             return res.status(500).json({ error: "Internal server error" });
