@@ -1,18 +1,18 @@
 const db = require('../../../db');
 
 
-// SELECT u.*, a.CurrentAccount, a.CurrencyCode, a.Balance, a.AccountStatus
-//     FROM users u 
-//     INNER JOIN currentaccounts a ON a.UserID = u.userId 
+
 const getAccountForEdit = (req, res) => {
     const accountId = req.params.id;
 
     const sql = `
-    
-    
-    SELECT c.*,  u.username, u.name, u.lastname
-    From currentaccounts c INNER JOIN  users u  on c.UserID = u.userId
-    
+
+    SELECT u.*, a.CurrentAccount, a.CurrencyCode, a.Balance, a.AccountStatus
+    FROM users u 
+    INNER JOIN currentaccounts a ON a.UserID = u.userId
+    WHERE a.CurrentAccount = ?
+
+   
 `;
 
     db.query(sql, [accountId], (err, data) => {

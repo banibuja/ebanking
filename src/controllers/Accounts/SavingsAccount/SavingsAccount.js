@@ -23,6 +23,8 @@ const getSavingsAccountById = (req, res) => {
     SELECT u.*, a.SavingsType, a.CurrencyCode, a.Balance, a.AccountStatus
     FROM users u 
     INNER JOIN savingsaccounts a ON a.userId = u.userId 
+    WHERE a.SavingsType = ?
+
     
 `;
     db.query(sql, [Savingsid], (err, data) => {
