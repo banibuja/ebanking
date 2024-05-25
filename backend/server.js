@@ -6,9 +6,6 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const bcrypt = require('bcrypt');
 
-// const multer = require('multer');
-// const storage = multer.memoryStorage(); // Store files in memory
-// const upload = multer({ storage: storage, limits: { fileSize: 50 * 1024 * 1024 } }); // 50 MB limit
 
 
 const multer = require('multer');
@@ -238,28 +235,28 @@ app.post('/loginform', async (req, res) => {
 });
 
 
-app.post('/uploadPhoto', upload.single('photo'), (req, res) => {
-    const { filename } = req.file;
-    const sql = "INSERT INTO photos (filename) VALUES (?)";
-    db.query(sql, [filename], (err, result) => {
-        if (err) {
-            console.error("Error inserting photo into database:", err);
-            return res.status(500).json({ message: "Database error", success: false });
-        }
-        res.status(200).json({ message: "Photo uploaded successfully", success: true, filename });
-    });
-});
+// app.post('/uploadPhoto', upload.single('photo'), (req, res) => {
+//     const { filename } = req.file;
+//     const sql = "INSERT INTO photos (filename) VALUES (?)";
+//     db.query(sql, [filename], (err, result) => {
+//         if (err) {
+//             console.error("Error inserting photo into database:", err);
+//             return res.status(500).json({ message: "Database error", success: false });
+//         }
+//         res.status(200).json({ message: "Photo uploaded successfully", success: true, filename });
+//     });
+// });
 
-app.get('/photos', (req, res) => {
-    const sql = "SELECT * FROM photos";
-    db.query(sql, (err, results) => {
-        if (err) {
-            console.error("Error fetching photos:", err);
-            return res.status(500).json({ message: "Database error", success: false });
-        }
-        res.status(200).json({ photos: results });
-    });
-});
+// app.get('/photos', (req, res) => {
+//     const sql = "SELECT * FROM photos";
+//     db.query(sql, (err, results) => {
+//         if (err) {
+//             console.error("Error fetching photos:", err);
+//             return res.status(500).json({ message: "Database error", success: false });
+//         }
+//         res.status(200).json({ photos: results });
+//     });
+// });
 
 
 app.listen(8080, () => {
