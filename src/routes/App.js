@@ -27,17 +27,24 @@ import InvesmentsGoals from '../components/Dashboard/InvestmentsGoals/Investment
 import InvestmentsTable from '../components/Dashboard/InvestmentsGoals/InvestmentsTable';
 import ProfileRoutes  from './ProfileRoutes'; // Import ProfileRoutes
 import Nav from '../components/Dashboard/Nav';
+// Make sure the file path is correct
 
+
+//
 import Login from './Login';
 import NewTransaction from '../components/Dashboard/Transaction/NewTransaction';
 import SaveTransaction from '../components/Dashboard/Transaction/SaveTransaction';
 
 import ManagaeApplicantsOnline from '../components/ApplyOnline/ManagaeApplicantsOnline';
-
+import ApplyLoans from '../components/Dashboard/Loans/ApplyLoans';
+// import PhotoUpload from '../components/PhotoUpload';
+// import PhotoGallery from '../components/PhotoGallery';
 
 
 function App() {
   return (
+
+    
 
     <BrowserRouter>
       <Routes>
@@ -70,6 +77,12 @@ function App() {
         <Route path="/Nav" element={<Nav/>} /> 
         <Route path="/NewTransaction" element={<NewTransaction/>} /> 
         <Route path="/ManagaeApplicantsOnline" element={<ManagaeApplicantsOnline/>} /> 
+        <Route path="/ApplyLoans" element={<ApplyLoans/>} /> 
+{/* 
+        
+        <Route path="/PhotoUpload" element={<PhotoUpload/>} /> 
+        <Route path="/PhotoGallery" element={<PhotoGallery/>} />  */}
+
 
         {/* <Route path="/Profi" element={<Profi/>} />  */}
 
@@ -83,6 +96,7 @@ function App() {
       </Routes>
       <ProfileRoutes  />
       <Login   />
+     
     </BrowserRouter>
   );
 }

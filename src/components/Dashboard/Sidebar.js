@@ -257,49 +257,63 @@ export default function Sidebar() {
               Reports
             </a>
           </li>
-        
+
           <li>
-            <a href="/Loans" className="nav-link link-dark" onClick={handleManageClick}>
+          <Dropdown>
+                  <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
+                    <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300 bg-light"></i>
+                    Loans
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                    <Dropdown.Item href="/applyloans" onClick={handleManageClick}>New Loans </Dropdown.Item>
+                    <Dropdown.Item href="/loans" onClick={handleManageClick}>Loans</Dropdown.Item>
+
+                  </Dropdown.Menu>
+                </Dropdown>
+          </li>
+        
+          {/* <li>
+            <a href="/ApplyLoans" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
               Loans
             </a>
-          </li>
+          </li> */}
           
-          <li>
+          {/* <li>
             <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
               Investments
             </a>
-          </li>
+          </li> */}
 
          
           <li>
-            <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
+          <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
               Notifications
             </a>
           </li>
 
-          <li>
+          {/* <li>
             <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
               TransactionAuthorizations
             </a>
-          </li>
+          </li> */}
 
-          <li>
+          {/* <li>
             <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
               Payments
             </a>
-          </li>
-          <li>
+          </li> */}
+          {/* <li>
             <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
               Retirements
             </a>
           </li>
-         
+          */}
 
           
 
@@ -318,18 +332,18 @@ export default function Sidebar() {
               Transactions History
             </a>
           </li>
-          <li>
+          {/* <li>
             <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-chart-line fa-1x text-gray-300" ></i>
               Financial Reports
             </a>
-          </li>
-          <li>
+          </li> */}
+          {/* <li>
             <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-cogs fa-1x text-gray-300" ></i>
               System Settings
             </a>
-          </li>
+          </li> */}
           <li>
             <a href="#" className="nav-link link-dark" onClick={handleLogout}> 
               <i className="bi me-2 fas fa-sign-out-alt fa-1x text-gray-300" ></i>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../Sidebar';
 import axios from 'axios';
+import Nav from '../Nav';
 
 function NewTransaction() {
     const navigate = useNavigate();
@@ -37,7 +38,7 @@ function NewTransaction() {
             axios.post(`http://localhost:8080/insertTransaction`, { SenderAccID: currentAccount, ...values })
                 .then(res => {
                     console.log(res);
-                    navigate('/Dashboard');
+                    navigate('/Loans');
                 })
                 .catch(err => console.log(err));
         }
@@ -48,7 +49,10 @@ function NewTransaction() {
                 <Sidebar />
                 <div className="content-wrapper" style={{ marginRight: '100px' }}>
                     <section className="content">
-                        <div className="container-fluid">
+                    <div className="container-fluid" style={{ marginTop: '100px' }}>
+                    <div style={{marginBottom: '30px'}}>
+                                                <Nav />
+
                             <div className="row">
                                 <div className="col-md-12">
                                     <div className="card card-purple">
@@ -98,6 +102,7 @@ function NewTransaction() {
                                             </center>
                                         </form>
                                     </div>
+                                </div>
                                 </div>
                             </div>
                         </div>

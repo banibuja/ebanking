@@ -30,8 +30,8 @@ const sendTransactionEmail = async (transactionDetails) => {
     `;
 
     const mailOptions = {
-        from: 'ebankingebanking7@gmail.com', // Sender email
-        to: [senderEmail, 'ebankingebanking7@gmail.com'], // Send email to user and yourself
+        from: 'ebankingebanking7@gmail.com', 
+        to: [senderEmail], 
         subject: `Transaction Confirmation for ${transactionType}`,
         html: htmlBody,
         text: textMessage,

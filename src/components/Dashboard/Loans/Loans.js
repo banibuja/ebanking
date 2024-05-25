@@ -3,11 +3,28 @@ import axios from 'axios';
 import Sidebar from '../Sidebar';
 import { useNavigate } from 'react-router-dom';
 import EditLoan from './EditLoan';
+import './Loans.css';
+
 
 export const Loans = () => {
     const [loans, setLoans] = useState([]);
     const [numLoans, setNumLoans] = useState(0); 
     const [editLoan, setEditLoan] = useState(null);
+    const [newLoan, setNewLoan] = useState({
+        AccountID: '',
+        LoanAmount: '',
+        LoanType: '', // Added LoanType
+        LoanConditions: '',
+        Status: ''
+    });
+
+    const loanTypes = [
+        { value: '', label: 'Select Loan Type' },
+        { value: 'personal', label: 'Personal Loan' },
+        { value: 'home', label: 'Home Loan' },
+        { value: 'car', label: 'Car Loan' },
+        { value: 'education', label: 'Education Loan' }
+    ];
 
     useEffect(() => {
         fetchLoans();
@@ -41,12 +58,22 @@ export const Loans = () => {
         setEditLoan(null);
     };
 
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewLoan(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    
+
     return (
         <div> 
             <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
                 <Sidebar />
 
-                <div className="container-fluid" style={{ marginTop: '100px' }} >
+                <div className="container-fluid" style={{ marginTop: '100px' }}>
                     <h1>MANAGE Loans</h1>
                     <div className="row">
                         <caption>List of Loans</caption>
@@ -82,10 +109,15 @@ export const Loans = () => {
                     </div>
                     <div>Total loans: {numLoans}</div> 
                     {editLoan !== null && <EditLoan id={editLoan} onClose={handleCloseEditModal} />}
-                </div>
-            </main>
-        </div>
-    )
+
+                    </div>
+
+                    </main>
+
+                    </div>
+
+                   
+    );
 }
 
 export default Loans;

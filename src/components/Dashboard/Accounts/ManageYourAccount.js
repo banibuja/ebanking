@@ -150,10 +150,11 @@ export const ManageYourAccount = () => {
     };
     
     return (
+        
         <div> 
-            <main style={{ display: 'flex', minHeight: '10vh', backgroundColor: 'rgb(233, 233, 233)', color: 'black' }}>
+            <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'rgb(233, 233, 233)', color: 'black' }}>
                 <Sidebar />
-                <div className="container-fluid" style={{ marginTop: '80px' }}>
+                <div className="container-fluid" style={{ marginTop: '100px'}}>
                 <Nav />
 
                     <h2 className='' style={{ color: 'grey', padding: '5px' }}>Account summary</h2>

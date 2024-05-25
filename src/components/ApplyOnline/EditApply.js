@@ -16,6 +16,8 @@ function EditApply({ id, onClose }) {
         City: '',
         Street: ''
     });
+    const [frontPhoto, setFrontPhoto] = useState('');
+    const [backPhoto, setBackPhoto] = useState('');
 
     useEffect(() => {
         axios.get(`http://localhost:8080/getApplicantForEdit/${id}`)
@@ -25,6 +27,8 @@ function EditApply({ id, onClose }) {
                     ...data,
                     birthday: formatDate(data.birthday)
                 });
+                setFrontPhoto(data.frontPhoto);
+                setBackPhoto(data.backPhoto);
             })
             .catch(err => console.log(err));
     }, [id]);
@@ -36,17 +40,17 @@ function EditApply({ id, onClose }) {
     const handleSubmit = (event) => {
         event.preventDefault();
         
-        axios.put(`http://localhost:8080/updateAplicant/${id}`, values)
+        axios.put(`http://localhost:8080/updateAplicant/${id}`, { ...values, frontPhoto, backPhoto })
             .then(res => {
                 window.location.reload(); 
             })
             .catch(err => console.log(err));
     };
+
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
     };
-    
 
     return (
         <div className="modal fade show text-black" style={{ display: 'block' }} aria-modal="true">
@@ -94,6 +98,22 @@ function EditApply({ id, onClose }) {
                                 <input type="text" placeholder='City' name='City' onChange={handleInput} className='form-control roundend-0' value={values.City} />
                                 <input type="text" placeholder='Street' name='Street' onChange={handleInput} className='form-control roundend-0' value={values.Street} />
                             </div>
+                            {frontPhoto && (
+                                <div className="form-group">
+                                    <label>Front ID Photo</label>
+                                    <div>
+                                        <img src={`http://localhost:8080/uploads/frontPhoto/${frontPhoto}`} alt="Front ID" style={{ width: '100%', maxHeight: '300px' }} />
+                                    </div>
+                                </div>
+                            )}
+                            {backPhoto && (
+                                <div className="form-group">
+                                    <label>Back ID Photo</label>
+                                    <div>
+                                        <img src={`http://localhost:8080/uploads/backPhoto/${backPhoto}`} alt="Back ID" style={{ width: '100%', maxHeight: '300px' }} />
+                                    </div>
+                                </div>
+                            )}
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" onClick={onClose}>Close</button>
                                 <button type="submit" className="btn btn-primary">Save changes</button>
