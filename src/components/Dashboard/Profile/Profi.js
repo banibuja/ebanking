@@ -136,9 +136,9 @@ function Profile() {
                             <div className="card mb-4 mb-xl-0">
                                 <div className="card-header">Profile Picture</div>
                                 <div className="card-body text-center">
-                                    <img className="img-account-profile rounded-circle mb-2" src={values.profilePicture} alt="" />
+                                    <img width="200px" height="200px" className="img-account-profile rounded-circle mb-2" src={values.profilePicture} alt="" />
                                     <div className="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
-                                    <input type="file" id="profilePicture" width="200px" height="200px" onChange={handleProfilePicture} accept='image/*' hidden />
+                                    <input type="file" id="profilePicture" onChange={handleProfilePicture} accept='image/*' hidden />
                                     <label for="profilePicture" className="btn btn-secondary">Upload new image</label>
 
                                     <button className="btn btn-primary" onClick={updateProfilePicture} type="button">Save</button>
