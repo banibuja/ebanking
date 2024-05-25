@@ -119,14 +119,7 @@ CREATE TABLE Loans (
     CONSTRAINT FK_Account_Loan FOREIGN KEY (AccountID) REFERENCES currentaccounts (CurrentAccount) ON DELETE CASCADE
 );
 
-CREATE TABLE Investments (
-    InvestmentID int primary key AUTO_INCREMENT,
-    AccountID BIGINT NOT NULL,
-    InvestmentType VARCHAR(50) NOT NULL,
-    InvestmentAmount DECIMAL(18, 2) NOT NULL,
-    CurrentEarnings DECIMAL(18, 2) NOT NULL,
-    CONSTRAINT FK_Account_Investment FOREIGN KEY (AccountID) REFERENCES currentaccounts (CurrentAccount) ON DELETE CASCADE
-);
+
 
 
 
@@ -154,15 +147,7 @@ CREATE TABLE Transactions (
     CONSTRAINT FK_Receiver_Acc FOREIGN KEY (ReceiverAccID) REFERENCES currentaccounts (CurrentAccount) ON DELETE CASCADE
 );
 
-CREATE TABLE TransactionAuthorizations (
-    AuthorizationID INT PRIMARY KEY AUTO_INCREMENT,
-    TransactionID INT NOT NULL,
-    UserID INT NOT NULL,
-    AuthorizationStatus VARCHAR(50) NOT NULL,
-    AuthorizationDate DATETIME DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT FK_TA_Transaction FOREIGN KEY (TransactionID) REFERENCES Transactions (TransactionID) ON DELETE CASCADE,
-    CONSTRAINT FK_TA_User FOREIGN KEY (UserID) REFERENCES users (userId) ON DELETE CASCADE
-);
+
 
 CREATE TABLE Payments (
     PaymentID int primary key AUTO_INCREMENT,
@@ -175,27 +160,9 @@ CREATE TABLE Payments (
     CONSTRAINT FK_Receiver_Account FOREIGN KEY (ReceiverAccountID) REFERENCES currentaccounts (CurrentAccount) ON DELETE CASCADE
 );
 
-CREATE TABLE Retirements (
-    RetirementID int primary key AUTO_INCREMENT,
-    UserID INT NOT NULL,
-    RetirementType VARCHAR(100) NOT NULL,
-    Balance DECIMAL(18, 2) NOT NULL,
-    StartDate DATE NOT NULL,
-    EndDate DATE,
-    CONSTRAINT FK_User_Retirement FOREIGN KEY (UserID) REFERENCES users (userId) ON DELETE CASCADE
-);
 
 
-CREATE TABLE ContactUs (
-    ContactID int primary key AUTO_INCREMENT,
-    UserID INT,
-    ClientFirstName VARCHAR(50),
-    ClientLastName VARCHAR(50),
-    Subject VARCHAR(100) NOT NULL,
-    Message TEXT NOT NULL,
-    ContactDate DATETIME NOT NULL,
-    CONSTRAINT FK_User_Contact FOREIGN KEY (UserID) REFERENCES users (userId) ON DELETE CASCADE
-);
+
 
 CREATE TABLE InvestmentsGoals (
     InvestmentGoalID int primary key AUTO_INCREMENT,

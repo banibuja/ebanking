@@ -97,22 +97,35 @@ const insertSaveTransaction = (req, res) => {
     });
 };
 
+
+
 const getAllHistory = (req, res) => {
     const userID = req.session.uId;
-    const sql = `
-        SELECT * FROM savingshistory ;
-    `;
-
+    if (!userID) {
+        return res.json("fail");
+    }
+    var sql = "SELECT CurrentAccount FROM currentaccounts WHERE UserID = ?";
     db.query(sql, [userID], (err, data) => {
         if (err) {
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).end();
         }
         if (data.length > 0) {
-            return res.json(data);
+            const accountID = data[0].CurrentAccount;
+            var sql = "SELECT * FROM savingshistory WHERE CurrentAccountID = ?";
+            db.query(sql, [accountID], (err, data) => {
+                if (err) {
+                    return res.status(500).end();
+                }
+                if (data.length > 0) {
+                    return res.status(200).json(data).end();
+                } else {
+                    return res.status(404).json("No Transactions found").end();
+                }
+            });
         } else {
-            return res.status(404).json({ message: "No cards found for the user" });
+            return res.status(404).end();
         }
     });
-};
+}
 
 module.exports = { getCurrentAccount, getSavingsAccounts, insertSaveTransaction, getAllHistory };
