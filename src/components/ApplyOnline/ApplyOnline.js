@@ -2,26 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../Layout/Navbar';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import eLogo from '../../imgs/e-bankinglogo.png';
+
 
 function AplikimiOnline() {
     const navigate = useNavigate();
-    const [values, setValues] = useState({
-        username: '',
-        name: '',
-        lastname: '',
-        email: '',
-        password: '',
-        package: '',
-        gender: '',
-        birthday: '',
-        currency: '',
-        Country: '',
-        City: '',
-        Street: '',
-        emailExists: false,
-        usernameExists: false
-    });
-
+    const [values, setValues] = useState({});
     const [errors, setErrors] = useState({});
     const [successMessage, setSuccessMessage] = useState('');
     const [frontPhoto, setFrontPhoto] = useState(null);
@@ -113,89 +100,97 @@ function AplikimiOnline() {
 
     return (
         <div>
-        <Navbar />
-        <div className="content-wrapper" style={{ marginRight: '100px' }}>
-            <section className="content">
-                <div className="container-fluid">
-                    <div className="row">
-                        <div className="container-fluid h-custom">
-                            <div className="row d-flex justify-content-center align-items-center h-100">
-                                <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                                    <h3 className="card-title">Fill All Fields</h3>
-                                </div>
-                                <form onSubmit={handleSubmit}>
-                                    <div className="card-body">
-                                        <div className="row">
-                                            <div className="col-md-6 form-group">
-                                                <label htmlFor="username">Nr. Personal</label>
+            <Navbar />
+            <div className="content-wrapper" >
+                <section className="content" style={{ marginRight: '400px' }}>
+
+                    <div className="container-fluid" >
+
+                        <div className="row">
+
+                            <div className="container-fluid h-custom">
+
+                                <div className="row d-flex justify-content-center align-items-center h-100">
+                                <img src={eLogo} className="eLogo-img" alt="eLogo"  />
+
+                                    <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                                        <h3 className="card-title text-center">Fill All Fields</h3>
+                                        <form onSubmit={handleSubmit} className="mt-4">
+                                            <div className="form-outline mb-4">
+                                                <label htmlFor="username" className="form-label">Nr. Personal</label>
                                                 <input
                                                     type="text"
-                                                    placeholder="Write your Nr. Personal ID"
+                                                    id="username"
                                                     name="username"
+                                                    placeholder="Write your Nr. Personal ID"
                                                     onChange={handleInput}
                                                     className="form-control form-control-lg"
                                                     required
                                                 />
                                                 {errors.username && <span className="text-danger">{errors.username}</span>}
                                                 {values.username && (
-                                                    <span style={{ marginLeft: '10px' }}>
+                                                    <div className="mt-2">
                                                         {values.usernameExists ? (
-                                                            <span style={{ color: 'red' }}>This username is already taken.</span>
+                                                            <span className="text-danger">This username is already taken.</span>
                                                         ) : (
-                                                            <span style={{ color: 'green' }}>Username is available.</span>
+                                                            <span className="text-success">Username is available.</span>
                                                         )}
-                                                    </span>
+                                                    </div>
                                                 )}
                                             </div>
-                                            <div className="col-md-6 form-group">
-                                                <label htmlFor="name">Client Name</label>
+                                            <div className="form-outline mb-4">
+                                                <label htmlFor="name" className="form-label"> Name</label>
                                                 <input
                                                     type="text"
-                                                    placeholder="Name"
+                                                    id="name"
                                                     name="name"
+                                                    placeholder="Name"
                                                     onChange={handleInput}
                                                     className="form-control form-control-lg"
                                                 />
                                                 {errors.name && <span className="text-danger">{errors.name}</span>}
                                             </div>
-                                            <div className="col-md-6 form-group">
-                                                <label htmlFor="lastname">Client Lastname</label>
+                                            <div className="form-outline mb-4">
+                                                <label htmlFor="lastname" className="form-label">Lastname</label>
                                                 <input
                                                     type="text"
-                                                    placeholder="Lastname"
+                                                    id="lastname"
                                                     name="lastname"
+                                                    placeholder="Lastname"
                                                     onChange={handleInput}
                                                     className="form-control form-control-lg"
                                                 />
                                                 {errors.lastname && <span className="text-danger">{errors.lastname}</span>}
                                             </div>
-                                            <div className="col-md-6 form-group">
-                                                <label htmlFor="email">Client Email</label>
+                                            <div className="form-outline mb-4">
+                                                <label htmlFor="email" className="form-label">Email</label>
                                                 <input
                                                     type="email"
-                                                    placeholder="Email"
+                                                    id="email"
                                                     name="email"
+                                                    placeholder="Email"
                                                     onChange={handleInput}
                                                     className="form-control form-control-lg"
                                                 />
                                                 {errors.email && <span className="text-danger">{errors.email}</span>}
                                                 {values.email && (
-                                                    <span style={{ marginLeft: '10px' }}>
+                                                    <div className="mt-2">
                                                         {values.emailExists ? (
-                                                            <span style={{ color: 'red' }}>This email is already in use.</span>
+                                                            <span className="text-danger">This email is already in use.</span>
                                                         ) : (
-                                                            <span style={{ color: 'green' }}>Email is available.</span>
+                                                            <span className="text-success">Email is available.</span>
                                                         )}
-                                                    </span>
+                                                    </div>
                                                 )}
                                             </div>
-                                            <div className="col-md-6 form-group">
-                                                <label htmlFor="gender">Client Gender</label>
+                                            <div className="form-outline mb-4">
+                                                <label htmlFor="gender" className="form-label">Gender</label>
                                                 <select
+                                                    id="gender"
                                                     name="gender"
                                                     onChange={handleInput}
                                                     value={values.gender}
-                                                    className="form-control form-control-lg"
+                                                    className="form-select form-select-lg"
                                                 >
                                                     <option value="">Select Gender</option>
                                                     <option value="M">Male</option>
@@ -203,22 +198,23 @@ function AplikimiOnline() {
                                                 </select>
                                                 {errors.gender && <span className="text-danger">{errors.gender}</span>}
                                             </div>
-                                            <div className="col-md-6 form-group">
-                                                <label htmlFor="birthday">Client Birthday</label>
+                                            <div className="form-outline mb-4">
+                                                <label htmlFor="birthday" className="form-label">Birthday</label>
                                                 <input
                                                     type="date"
+                                                    id="birthday"
                                                     name="birthday"
                                                     className="form-control form-control-lg"
-                                                    placeholder="Birthdate"
                                                     onChange={handleInput}
                                                 />
                                             </div>
-                                            <div className="col-md-6 form-group">
-                                                <label>Select Package</label>
+                                            <div className="form-outline mb-4">
+                                                <label htmlFor="package" className="form-label">Select Package</label>
                                                 <select
+                                                    id="package"
                                                     name="package"
                                                     onChange={handleInput}
-                                                    className="form-control form-control-lg"
+                                                    className="form-select form-select-lg"
                                                 >
                                                     <option value="">Select Package</option>
                                                     <option value="StudentPackage">Student Package</option>
@@ -226,64 +222,70 @@ function AplikimiOnline() {
                                                     <option value="Premium">Premium</option>
                                                     <option value="Basic">Basic</option>
                                                 </select>
-                                                <div>
-                                                <label>Front Id photo</label>
-                                                <input type="file"  className="form-control roundend-0"
-                                                 onChange={handleFrontPhotoChange} />
-                                                 </div>
-                                                 <div>
-                                                <label>Back Id photo</label>
-                                                <input type="file"  className="form-control roundend-0"
-                                                 onChange={handleBackPhotoChange} />
-                                                 </div>
-                                                 </div>
-                                            <div className="col-md-6 form-group">
-                                                <label htmlFor="Country">Client Address</label>
-                                                <input
-                                                    type="text"
-                                                    placeholder="Country"
-                                                    name="Country"
-                                                    onChange={handleInput}
-                                                    className="form-control roundend-0"
-                                                />
-                                                <input
-                                                    type="text"
-                                                    placeholder="City"
-                                                    name="City"
-                                                    onChange={handleInput}
-                                                    className="form-control roundend-0"
-                                                />
-                                                <input
-                                                    type="text"
-                                                    placeholder="Street"
-                                                    name="Street"
-                                                    onChange={handleInput}
-                                                    className="form-control roundend-0"
-                                                />
-
-                                              
                                             </div>
-                                        </div>
+                                            <div className="form-outline mb-4">
+                                                <label htmlFor="frontPhoto" className="form-label">Front ID photo</label>
+                                                <input
+                                                    type="file"
+                                                    id="frontPhoto"
+                                                    className="form-control form-control-lg"
+                                                    onChange={handleFrontPhotoChange}
+                                                />
+                                            </div>
+                                            <div className="form-outline mb-4">
+                                                <label htmlFor="backPhoto" className="form-label">Back ID photo</label>
+                                                <input
+                                                    type="file"
+                                                    id="backPhoto"
+                                                    className="form-control form-control-lg"
+                                                    onChange={handleBackPhotoChange}
+                                                />
+                                            </div>
+                                            <div className="form-outline mb-4">
+                                                <label htmlFor="Country" className="form-label">Address</label>
+                                                <input
+                                                    type="text"
+                                                    id="Country"
+                                                    name="Country"
+                                                    placeholder="Country"
+                                                    onChange={handleInput}
+                                                    className="form-control form-control-lg mb-2"
+                                                />
+                                                <input
+                                                    type="text"
+                                                    id="City"
+                                                    name="City"
+                                                    placeholder="City"
+                                                    onChange={handleInput}
+                                                    className="form-control form-control-lg mb-2"
+                                                />
+                                                <input
+                                                    type="text"
+                                                    id="Street"
+                                                    name="Street"
+                                                    placeholder="Street"
+                                                    onChange={handleInput}
+                                                    className="form-control form-control-lg"
+                                                />
+                                            </div>
+                                            <div className="d-flex justify-content-center">
+                                                <button type="submit" className="btn btn-success btn-lg">Apply</button>
+                                            </div>
+                                            {successMessage && (
+                                                <div className="alert alert-success mt-4">
+                                                    {successMessage}
+                                                </div>
+                                            )}
+                                        </form>
                                     </div>
-                                    <center>
-                                        <div className="card-footer">
-                                            <button type="submit" className="btn btn-success">Apply</button>
-                                        </div>
-                                    </center>
-                                </form>
-                                {successMessage && (
-                                    <div className="alert alert-success mt-4">
-                                        {successMessage}
-                                    </div>
-                                )}
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            </div>
         </div>
-    </div>
     );
-};
+}
 
 export default AplikimiOnline;

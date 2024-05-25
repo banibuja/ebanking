@@ -43,7 +43,7 @@ export const Currencies = () => {
 
     return (
         <div> 
-            <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
+      <main className="d-flex min-vh-100 bg-light text-dark">
                 <Sidebar />
 
                 <div className="container-fluid " style={{  marginTop: '100px' }} >

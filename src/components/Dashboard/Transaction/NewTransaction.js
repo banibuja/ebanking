@@ -45,13 +45,13 @@ function NewTransaction() {
     };
     return (
         <div>
-            <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
+      <main className="d-flex min-vh-100 bg-light text-dark">
                 <Sidebar />
-                <div className="content-wrapper" style={{ marginRight: '100px' }}>
-                    <section className="content">
-                    <div className="container-fluid" style={{ marginTop: '100px' }}>
-                    <div style={{marginBottom: '30px'}}>
-                                                <Nav />
+                {/* <div className="content-wrapper" > */}
+                    {/* <section className="content"> */}
+                    <div className="container-fluid mt-4 ">
+                    <Nav />
+
 
                             <div className="row">
                                 <div className="col-md-12">
@@ -105,9 +105,8 @@ function NewTransaction() {
                                 </div>
                                 </div>
                             </div>
-                        </div>
-                    </section>
-                </div>
+                    {/* </section> */}
+                {/* </div> */}
             </main>
         </div>
     );

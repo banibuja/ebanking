@@ -37,6 +37,7 @@ import SaveTransaction from '../components/Dashboard/Transaction/SaveTransaction
 
 import ManagaeApplicantsOnline from '../components/ApplyOnline/ManagaeApplicantsOnline';
 import ApplyLoans from '../components/Dashboard/Loans/ApplyLoans';
+import SaveHistory from '../components/Dashboard/Transaction/SaveHistory';
 // import PhotoUpload from '../components/PhotoUpload';
 // import PhotoGallery from '../components/PhotoGallery';
 
@@ -78,6 +79,8 @@ function App() {
         <Route path="/NewTransaction" element={<NewTransaction/>} /> 
         <Route path="/ManagaeApplicantsOnline" element={<ManagaeApplicantsOnline/>} /> 
         <Route path="/ApplyLoans" element={<ApplyLoans/>} /> 
+        <Route path="/SaveHistory" element={<SaveHistory/>} /> 
+
 {/* 
         
         <Route path="/PhotoUpload" element={<PhotoUpload/>} /> 
@@ -86,7 +89,7 @@ function App() {
 
         {/* <Route path="/Profi" element={<Profi/>} />  */}
 
-
+        SaveHistory
 
 
 
