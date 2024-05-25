@@ -23,7 +23,7 @@ const currenciesController = require('../src/controllers/Currencies/Currencies')
 const profileController = require('../src/controllers/Profile/Profile');
 const loansController = require('../src/controllers/Loans/Loans');
 const contactusController = require('../src/controllers/Contact/sendEmailContactForm');
-
+const saveTransactionController = require('../src/controllers/Transaction/SaveTransaction');
 
 const app = express();
 app.use(cors({
@@ -47,6 +47,8 @@ app.use(session({
 
 app.post('/sendEmailContactUs', contactusController.sendEmailContactUs);
 
+app.post('/getAllFlexSave', saveTransactionController.getSavingsAccounts);
+app.post('/insertSaveTransaction', saveTransactionController.insertSaveTransaction);
 
 app.get('/sessionTimeRemaining', SessionController.sessionTimeRemaining);
 app.get('/resetSession', SessionController.resetSession);
@@ -118,8 +120,9 @@ app.post('/getClientforProfile', profileController.getClientforProfile);
 app.put('/updateProfile', profileController.updateProfile);
 
 app.post('/getAllLoans', loansController.getAllLoans);
-
-
+app.post('/getCurrentAcc', TransactionController.getCurrentAccount);
+app.post('/insertTransaction', TransactionController.insertTransaction);
+app.post('/getAllTransactions', TransactionController.getAllTransactions);
 
 const db = mysql.createConnection({
     host: "localhost",

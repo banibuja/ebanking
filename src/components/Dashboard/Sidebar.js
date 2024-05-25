@@ -234,9 +234,9 @@ export default function Sidebar() {
                     Transactions
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
-                    <Dropdown.Item href="/Transaction" onClick={handleManageClick}>Transactions </Dropdown.Item>
-                    <Dropdown.Item href="/NewTransaction" onClick={handleManageClick}>NewTransaction</Dropdown.Item>
-
+                    <Dropdown.Item href="/NewTransaction" onClick={handleManageClick}>InterBank</Dropdown.Item>
+                    <Dropdown.Item href="/SaveTransaction" onClick={handleManageClick}>Save</Dropdown.Item>
+                    <Dropdown.Item href="/Transaction" onClick={handleManageClick}>History</Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
           </li>
