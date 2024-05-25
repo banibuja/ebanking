@@ -228,10 +228,3 @@ body {
   background: none;
   width: 100px;
 }
-
-footer {
-  background-image: url('../../imgs/black&white-logo.png');
-  background-size: 800px; 
-  background-repeat: no-repeat;
-  background-color: #0d0d0d;
-}
