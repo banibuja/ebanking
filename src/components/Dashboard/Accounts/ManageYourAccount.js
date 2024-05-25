@@ -152,12 +152,13 @@ export const ManageYourAccount = () => {
     return (
         
         <div> 
-            <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'rgb(233, 233, 233)', color: 'black' }}>
+
+            <main className="d-flex min-vh-100 bg-light text-dark">
                 <Sidebar />
-                <div className="container-fluid" style={{ marginTop: '100px'}}>
+                <div className="container-fluid mt-4 ">
                 <Nav />
 
-                    <h2 className='' style={{ color: 'grey', padding: '5px' }}>Account summary</h2>
+                <h2 className="text-start text-secondary p-2">Account summary</h2>
                     <div className="row">
                         <div className="col-md-12 d-flex justify-content-center align-items-center">
                             <table className="table table-hover no-border-table dataTable no-footer" style={{ width: '100%', marginLeft: '9px' }}>

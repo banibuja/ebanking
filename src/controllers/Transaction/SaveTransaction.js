@@ -1,7 +1,6 @@
 const db = require('../../db');
-const sendTransactionEmail = require('../Transaction/sendEmailTransaction');
+// const sendTransactionEmail = require('../Transaction/sendEmailTransaction');
 
-// Endpoint to get the current account of the user
 const getCurrentAccount = (req, res) => {
     const userID = req.session.uId;
     if (!userID) {
@@ -21,7 +20,6 @@ const getCurrentAccount = (req, res) => {
     });
 };
 
-// Endpoint to get the savings accounts of the user
 const getSavingsAccounts = (req, res) => {
     const userID = req.session.uId;
     if (!userID) {
@@ -89,25 +87,32 @@ const insertSaveTransaction = (req, res) => {
                             if (err) {
                                 return res.status(500).json(err).end();
                             }
-                            try {
-                                const senderEmail = 'ebankingebanking7@gmail.com';
-                                const transactionDetails = {
-                                    senderEmail,
-                                    receiverAccID: ReceiverAccID,
-                                    SenrsderAccID: SenderAccID,
-                                    transactionAmount: TransactionAmount,
-                                };
-                                await sendTransactionEmail(transactionDetails);
-                                res.status(200).json({ message: 'Transaction completed and email sent successfully' }).end();
-                            } catch (emailError) {
-                                console.error('Error sending email:', emailError);
-                                res.status(500).json({ error: 'Transaction completed but failed to send email' }).end();
+                          
                             }
-                        });
+                        
+                    );
                 });
             });
         });
     });
 };
 
-module.exports = { getCurrentAccount, getSavingsAccounts, insertSaveTransaction };
+const getAllHistory = (req, res) => {
+    const userID = req.session.uId;
+    const sql = `
+        SELECT * FROM savingshistory ;
+    `;
+
+    db.query(sql, [userID], (err, data) => {
+        if (err) {
+            return res.status(500).json({ error: "Internal server error" });
+        }
+        if (data.length > 0) {
+            return res.json(data);
+        } else {
+            return res.status(404).json({ message: "No cards found for the user" });
+        }
+    });
+};
+
+module.exports = { getCurrentAccount, getSavingsAccounts, insertSaveTransaction, getAllHistory };

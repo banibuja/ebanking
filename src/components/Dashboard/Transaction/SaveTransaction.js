@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Sidebar from '../Sidebar';
 import axios from 'axios';
+import Nav from '../Nav';
 
 function SaveTransaction() {
     const navigate = useNavigate();
@@ -52,7 +53,7 @@ function SaveTransaction() {
                     ...values
                 });
                 console.log(res);
-                navigate('/Dashboard');
+                navigate('/SaveHistory')
             } catch (err) {
                 console.log(err);
             }
@@ -61,11 +62,11 @@ function SaveTransaction() {
 
     return (
         <div>
-            <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
+      <main className="d-flex min-vh-100 bg-light text-dark">
                 <Sidebar />
-                <div className="content-wrapper" style={{ marginRight: '100px' }}>
-                    <section className="content">
-                        <div className="container-fluid">
+               
+                        <div className="container-fluid mt-4 ">
+                            < Nav />
                             <div className="row">
                                 <div className="col-md-12">
                                     <div className="card card-purple">
@@ -105,8 +106,8 @@ function SaveTransaction() {
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </section>
+                        {/* </div>
+                    </section> */}
                 </div>
             </main>
         </div>

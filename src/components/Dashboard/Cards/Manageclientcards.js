@@ -87,11 +87,11 @@ export const Manageclientcards = () => {
 
     return (
         <div> 
-            <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
+           <main className="d-flex min-vh-100 bg-light text-dark">
                 <Sidebar />
-                <div className="container-fluid" style={{ marginTop: '100px' }}>
+                <div className="container-fluid mt-4 ">
                     <Nav />
-                <h2 className="text-center" style={{ marginTop: '20px', color: 'grey' }}>Manage Cards</h2>
+                    <h2 className="text-center mt-4 text-secondary">Manage Current Account</h2>
                     <div className="row">
                         <caption>List of Cards</caption>
                         <div className="search-container">

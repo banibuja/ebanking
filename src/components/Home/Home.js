@@ -32,7 +32,7 @@ export const Home = () => {
           </a>
         </div>
         <div className="flexbox">
-          <p class="paragraph-p">Experience seamless blend of finance and finesse for effortless transfers, balance and more.</p>
+          <p class="paragraph-p">Experience seamless blend of finance and finesse for effortless transfers, balance and more, If you don't have account you can apply online</p>
           <img src={eLogo} className="eLogo-img" alt="eLogo" />
           <h1 className="-banking">-Banking</h1>
         </div>

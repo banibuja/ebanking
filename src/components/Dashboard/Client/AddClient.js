@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Validation from '../../LoginSignup/SignupValidation';
 import axios from 'axios';
 import Sidebar from '../../Dashboard/Sidebar';
+import Nav from '../Nav';
 
 function AddClient() {
     const navigate = useNavigate();
@@ -65,11 +66,13 @@ function AddClient() {
 
     return (
         <div>
-    <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
+      <main className="d-flex min-vh-100 bg-light text-dark">
         <Sidebar />
         <div className="content-wrapper" style={{ marginRight: '100px' }}>
             <section className="content">
-                <div className="container-fluid">
+            < Nav />
+
+            <div className="container-fluid mt-5 ">
                     <div className="row">
                         <div className="col-md-12">
                             <div className="card card-purple">

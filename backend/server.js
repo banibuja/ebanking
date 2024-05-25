@@ -76,11 +76,13 @@ app.post('/sendEmailContactUs', contactusController.sendEmailContactUs);
 
 app.post('/getAllFlexSave', saveTransactionController.getSavingsAccounts);
 app.post('/insertSaveTransaction', saveTransactionController.insertSaveTransaction);
+app.post('/getAllHistory', saveTransactionController.getAllHistory);
+
 
 app.get('/sessionTimeRemaining', SessionController.sessionTimeRemaining);
 app.get('/resetSession', SessionController.resetSession);
 
-app.post('/addApply', applyOnlineController.addApply);
+app.post('/addApply', upload1, applyOnlineController.addApply);
 app.post('/getApply', applyOnlineController.getApply);
 app.put('/updateStatus/:id', applyOnlineController.updateStatus);
 app.delete("/deleteApplicant/:id", applyOnlineController.deleteApplicant);
