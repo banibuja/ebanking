@@ -89,6 +89,12 @@ export default function Sidebar() {
           {role !== 'User' && (
             <>
               <li>
+                <a href="/profi" className="nav-link link-dark" onClick={handleManageClick}>
+                  <i className="bi me-2 fas fa-user fa-1x text-gray-300" ></i>
+                  Profile
+                </a>
+              </li>
+              <li>
                 <a href="/dashboard" className="nav-link link-dark" onClick={handleManageClick}>
                   <i className="bi me-2 fas fa-dashboard fa-1x text-gray-300"></i>
                   Dashboard
@@ -220,12 +226,6 @@ export default function Sidebar() {
 
                   </Dropdown.Menu>
                 </Dropdown>
-          </li>
-          <li>
-            <a href="/profi" className="nav-link link-dark" onClick={handleManageClick}>
-              <i className="bi me-2 fas fa-user fa-1x text-gray-300" ></i>
-              Profile
-            </a>
           </li>
           <li>
           <Dropdown>

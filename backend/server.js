@@ -145,6 +145,8 @@ app.delete("/deleteGoals/:id", investmentsGoals.deleteGoals);
 
 app.post('/getClientforProfile', profileController.getClientforProfile);
 app.put('/updateProfile', profileController.updateProfile);
+app.post('/updateProfilePicture', profileController.updateProfilePicture);
+app.put('/updatePassword', profileController.updatePassword);
 
 app.post('/getAllLoans', loansController.getAllLoans);
 app.post('/getCurrentAcc', TransactionController.getCurrentAccount);

@@ -27,14 +27,43 @@ const getClientforProfile = (req, res) => {
 
 const updateProfile = async (req, res) => {
     const userId  = req.session.uId;
-    const { currentPassword, newPassword, confirmPassword, ...otherDetails } = req.body;
+    const details = req.body;
+
+    console.log(details);
+    try {
+        const sqlGetUser = "SELECT * FROM users WHERE userId = ?";
+        db.query(sqlGetUser, [userId], async (err, data) => {
+
+
+            if (data.length === 0) {
+                return res.status(404).json({ message: 'User not found' }).end();
+            }
+
+            const sqlUpdateUser = "UPDATE users SET ? WHERE userId = ?";
+            db.query(sqlUpdateUser, [{ ...details }, userId], (err, data) => {
+                console.log("err" + err);
+                console.log("data" + data);
+                if (err) res.status(404).json(err);
+                return res.status(200).json({ message: 'Profile updated successfully' }).end();
+            });
+        });
+    } catch (error) {
+        console.error("error");
+        return res.status(500).json({ message: 'Server error' });
+
+
+    }
+};
+const updatePassword = (req, res) => {
+    const userId = req.session.uId;
+    const { currentPassword, newPassword, confirmPassword } = req.body;
+    console.log(req.body);
 
     if (newPassword !== confirmPassword) {
         return res.status(400).json({ message: 'Passwords do not match' });
     }
 
-    try {
-        const sqlGetUser = "SELECT password FROM users WHERE userId = ?";
+    const sqlGetUser = "SELECT password FROM users WHERE userId = ?";
         db.query(sqlGetUser, [userId], async (err, data) => {
 
 
@@ -52,20 +81,30 @@ const updateProfile = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-        console.log(otherDetails);
-        const sqlUpdateUser = "UPDATE users SET ? WHERE userId = ?";
-        db.query(sqlUpdateUser, [{ ...otherDetails, password: hashedPassword }, userId], (err, data) => {
+            const sqlUpdateUser = "UPDATE users SET password = ? WHERE userId = ?";
+            db.query(sqlUpdateUser, [hashedPassword, userId], (err, data) => {
             if(err) res.status(404).json(err);
             return res.json({ message: 'Profile updated successfully' });
         });
-    });
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: 'Server error' });
-    }
+        })
 };
+const updateProfilePicture = (req, res) => {
+    const userId = req.session.uId;
+    const base64 = req.body.base64;
+
+    db.query(
+        "UPDATE users SET profilePicture = ? WHERE userId = ?",
+        [base64, userId],
+        (err, data) => {
+            if (err) res.status(404).json(err);
+            return res.json({ message: 'Profile updated successfully' });
+        }
+    )
+}
 
 module.exports = {
     getClientforProfile,
-    updateProfile
+    updateProfile,
+    updatePassword,
+    updateProfilePicture
 };

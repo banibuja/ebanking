@@ -27,40 +27,50 @@ function AddClient() {
     useEffect(() => {
     }, []);
 
-    const handleInput = (event) => {
-        setValues(prev => ({ ...prev, [event.target.name]: event.target.value }));
+    const handleInput = (e) => {
+        setValues(prev => ({ ...prev, [e.target.name]: e.target.value }));
+        if (e.target.name == 'username') {
+            axios.get(`http://localhost:8080/checkUsername?username=${e.target.value}`)
+                .then(response => {
+                    if (response.data.exists) {
+                        setValues(prev => ({ ...prev, usernameExists: true }));
+                    } else {
+                        setValues(prev => ({ ...prev, usernameExists: false }));
+                    }
+                })
+                .catch(err => console.log(err));
+        }
+        if (e.target.name == 'email') {
+            axios.get(`http://localhost:8080/checkemail?email=${e.target.value}`)
+                .then(response => {
+                    if (response.data.exists) {
+                        setValues(prev => ({ ...prev, emailExists: true }));
+                    } else {
+                        setValues(prev => ({ ...prev, emailExists: false }));
+                    }
+                })
+                .catch(err => console.log(err));
+        }
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        
-        axios.get(`http://localhost:8080/checkemail?email=${values.email}`)
-            .then(response => {
-                if (response.data.exists) {
-                    setValues(prev => ({ ...prev, emailExists: true }));
-                } else {
-                    setValues(prev => ({ ...prev, emailExists: false }));
-                    axios.get(`http://localhost:8080/checkUsername?username=${values.username}`)
-                        .then(response => {
-                            if (response.data.exists) {
-                                setValues(prev => ({ ...prev, usernameExists: true }));
-                            } else {
-                                setValues(prev => ({ ...prev, usernameExists: false }));
-                                setErrors(Validation(values));
 
-                                if (Object.keys(errors).length === 0) {
-                                    axios.post('http://localhost:8080/addClient', values)
-                                        .then(res => {
-                                            navigate('/client');
-                                        })
-                                        .catch(err => console.log(err));
-                                }
-                            }
-                        })
-                        .catch(err => console.log(err));
-                }
-            })
-            .catch(err => console.log(err));
+
+
+        setErrors(Validation(values));
+        if (values.usernameExists || values.emailExists || errors) {
+            return "please check inputs";
+        } else {
+
+            if (Object.keys(errors).length === 0) {
+                axios.post('http://localhost:8080/addClient', values)
+                    .then(res => {
+                        navigate('/client');
+                    })
+                    .catch(err => console.log(err));
+            }
+        }
     };
 
     return (
@@ -83,16 +93,12 @@ function AddClient() {
                                         <div className="col-md-6 form-group">
                                                 <label htmlFor="name">Client Username</label>
                                                 <input type="text" placeholder='Username' name='username' onChange={handleInput} className='form-control roundend-0' required />
-                                                {errors.username && <span className='text-danger'>{errors.username}</span>}
-                                                {values.username && (
-                                                    <span style={{ marginLeft: '10px' }}>
-                                                        {values.usernameExists ? (
-                                                            <span style={{ color: 'red' }}>This username is already taken.</span>
-                                                        ) : (
-                                                            <span style={{ color: 'green' }}>Username is available.</span>
-                                                        )}
-                                                    </span>
-                                                )}
+                                                            {errors.username && <span className='text-danger'>{errors.username}</span>}
+                                                            {values.usernameExists ? (
+                                                                <span style={{ marginLeft: '10px' }}>
+                                                                    <span style={{ color: 'red' }}>This username is already taken.</span>
+                                                                </span>
+                                                            ) : ('')}
                                             </div>
                                             </div>
                                             <div className="col-md-6 form-group">
@@ -108,16 +114,12 @@ function AddClient() {
                                             <div className="col-md-6 form-group">
                                                 <label htmlFor="name">Client Email</label>
                                                 <input type="email" placeholder='Email' name='email' onChange={handleInput} className='form-control roundend-0' />
-                                                {errors.email && <span className='text-danger'>{errors.email}</span>}
-                                                {values.email && (
-                                                    <span style={{ marginLeft: '10px' }}>
+                                                        {errors.email && <span className='text-danger'>{errors.email}</span>}
                                                         {values.emailExists ? (
-                                                            <span style={{ color: 'red' }}>This email is already in use.</span>
-                                                        ) : (
-                                                            <span style={{ color: 'green' }}>Email is available.</span>
-                                                        )}
-                                                    </span>
-                                                )}
+                                                            <span style={{ marginLeft: '10px' }}>
+                                                                <span style={{ color: 'red' }}>This email is already in use.</span>
+                                                            </span>
+                                                        ) : ('')}
                                             </div>
                                             <div className="col-md-6 form-group">
                                                 <label htmlFor="name">Client Password</label>

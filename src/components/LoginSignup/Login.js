@@ -36,14 +36,12 @@ function Login() {
 
     axios.defaults.withCredentials = true;
       axios.post('http://localhost:8080/loginform', values)
-          .then(res => {
-            console.log(res.data)
+        .then(res => {
               if (res.data.Login) {
                   navigate('/dashboard');
               } else {
                   alert("No record");
               }
-              console.log(res);
           })
           .catch(err => console.log(err));
   };
