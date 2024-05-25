@@ -1,0 +1,41 @@
+.StartBanking-footer-button {
+display: inline-block;
+background-color: black;
+color: white;
+text-decoration: none;
+padding: 13px 15px 0px 15px;
+border: 2px solid #EDC14A;
+border-radius: 30%;
+transition: color 0.3s, background-color 0.3s;
+}
+.StartBanking-footer-button:hover {
+color: black;
+background-color: white;
+}
+.StartBanking-footer-button > p{
+font-size: 1rem;
+}
+
+.row-footer{
+width:60rem;
+border-bottom: 2px solid #EDC14A;
+}
+.row-footer-b{
+width:60rem;
+}
+.col > h1{
+font-size: 2rem;
+}
+.col > p{
+font-size: 1rem;
+}
+.col-md-3 >h1{
+font-size: 1.6rem;
+}
+.col-md-3 >p{
+font-size: 1.2rem;
+}
+
+.container-footer {
+bottom:0;
+}

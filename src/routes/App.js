@@ -33,6 +33,8 @@ import Nav from '../components/Dashboard/Nav';
 //
 import Login from './Login';
 import NewTransaction from '../components/Dashboard/Transaction/NewTransaction';
+import SaveTransaction from '../components/Dashboard/Transaction/SaveTransaction';
+
 import ManagaeApplicantsOnline from '../components/ApplyOnline/ManagaeApplicantsOnline';
 import ApplyLoans from '../components/Dashboard/Loans/ApplyLoans';
 // import PhotoUpload from '../components/PhotoUpload';
@@ -46,7 +48,7 @@ function App() {
 
     <BrowserRouter>
       <Routes>
-
+        <Route path="/SaveTransaction" element={<SaveTransaction/>}/>
         <Route path="/Transaction" element={<Transaction/>}></Route> 
         {/* <Route path="/login" element={<Login />} /> */}
         <Route path="/ApplyOnline" element={<ApplyOnline />} />

@@ -56,6 +56,17 @@ CREATE TABLE savingsaccounts (
     PRIMARY KEY (SavingsType),
     CONSTRAINT FK_User_Savings FOREIGN KEY (UserID) REFERENCES users (userId) ON DELETE CASCADE
 );
+
+CREATE TABLE SavingsHistory (
+    SavingsHistoryID INT PRIMARY KEY AUTO_INCREMENT,
+    CurrentAccountID BIGINT NOT NULL,
+    FlexSaveAccountID BIGINT NOT NULL,
+    TransactionAmount DECIMAL(18, 5) NOT NULL,
+    CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT FK_SavingsHistory_CurrentAccount FOREIGN KEY (CurrentAccountID) REFERENCES currentaccounts (CurrentAccount) ON DELETE CASCADE,
+    CONSTRAINT FK_SavingsHistory_Savingsaccount FOREIGN KEY (FlexSaveAccountID) REFERENCES savingsaccounts (SavingsType) ON DELETE CASCADE
+);
+
 CREATE TABLE AccessPermissions (
     PermissionID int NOT NULL AUTO_INCREMENT,
     UserID INT NOT NULL,
