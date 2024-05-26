@@ -1,11 +1,19 @@
 const bcrypt = require('bcrypt');
 const db = require('../../db');
 
+
+
 const addApply = (req, res) => {
-    const { username, name, lastname, email, password, package, gender, birthday, Country, City, Street } = req.body;
+    console.log(req.body)
+    const { username, name, lastname, email, package, gender, birthday, Country, City, Street, frontPhoto, backPhoto } = req.body;
     
-    const frontPhoto = req.files['frontPhoto'] ? req.files['frontPhoto'][0].filename : null;
-    const backPhoto = req.files['backPhoto'] ? req.files['backPhoto'][0].filename : null;
+        var charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+{}:<>?[];',./";
+        var password = "";
+        for (var i = 0; i < 8; i++) {
+          var randomIndex = Math.floor(Math.random() * charset.length);
+          password += charset[randomIndex];
+        }
+      
 
     bcrypt.hash(password, 10, (err, hash) => {
         if (err) {

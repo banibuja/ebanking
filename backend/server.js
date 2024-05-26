@@ -6,36 +6,6 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const bcrypt = require('bcrypt');
 
-
-
-const multer = require('multer');
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/')
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname)
-    }
-});
-const upload = multer({ storage: storage, limits: { fileSize: 50 * 1024 * 1024 } }); // 50 MB limit
-const upload1 = multer({
-    storage: multer.diskStorage({
-        destination: function (req, file, cb) {
-            if (file.fieldname === 'frontPhoto') {
-                cb(null, 'uploads/frontPhoto/');
-            } else if (file.fieldname === 'backPhoto') {
-                cb(null, 'uploads/backPhoto/');
-            } else {
-                cb(new Error('Invalid fieldname'), false);
-            }
-        },
-        filename: function (req, file, cb) {
-            cb(null, Date.now() + '-' + file.originalname);
-        }
-    }),
-    limits: { fileSize: 50 * 1024 * 1024 }
-}).fields([{ name: 'frontPhoto', maxCount: 1 }, { name: 'backPhoto', maxCount: 1 }]);
-
 const clientController = require('../src/controllers/Client/ClientController');
 const applyOnlineController = require('../src/controllers/ApplyOnline/ApplyOnline');
 const accessPermissionsController = require('../src/controllers/AccesPermissions/AccesPermissionsController');
@@ -57,10 +27,9 @@ app.use(cors({
     methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true
 }));
-app.use('/uploads', express.static('uploads'));
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
 app.use(cookieParser());
-app.use(bodyParser.json());
 
 app.use(session({
     secret: 'secret',
@@ -71,18 +40,16 @@ app.use(session({
     }
 }));
 
-
 app.post('/sendEmailContactUs', contactusController.sendEmailContactUs);
 
 app.post('/getAllFlexSave', saveTransactionController.getSavingsAccounts);
 app.post('/insertSaveTransaction', saveTransactionController.insertSaveTransaction);
 app.post('/getAllHistory', saveTransactionController.getAllHistory);
 
-
 app.get('/sessionTimeRemaining', SessionController.sessionTimeRemaining);
 app.get('/resetSession', SessionController.resetSession);
 
-app.post('/addApply', upload1, applyOnlineController.addApply);
+app.post('/addApply', applyOnlineController.addApply);
 app.post('/getApply', applyOnlineController.getApply);
 app.put('/updateStatus/:id', applyOnlineController.updateStatus);
 app.delete("/deleteApplicant/:id", applyOnlineController.deleteApplicant);
@@ -180,6 +147,7 @@ app.get('/', (req, res) => {
         return res.json({ valid: false, sessionExpired: req.session.expired });
     }
 });
+
 app.get('/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) {
@@ -194,7 +162,7 @@ app.get('/logout', (req, res) => {
 app.post('/loginform', async (req, res) => {
     const sql = "SELECT * FROM users WHERE username = ?";
     const date = new Date();
-    expireDate = date.setMinutes(date.getMinutes() + 15);
+    const expireDate = date.setMinutes(date.getMinutes() + 15);
 
     db.query(sql, [req.body.username], async (err, result) => {
         if (err) {
@@ -205,7 +173,7 @@ app.post('/loginform', async (req, res) => {
         if (result.length > 0) {
             const storedHashedPassword = result[0].password;
             console.log("Stored hashed password:", storedHashedPassword);
-            
+
             bcrypt.compare(req.body.password, storedHashedPassword, (compareErr, comparison) => {
                 if (compareErr) {
                     console.error("Error comparing passwords:", compareErr);
@@ -218,7 +186,7 @@ app.post('/loginform', async (req, res) => {
                             console.error("Error querying access permissions:", error);
                             return res.json({ Message: "Error during login", Login: false });
                         }
-                        
+
                         req.session.role = results[0].AccessLevel;
                         req.session.uId = result[0].userId;
                         req.session.username = result[0].username;
@@ -237,31 +205,6 @@ app.post('/loginform', async (req, res) => {
         }
     });
 });
-
-
-// app.post('/uploadPhoto', upload.single('photo'), (req, res) => {
-//     const { filename } = req.file;
-//     const sql = "INSERT INTO photos (filename) VALUES (?)";
-//     db.query(sql, [filename], (err, result) => {
-//         if (err) {
-//             console.error("Error inserting photo into database:", err);
-//             return res.status(500).json({ message: "Database error", success: false });
-//         }
-//         res.status(200).json({ message: "Photo uploaded successfully", success: true, filename });
-//     });
-// });
-
-// app.get('/photos', (req, res) => {
-//     const sql = "SELECT * FROM photos";
-//     db.query(sql, (err, results) => {
-//         if (err) {
-//             console.error("Error fetching photos:", err);
-//             return res.status(500).json({ message: "Database error", success: false });
-//         }
-//         res.status(200).json({ photos: results });
-//     });
-// });
-
 
 app.listen(8080, () => {
     console.log("Server is running");

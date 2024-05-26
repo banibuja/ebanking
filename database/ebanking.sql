@@ -11,7 +11,9 @@ CREATE TABLE Users (
     password varchar(255) not null,
     gender varchar(20) check (gender in ('M', 'F', 'Other')),
     birthday datetime,
-    CurrencyCode varchar(20) NOT NULL
+    CurrencyCode varchar(20) NOT NULL,
+    profilePicture longblob,
+    Status VARCHAR(20)
 );
 
 CREATE TABLE applyonline (
@@ -24,7 +26,14 @@ CREATE TABLE applyonline (
     package varchar(255) not null,
     gender varchar(20) check (gender in ('M', 'F', 'Other')),
     birthday datetime,
-    CurrencyCode varchar(20) NOT NULL
+    Country varchar(30) not null,
+    City varchar(30) not null,
+    Street varchar(30) not null,
+    backPhoto longblob,
+    frontPhoto longblob,
+    Status VARCHAR(20)
+
+    
 );
 
 CREATE TABLE Adresa (
@@ -91,15 +100,7 @@ CREATE TABLE cards (
     CONSTRAINT FK_CurrentAccount_Cards FOREIGN KEY (CurrentAccount) REFERENCES currentaccounts(CurrentAccount) ON DELETE CASCADE
 );
 
-CREATE TABLE currencies (
-    CurrencyID int(11) NOT NULL AUTO_INCREMENT,
-    UserID int(11) NOT NULL,
-    CurrencyCode varchar(3) NOT NULL,
-    ExchangeRate decimal(18, 4) NOT NULL,
-    PRIMARY KEY (CurrencyID),
-    KEY FK_Currency_User (UserID),
-    CONSTRAINT FK_Currency_User FOREIGN KEY (UserID) REFERENCES users (userId) ON DELETE CASCADE
-);
+
 
 CREATE TABLE Reports (
     ReportID int primary key AUTO_INCREMENT,
@@ -177,58 +178,11 @@ CREATE TABLE InvestmentsGoals (
 
 
 INSERT INTO `users` (`userId`, `username`, `name`, `lastname`, `email`, `password`, `gender`, `birthday`, `CurrencyCode`) VALUES
-(2, 'xentoro', 'xentoro', 'xentoro', 'xentoro@gmail.com', '$2a$10$Z14YcdLzpCsbJAU33RyG9.p9OEPj.BfZHXIM5.Y27QCTMjsjctxOS', 'M', '2024-05-11 00:00:00', 'EUR'),
-(4, 'bani', 'bani', 'buja', 'bani@gmail.com', '$2b$10$XjWtyA0pNTHZ0nBGGYIUM.PvJ.irfS9SRFvj/SUEjnTw7YuetuzCO', 'M', '2024-05-09 00:00:00', 'EUR'),
-(7, 'user', 'user', 'user', 'user@gmail.com', '$2b$10$NaD0NHdyG.f87CHp7hKHUO.vDnefBpghIMIXO.JtpLwS1bwLoeOeS', 'M', '2024-05-10 00:00:00', 'EUR'),
-(8, 'elsa', 'elsa', 'elsa', 'elsa@gmail.com', '$2b$10$6HMjxDw6.ql6xKIV18L/uuB5Gwbj0wLbkAoRrz30.mGS9X3csmTX.', 'M', '2024-05-11 00:00:00', 'EUR');
+(4, 'bani', 'bani', 'buja', 'bani@gmail.com', '$2b$10$XjWtyA0pNTHZ0nBGGYIUM.PvJ.irfS9SRFvj/SUEjnTw7YuetuzCO', 'M', '2024-05-09 00:00:00', 'EUR');
 
 
 
 INSERT INTO `accesspermissions` (`PermissionID`, `UserID`, `AccessLevel`) VALUES
-(2, 2, 'Admin'),
-(4, 4, 'Admin'),
-(7, 7, 'User'),
-(8, 8, 'Admin');
+(2, 2, 'Admin');
 
 
-INSERT INTO `adresa` (`AdresaID`, `userId`, `Country`, `City`, `Street`) VALUES
-(0, 2, 'xentoro', 'xentoro', 'xentoro'),
-(0, 4, 'bani', 'bani', 'bani'),
-(0, 7, 'user', 'user', 'user'),
-(0, 8, 'elsa', 'elsa', 'elsa');
-
-
-
-
-
-INSERT INTO `currencies` (`CurrencyID`, `UserID`, `CurrencyCode`, `ExchangeRate`) VALUES
-(2, 2, 'EUR', 1.0000),
-(4, 4, 'EUR', 1.0000),
-(7, 7, 'EUR', 1.0000),
-(8, 8, 'EUR', 1.0000);
-
-INSERT INTO `currentaccounts` (`CurrentAccount`, `UserID`, `CurrencyCode`, `Balance`, `AccountStatus`) VALUES
-(222222222, 2, 'EUR', 2000.00, 'Closed'),
-(1110333326506512, 4, 'EUR', 50534.00, 'Open'),
-(1110333373365772, 8, 'EUR', 350000.00, 'Open'),
-(1110333378802226, 7, 'EUR', 20000.00, 'Open');
-
-
-
-INSERT INTO `reports` (`ReportID`, `ReportType`, `GenerationDate`, `Description`) VALUES
-(501, 'Transaction', '2024-04-22', 'Daily transaction report'),
-(502, 'Balance', '2024-04-22', 'Monthly account balance report');
-
-
-
-INSERT INTO `savingsaccounts` (`SavingsType`, `UserID`, `CurrencyCode`, `Balance`, `AccountStatus`) VALUES
-(222222222, 2, 'EUR', 6000.00, 'Closed'),
-(1110222239575769, 7, 'EUR', 0.00, 'Open'),
-(1110222258159457, 8, 'EUR', 0.00, 'Open'),
-(1110222286956095, 4, 'EUR', 0.00, 'Open');
-
-
-INSERT INTO `cards` (`CardID`, `UserID`, `CurrentAccount`, `CardNumber`, `ValidFrom`, `ExpiryDate`, `CardHolderName`, `CardType`, `CardStatus`) VALUES
-(2, 4, 1110333326506512, '5354794084453531', '2024-05-22', '2028-05-22', 'bani bani', 'DEBIT MASTER CARD', 'ACTIVE'),
-(3, 7, 1110333378802226, '5354795151417938', '2024-05-22', '2028-05-22', 'user user', 'DEBIT MASTER CARD', 'ACTIVE'),
-(4, 8, 1110333373365772, '5354777057644829', '2024-05-22', '2028-05-22', 'elsa elsa', 'DEBIT MASTER CARD', 'ACTIVE');

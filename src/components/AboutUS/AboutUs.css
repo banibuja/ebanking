@@ -29,7 +29,7 @@ section {
     border-radius: 8px;
     box-shadow: 0 0 20px #fcd874 ;
     text-align: center;
-    animation: fadeIn 2s ease-in-out;
+    animation: fadeIn 1s ease-in-out;
 }
 
 h2 {
@@ -57,7 +57,7 @@ ul {
     list-style: none;
     padding: 0;
     text-align: left;
-    animation: fadeIn 5s ease-in-out;
+    animation: fadeIn 1s ease-in-out;
 }
 
 ul li {
@@ -69,7 +69,7 @@ ul li {
     align-items: center;
     justify-content: center;
     margin: 20px 0;
-    animation: fadeIn 2s ease-in-out;
+    animation: fadeIn 1s ease-in-out;
 }
 
 .team-member img {
@@ -86,7 +86,7 @@ ul li {
     border-left: 5px white;
     margin: 20px 0;
     font-style: italic;
-    animation: fadeIn 2s ease-in-out;
+    animation: fadeIn 1s ease-in-out;
 }
 
 #cta {

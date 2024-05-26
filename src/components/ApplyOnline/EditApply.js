@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { Buffer } from 'buffer';
+                
 
 function EditApply({ id, onClose }) {
     const navigate = useNavigate();
@@ -14,21 +16,30 @@ function EditApply({ id, onClose }) {
         birthday: '',
         Country: '',
         City: '',
-        Street: ''
+        Street: '',
+        frontPhoto: '',
+        backPhoto: ''
     });
-    const [frontPhoto, setFrontPhoto] = useState('');
-    const [backPhoto, setBackPhoto] = useState('');
+    
 
     useEffect(() => {
         axios.get(`http://localhost:8080/getApplicantForEdit/${id}`)
             .then(res => {
                 const data = res.data;
+                console.log(res.data);
+                let fetchedFront = data.frontPhoto;
+                let bufferredimageFront = Buffer.from(fetchedFront);
+                let fetchBack = data.backPhoto;
+                let bufferredimageBack = Buffer.from(fetchBack);
                 setValues({
                     ...data,
-                    birthday: formatDate(data.birthday)
+                    birthday: formatDate(data.birthday),
+                    frontPhoto: bufferredimageFront.toString(),
+                    backPhoto: bufferredimageBack.toString()
+
+
                 });
-                setFrontPhoto(data.frontPhoto);
-                setBackPhoto(data.backPhoto);
+              
             })
             .catch(err => console.log(err));
     }, [id]);
@@ -40,7 +51,7 @@ function EditApply({ id, onClose }) {
     const handleSubmit = (event) => {
         event.preventDefault();
         
-        axios.put(`http://localhost:8080/updateAplicant/${id}`, { ...values, frontPhoto, backPhoto })
+        axios.put(`http://localhost:8080/updateAplicant/${id}`, { values })
             .then(res => {
                 window.location.reload(); 
             })
@@ -65,7 +76,7 @@ function EditApply({ id, onClose }) {
                     <div className="modal-body">
                         <form onSubmit={handleSubmit}>
                             <div className="form-group">
-                                <label>Client Username</label>
+                                <label>Client NrPersonal</label>
                                 <input type="text" placeholder='Username' name='username' onChange={handleInput} className='form-control roundend-0' value={values.username} />
                             </div>
                             <div className="form-group">
@@ -98,19 +109,19 @@ function EditApply({ id, onClose }) {
                                 <input type="text" placeholder='City' name='City' onChange={handleInput} className='form-control roundend-0' value={values.City} />
                                 <input type="text" placeholder='Street' name='Street' onChange={handleInput} className='form-control roundend-0' value={values.Street} />
                             </div>
-                            {frontPhoto && (
+                            {values.frontPhoto && (
                                 <div className="form-group">
                                     <label>Front ID Photo</label>
                                     <div>
-                                        <img src={`http://localhost:8080/uploads/frontPhoto/${frontPhoto}`} alt="Front ID" style={{ width: '100%', maxHeight: '300px' }} />
+                                        <img src={values.frontPhoto} alt="Front ID" style={{ width: '100%', maxHeight: '300px' }} />
                                     </div>
                                 </div>
                             )}
-                            {backPhoto && (
+                            {values.backPhoto && (
                                 <div className="form-group">
                                     <label>Back ID Photo</label>
                                     <div>
-                                        <img src={`http://localhost:8080/uploads/backPhoto/${backPhoto}`} alt="Back ID" style={{ width: '100%', maxHeight: '300px' }} />
+                                        <img src={values.backPhoto} alt="Back ID" style={{ width: '100%', maxHeight: '300px' }} />
                                     </div>
                                 </div>
                             )}

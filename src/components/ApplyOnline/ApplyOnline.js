@@ -11,16 +11,30 @@ function AplikimiOnline() {
     const [values, setValues] = useState({});
     const [errors, setErrors] = useState({});
     const [successMessage, setSuccessMessage] = useState('');
-    const [frontPhoto, setFrontPhoto] = useState(null);
-    const [backPhoto, setBackPhoto] = useState(null);
+    const [idPhotos, setIdPhotos] = useState({frontPhoto:'', backPhoto:''});
 
-    const handleFrontPhotoChange = (e) => {
-        setFrontPhoto(e.target.files[0]);
-    };
 
-    const handleBackPhotoChange = (e) => {
-        setBackPhoto(e.target.files[0]);
-    };
+    const handlefront = (e) => {
+        const image = e.target.files[0];
+        if (image) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setIdPhotos(prev => ({ ...prev, frontPhoto: reader.result }));
+            }
+            reader.readAsDataURL(image);
+        }
+    }
+    
+    const handleback = (e) => {
+        const image = e.target.files[0];
+        if (image) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setIdPhotos(prev => ({ ...prev, backPhoto: reader.result }));
+            }
+            reader.readAsDataURL(image);
+        }
+    }
 
     useEffect(() => {
         if (successMessage) {
@@ -38,6 +52,7 @@ function AplikimiOnline() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+
         
         axios.get(`http://localhost:8080/checkemail?email=${values.email}`)
             .then(response => {
@@ -52,30 +67,10 @@ function AplikimiOnline() {
                             } else {
                                 setValues(prev => ({ ...prev, usernameExists: false }));
                                 if (Object.keys(errors).length === 0) {
-                                    const formData = new FormData();
-                                    formData.append('username', values.username);
-                                    formData.append('name', values.name);
-                                    formData.append('lastname', values.lastname);
-                                    formData.append('email', values.email);
-                                    formData.append('password', values.password);
-                                    formData.append('package', values.package);
-                                    formData.append('gender', values.gender);
-                                    formData.append('birthday', values.birthday);
-                                    formData.append('Country', values.Country);
-                                    formData.append('City', values.City);
-                                    formData.append('Street', values.Street);
-                                    if (frontPhoto) {
-                                        formData.append('frontPhoto', frontPhoto);
-                                    }
-                                    if (backPhoto) {
-                                        formData.append('backPhoto', backPhoto);
-                                    }
-
-                                    axios.post('http://localhost:8080/addApply', formData, {
-                                        headers: {
-                                            'Content-Type': 'multipart/form-data'
-                                        }
-                                    })
+                                    
+                                    axios.post('http://localhost:8080/addApply', {...values, frontPhoto:idPhotos.frontPhoto, backPhoto: idPhotos.backPhoto}, 
+                                        
+                                    )
                                     .then(res => {
                                         setSuccessMessage('You have successfully applied, we will notify you in your email when your data is accepted.');
                                         sendEmail(values.email, values.username, values.password);
@@ -111,7 +106,7 @@ function AplikimiOnline() {
                             <div className="container-fluid h-custom">
 
                                 <div className="row d-flex justify-content-center align-items-center h-100">
-                                <img src={eLogo} className="eLogo-img" alt="eLogo"  />
+                                {/* <img src={eLogo} className="eLogo-img" alt="eLogo"  /> */}
 
                                     <div className="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
                                         <h3 className="card-title text-center">Fill All Fields</h3>
@@ -229,7 +224,7 @@ function AplikimiOnline() {
                                                     type="file"
                                                     id="frontPhoto"
                                                     className="form-control form-control-lg"
-                                                    onChange={handleFrontPhotoChange}
+                                                    onChange={handlefront}
                                                 />
                                             </div>
                                             <div className="form-outline mb-4">
@@ -238,7 +233,7 @@ function AplikimiOnline() {
                                                     type="file"
                                                     id="backPhoto"
                                                     className="form-control form-control-lg"
-                                                    onChange={handleBackPhotoChange}
+                                                    onChange={handleback}
                                                 />
                                             </div>
                                             <div className="form-outline mb-4">

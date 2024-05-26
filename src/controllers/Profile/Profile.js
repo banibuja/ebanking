@@ -96,8 +96,8 @@ const updateProfilePicture = (req, res) => {
         "UPDATE users SET profilePicture = ? WHERE userId = ?",
         [base64, userId],
         (err, data) => {
-            if (err) res.status(404).json(err);
-            return res.json({ message: 'Profile updated successfully' });
+            if (err) res.status(404).json(err).end();
+            return res.status(200).json({ message: 'Profile updated successfully' }).end();
         }
     )
 }

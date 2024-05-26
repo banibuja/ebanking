@@ -90,19 +90,6 @@ const addClient = async (req, res) => {
             );
         });
 
-        await new Promise((resolve, reject) => {
-            db.query(
-                `INSERT INTO currencies (UserID, CurrencyCode, ExchangeRate) VALUES (?, ?, ?)`,
-                [userId, 'EUR', 1.0], 
-                (error, results) => {
-                    if (error) {
-                        reject(error);
-                    } else {
-                        resolve(results);
-                    }
-                }
-            );
-        });
 
         const cardNumber = `53547${Math.floor(100000000000 + Math.random() * 900000000000)}`;
         const today = new Date();
