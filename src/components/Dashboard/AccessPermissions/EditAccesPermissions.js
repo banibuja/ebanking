@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import VerifyLogin from '../VerifyLogin';
 
 function EditAccesPermissions({ id, onClose }) {
     const navigate = useNavigate();
@@ -8,7 +9,7 @@ function EditAccesPermissions({ id, onClose }) {
         AccessLevel: '',
         Balance: ''
     });
-
+    VerifyLogin();
     useEffect(() => {
         axios.get(`http://localhost:8080/getAccesForEdit/${id}`)
             .then(res => {

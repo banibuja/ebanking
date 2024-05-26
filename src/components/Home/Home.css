@@ -191,6 +191,9 @@ body {
   width: 200px;
 }
 
+.carusel-inner {
+  max-width: 948px;
+}
 .info-place {
   width: 100%;
   height: 100vh;

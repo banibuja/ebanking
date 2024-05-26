@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import VerifyLogin from '../VerifyLogin';
 
 function EditClient({ id, onClose }) {
     const navigate = useNavigate();
@@ -16,7 +17,7 @@ function EditClient({ id, onClose }) {
         City: '',
         Street: ''
     });
-
+    VerifyLogin();
     useEffect(() => {
         axios.get(`http://localhost:8080/getClientForEdit/${id}`)
             .then(res => {

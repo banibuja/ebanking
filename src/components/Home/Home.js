@@ -40,7 +40,7 @@ export const Home = () => {
       
 
       <Container className="carusel-space">
-        <Carousel>
+          <Carousel className='carusel-inner'>
           <Carousel.Item>
             <Row>
               <Col>

@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import axios from 'axios';
 import footerImg from '../../../imgs/black&white-logo.png';
 import Navbar from '../../Layout/Navbar';
+import VerifyLogin from '../VerifyLogin';
 
 const Contact = () => {
     const form = useRef();
@@ -11,6 +12,7 @@ const Contact = () => {
         email: '',
         message: ''
     });
+    VerifyLogin();
     
     const handleChange = (e) => {
         const { name, value } = e.target;

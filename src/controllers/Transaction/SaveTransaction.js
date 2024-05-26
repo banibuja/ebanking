@@ -87,7 +87,8 @@ const insertSaveTransaction = (req, res) => {
                             if (err) {
                                 return res.status(500).json(err).end();
                             }
-                          
+                            res.status(200).json({ message: 'Transaction completed and email sent successfully' }).end();
+
                             }
                         
                     );

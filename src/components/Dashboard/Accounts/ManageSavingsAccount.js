@@ -4,6 +4,7 @@ import Sidebar from '../Sidebar';
 import { useNavigate } from 'react-router-dom';
 import EditSavings from './EditSavings';
 import Nav from '../Nav';
+import VerifyLogin from '../VerifyLogin';
 
 export const ManageSavingsAccount = () => {
     const [accounts, setAccounts] = useState([]);
@@ -19,6 +20,7 @@ export const ManageSavingsAccount = () => {
     }, []);
 
     const navigate = useNavigate();
+    VerifyLogin();
 
     const fetchAccounts = () => {
         axios.post('http://localhost:8080/getAllSavingAccount')

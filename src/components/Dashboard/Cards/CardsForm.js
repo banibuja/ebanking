@@ -4,6 +4,7 @@ import Cards from "react-credit-cards-2";
 import Sidebar from '../Sidebar';
 import "react-credit-cards-2/dist/es/styles-compiled.css";
 import '../Accounts/Cards.css';
+import VerifyLogin from '../VerifyLogin';
 
 const CreditCardForm = () => {
   const [state, setState] = useState({
@@ -16,6 +17,7 @@ const CreditCardForm = () => {
   });
 
   const [cardExists, setCardExists] = useState(false);
+  VerifyLogin();
 
   useEffect(() => {
     if (state.number.length === 16) {

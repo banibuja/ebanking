@@ -3,11 +3,13 @@ import axios from 'axios';
 import Sidebar from '../Sidebar';
 import { useNavigate } from 'react-router-dom';
 import EditCurrencies from './EditCurrencies';
+import VerifyLogin from '../VerifyLogin';
 export const Currencies = () => {
     const [mess, setMess] = useState([]);
     const [numMess, setNumMess] = useState(0); 
     const [editCurrencies, setCurrencies] = useState(null);
 
+    VerifyLogin();
 
     useEffect(() => {
         getMess();

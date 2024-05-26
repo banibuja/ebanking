@@ -3,6 +3,7 @@ import axios from 'axios';
 import Sidebar from '../Sidebar';
 import EditClient from './EditClient';
 import Nav from '../Nav';
+import VerifyLogin from '../VerifyLogin';
 
 export const Client = () => {
     const [users, setUsers] = useState([]);
@@ -13,6 +14,7 @@ export const Client = () => {
     const [searchUserID, setSearchUserID] = useState('');
     const [searchResult, setSearchResult] = useState([]);
 
+    VerifyLogin();
     useEffect(() => {
         getUsers();
     }, []);

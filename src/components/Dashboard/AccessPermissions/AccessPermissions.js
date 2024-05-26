@@ -4,6 +4,7 @@ import Sidebar from '../Sidebar';
 import { useNavigate } from 'react-router-dom';
 import EditAccesPermissions from './EditAccesPermissions';
 import Nav from '../Nav';
+import VerifyLogin from '../VerifyLogin';
 
 export const AccesPermissions = () => {
     const [acces, setAcces] = useState([]);
@@ -19,7 +20,7 @@ export const AccesPermissions = () => {
     }, []);
 
     const navigate = useNavigate();
-
+    VerifyLogin();
     const fetchAcces = () => {
         axios.post('http://localhost:8080/getAllPermissions')
             .then(res => {

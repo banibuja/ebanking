@@ -90,17 +90,17 @@ const insertTransaction = (req, res) => {
                         return res.status(500).end();
                     }
                     // try {
-                    //     const senderEmail = 'ebankingebanking7@gmail.com'; 
-                    //     const transactionDetails = {
-                    //         senderEmail,
-                    //         receiverAccID: ReceiverAccID,
-                    //         transactionType: TransactionType,
-                    //         transactionAmount: TransactionAmount,
-                    //         currency: Currency,
-                    //         additionalInfo: AdditionalInfo
-                    //     };
-                    //     await sendTransactionEmail(transactionDetails);
-                    //     res.status(200).json({ message: 'Transaction completed and email sent successfully' }).end();
+                    // const senderEmail = 'ebankingebanking7@gmail.com'; 
+                    // const transactionDetails = {
+                    //     senderEmail,
+                    //     receiverAccID: ReceiverAccID,
+                    //     transactionType: TransactionType,
+                    //     transactionAmount: TransactionAmount,
+                    //     currency: Currency,
+                    //     additionalInfo: AdditionalInfo
+                    // };
+                    // await sendTransactionEmail(transactionDetails);
+                    res.status(200).json({ message: 'Transaction completed and email sent successfully' }).end();
                     // } catch (emailError) {
                     //     console.error('Error sending email:', emailError);
                     //     res.status(500).json({ error: 'Transaction completed but failed to send email' }).end();

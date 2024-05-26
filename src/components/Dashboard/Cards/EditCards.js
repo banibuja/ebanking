@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import VerifyLogin from '../VerifyLogin';
 
 function EditCards({ id, onClose }) {
     const navigate = useNavigate();
@@ -13,6 +14,7 @@ function EditCards({ id, onClose }) {
         CardStatus: ''
     });
 
+    VerifyLogin();
     useEffect(() => {
         console.log(id)
         axios.get(`http://localhost:8080/getCardsForEdit/${id}`)

@@ -3,6 +3,7 @@ import axios from 'axios';
 import Sidebar from '../Sidebar';
 import { useNavigate } from 'react-router-dom';
 import EditAccounts from './EditAccounts';
+import VerifyLogin from '../VerifyLogin';
 import Nav from '../Nav';
 
 export const ManageAccounts = () => {
@@ -19,6 +20,7 @@ export const ManageAccounts = () => {
     }, []);
 
     const navigate = useNavigate();
+    VerifyLogin();
 
     const fetchAccounts = () => {
         axios.post('http://localhost:8080/getAllAccounts')

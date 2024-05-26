@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import VerifyLogin from '../VerifyLogin';
 
 function EditCurrencies({ id, onClose }) {
     const navigate = useNavigate();
@@ -9,6 +10,7 @@ function EditCurrencies({ id, onClose }) {
         CurrencyCode: '',
         ExchangeRate: ''
     });
+    VerifyLogin();
 
     useEffect(() => {
         axios.get(`http://localhost:8080/getCurrenciesForEdit/${id}`)

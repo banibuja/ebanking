@@ -86,14 +86,14 @@ export default function Sidebar() {
         </a>
         <hr />
         <ul className="nav nav-pills flex-column mb-auto">
-          {role !== 'User' && (
-            <>
               <li>
                 <a href="/profi" className="nav-link link-dark" onClick={handleManageClick}>
                   <i className="bi me-2 fas fa-user fa-1x text-gray-300" ></i>
                   Profile
                 </a>
               </li>
+          {role !== 'User' && (
+            <>
               <li>
                 <a href="/dashboard" className="nav-link link-dark" onClick={handleManageClick}>
                   <i className="bi me-2 fas fa-dashboard fa-1x text-gray-300"></i>
@@ -121,10 +121,6 @@ export default function Sidebar() {
               </li>
             </>
           )}
-
-
-
-
           <li>
             <Dropdown>
               <Dropdown.Toggle variant="link" id="dropdown-clients" className="nav-link link-dark">
@@ -133,13 +129,9 @@ export default function Sidebar() {
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item href="/manageyouraccount" onClick={handleManageClick}>Product summary</Dropdown.Item>
-
-
               </Dropdown.Menu>
             </Dropdown>
           </li>
-
-
           <li>
             <Dropdown>
               <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
@@ -150,11 +142,9 @@ export default function Sidebar() {
                 <Dropdown.Item href="/InvesmentsGoals" onClick={handleManageClick}>Add Goal</Dropdown.Item>
                 <Dropdown.Item href="/InvestmentsTable" onClick={handleManageClick}>Goals</Dropdown.Item>
                 <Dropdown.Item href="#" onClick={handleManageClick}>My budget</Dropdown.Item>
-
               </Dropdown.Menu>
             </Dropdown>
           </li>
-
           <li>
             <Dropdown>
               <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
@@ -169,7 +159,6 @@ export default function Sidebar() {
               </Dropdown.Menu>
             </Dropdown>
           </li>
-
           <li>
             <Dropdown>
               <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
@@ -182,41 +171,18 @@ export default function Sidebar() {
               </Dropdown.Menu>
             </Dropdown>
           </li>
-
-
-          <li>
-            <a href="/profi" className="nav-link link-dark" onClick={handleManageClick}>
-              <i className="bi me-2 fas fa-user fa-1x text-gray-300" ></i>
-              Profile
-            </a>
-          </li>
-
-
-
-
-
-
           <li>
             <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
               Reports
             </a>
           </li>
-
-
-
-
-
-
           <li>
             <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
               Notifications
             </a>
           </li>
-
-
-
           <li>Advanced Modules</li>
           <li>
             <a href="#" className="nav-link link-dark" onClick={handleManageClick}>

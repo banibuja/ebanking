@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import VerifyLogin from './VerifyLogin';
 
 
 function Nav() {
   const [name, setName] = useState('');
   const [sessionTimeRemaining, setSessionTimeRemaining] = useState(); 
   const navigate = useNavigate();
+  VerifyLogin();
 
   useEffect(() => {
     axios.post('http://localhost:8080/getUsersWithSession')

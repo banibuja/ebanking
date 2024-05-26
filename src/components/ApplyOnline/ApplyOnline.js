@@ -73,8 +73,7 @@ function AplikimiOnline() {
                                         
                                     )
                                     .then(res => {
-                                        setSuccessMessage('You have successfully applied, we will notify you in your email when your data is accepted.');
-                                        sendEmail(values.email, values.username, values.password);
+                                        navigate('../');
                                     })
                                     .catch(err => console.log(err));
                                 }
@@ -223,6 +222,7 @@ function AplikimiOnline() {
                                                 <label htmlFor="frontPhoto" className="form-label">Front ID photo</label>
                                                 <input
                                                     type="file"
+                                                    accept='image/*'
                                                     id="frontPhoto"
                                                     className="form-control form-control-lg"
                                                     onChange={handlefront}
@@ -232,6 +232,7 @@ function AplikimiOnline() {
                                                 <label htmlFor="backPhoto" className="form-label">Back ID photo</label>
                                                 <input
                                                     type="file"
+                                                    accept='image/*'
                                                     id="backPhoto"
                                                     className="form-control form-control-lg"
                                                     onChange={handleback}

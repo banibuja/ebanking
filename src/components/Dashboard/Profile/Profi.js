@@ -23,15 +23,16 @@ function Profile() {
     const [usernameExists, setUsernameExists] = useState(false);
     const [emailExists, setEmailExists] = useState(false);
     const [errors, setErrors] = useState({});
-    const [imageSource, setImageSource] = useState('');
     const [showPasswordFields, setShowPasswordFields] = useState(false);
 
     useEffect(() => {
         axios.post('http://localhost:8080/getClientforProfile', {}, { withCredentials: true })
             .then(res => {
                 const data = res.data;
+                if (!data.profilePicture) data.profilePicture = '';
                 let fetchedBlob = data.profilePicture;
-                let bufferredImage = Buffer.from(fetchedBlob)
+                let bufferredImage = Buffer.from(fetchedBlob);
+                bufferredImage = bufferredImage.toString();
                 setValues(prevValues => ({
                     ...prevValues,
                     username: data.username || '',
@@ -39,7 +40,7 @@ function Profile() {
                     lastname: data.lastname || '',
                     email: data.email || '',
                     birthday: data.birthday.split("T")[0] || '',
-                    profilePicture: bufferredImage.toString() || 'http://bootdey.com/img/Content/avatar/avatar1.png'
+                    profilePicture: bufferredImage || 'http://bootdey.com/img/Content/avatar/avatar1.png'
                     
 
                 }));
@@ -122,7 +123,9 @@ function Profile() {
     const updateProfilePicture = () => {
         axios.post('http://localhost:8080/updateProfilePicture', { base64: values.profilePicture }, { withCredentials: true })
             .then(res => {
-                console.log(res.data);
+                if (res.status == 200) {
+                    window.location.reload();
+                }
             })
     }
     return (
@@ -136,10 +139,11 @@ function Profile() {
                             <div className="card mb-4 mb-xl-0">
                                 <div className="card-header">Profile Picture</div>
                                 <div className="card-body text-center">
-                                    <img width="300px" height="300px" className="img-account-profile rounded-circle mb-2" src={values.profilePicture} alt="" />
-                                    <div className="small font-italic text-muted mb-4">JPG or PNG no larger than 5 MB</div>
+                                    <img width="200px" height="200px" className="img-account-profile rounded-circle mb-2" src={values.profilePicture} alt="" />
+                                    <div className="small font-italic text-muted">JPG or PNG no larger than 5 MB</div>
+                                    <div className="small font-italic text-muted mb-3">200x200 px</div>
                                     <input type="file" id="profilePicture" onChange={handleProfilePicture} accept='image/*' hidden />
-                                    <label for="profilePicture" className="btn btn-secondary">Upload new image</label>
+                                    <label htmlFor="profilePicture" className="btn btn-secondary">Upload new image</label>
 
                                     <button className="btn btn-primary" onClick={updateProfilePicture} type="button">Save</button>
                                 </div>

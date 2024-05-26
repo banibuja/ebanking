@@ -32,8 +32,7 @@ const addApply = (req, res) => {
                 return res.status(500).json({ error: 'Error inserting data' });
             }
 
-            console.log('Data inserted successfully:');
-            // res.status(200).json({ message: 'Data inserted successfully' });
+            res.status(200).json({ message: 'Data inserted successfully' });
         });
     });
 };

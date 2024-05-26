@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import VerifyLogin from '../VerifyLogin';
 
 function EditSavings({ id, onClose }) {
     const navigate = useNavigate();
@@ -9,6 +10,7 @@ function EditSavings({ id, onClose }) {
         Balance: ''
     });
 
+    VerifyLogin();
     useEffect(() => {
         axios.get(`http://localhost:8080/getSavingsAccounts/${id}`)
             .then(res => {

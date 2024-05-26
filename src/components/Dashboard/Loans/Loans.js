@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import EditLoan from './EditLoan';
 import './Loans.css';
 
-
 export const Loans = () => {
     const [loans, setLoans] = useState([]);
     const [numLoans, setNumLoans] = useState(0); 

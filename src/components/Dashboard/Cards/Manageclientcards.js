@@ -3,6 +3,7 @@ import axios from 'axios';
 import Sidebar from '../Sidebar';
 import { useNavigate } from 'react-router-dom';
 import EditCards from './EditCards';
+import VerifyLogin from '../VerifyLogin';
 import Nav from '../Nav';
 
 export const Manageclientcards = () => {
@@ -14,6 +15,7 @@ export const Manageclientcards = () => {
     const [searchUserID, setSearchUserID] = useState('');
     const [searchResult, setSearchResult] = useState([]);
 
+    VerifyLogin();
     useEffect(() => {
         getCards();
     }, []);

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import VerifyLogin from '../VerifyLogin';
 
 function EditAccount({ id, onClose }) {
     const navigate = useNavigate();
@@ -8,7 +9,7 @@ function EditAccount({ id, onClose }) {
         CurrentAccount: '',
         Balance: ''
     });
-
+    VerifyLogin();
     useEffect(() => {
         axios.get(`http://localhost:8080/getAccountForEdit/${id}`)
             .then(res => {
