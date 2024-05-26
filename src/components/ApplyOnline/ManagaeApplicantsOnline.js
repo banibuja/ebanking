@@ -12,19 +12,8 @@ export const Client = () => {
     const [showAll, setShowAll] = useState(false);
     const [searchUserID, setSearchUserID] = useState('');
     const [searchResult, setSearchResult] = useState([]);
-    const [values, setValues] = useState({
-        username: '',
-        name: '',
-        lastname: '',
-        email: '',
-        password: '',
-        package: '',
-        gender: '',
-        birthday: '',
-        currency: '',
-        emailExists: false,
-        usernameExists: false
-    });
+     
+
 
     useEffect(() => {
         getUsers();
@@ -118,8 +107,8 @@ export const Client = () => {
             .catch(err => console.log(err));
     };
 
-    const paginatedUsers = showAll ? users : users.slice(0, recordsPerPage);
-    const renderData = searchResult.length > 0 ? searchResult : paginatedUsers;
+    const paginatedUser = showAll ? users : users.slice(0, recordsPerPage);
+    const renderData = searchResult.length > 0 ? searchResult : paginatedUser;
 
     return (
         <div>

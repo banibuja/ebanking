@@ -1,23 +1,40 @@
 const db = require('../../db');
 
-const getAllLoans = (req, res) => {
-    const sql = "SELECT * FROM loans";
 
-    db.query(sql, (err, data) => {
+
+const getAllLoans = (req, res) => {
+    const userID = req.session.uId;
+    if (!userID) {
+        return res.json("fail");
+    }
+    var sql = "SELECT CurrentAccount FROM currentaccounts WHERE UserID = ?";
+    db.query(sql, [userID], (err, data) => {
         if (err) {
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).end();
         }
         if (data.length > 0) {
-            return res.json(data);
+            const accountID = data[0].CurrentAccount;
+            var sql = "SELECT * FROM loans WHERE AccountID = ?";
+            db.query(sql, [accountID], (err, data) => {
+                if (err) {
+                    return res.status(500).end();
+                }
+                if (data.length > 0) {
+                    return res.status(200).json(data).end();
+                } else {
+                    return res.status(404).json("No Transactions found").end();
+                }
+            });
         } else {
-            return res.json({ message: "No loans found" });
+            return res.status(404).end();
         }
     });
-};
+}
+
 
 const getLoanForEdit = (req, res) => {
     const loanID = req.params.id;
-    const sql = "SELECT AccountID, LoanAmount, LoanType, LoanConditions, Status FROM loans WHERE LoanID = ?";
+    const sql = "SELECT AccountID, LoanAmount, LoanConditions, Status FROM loans WHERE LoanID = ?";
 
     db.query(sql, [loanID], (err, data) => {
         if (err) {
@@ -59,11 +76,11 @@ const addLoan = (req, res) => {
 };
 
 const updateLoan = (req, res) => {
-    const { AccountID, LoanAmount, LoanType, LoanConditions, Status } = req.body;
+    const { AccountID, LoanAmount, LoanConditions, Status } = req.body;
     const loanID = req.params.id;
 
-    const sql = "UPDATE loans SET AccountID = ?, LoanAmount = ?, LoanType = ?, LoanConditions = ?, Status = ? WHERE LoanID = ?";
-    db.query(sql, [AccountID, LoanAmount, LoanType, LoanConditions, Status, loanID], (err, result) => {
+    const sql = "UPDATE loans SET AccountID = ?, LoanAmount = ?, LoanConditions = ?, Status = ? WHERE LoanID = ?";
+    db.query(sql, [AccountID, LoanAmount, LoanConditions, Status, loanID], (err, result) => {
         if (err) {
             console.error("Error updating loan:", err);
             return res.status(500).json({ error: "Internal server error" });

@@ -39,7 +39,7 @@ function ApplyLoans() {
         try {
             const response = await axios.post('http://localhost:8080/addLoan', values);
             if (response.data.message === 'Loan added successfully') {
-                navigate('/dashboard');
+                navigate('/loans');
             } else {
                 console.error('Failed to add loan');
             }
@@ -52,8 +52,7 @@ function ApplyLoans() {
         <div>
             <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
                 <Sidebar />
-                <div className="content-wrapper" style={{ marginRight: '100px' }}>
-                    <section className="content">
+                
                         <div className="container-fluid">
                             <div className="row">
                                 <div className="col-md-12">
@@ -122,8 +121,7 @@ function ApplyLoans() {
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </section>
+                      
                 </div>
             </main>
         </div>

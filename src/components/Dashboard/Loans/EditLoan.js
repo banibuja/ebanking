@@ -1,101 +1,87 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Modal, Button, Form } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 
-const EditLoan = ({ id, onClose }) => {
-    const [loanData, setLoanData] = useState({
-        accountId: '',
-        loanAmount: '',
-        loanConditions: '',
-        status: ''
+function EditLoans({ id, onClose }) {
+    const navigate = useNavigate();
+    const [values, setValues] = useState({
+        AccountID: '',
+        LoanAmount: '',
+        LoanConditions: '',
+        Status: ''
+
     });
 
     useEffect(() => {
-        // Fetch loan data when the component mounts or ID changes
-        fetchLoanData();
-    }, [id]);
-
-    const fetchLoanData = () => {
-        axios.get(`http://localhost:8080/api/loans/${id}`)
+        axios.get(`http://localhost:8080/editLoans/${id}`)
             .then(res => {
-                setLoanData(res.data);
+                console.log('Edit Account API', res.data);
+                setValues(res.data);
             })
             .catch(err => console.log(err));
-    };
+    }, [id]);
 
-    const handleChange = (e) => {
+    const handleInput = (e) => {
         const { name, value } = e.target;
-        setLoanData({ ...loanData, [name]: value });
-    };
+        setValues((prev) => ({ ...prev, [name]: value }));
+  };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Update loan data
-        axios.put(`http://localhost:8080/api/loans/${id}`, loanData)
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        
+        axios.put(`http://localhost:8080/updateLoan/${id}`, values)
             .then(res => {
-                onClose(); // Close modal on success
+                console.log('Update API', res.data);
+                
+                window.location.reload(); 
             })
             .catch(err => console.log(err));
     };
 
     return (
-        <Modal show={true} onHide={onClose}>
-            <Modal.Header closeButton>
-                <Modal.Title>Edit Loan</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <Form onSubmit={handleSubmit}>
-                    <Form.Group controlId="accountId">
-                        <Form.Label>Account ID</Form.Label>
-                        <Form.Control
-                            type="text"
-                            name="accountId"
-                            value={loanData.accountId}
-                            onChange={handleChange}
-                            placeholder="Enter Account ID"
-                            required
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="loanAmount">
-                        <Form.Label>Loan Amount</Form.Label>
-                        <Form.Control
-                            type="text"
-                            name="loanAmount"
-                            value={loanData.loanAmount}
-                            onChange={handleChange}
-                            placeholder="Enter Loan Amount"
-                            required
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="loanConditions">
-                        <Form.Label>Loan Conditions</Form.Label>
-                        <Form.Control
-                            type="text"
-                            name="loanConditions"
-                            value={loanData.loanConditions}
-                            onChange={handleChange}
-                            placeholder="Enter Loan Conditions"
-                            required
-                        />
-                    </Form.Group>
-                    <Form.Group controlId="status">
-                        <Form.Label>Status</Form.Label>
-                        <Form.Control
-                            type="text"
-                            name="status"
-                            value={loanData.status}
-                            onChange={handleChange}
-                            placeholder="Enter Status"
-                            required
-                        />
-                    </Form.Group>
-                    <Button variant="primary" type="submit">
-                        Save Changes
-                    </Button>
-                </Form>
-            </Modal.Body>
-        </Modal>
+        <div className="modal fade show text-black" style={{ display: 'block' }} aria-modal="true">
+            <div className="modal-dialog">
+                <div className="modal-content">
+                    <div className="modal-header">
+                        <h5 className="modal-title">Edit Loans</h5>
+                        <button type="button" className="close" onClick={onClose}>
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div className="modal-body">
+                        <form onSubmit={handleSubmit}>
+                            <div className="form-group">
+                                <label>CurrentAccount</label>
+                                <input type="text" placeholder='AccountID' name='AccountID' onChange={handleInput} className='form-control rounded-0' value={values.AccountID} disabled />
+                            </div>
+                            <div className="form-group">
+                                <label>LoanAmount</label>
+                                <input type="text" placeholder='LoanAmount' name='LoanAmount' onChange={handleInput} className='form-control rounded-0' value={values.LoanAmount} disabled />
+                            </div>
+                            <div className="form-group">
+                                <label>LoanConditions</label>
+                                <input type="text" placeholder='LoanConditions' name='LoanConditions' onChange={handleInput} className='form-control rounded-0' value={values.LoanConditions}  />
+                            </div>
+                           
+                            <div className="form-group">
+                                <label>Loans Status</label>
+                                                              <select name='Status' onChange={handleInput}  className='form-control roundend-0' value={values.Status} >
+                                                                 <option value="">Select Status</option>
+                                                                  <option value="Open">Open</option>
+                                                                   <option value="Closed">Closed</option>
+
+                                                                         </select>
+                                                                         </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" onClick={onClose}>Close</button>
+                                <button type="submit" className="btn btn-primary">Save changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     );
 };
 
-export default EditLoan;
+export default EditLoans;

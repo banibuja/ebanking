@@ -40,7 +40,7 @@ function AplikimiOnline() {
         if (successMessage) {
             const timer = setTimeout(() => {
                 navigate('/');
-            }, 5000);
+            }, 400);
 
             return () => clearTimeout(timer); 
         }
@@ -60,6 +60,7 @@ function AplikimiOnline() {
                     setValues(prev => ({ ...prev, emailExists: true }));
                 } else {
                     setValues(prev => ({ ...prev, emailExists: false }));
+
                     axios.get(`http://localhost:8080/checkUsername?username=${values.username}`)
                         .then(response => {
                             if (response.data.exists) {

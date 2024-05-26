@@ -5,22 +5,11 @@ import axios from 'axios';
 import Sidebar from '../../Dashboard/Sidebar';
 import Nav from '../Nav';
 
+
 function AddClient() {
     const navigate = useNavigate();
     const [values, setValues] = useState({
-        username: '',
-        name: '',
-        lastname: '',
-        email: '',
-        password: '',
-        gender: '',
-        birthday: '',
-        Country: '',
-        City: '',
-        Street: '',
-        currency: '',
-        emailExists: false,
-        usernameExists: false
+        
     });
 
     const [errors, setErrors] = useState({});
@@ -28,61 +17,50 @@ function AddClient() {
     useEffect(() => {
     }, []);
 
-    const handleInput = (e) => {
-        setValues(prev => ({ ...prev, [e.target.name]: e.target.value }));
-        if (e.target.name == 'username') {
-            axios.get(`http://localhost:8080/checkUsername?username=${e.target.value}`)
-                .then(response => {
-                    if (response.data.exists) {
-                        setValues(prev => ({ ...prev, usernameExists: true }));
-                    } else {
-                        setValues(prev => ({ ...prev, usernameExists: false }));
-                    }
-                })
-                .catch(err => console.log(err));
-        }
-        if (e.target.name == 'email') {
-            axios.get(`http://localhost:8080/checkemail?email=${e.target.value}`)
-                .then(response => {
-                    if (response.data.exists) {
-                        setValues(prev => ({ ...prev, emailExists: true }));
-                    } else {
-                        setValues(prev => ({ ...prev, emailExists: false }));
-                    }
-                })
-                .catch(err => console.log(err));
-        }
+    const handleInput = (event) => {
+        setValues(prev => ({ ...prev, [event.target.name]: event.target.value }));
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        
+        axios.get(`http://localhost:8080/checkemail?email=${values.email}`)
+            .then(response => {
+                if (response.data.exists) {
+                    setValues(prev => ({ ...prev, emailExists: true }));
+                } else {
+                    setValues(prev => ({ ...prev, emailExists: false }));
+                    axios.get(`http://localhost:8080/checkUsername?username=${values.username}`)
+                        .then(response => {
+                            if (response.data.exists) {
+                                setValues(prev => ({ ...prev, usernameExists: true }));
+                            } else {
+                                setValues(prev => ({ ...prev, usernameExists: false }));
+                                setErrors(Validation(values));
 
-
-
-        setErrors(Validation(values));
-        if (values.usernameExists || values.emailExists || errors) {
-            return "please check inputs";
-        } else {
-
-            if (Object.keys(errors).length === 0) {
-                axios.post('http://localhost:8080/addClient', values)
-                    .then(res => {
-                        navigate('/client');
-                    })
-                    .catch(err => console.log(err));
-            }
-        }
+                                if (Object.keys(errors).length === 0) {
+                                    axios.post('http://localhost:8080/addClient', values)
+                                        .then(res => {
+                                            navigate('/client');
+                                        })
+                                        .catch(err => console.log(err));
+                                }
+                            }
+                        })
+                        .catch(err => console.log(err));
+                }
+            })
+            .catch(err => console.log(err));
     };
 
     return (
         <div>
       <main className="d-flex min-vh-100 bg-light text-dark">
         <Sidebar />
-        <div className="content-wrapper" style={{ marginRight: '100px' }}>
-            <section className="content">
-            < Nav />
+       
+            <div className="container-fluid mt-4 ">
+            <Nav />
 
-            <div className="container-fluid mt-5 ">
                     <div className="row">
                         <div className="col-md-12">
                             <div className="card card-purple">
@@ -96,12 +74,16 @@ function AddClient() {
                                         <div className="col-md-6 form-group">
                                                 <label htmlFor="name">Client Username</label>
                                                 <input type="text" placeholder='Username' name='username' onChange={handleInput} className='form-control roundend-0' required />
-                                                            {errors.username && <span className='text-danger'>{errors.username}</span>}
-                                                            {values.usernameExists ? (
-                                                                <span style={{ marginLeft: '10px' }}>
-                                                                    <span style={{ color: 'red' }}>This username is already taken.</span>
-                                                                </span>
-                                                            ) : ('')}
+                                                {errors.username && <span className='text-danger'>{errors.username}</span>}
+                                                {values.username && (
+                                                    <span style={{ marginLeft: '10px' }}>
+                                                        {values.usernameExists ? (
+                                                            <span style={{ color: 'red' }}>This username is already taken.</span>
+                                                        ) : (
+                                                            <span style={{ color: 'green' }}>Username is available.</span>
+                                                        )}
+                                                    </span>
+                                                )}
                                             </div>
                                             </div>
                                             <div className="col-md-6 form-group">
@@ -117,12 +99,16 @@ function AddClient() {
                                             <div className="col-md-6 form-group">
                                                 <label htmlFor="name">Client Email</label>
                                                 <input type="email" placeholder='Email' name='email' onChange={handleInput} className='form-control roundend-0' />
-                                                        {errors.email && <span className='text-danger'>{errors.email}</span>}
+                                                {errors.email && <span className='text-danger'>{errors.email}</span>}
+                                                {values.email && (
+                                                    <span style={{ marginLeft: '10px' }}>
                                                         {values.emailExists ? (
-                                                            <span style={{ marginLeft: '10px' }}>
-                                                                <span style={{ color: 'red' }}>This email is already in use.</span>
-                                                            </span>
-                                                        ) : ('')}
+                                                            <span style={{ color: 'red' }}>This email is already in use.</span>
+                                                        ) : (
+                                                            <span style={{ color: 'green' }}>Email is available.</span>
+                                                        )}
+                                                    </span>
+                                                )}
                                             </div>
                                             <div className="col-md-6 form-group">
                                                 <label htmlFor="name">Client Password</label>
@@ -142,15 +128,7 @@ function AddClient() {
                                                 <label htmlFor="name">Client Birthday</label>
                                                 <input type="date" name='birthday' className="form-control form-control-lg" placeholder="Birthdate" onChange={handleInput} />
                                             </div>
-                                            <div className="col-md-6 form-group">
-                                                <label>Selecr Currency</label>
-                                                <select name='currency' onChange={handleInput} className='form-control roundend-0'>
-                                                    <option value="">Select Currency</option>
-                                                    <option value="EUR">EUR</option>
-                                                    <option value="USD">USD</option>
-                                                    <option value="GBP">GBP</option>
-                                                </select>
-                                            </div>
+                                           
                                             <div className="col-md-6 form-group">
                                                 <label htmlFor="name">Client Address</label>
                                                 <input type="text" placeholder='Country' name='Country' onChange={handleInput} className='form-control roundend-0' />
@@ -169,8 +147,7 @@ function AddClient() {
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                
         </div>
     </main>
 </div>
