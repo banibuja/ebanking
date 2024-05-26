@@ -28,7 +28,7 @@ import InvestmentsTable from '../components/Dashboard/InvestmentsGoals/Investmen
 import ProfileRoutes  from './ProfileRoutes'; // Import ProfileRoutes
 import Nav from '../components/Dashboard/Nav';
 // Make sure the file path is correct
-
+import AboutUs from '../components/AboutUS/AboutUs';
 
 //
 import Login from './Login';
@@ -52,6 +52,7 @@ function App() {
         <Route path="/SaveTransaction" element={<SaveTransaction/>}/>
         <Route path="/Transaction" element={<Transaction/>}></Route> 
         {/* <Route path="/login" element={<Login />} /> */}
+        <Route path="/AboutUs" element={<AboutUs/> } />
         <Route path="/ApplyOnline" element={<ApplyOnline />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/client" element={<Client />} />
