@@ -4,7 +4,6 @@ const db = require('../../db');
 
 
 const addApply = (req, res) => {
-    console.log(req.body)
     const { username, name, lastname, email, package, gender, birthday, Country, City, Street, frontPhoto, backPhoto } = req.body;
     
         var charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+{}:<>?[];',./";
@@ -27,14 +26,14 @@ const addApply = (req, res) => {
 
         const values = [username, name, lastname, email, hashedPassword, package, gender, birthday, Country, City, Street, frontPhoto, backPhoto];
 
-        db.query(query, values, (err, result) => {
+        db.query(query, values, (err) => {
             if (err) {
                 console.error('Error inserting data:', err);
                 return res.status(500).json({ error: 'Error inserting data' });
             }
 
-            console.log('Data inserted successfully:', result);
-            res.status(200).json({ message: 'Data inserted successfully' });
+            console.log('Data inserted successfully:');
+            // res.status(200).json({ message: 'Data inserted successfully' });
         });
     });
 };
@@ -104,9 +103,7 @@ const getApplicantForEdit = (req, res) => {
 const updateAplicant = (req, res) => {
     const accountId = req.params.id;
     const { username, name, lastname, email, package, birthday, Country, City, Street } = req.body;
-    const sqlUpdate = "UPDATE applyonline SET username=?, name=?, lastname=?, email=?, package=?, birthday=?, Country=?, City=?, Street=? WHERE userId=?";
-
-
+    const sqlUpdate = "UPDATE applyonline SET username=?, name=?, lastname=?, email=?, package=?, birthday=?, Country=?, City=?, Street=? WHERE userId= ?";
 
     db.query(sqlUpdate, [username, name, lastname, email, package, birthday, Country, City, Street, accountId], (err, result) => {
         if (err) {
@@ -116,6 +113,7 @@ const updateAplicant = (req, res) => {
         return res.status(200).json({ message: "Account updated successfully" });
     });
 };
+
 
 
 const searchApplicant = (req, res) => {

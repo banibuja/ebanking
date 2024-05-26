@@ -176,13 +176,31 @@ CREATE TABLE InvestmentsGoals (
 );
 
 
-
-INSERT INTO `users` (`userId`, `username`, `name`, `lastname`, `email`, `password`, `gender`, `birthday`, `CurrencyCode`) VALUES
-(4, 'bani', 'bani', 'buja', 'bani@gmail.com', '$2b$10$XjWtyA0pNTHZ0nBGGYIUM.PvJ.irfS9SRFvj/SUEjnTw7YuetuzCO', 'M', '2024-05-09 00:00:00', 'EUR');
-
+INSERT INTO `users` (`userId`, `username`, `name`, `lastname`, `email`, `password`, `gender`, `birthday`, `CurrencyCode`, `profilePicture`, `Status`) VALUES
+(5, 'user', 'user', 'user', 'ebankingebanking7@gmail.com', '$2b$10$LkBEWggp4k/Y/dgN7YatnuVT5MF1AwB1n0aECVKAOJTg54Gtez98y', 'M', '2024-05-14 22:00:00', 'EUR', 'adsdsda', 'Active'),
+(6, 'bani', 'bani', 'bani', 'bani@gmail.com', '$2b$10$VBqdvLoWj1sRuZtkL1r4q.8fb2msybySGnt7inxLArkrbNeGUnycS', 'M', '2024-05-14 22:00:00', 'EUR', 'adsdsda', 'Active');
 
 
 INSERT INTO `accesspermissions` (`PermissionID`, `UserID`, `AccessLevel`) VALUES
-(2, 2, 'Admin');
+(5, 5, 'User'),
+(6, 6, 'Admin');
 
+INSERT INTO `adresa` (`AdresaID`, `userId`, `Country`, `City`, `Street`) VALUES
+(0, 5, 'dasdsaad', 'dasasda', 'ewqqw'),
+(0, 6, 'dasdsaad', 'dasasda', 'adsads');
+
+
+
+
+INSERT INTO `currentaccounts` (`CurrentAccount`, `UserID`, `CurrencyCode`, `Balance`, `AccountStatus`) VALUES
+(1110333316835670, 5, 'EUR', 50000.00, 'Open'),
+(1110333367253288, 6, 'EUR', 60000.00, 'Open');
+
+INSERT INTO `savingsaccounts` (`SavingsType`, `UserID`, `CurrencyCode`, `Balance`, `AccountStatus`) VALUES
+(1110222258657008, 5, 'EUR', 0.00, 'Open'),
+(1110222276211824, 6, 'EUR', 0.00, 'Open');
+
+INSERT INTO `cards` (`CardID`, `UserID`, `CurrentAccount`, `CardNumber`, `ValidFrom`, `ExpiryDate`, `CardHolderName`, `CardType`, `CardStatus`, `AvailableBalance`) VALUES
+(1, 5, 1110333316835670, '5354791934376884', '2024-05-26', '2028-05-26', 'user user', 'DEBIT MASTER CARD', 'ACTIVE', NULL),
+(2, 6, 1110333367253288, '5354716673411652', '2024-05-26', '2028-05-26', 'bani bani', 'DEBIT MASTER CARD', 'ACTIVE', NULL);
 

@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { slide as Menu } from 'react-burger-menu';
 import menuLogo from '../../imgs/menu-logo.png';
 import './nav.css'
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
+
 
   const handleStateChange = (state) => {
     setMenuOpen(state.isOpen);
@@ -26,6 +27,7 @@ const Navbar = () => {
           <a id='a' href="/" onClick={closeMenu}>Home</a>
           <a href="/contactform" onClick={closeMenu}>ContactUs</a>
           <a href="/applyonline" onClick={closeMenu}>Apply Online</a>
+          <a href="/aboutus" onClick={closeMenu}>About us</a>
           <a href="/login" onClick={closeMenu}>Login</a>
         </Menu>
         <ul className="nav navbar-nav navbar-right">

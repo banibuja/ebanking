@@ -53,7 +53,7 @@ function SaveTransaction() {
                     ...values
                 });
                 console.log(res);
-                navigate('/SaveHistory')
+                navigate('/SaveHistory'); 
             } catch (err) {
                 console.log(err);
             }
@@ -62,52 +62,49 @@ function SaveTransaction() {
 
     return (
         <div>
-      <main className="d-flex min-vh-100 bg-light text-dark">
+            <main className="d-flex min-vh-100 bg-light text-dark">
                 <Sidebar />
-               
-                        <div className="container-fluid mt-4 ">
-                            < Nav />
-                            <div className="row">
-                                <div className="col-md-12">
-                                    <div className="card card-purple">
-                                        <div className="card-header">
-                                            <h3 className="card-title">Save Money Transfer</h3>
-                                        </div>
-                                        <form onSubmit={handleSubmit}>
-                                            <div className="card-body">
-                                                <div className="form-group">
-                                                    <label htmlFor="CurrentAccount">Contributor Account</label>
-                                                    <input type="number" name='CurrentAccount' className='form-control rounded-0' value={currentAccount} disabled />
-                                                </div>
-                                                <div className="form-group">
-                                                    <label htmlFor="ReceiverAccID">Receiver Savings Account</label>
-                                                    <select name='ReceiverAccID' className='form-control rounded-0' onChange={handleInput} value={values.ReceiverAccID}>
-                                                        <option value=''>Select Savings Account</option>
-                                                        {savingsAccounts.map(account => (
-                                                            <option key={account.SavingsType} value={account.SavingsType}>
-                                                                {account.SavingsType}
-                                                            </option>
-                                                        ))}
-                                                    </select>
-                                                    {errors.ReceiverAccID && <span className='text-danger'>{errors.ReceiverAccID}</span>}
-                                                </div>
-                                                <div className="form-group">
-                                                    <label htmlFor="TransactionAmount">Amount</label>
-                                                    <input type="text" placeholder='Amount' name='TransactionAmount' className='form-control rounded-0' onChange={handleInput} value={values.TransactionAmount} />
-                                                    {errors.TransactionAmount && <span className='text-danger'>{errors.TransactionAmount}</span>}
-                                                </div>
-                                            </div>
-                                            <center>
-                                                <div className="card-footer">
-                                                    <button type="submit" className="btn btn-success">Transfer</button>
-                                                </div>
-                                            </center>
-                                        </form>
-                                    </div>
+                <div className="container-fluid mt-4">
+                    <Nav />
+                    <div className="row">
+                        <div className="col-md-12">
+                            <div className="card card-purple">
+                                <div className="card-header">
+                                    <h3 className="card-title">Save Money Transfer</h3>
                                 </div>
+                                <form onSubmit={handleSubmit}>
+                                    <div className="card-body">
+                                        <div className="form-group">
+                                            <label htmlFor="CurrentAccount">Contributor Account</label>
+                                            <input type="number" name='CurrentAccount' className='form-control rounded-0' value={currentAccount} disabled />
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor="ReceiverAccID">Receiver Savings Account</label>
+                                            <select name='ReceiverAccID' className='form-control rounded-0' onChange={handleInput} value={values.ReceiverAccID}>
+                                                <option value=''>Select Savings Account</option>
+                                                {savingsAccounts.map(account => (
+                                                    <option key={account.SavingsType} value={account.SavingsType}>
+                                                        {account.SavingsType} - FlexSave
+                                                    </option>
+                                                ))}
+                                            </select>
+                                            {errors.ReceiverAccID && <span className='text-danger'>{errors.ReceiverAccID}</span>}
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor="TransactionAmount">Amount</label>
+                                            <input type="text" placeholder='Amount' name='TransactionAmount' className='form-control rounded-0' onChange={handleInput} value={values.TransactionAmount} />
+                                            {errors.TransactionAmount && <span className='text-danger'>{errors.TransactionAmount}</span>}
+                                        </div>
+                                    </div>
+                                    <center>
+                                        <div className="card-footer">
+                                            <button type="submit" className="btn btn-success">Transfer</button>
+                                        </div>
+                                    </center>
+                                </form>
                             </div>
-                        {/* </div>
-                    </section> */}
+                        </div>
+                    </div>
                 </div>
             </main>
         </div>
@@ -115,4 +112,3 @@ function SaveTransaction() {
 }
 
 export default SaveTransaction;
-

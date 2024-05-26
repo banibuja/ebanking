@@ -51,7 +51,7 @@ function EditApply({ id, onClose }) {
     const handleSubmit = (event) => {
         event.preventDefault();
         
-        axios.put(`http://localhost:8080/updateAplicant/${id}`, { values })
+        axios.put(`http://localhost:8080/updateAplicant/${id}`, values)
             .then(res => {
                 window.location.reload(); 
             })
