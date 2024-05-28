@@ -1,0 +1,57 @@
+
+
+/* Importimi i fontit nga Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap');
+
+/* Stilizimi për header */
+header {
+    text-align: center; /* Vendos titullin në qendër */
+}
+
+header h1 {
+    font-size: 2em;
+    font-family: 'Abril Fatface', sans-serif; /* Përdorimi i fontit Abril Fatface */
+    color: #d6b600; /* Zgjedhja e një ngjyre tjetër */
+    margin-bottom: 50px;
+}
+
+/* Stilizimi për kartat */
+.card {
+    border: 1px solid #d6b600; /* Kufiri i kartave me ngjyrë */
+    border-radius: 5px; /* Rrethi i kartave */
+    margin-bottom: 20px; /* Distanca midis kartave */
+    background-color: linear-gradient(to bottom right, #FFB347, #A9A9A9); 
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Vendi i hijes së kartës */
+
+
+}
+  
+.card-header {
+    background-color: #222; /* Ngjyra e sfondit të kokës së kartës */
+    padding: 10px; /* Hapësira brenda kokës së kartës */
+    border-bottom: 1px solid #ccc; /* Kufiri i poshtëm i kokës së kartës */
+}
+  
+/* Stilizimi për ikonat */
+.card-body i {
+    color: #d6b600; /* Ngjyra e ikonave */
+    margin-right: 10px; /* Distanca nga teksti prapa ikonave */
+}
+
+.card-body {
+    padding: 20px; /* Hapësira brenda trupit të kartës */
+}
+  
+/* Stilizimi për titujt e kartave */
+.card-title {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    color: #d6b600; /* Ngjyra e titrave të kartave */
+}
+  
+/* Stilizimi për numrat në kartë */
+.card-number {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #d6b600; /* Ngjyra e numrave */
+}
