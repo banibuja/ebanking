@@ -148,6 +148,18 @@ export default function Sidebar() {
           <li>
             <Dropdown>
               <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
+                <i className="bi me-2 fas fa-money-bill-wave fa-1x text-gray-300 bg-light"></i>
+                Manage Home-Page
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item href="/AddHomePage" onClick={handleManageClick}>Add infosection</Dropdown.Item>
+                <Dropdown.Item href="/InvestmentsTable" onClick={handleManageClick}>Carsel</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </li>
+          <li>
+            <Dropdown>
+              <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
                 <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300 bg-light"></i>
                 Transactions
               </Dropdown.Toggle>

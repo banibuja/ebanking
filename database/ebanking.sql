@@ -16,6 +16,11 @@ CREATE TABLE Users (
     Status VARCHAR(20)
 );
 
+CREATE TABLE InfoSection(
+    InfoSectionId int nor null primary key AUTO_INCREMENT,
+    Info TEXT,
+);
+
 CREATE TABLE applyonline (
     userId int NOT NULL primary key AUTO_INCREMENT,
     username varchar(50) unique not null,

@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Carousel, Container, Row, Col } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 import './Home.css';
 import Navbar from '../Layout/Navbar';
 import arrowImage from '../../imgs/arrow.png';
@@ -14,7 +17,22 @@ import logoNoBackground from '../../imgs/elogo-removed-background.png';
 import Footer from '../Layout/Footer';
 
 export const Home = () => {
+  const [Info, setInfo] = useState([]);
 
+     useEffect(() => {
+      fetchInfo();
+  }, []);
+
+  const navigate = useNavigate();
+
+  const fetchInfo = () => {
+      axios.post('http://localhost:8080/getInfoSection')
+          .then(res => {
+              const fetchInfo = res.data;
+              setInfo(fetchInfo);
+          })
+          .catch(err => console.log(err));
+  };
   return (
    
     <>
@@ -99,10 +117,11 @@ export const Home = () => {
           </Carousel.Item>
         </Carousel>
       </Container>
-
       <div class="info-place">
         <img src={logoNoBackground} alt="Logo" />
-        <h1>E-banking offers everything you need for seamless financial management: account services, fund transfers, bill payment, mobile banking, deposits, loans, and support.</h1>
+        {Info.map((item, index) => (
+          <h1 key={index}>{item.Info}</h1>
+        ))}
       </div>
         <footer className="footer">
           <Footer/>

@@ -20,6 +20,7 @@ const profileController = require('../src/controllers/Profile/Profile');
 const loansController = require('../src/controllers/Loans/Loans');
 const contactusController = require('../src/controllers/Contact/sendEmailContactForm');
 const saveTransactionController = require('../src/controllers/Transaction/SaveTransaction');
+const HomeController = require('../src/controllers/Add-Home-page/Add-InfoSection');
 
 const app = express();
 app.use(cors({
@@ -43,6 +44,9 @@ app.use(session({
 }));
 
 app.post('/sendEmailContactUs', contactusController.sendEmailContactUs);
+
+app.post('/insertInfoSection', HomeController.insertInfoSection);
+app.post('/getInfoSection', HomeController.getInfoSection);
 
 app.post('/getAllFlexSave', saveTransactionController.getSavingsAccounts);
 app.post('/insertSaveTransaction', saveTransactionController.insertSaveTransaction);

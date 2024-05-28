@@ -40,8 +40,7 @@ import ApplyLoans from '../components/Dashboard/Loans/ApplyLoans';
 import SaveHistory from '../components/Dashboard/Transaction/SaveHistory';
 // import PhotoUpload from '../components/PhotoUpload';
 // import PhotoGallery from '../components/PhotoGallery';
-
-
+import AddHomePage from '../components/Dashboard/Add Home-page/Add-HomePage';
 function App() {
   return (
 
@@ -51,6 +50,7 @@ function App() {
       <Routes>
         <Route path="/SaveTransaction" element={<SaveTransaction/>}/>
         <Route path="/Transaction" element={<Transaction/>}></Route> 
+        <Route path="/AddHomePage" element={<AddHomePage/>}/>
         {/* <Route path="/login" element={<Login />} /> */}
         <Route path="/AboutUs" element={<AboutUs/> } />
         <Route path="/ApplyOnline" element={<ApplyOnline />} />
