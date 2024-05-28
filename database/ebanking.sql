@@ -17,8 +17,8 @@ CREATE TABLE Users (
 );
 
 CREATE TABLE InfoSection(
-    InfoSectionId int nor null primary key AUTO_INCREMENT,
-    Info TEXT,
+    InfoSectionId int not null primary key AUTO_INCREMENT,
+    Info TEXT
 );
 
 CREATE TABLE applyonline (
@@ -116,13 +116,44 @@ CREATE TABLE Reports (
 
 
 
-CREATE TABLE Loans (
-    LoanID int primary key AUTO_INCREMENT,
-    AccountID BIGINT NOT NULL,
-    LoanAmount DECIMAL(18, 2) NOT NULL,
-    LoanConditions TEXT,
-    Status VARCHAR(50) NOT NULL,
-    CONSTRAINT FK_Account_Loan FOREIGN KEY (AccountID) REFERENCES currentaccounts (CurrentAccount) ON DELETE CASCADE
+CREATE TABLE `loans` (
+    `LoanID` int(11) NOT NULL AUTO_INCREMENT,
+    `AccountID` bigint(20) NOT NULL,
+    `firstName` varchar(255) NOT NULL,
+    `lastName` varchar(255) NOT NULL,
+    `dateOfBirth` varchar(200) NOT NULL,
+    `loanType` varchar(255) NOT NULL,
+    `city` varchar(255) NOT NULL,
+    `address` varchar(255) NOT NULL,
+    `email` varchar(50) NOT NULL,
+    `employmentStatus` varchar(50) NOT NULL,
+    `annualIncome` varchar(50) NOT NULL,
+    `loanAmount` varchar(50) NOT NULL,
+    `loanPurpose` varchar(50) NOT NULL,
+    `Status` varchar(10) NOT NULL,
+    PRIMARY KEY (`LoanID`),
+    KEY `FK_Account_Loan` (`AccountID`),
+    CONSTRAINT `FK_Account_Loan` FOREIGN KEY (`AccountID`) REFERENCES `currentaccounts` (`CurrentAccount`) ON DELETE CASCADE
+);
+
+CREATE TABLE `applyloans` (
+    `LoanID` int(11) NOT NULL AUTO_INCREMENT,
+    `AccountID` bigint(20) NOT NULL,
+    `firstName` varchar(255) NOT NULL,
+    `lastName` varchar(255) NOT NULL,
+    `dateOfBirth` varchar(200) NOT NULL,
+    `loanType` varchar(255) NOT NULL,
+    `city` varchar(255) NOT NULL,
+    `address` varchar(255) NOT NULL,
+    `email` varchar(50) NOT NULL,
+    `employmentStatus` varchar(50) NOT NULL,
+    `annualIncome` varchar(50) NOT NULL,
+    `loanAmount` varchar(50) NOT NULL,
+    `loanPurpose` varchar(50) NOT NULL,
+    `Status` varchar(10) NOT NULL,
+    PRIMARY KEY (`LoanID`),
+    KEY `FK_Account_Loan` (`AccountID`),
+    CONSTRAINT `FK_Account_Loanss` FOREIGN KEY (`AccountID`) REFERENCES `currentaccounts` (`CurrentAccount`) ON DELETE CASCADE
 );
 
 
