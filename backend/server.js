@@ -131,10 +131,14 @@ app.post('/getAllTransactions', TransactionController.getAllTransactions);
 
 app.post('/getAllLoans', loansController.getAllLoans);
 app.get('/getAccountNumber', loansController.getAccountNumber);
+app.post('/applyLoan', loansController.applyLoan);
 app.post('/addLoan', loansController.addLoan);
 app.delete("/deleteLoan/:id", loansController.deleteLoan);
 app.get('/editLoans/:id', loansController.getLoanForEdit);
 app.put('/updateLoan/:id', loansController.updateLoan);
+app.put('/updateStatusLoans/:id', loansController.updateStatusLoans);
+
+app.post('/getAllLoansForClient', loansController.getAllLoansForClient);
 
 
 
