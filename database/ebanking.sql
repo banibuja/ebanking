@@ -17,10 +17,15 @@ CREATE TABLE Users (
 );
 
 CREATE TABLE InfoSection(
-    InfoSectionId int nor null primary key AUTO_INCREMENT,
+    InfoSectionId int not null primary key AUTO_INCREMENT,
     Info TEXT,
 );
-
+CREATE TABLE Carusel(
+    CaruselId int not null primary key AUTO_INCREMENT,
+    Titulli varchar(50) not null,
+    Teksti text not null,
+    Photo longblob
+);
 CREATE TABLE applyonline (
     userId int NOT NULL primary key AUTO_INCREMENT,
     username varchar(50) unique not null,

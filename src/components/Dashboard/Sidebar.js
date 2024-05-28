@@ -155,7 +155,7 @@ export default function Sidebar() {
               </Dropdown.Toggle>
               <Dropdown.Menu>
                 <Dropdown.Item href="/AddHomePage" onClick={handleManageClick}>Add infosection</Dropdown.Item>
-                <Dropdown.Item href="/InvestmentsTable" onClick={handleManageClick}>Carsel</Dropdown.Item>
+                <Dropdown.Item href="/AddCarusel" onClick={handleManageClick}>Carsel</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </li>

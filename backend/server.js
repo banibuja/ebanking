@@ -21,6 +21,8 @@ const loansController = require('../src/controllers/Loans/Loans');
 const contactusController = require('../src/controllers/Contact/sendEmailContactForm');
 const saveTransactionController = require('../src/controllers/Transaction/SaveTransaction');
 const HomeController = require('../src/controllers/Add-Home-page/Add-InfoSection');
+const CaruselController = require('../src/controllers/Add-Home-page/AddCarusel');
+
 
 const app = express();
 app.use(cors({
@@ -47,6 +49,8 @@ app.post('/sendEmailContactUs', contactusController.sendEmailContactUs);
 
 app.post('/insertInfoSection', HomeController.insertInfoSection);
 app.post('/getInfoSection', HomeController.getInfoSection);
+app.post('/insertCarusel', CaruselController.insertCarusel);
+app.post('/getCarusel', CaruselController.getCarusel);
 
 app.post('/getAllFlexSave', saveTransactionController.getSavingsAccounts);
 app.post('/insertSaveTransaction', saveTransactionController.insertSaveTransaction);
