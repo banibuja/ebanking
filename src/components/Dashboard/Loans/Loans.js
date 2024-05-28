@@ -32,7 +32,7 @@ export const Loans = () => {
     const navigate = useNavigate();
 
     const fetchLoans = () => {
-        axios.post('http://localhost:8080/getAllLoans')
+        axios.post('http://localhost:8080/getAllLoansForClient')
             .then(res => {
                 const fetchedLoans = res.data;
                 setLoans(fetchedLoans);
@@ -64,6 +64,10 @@ export const Loans = () => {
             [name]: value
         }));
     };
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
+    };
 
     
 
@@ -79,27 +83,38 @@ export const Loans = () => {
                         <div className="col-md-12 d-flex justify-content-center align-items-center">
                             <table className="table table-hover table-bordered table-striped dataTable no-footer" style={{ width: '100%' }}>
                                 <thead>
-                                    <tr>
-                                        <th scope="col">Loan ID</th>
-                                        <th scope="col">Account ID</th>
-                                        <th scope="col">Loan Amount</th>
-                                        <th scope="col">Loan Conditions</th>
+                                <tr>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Birthday</th>
+                                        <th scope="col">loanType</th>
+                                        <th scope="col">city</th>
+                                        <th scope="col">address</th>
+                                        <th scope="col">email</th>
+                                        <th scope="col">employmentStatus</th>
+                                        <th scope="col">annualIncome</th>
+                                        <th scope="col">loanAmount</th>
+                                        <th scope="col">loanPurpose</th>
                                         <th scope="col">Status</th>
-                                        <th scope="col">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {Array.isArray(loans) && loans.map((loan, index) => (
-                                        <tr key={loan.LoanID}>
-                                            <td>{loan.LoanID}</td>
-                                            <td>{loan.AccountID}</td>
-                                            <td>{loan.LoanAmount}</td>
-                                            <td>{loan.LoanConditions}</td>
-                                            <td>{loan.Status}</td>
-                                            <td>
-                                                <button onClick={() => handleEdit(loan.LoanID)} className="btn btn-primary mr-2">Edit</button>
-                                                <button onClick={() => handleDelete(loan.LoanID)} className="btn btn-danger">Delete</button>
-                                            </td>
+                                    {Array.isArray(loans) && loans.map((Loan, index) => (
+                                        <tr key={Loan.LoanID}>
+                                             <td>{Loan.firstName + ' ' + Loan.lastName}</td>
+                                                    <td>{formatDate(Loan.dateOfBirth)}</td>
+                                                    <td>{Loan.loanType}</td>
+                                                    <td>{Loan.city}</td>
+                                                    <td>{Loan.address}</td>
+                                                    <td>{Loan.email}</td>
+                                                    <td>{Loan.employmentStatus}</td>
+                                                    <td>{Loan.annualIncome}</td>
+                                                    <td>{Loan.loanAmount}</td>
+                                                    <td>{Loan.loanPurpose}</td>
+                                                    <td>{Loan.Status}</td>
+                                            {/* <td>
+                                                <button onClick={() => handleEdit(Loan.LoanID)} className="btn btn-primary mr-2">Edit</button>
+                                                <button onClick={() => handleDelete(Loan.LoanID)} className="btn btn-danger">Delete</button>
+                                            </td> */}
                                         </tr>
                                     ))}
                                 </tbody>

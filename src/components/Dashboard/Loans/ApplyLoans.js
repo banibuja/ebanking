@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Sidebar from '../../Dashboard/Sidebar';
@@ -7,20 +7,55 @@ function ApplyLoans() {
     const navigate = useNavigate();
     const [step, setStep] = useState(1);
     const [values, setValues] = useState({
-        id: '',
+        AccountNumber: '',
         firstName: '',
         lastName: '',
         dateOfBirth: '',
         loanType: '',
         city: '',
         address: '',
-        phoneNumber: '',
+        // phoneNumber: '',
         email: '',
         employmentStatus: '',
         annualIncome: '',
         loanAmount: '',
         loanPurpose: ''
     });
+    const [accountNumber, setAccountNumber] = useState('');
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const accountResponse = await axios.get('http://localhost:8080/getAccountNumber');
+                if (accountResponse.data.accountNumber) {
+                    setAccountNumber(accountResponse.data.accountNumber);
+                    setValues(prevValues => ({ ...prevValues, AccountNumber: accountResponse.data.accountNumber }));
+                }
+            } catch (error) {
+                console.error('Error fetching account number:', error);
+            }
+
+            try {
+                const clientResponse = await axios.post('http://localhost:8080/getClientforProfile');
+                if (clientResponse.data) {
+                    const { name, lastname, email, birthday, City, Street } = clientResponse.data;
+                    setValues(prevValues => ({ 
+                        ...prevValues, 
+                        firstName: name, 
+                        lastName: lastname, 
+                        email: email,
+                        dateOfBirth: birthday,
+                        city: City,
+                        address: Street
+                    }));
+                }
+            } catch (error) {
+                console.error('Error fetching client details:', error);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const loanTypes = [
         { id: 1, name: 'Personal Loan' },
@@ -48,7 +83,7 @@ function ApplyLoans() {
         try {
             const response = await axios.post('http://localhost:8080/applyLoan', values);
             if (response.data.message === 'Loan application submitted successfully') {
-                navigate('/loans');
+                window.location.reload();
             } else {
                 console.error('Failed to submit loan application');
             }
@@ -79,19 +114,20 @@ function ApplyLoans() {
                                 {step === 1 && (
                                     <div style={{ display: 'flex', flexWrap: 'wrap' }}>
                                         <div style={{ width: '100%', maxWidth: '50%', padding: '0 15px', marginBottom: '20px' }}>
-                                            <label htmlFor="id">ID</label>
+                                            <label htmlFor="id">AccountNumber</label>
                                             <input
                                                 type="text"
-                                                placeholder="ID"
-                                                name="id"
-                                                value={values.id}
+                                                placeholder="accountNumber"
+                                                name="AccountNumber"
+                                                value={values.AccountNumber}
                                                 onChange={handleInput}
                                                 style={{ borderRadius: '5px', padding: '15px', border: '1px solid #ced4da', fontSize: '1.2em', width: '100%' }}
                                                 required
+                                                disabled
                                             />
                                         </div>
                                         <div style={{ width: '100%', maxWidth: '50%', padding: '0 15px', marginBottom: '20px' }}>
-                                            <label htmlFor="firstName">First Name</label>
+                                            <label htmlFor="name">First Name</label>
                                             <input
                                                 type="text"
                                                 placeholder="First Name"
@@ -100,10 +136,11 @@ function ApplyLoans() {
                                                 onChange={handleInput}
                                                 style={{ borderRadius: '5px', padding: '15px', border: '1px solid #ced4da', fontSize: '1.2em', width: '100%' }}
                                                 required
+                                                disabled
                                             />
                                         </div>
                                         <div style={{ width: '100%', maxWidth: '50%', padding: '0 15px', marginBottom: '20px' }}>
-                                            <label htmlFor="lastName">Last Name</label>
+                                            <label htmlFor="lastname">Last Name</label>
                                             <input
                                                 type="text"
                                                 placeholder="Last Name"
@@ -112,19 +149,24 @@ function ApplyLoans() {
                                                 onChange={handleInput}
                                                 style={{ borderRadius: '5px', padding: '15px', border: '1px solid #ced4da', fontSize: '1.2em', width: '100%' }}
                                                 required
+                                                disabled
+                                                
                                             />
                                         </div>
                                         <div style={{ width: '100%', maxWidth: '50%', padding: '0 15px', marginBottom: '20px' }}>
                                             <label htmlFor="dateOfBirth">Date of Birth</label>
                                             <input
-                                                type="date"
+                                                type="text"
                                                 name="dateOfBirth"
                                                 value={values.dateOfBirth}
                                                 onChange={handleInput}
                                                 style={{ borderRadius: '5px', padding: '15px', border: '1px solid #ced4da', fontSize: '1.2em', width: '100%' }}
                                                 required
+                                                disabled
                                             />
                                         </div>
+                                        
+                                        {/* // */}
                                         <div style={{ width: '100%', maxWidth: '50%', padding: '0 15px', marginBottom: '20px' }}>
                                             <label htmlFor="loanType">Loan Type</label>
                                             <select
@@ -140,7 +182,9 @@ function ApplyLoans() {
                                                 ))}
                                             </select>
                                         </div>
-                                        <div style={{ width: '100%', maxWidth: '50%', padding: '0 15px', marginBottom: '20px' }}>
+
+                                        //
+                                        {/* <div style={{ width: '100%', maxWidth: '50%', padding: '0 15px', marginBottom: '20px' }}>
                                             <label htmlFor="city">City</label>
                                             <select
                                                 name="city"
@@ -154,7 +198,7 @@ function ApplyLoans() {
                                                     <option key={city.id} value={city.id}>{city.name}</option>
                                                 ))}
                                             </select>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 )}
                                 {step === 2 && (
@@ -169,9 +213,10 @@ function ApplyLoans() {
                                                 onChange={handleInput}
                                                 style={{ borderRadius: '5px', padding: '15px', border: '1px solid #ced4da', fontSize: '1.2em', width: '100%' }}
                                                 required
+                                                disabled
                                             />
                                         </div>
-                                        <div style={{ width: '100%', maxWidth: '50%', padding: '0 15px', marginBottom: '20px' }}>
+                                        {/* <div style={{ width: '100%', maxWidth: '50%', padding: '0 15px', marginBottom: '20px' }}>
                                             <label htmlFor="phoneNumber">Phone Number</label>
                                             <input
                                                 type="text"
@@ -182,7 +227,7 @@ function ApplyLoans() {
                                                 style={{ borderRadius: '5px', padding: '15px', border: '1px solid #ced4da', fontSize: '1.2em', width: '100%' }}
                                                 required
                                             />
-                                        </div>
+                                        </div> */}
                                         <div style={{ width: '100%', maxWidth: '50%', padding: '0 15px', marginBottom: '20px' }}>
                                             <label htmlFor="email">Email</label>
                                             <input
@@ -193,6 +238,7 @@ function ApplyLoans() {
                                                 onChange={handleInput}
                                                 style={{ borderRadius: '5px', padding: '15px', border: '1px solid #ced4da', fontSize: '1.2em', width: '100%' }}
                                                 required
+                                                disabled
                                             />
                                         </div>
                                     </div>

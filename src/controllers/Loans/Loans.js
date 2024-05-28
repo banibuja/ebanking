@@ -14,7 +14,8 @@ const getAllLoans = (req, res) => {
         }
         if (data.length > 0) {
             const accountID = data[0].CurrentAccount;
-            var sql = "SELECT * FROM loans WHERE AccountID = ?";
+            var sql = "SELECT * FROM applyloans";
+            console.log(req.body);
             db.query(sql, [accountID], (err, data) => {
                 if (err) {
                     return res.status(500).end();
@@ -47,11 +48,14 @@ const getLoanForEdit = (req, res) => {
         }
     });
 };
-const addLoan = (req, res) => {
-    const { AccountNumber, LoanAmount, LoanConditions, Status } = req.body;
+
+
+const applyLoan = (req, res) => {
+    console.log(req.body);
+    const { AccountNumber, firstName, lastName, dateOfBirth, loanType, city, address, email, employmentStatus, annualIncome, loanAmount, loanPurpose } = req.body;
 
     const checkAccountSql = "SELECT * FROM currentaccounts WHERE CurrentAccount = ?";
-    
+
     db.query(checkAccountSql, [AccountNumber], (err, result) => {
         if (err) {
             console.error("Error checking account:", err);
@@ -62,9 +66,9 @@ const addLoan = (req, res) => {
             return res.status(400).json({ error: "Account does not exist" });
         }
 
-        const insertLoanSql = "INSERT INTO Loans (AccountID, LoanAmount, LoanConditions, Status) VALUES (?, ?, ?, ?)";
+        const insertLoanSql = "INSERT INTO applyloans (AccountID, firstName, lastName, dateOfBirth, loanType, city, address, email, employmentStatus, annualIncome, loanAmount, loanPurpose, Status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending')";
         
-        db.query(insertLoanSql, [AccountNumber, LoanAmount, LoanConditions, Status], (err, result) => {
+        db.query(insertLoanSql, [AccountNumber, firstName, lastName, dateOfBirth, loanType, city, address, email, employmentStatus, annualIncome, loanAmount, loanPurpose], (err, result) => {
             if (err) {
                 console.error("Error adding loan:", err);
                 return res.status(500).json({ error: "Internal server error" });
@@ -74,6 +78,37 @@ const addLoan = (req, res) => {
         });
     });
 };
+
+const addLoan = (req, res) => {
+    console.log(req.body);
+    const { AccountID, firstName, lastName, dateOfBirth, loanType, city, address, email, employmentStatus, annualIncome, loanAmount, loanPurpose } = req.body;
+
+    const checkAccountSql = "SELECT * FROM currentaccounts WHERE CurrentAccount = ?";
+
+    db.query(checkAccountSql, [AccountID], (err, result) => {
+        if (err) {
+            console.error("Error checking account:", err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+
+        if (result.length === 0) {
+            return res.status(400).json({ error: "Account does not exist" });
+        }
+
+        const insertLoanSql = "INSERT INTO loans (AccountID, firstName, lastName, dateOfBirth, loanType, city, address, email, employmentStatus, annualIncome, loanAmount, loanPurpose, Status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Accepted')";
+
+        db.query(insertLoanSql, [AccountID, firstName, lastName, dateOfBirth, loanType, city, address, email, employmentStatus, annualIncome, loanAmount, loanPurpose], (err, result) => {
+            if (err) {
+                console.error("Error adding loan:", err);
+                return res.status(500).json({ error: "Internal server error" });
+            }
+            console.log("Loan added successfully");
+            return res.json({ message: "Loan added successfully" });
+        });
+    });
+};
+
+
 
 const updateLoan = (req, res) => {
     const { AccountID, LoanAmount, LoanConditions, Status } = req.body;
@@ -122,4 +157,49 @@ const getAccountNumber = (req, res) => {
     });
 };
 
-module.exports = {getAccountNumber, getAllLoans, getLoanForEdit, addLoan, updateLoan, deleteLoan };
+const updateStatusLoans = (req, res) => {
+    const accountId = req.params.id;
+    const { Status } = req.body;
+    const sqlUpdate = "UPDATE applyloans SET Status=? WHERE AccountID=?";
+
+    db.query(sqlUpdate, [Status, accountId], (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: "Internal server error" });
+        }
+        return res.status(200).json({ message: "Status updated successfully" });
+    });
+};
+
+
+const getAllLoansForClient = (req, res) => {
+    const userID = req.session.uId;
+    if (!userID) {
+        return res.json("fail");
+    }
+    var sql = "SELECT CurrentAccount FROM currentaccounts WHERE UserID = ?";
+    db.query(sql, [userID], (err, data) => {
+        if (err) {
+            return res.status(500).end();
+        }
+        if (data.length > 0) {
+            const accountID = data[0].CurrentAccount;
+            var sql = "SELECT * FROM applyloans WHERE AccountID=? ";
+            console.log(req.body);
+            db.query(sql, [accountID], (err, data) => {
+                if (err) {
+                    return res.status(500).end();
+                }
+                if (data.length > 0) {
+                    return res.status(200).json(data).end();
+                } else {
+                    return res.status(404).json("No Transactions found").end();
+                }
+            });
+        } else {
+            return res.status(404).end();
+        }
+    });
+}
+
+module.exports = {getAllLoansForClient,getAccountNumber, getAllLoans, getLoanForEdit, applyLoan, updateLoan, deleteLoan, addLoan, updateStatusLoans};
