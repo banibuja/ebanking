@@ -29,6 +29,7 @@ import ProfileRoutes  from './ProfileRoutes'; // Import ProfileRoutes
 import Nav from '../components/Dashboard/Nav';
 // Make sure the file path is correct
 import AboutUs from '../components/AboutUS/AboutUs';
+import ManageLoans from '../components/Dashboard/Loans/ManageLoans';
 
 //
 import Login from './Login';
@@ -81,6 +82,8 @@ function App() {
         <Route path="/ManagaeApplicantsOnline" element={<ManagaeApplicantsOnline/>} /> 
         <Route path="/ApplyLoans" element={<ApplyLoans/>} /> 
         <Route path="/SaveHistory" element={<SaveHistory/>} /> 
+        <Route path="/ManageLoans" element={<ManageLoans/>} /> 
+
 
 {/* 
         
