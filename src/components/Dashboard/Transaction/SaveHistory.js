@@ -25,9 +25,6 @@ export const SaveHistory = () => {
             .catch(err => console.log(err));
     };
 
-
-
-
     return (
         <div>
             <main className="d-flex min-vh-100 bg-light text-dark">

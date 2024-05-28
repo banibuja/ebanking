@@ -23,18 +23,18 @@ export const Home = () => {
     </header>
  <body> 
       <div className="container">
-        <div className="flexbox">
-          <h1 class="gateway">Gateway</h1>
-          <a href="/login" className="StartBanking-button">
+        <div className="flexbox1">
+          <h1 class="h1">Gateway</h1>
+            <a href="/login" className="StartBanking-button">
             <span className="arrow-slide"></span>
             <img src={arrowImage} className="arrow-img" alt="Arrow" />
             <p className="start-banking-text">StartBanking</p>
-          </a>
+            </a>
         </div>
         <div className="flexbox">
           <p class="paragraph-p">Experience seamless blend of finance and finesse for effortless transfers, balance and more, If you don't have account you can apply online</p>
-          <img src={eLogo} className="eLogo-img" alt="eLogo" />
-          <h1 className="-banking">-Banking</h1>
+          <div class="e-logoimage"><img src={eLogo} className="eLogo-img" alt="eLogo" /></div>
+          <h1 className="-ebanking">-Banking</h1>
         </div>
       </div>
       
