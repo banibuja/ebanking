@@ -1,0 +1,61 @@
+.apply-online-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: url('./banka.png') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+}
+
+.content-wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    gap: 20px; /* Hapësirë midis kolonave */
+}
+
+.column {
+    flex: 1;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.form-outline {
+    margin-bottom: 15px;
+}
+
+.form-label {
+    color: #fff;
+    font-size: 0.9em;
+}
+
+.form-control, .form-select {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px;
+    font-size: 0.9em;
+}
+
+.form-control::placeholder, .form-select::placeholder {
+    color: #ccc;
+}
+
+.btn-success {
+    background: linear-gradient(to right, #ff416c, #ff4b2b);
+    border: none;
+    padding: 10px 20px;
+    font-size: 0.9em;
+}
+
+.alert-success {
+    background: #28a745;
+    color: #fff;
+    border: none;
+    font-size: 0.9em;
+    padding: 10px;
+}
