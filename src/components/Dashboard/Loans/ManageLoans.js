@@ -134,7 +134,7 @@ export const ManageLoans = () => {
                                         <th scope="col">loanType</th>
                                         <th scope="col">city</th>
                                         <th scope="col">address</th>
-                                        <th scope="col">email</th>
+                                        {/* <th scope="col">email</th> */}
                                         <th scope="col">employmentStatus</th>
                                         <th scope="col">annualIncome</th>
                                         <th scope="col">loanAmount</th>
@@ -153,7 +153,7 @@ export const ManageLoans = () => {
                                                     <td>{item.loanType}</td>
                                                     <td>{item.city}</td>
                                                     <td>{item.address}</td>
-                                                    <td>{item.email}</td>
+                                                    {/* <td>{item.email}</td> */}
                                                     <td>{item.employmentStatus}</td>
                                                     <td>{item.annualIncome}</td>
                                                     <td>{item.loanAmount}</td>

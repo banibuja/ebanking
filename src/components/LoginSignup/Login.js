@@ -50,7 +50,7 @@ function Login() {
       <div className="login-container">
         <div className="login-background">
           <div className="login-form">
-            <h2 className="login-title">Login-form</h2>
+            <h2 className="login-title">Login</h2>
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <input type="text" name='username' className="form-control" placeholder="Enter email" onChange={handleInput} />
@@ -60,7 +60,7 @@ function Login() {
               </div>
               
               <button type="submit" className="btn btn-primary btn-block">Log In</button>
-              <p className="small mt-2 mb-0">Don't have an account? <Link to="/applyonline" className="link-danger">Create account</Link></p>
+              <p className="small mt-2 mb-0">Don't have an account? <Link to="/applyonline" className="link-primary">Apply Online</Link></p>
             </form>
           </div>
         </div>

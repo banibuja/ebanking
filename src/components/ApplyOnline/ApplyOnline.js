@@ -163,7 +163,7 @@ function AplikimiOnline() {
                                     name="gender"
                                     onChange={handleInput}
                                     value={values.gender}
-                                    className="form-select form-select-lg"
+                                    className="form-select1 form-select-lg"
                                     required
                                 >
                                     <option value="">Select Gender</option>

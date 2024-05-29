@@ -31,8 +31,8 @@
     color: #fff;
     font-size: 0.9em;
 }
-
-.form-control, .form-select {
+/* .form-control, */
+ .form-select {
     background: rgba(255, 255, 255, 0.1);
     color: #fff;
     border: none;

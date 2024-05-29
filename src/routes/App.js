@@ -29,7 +29,6 @@ import ProfileRoutes  from './ProfileRoutes'; // Import ProfileRoutes
 import Nav from '../components/Dashboard/Nav';
 // Make sure the file path is correct
 import AboutUs from '../components/AboutUS/AboutUs';
-import ManageLoans from '../components/Dashboard/Loans/ManageLoans';
 
 //
 import Login from './Login';
@@ -43,6 +42,7 @@ import SaveHistory from '../components/Dashboard/Transaction/SaveHistory';
 // import PhotoGallery from '../components/PhotoGallery';
 import AddHomePage from '../components/Dashboard/Add Home-page/Add-HomePage';
 import AddCarusel from '../components/Dashboard/Add Home-page/AddCarusel';
+import ManageLoans from '../components/Dashboard/Loans/ManageLoans';
 
 function App() {
   return (
