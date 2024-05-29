@@ -45,30 +45,27 @@ function Login() {
   };
 
   return (
-    <div className="login-container">
+    <>
       <Navbar />
-      <div className="login-background">
-        <div className="login-form">
-          <h2 className="login-title">Login-form</h2>
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <input type="text" name='username' className="form-control" placeholder="Enter email" onChange={handleInput} />
-            </div>
-            <div className="form-group">
-              <input type="password" name='password' className="form-control" placeholder="Enter password" onChange={handleInput} />
-            </div>
-            <div className="form-options">
-              <label>
-                <input type="checkbox" name="remember" /> Save login information
-              </label>
-              <Link to="/forgot-password" className="forgot-password">Forgot password?</Link>
-            </div>
-            <button type="submit" className="btn btn-primary btn-block">Log In</button>
-            <p className="small mt-2 mb-0">Don't have an account? <Link to="/applyonline" className="link-danger">Create account</Link></p>
-          </form>
+      <div className="login-container">
+        <div className="login-background">
+          <div className="login-form">
+            <h2 className="login-title">Login-form</h2>
+            <form onSubmit={handleSubmit}>
+              <div className="form-group">
+                <input type="text" name='username' className="form-control" placeholder="Enter email" onChange={handleInput} />
+              </div>
+              <div className="form-group">
+                <input type="password" name='password' className="form-control" placeholder="Enter password" onChange={handleInput} />
+              </div>
+              
+              <button type="submit" className="btn btn-primary btn-block">Log In</button>
+              <p className="small mt-2 mb-0">Don't have an account? <Link to="/applyonline" className="link-danger">Create account</Link></p>
+            </form>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

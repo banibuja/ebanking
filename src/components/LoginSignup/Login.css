@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: #EDC14A;
+  background: url('./banka.png') no-repeat center center fixed;
   background-size: cover;
   padding: 20px;
   box-sizing: border-box;
