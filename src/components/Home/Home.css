@@ -121,12 +121,12 @@ body {
   width: 100%;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: 3%;
 }
 
 .carusel-cards {
-  width: 300px;
-  height: 450px;
+  width: 15rem;
+  height: 20rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -140,37 +140,29 @@ body {
 }
 
 .carusel-title {
-  font-size: 35px;
+  font-size: 2.2rem;
   margin-bottom: 20px;
 }
 
 .carusel-txt {
-  font-size: 20px;
+  font-size: 1.5rem;
   text-align: center;
 }
 
 .carusel-gold-line {
   height: 4px;
-  width: 120px;
+  width: 50%;
   background-color: #EDC14A;
   margin-bottom: 20px;
   transition: width 0.5s ease;
 }
 
 #carusel-cards-1:hover .carusel-gold-line {
-  width: 200px;
-}
-
-#carusel-cards-2:hover .carusel-gold-line {
-  width: 200px;
-}
-
-#carusel-cards-3:hover .carusel-gold-line {
-  width: 200px;
+  width: 70%;
 }
 
 .carusel-inner {
-  max-width: 948px;
+  max-width: 80%;
 }
 .info-place {
   width: 100%;
@@ -190,7 +182,7 @@ body {
   z-index: 2;
   background-color: transparent;
   width: 50%;
-  font-size: 40px;
+  font-size: 2.2rem;
   text-align: center;
 }
 

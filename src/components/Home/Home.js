@@ -81,8 +81,8 @@ export const Home = () => {
               <Row>
                 {itemGroup.map((item, subIndex) => (
                   <Col key={subIndex}>
-                    <div className="carusel-cards" id={`carusel-cards-${index * 3 + subIndex + 1}`}>
-                      <img src={item.Photo} alt="Carousel Item"/>
+                    <div className="carusel-cards" id={`carusel-cards-1`}>
+                      <img src={item.Photo} alt="Carousel Item" className='carusel-img'/>
                       <div className="carusel-gold-line"></div>
                       <h1 className="carusel-title">{item.Titulli}</h1>
                       <p className="carusel-txt">{item.Teksti}</p>
