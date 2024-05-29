@@ -32,9 +32,10 @@ export const Home = () => {
     axios.post('http://localhost:8080/getCarusel')
       .then(res => {
         const items = res.data;
+        console.log(items);
         const processedItems = items.map(item => {
-          const base64Image = Buffer.from(item.Photo.data).toString('base64');
-          const imageSrc = `data:image/jpeg;base64,${base64Image}`;
+          const base64Image = Buffer.from(item.Photo.data).toString();
+          const imageSrc = `${base64Image}`;
           return { ...item, Photo: imageSrc };
         });
         const chunkedItems = chunkItems(processedItems, 3);

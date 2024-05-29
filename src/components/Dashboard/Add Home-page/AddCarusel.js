@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar from '../Sidebar';
 import axios from 'axios';
 import Nav from '../Nav';
-
+import { Buffer } from 'buffer';
+import {Table } from 'react-bootstrap';
 function AddCarusel() {
     const navigate = useNavigate();
-
+    const [carouselItems, setCarouselItems] = useState([]);
     const [values, setValues] = useState({
         Titulli: '',
         Teksti: '',
@@ -15,6 +16,7 @@ function AddCarusel() {
     const [errors, setErrors] = useState({});
 
     useEffect(() => {
+        fetchCarouselItems();
     }, []);
 
     const handleInput = (event) => {
@@ -46,7 +48,20 @@ function AddCarusel() {
             reader.readAsDataURL(image);
         }
     }
-
+    const fetchCarouselItems = () => {
+        axios.post('http://localhost:8080/getCarusel')
+          .then(res => {
+            const items = res.data;
+            console.log(items);
+            const processedItems = items.map(item => {
+              const base64Image = Buffer.from(item.Photo.data).toString();
+              const imageSrc = `${base64Image}`;
+              return { ...item, Photo: imageSrc };
+            });
+            setCarouselItems(processedItems);
+          })
+          .catch(err => console.log(err));
+      };
     return (
         <div>
             <main className="d-flex min-vh-100 bg-light text-dark">
@@ -83,6 +98,37 @@ function AddCarusel() {
                             </div>
                         </div>
                     </div>
+                    <div className="row">
+        <div className="col-md-12 d-flex justify-content-center align-items-center">
+          <Table className="table table-hover border-table dataTable no-footer" style={{ width: '100%' }}>
+            <caption>List of Carousel Items</caption>
+            <thead>
+              <tr>
+                <th scope="col">Photo</th>
+                <th scope="col">Title</th>
+                <th scope="col">Text</th>
+              </tr>
+            </thead>
+            <tbody>
+              {Array.isArray(carouselItems) && carouselItems.length > 0 ? (
+                carouselItems.flat().map((item, index) => (
+                  <tr key={index}>
+                    <td>
+                      <img src={item.Photo} alt="Carousel Item" className='carusel-img'/>
+                    </td>
+                    <td>{item.Titulli}</td>
+                    <td>{item.Teksti}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="3" className="text-center">No items found</td>
+                </tr>
+              )}
+            </tbody>
+          </Table>
+        </div>
+      </div>
                 </div>
             </main>
         </div>

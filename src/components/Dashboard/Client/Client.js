@@ -4,6 +4,7 @@ import Sidebar from '../Sidebar';
 import EditClient from './EditClient';
 import Nav from '../Nav';
 import VerifyLogin from '../VerifyLogin';
+import { Container, Table } from 'react-bootstrap';
 
 export const Client = () => {
     const [users, setUsers] = useState([]);
