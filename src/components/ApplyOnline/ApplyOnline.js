@@ -11,6 +11,10 @@ function AplikimiOnline() {
     const [errors, setErrors] = useState({});
     const [successMessage, setSuccessMessage] = useState('');
     const [idPhotos, setIdPhotos] = useState({ frontPhoto: '', backPhoto: '' });
+    const [countries, setCountries] = useState([]);
+    const [cities, setCities] = useState([]);
+    const [selectedCountry, setSelectedCountry] = useState('');
+    const [selectedCity, setSelectedCity] = useState('');
 
     const handlePhotoUpload = (e, type) => {
         const image = e.target.files[0];
@@ -78,6 +82,36 @@ function AplikimiOnline() {
             .catch(err => console.log('Error sending email', err));
     };
 
+    useEffect(() => {
+        axios.get('http://localhost:8080/getAllCountries')
+            .then(response => {
+                const countryList = response.data.map(country => ({
+                    name: country.country,
+                    code: country.iso2
+                }));
+                setCountries(countryList);
+            })
+            .catch(error => console.error('Error fetching countries:', error));
+    }, []);
+
+    useEffect(() => {
+        if (selectedCountry) {
+            axios.post(`http://localhost:8080/getAllCitiesFromCountry`, { iso2: selectedCountry })
+                .then(response => {
+                    setCities(response.data);
+                })
+                .catch(error => console.error('Error fetching cities:', error));
+        }
+    }, [selectedCountry]);
+
+    const handleCountryChange = (event) => {
+        setSelectedCountry(event.target.value);
+        setSelectedCity('');
+    };
+
+    const handleCityChange = (event) => {
+        setSelectedCity(event.target.value);
+    };
     return (
         <>
             <Navbar />
@@ -228,33 +262,48 @@ function AplikimiOnline() {
                             </div>
                             <div className="form-outline mb-4">
                                 <label htmlFor="Country" className="form-label">Address</label>
-                                <input
-                                    type="text"
+                                <select 
                                     id="Country"
                                     name="Country"
-                                    placeholder="Country"
-                                    onChange={handleInput}
+                                    value={selectedCountry}
+                                    onChange={handleCountryChange}
                                     className="form-control form-control-lg mb-2"
-                                    required
-                                />
-                                <input
-                                    type="text"
-                                    id="City"
-                                    name="City"
-                                    placeholder="City"
-                                    onChange={handleInput}
-                                    className="form-control form-control-lg mb-2"
-                                    required
-                                />
-                                <input
-                                    type="text"
-                                    id="Street"
-                                    name="Street"
-                                    placeholder="Street"
-                                    onChange={handleInput}
-                                    className="form-control form-control-lg"
-                                    required
-                                />
+                                >
+                                    <option value="" disabled>Select a country</option>
+                                    {countries.map((country, index) => (
+                                        <option key={index} value={country.code}>
+                                            {country.name}
+                                        </option>
+                                    ))}
+                                </select>
+
+                                {selectedCountry && (
+                                    <select
+                                        id="City"
+                                        name="City"
+                                        value={selectedCity}
+                                        onChange={handleCityChange}
+                                        className="form-control form-control-lg mb-2">
+                                        <option value="" disabled>Select a city</option>
+                                        {cities.map((city, index) => (
+                                            <option key={index} value={city}>
+                                                {city}
+                                            </option>
+                                        ))}
+                                    </select>
+                                )}
+
+                                {selectedCity && (
+                                    <input
+                                        type="text"
+                                        id="Street"
+                                        name="Street"
+                                        placeholder="Street"
+                                        onChange={handleInput}
+                                        className="form-control form-control-lg"
+                                        required
+                                    />
+                                )}
                                 {errors.address && <span className="text-danger">{errors.address}</span>}
                             </div>
                             <div className="d-flex justify-content-center">
