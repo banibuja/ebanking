@@ -13,7 +13,7 @@ function AplikimiOnline() {
     const [idPhotos, setIdPhotos] = useState({ frontPhoto: '', backPhoto: '' });
     const [countries, setCountries] = useState([]);
     const [cities, setCities] = useState([]);
-    const [selectedCountry, setSelectedCountry] = useState('');
+    const [selectedCountry, setSelectedCountry] = useState();
     const [selectedCity, setSelectedCity] = useState('');
 
     const handlePhotoUpload = (e, type) => {
@@ -59,8 +59,9 @@ function AplikimiOnline() {
                                 setErrors(prev => ({ ...prev, username: '' }));
                                 if (Object.keys(errors).length === 0) {
 
-                                    axios.post('http://localhost:8080/addApply', { ...values, frontPhoto: idPhotos.frontPhoto, backPhoto: idPhotos.backPhoto })
+                                    axios.post('http://localhost:8080/addApply', { ...values, Country: selectedCountry.name, City: selectedCity, frontPhoto: idPhotos.frontPhoto, backPhoto: idPhotos.backPhoto })
                                         .then(res => {
+                                            console.log(values);
                                             setSuccessMessage('Application submitted successfully!');
                                             navigate('../');
                                         })
@@ -96,7 +97,7 @@ function AplikimiOnline() {
 
     useEffect(() => {
         if (selectedCountry) {
-            axios.post(`http://localhost:8080/getAllCitiesFromCountry`, { iso2: selectedCountry })
+            axios.post(`http://localhost:8080/getAllCitiesFromCountry`, { iso2: selectedCountry.code })
                 .then(response => {
                     setCities(response.data);
                 })
@@ -105,7 +106,8 @@ function AplikimiOnline() {
     }, [selectedCountry]);
 
     const handleCountryChange = (event) => {
-        setSelectedCountry(event.target.value);
+        let country = countries.find((country) => country.code == event.target.value)
+        setSelectedCountry(country);
         setSelectedCity('');
     };
 

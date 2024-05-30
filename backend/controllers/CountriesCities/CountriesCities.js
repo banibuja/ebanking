@@ -6,10 +6,6 @@ const getAllCountries = (req, res) => {
             "country": "Afghanistan"
         },
         {
-            "iso2": "AF",
-            "country": "Afghanistan"
-        },
-        {
             "iso2": "AL",
             "country": "Albania"
         },
