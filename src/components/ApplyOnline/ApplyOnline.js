@@ -84,7 +84,7 @@ function AplikimiOnline() {
     };
 
     useEffect(() => {
-        axios.get('http://localhost:8080/getAllCountries')
+        axios.get('https://polar-everglades-58451-8c8c26171cdb.herokuapp.com/getAllCountries')
             .then(response => {
                 const countryList = response.data.map(country => ({
                     name: country.country,
@@ -97,7 +97,7 @@ function AplikimiOnline() {
 
     useEffect(() => {
         if (selectedCountry) {
-            axios.post(`http://localhost:8080/getAllCitiesFromCountry`, { iso2: selectedCountry.code })
+            axios.get(`https://polar-everglades-58451-8c8c26171cdb.herokuapp.com/getAllCitiesFromCountry/${selectedCountry.code}`)
                 .then(response => {
                     setCities(response.data);
                 })
