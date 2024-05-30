@@ -105,7 +105,7 @@ export default function Sidebar() {
               <li>
                 <Dropdown>
                   <Dropdown.Toggle variant="link" id="dropdown-clients" className="nav-link link-dark">
-                    <i className="bi me-2 fas fa-user fa-1x text-gray-300 bg-light"></i>
+                    <i className="bi me-2 fas fa-user fa-1x text-gray-300  "></i>
                     Clients
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
@@ -127,7 +127,7 @@ export default function Sidebar() {
           <li>
             <Dropdown>
               <Dropdown.Toggle variant="link" id="dropdown-clients" className="nav-link link-dark">
-                <i className="bi me-2 fas fa-user fa-1x text-gray-300 bg-light"></i>
+                <i className="bi me-2 fas fa-user fa-1x text-gray-300  "></i>
                 Accounts
               </Dropdown.Toggle>
               <Dropdown.Menu>
@@ -138,7 +138,7 @@ export default function Sidebar() {
           <li>
             <Dropdown>
               <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
-                <i className="bi me-2 fas fa-money-bill-wave fa-1x text-gray-300 bg-light"></i>
+                <i className="bi me-2 fas fa-money-bill-wave fa-1x text-gray-300  "></i>
                 Invesments
               </Dropdown.Toggle>
               <Dropdown.Menu>
@@ -151,7 +151,7 @@ export default function Sidebar() {
           <li>
             <Dropdown>
               <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
-                <i className="bi me-2 fas fa-money-bill-wave fa-1x text-gray-300 bg-light"></i>
+                <i className="bi me-2 fas fa-money-bill-wave fa-1x text-gray-300  "></i>
                 Manage Home-Page
               </Dropdown.Toggle>
               <Dropdown.Menu>
@@ -163,7 +163,7 @@ export default function Sidebar() {
           <li>
             <Dropdown>
               <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
-                <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300 bg-light"></i>
+                <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300  "></i>
                 Transactions
               </Dropdown.Toggle>
               <Dropdown.Menu>
@@ -177,7 +177,7 @@ export default function Sidebar() {
           <li>
             <Dropdown>
               <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
-                <i className="bi me-2 fas fa-hand-holding-usd fa-1x text-gray-300 bg-light"></i>
+                <i className="bi me-2 fas fa-hand-holding-usd fa-1x text-gray-300  "></i>
                 Loans
               </Dropdown.Toggle>
               <Dropdown.Menu>
@@ -187,7 +187,7 @@ export default function Sidebar() {
             </Dropdown>
           </li>
           <li>
-            <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
+            <a href="/Reports" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
               Reports
             </a>
@@ -217,7 +217,7 @@ export default function Sidebar() {
 
         {/* <Dropdown>
           <Dropdown.Toggle variant="link" id="dropdown-profile" className="nav-link link-dark">
-            <i className="bi me-2 fas fa-user fa-1x text-gray-300 bg-light" ></i>
+            <i className="bi me-2 fas fa-user fa-1x text-gray-300  " ></i>
             Profile
           </Dropdown.Toggle>
           <Dropdown.Menu>
