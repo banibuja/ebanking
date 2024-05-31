@@ -64,20 +64,19 @@ const updateCarusel = (req, res) => {
 };
 const deleteCarusel = (req, res) => {
     const CaruselId = req.params.id;
-console.log(req.params.CaruselId);
-    const sql = "DELETE from Carusel WHERE CaruselId = ?";
-    db.query(sql, [CaruselId], (err, data) => {
+    const sql = "DELETE FROM Carusel WHERE CaruselId = ?";
+    db.query(sql, [CaruselId], (err, result) => {
         if (err) {
             return res.status(500).json({ error: "Internal server error" });
         }
-        if (data.length > 0) {
-            return res.json(data[0]);
+        if (result.affectedRows > 0) {
+            return res.json('success');
         } else {
-            return res.status(404).json({ message: "Carusel not found" });
+            return res.status(404).json({ message: "Carousel item not found" });
         }
     });
+};
 
-}
 
 
 module.exports = { insertCarusel,getCarusel,getCaruselForEdit,updateCarusel,deleteCarusel };

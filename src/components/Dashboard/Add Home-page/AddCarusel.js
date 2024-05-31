@@ -33,7 +33,7 @@ function AddCarusel() {
         try {
             const response = await axios.post('http://localhost:8080/insertCarusel', values);
             if (response.data === 'success') {
-                navigate('/AddCarusel'); 
+              window.location.reload(); 
             } else {
                 console.error('Failed to add goal');
             }
@@ -77,11 +77,15 @@ function AddCarusel() {
     const handleDelete = (id) => {
       axios.delete(`http://localhost:8080/deleteCarusel/${id}`)
           .then(res => {
-            fetchCarouselItems();
-            window.location.reload();
+              if (res.data === 'success') {
+                  window.location.reload();
+              } else {
+                  console.error('Failed to delete carousel item');
+              }
           })
           .catch(err => console.log(err));
   };
+  
     return (
         <div>
             <main className="d-flex min-vh-100 bg-light text-dark">

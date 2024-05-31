@@ -4,17 +4,19 @@ import Sidebar from '../Sidebar';
 import axios from 'axios';
 import Nav from '../Nav';
 import {Table } from 'react-bootstrap';
-
+import EditHomePage from './EditHomePage';
 
 function SaveTransaction() {
     const navigate = useNavigate();
-
+    const [InfoItems, setInfo] = useState([]);
+    const [InfoSectionId, setEditInfoId] = useState(null);
     const [values, setValues] = useState({
         Info: ''
     });
     const [errors, setErrors] = useState({});
 
     useEffect(() => {
+      fetchCarouselItems();
     }, []);
 
     const handleInput = (event) => {
@@ -26,7 +28,7 @@ function SaveTransaction() {
         try {
             const response = await axios.post('http://localhost:8080/insertInfoSection', values);
             if (response.data === 'success') {
-                navigate('/Add-HomePage'); 
+              window.location.reload();
             } else {
                 console.error('Failed to add goal');
             }
@@ -34,17 +36,36 @@ function SaveTransaction() {
             console.error('Failed to add goal:', error);
         }
     };
-    // const fetchCarouselItems = () => {
-    //     axios.post('http://localhost:8080/getInfoSection')
-    //       .then(res => {
-    //         const items = res.data;
-    //         console.log(items);
-    //         const processedItems = items.map(item => {
-    //           return { ...item};
-    //         });
-    //       })
-    //       .catch(err => console.log(err));
-    //   };
+    const handleEdit = (id) => {
+      setEditInfoId(id);
+  };
+  const handleCloseEditModal = () => {
+    setEditInfoId(null);
+};
+    const fetchCarouselItems = () => {
+        axios.post('http://localhost:8080/getInfoSection')
+          .then(res => {
+            const items = res.data;
+            console.log(items);
+            const processedItems = items.map(item => {
+              return { ...item};
+            });
+            setInfo(processedItems);
+          })
+          .catch(err => console.log(err));
+      };
+
+      const handleDelete = (id) => {
+        axios.delete(`http://localhost:8080/deleteInfo/${id}`)
+            .then(res => {
+                if (res.data === 'success') {
+                    window.location.reload();
+                } else {
+                    console.error('Failed to delete carousel item');
+                }
+            })
+            .catch(err => console.log(err));
+    };
     return (
         <div>
             <main className="d-flex min-vh-100 bg-light text-dark">
@@ -84,18 +105,18 @@ function SaveTransaction() {
                           </tr>
                         </thead>
                         <tbody>
-                          {/* {Array.isArray(carouselItems) && carouselItems.length > 0 ? (
-                            {/* carouselItems.flat().map((item, index) => (
+                          {Array.isArray(InfoItems) && InfoItems.length > 0 ? (
+                           InfoItems.flat().map((item, index) => (
                               <tr key={index}>
-                                <td>{item.Teksti}</td>
+                                <td>{item.Info}</td>
                                 <td>
                                   <button 
-                                      // onClick={() => handleEdit(item.userId)} 
+                                      onClick={() => handleEdit(item.InfoSectionId)} 
                                       className="btn btn-primary mr-2">
                                       Edit
                                   </button>
                                   <button 
-                                      // onClick={() => handleDelete(item.userId)} 
+                                      onClick={() => handleDelete(item.InfoSectionId)} 
                                       className="btn btn-danger">
                                       Delete
                                   </button>
@@ -106,13 +127,14 @@ function SaveTransaction() {
                             <tr>
                               <td colSpan="3" className="text-center">No items found</td>
                             </tr>
-                          )}*/}
+                          )}
                         </tbody>
                       </Table>
                     </div>
                   </div>
                 </div>
             </main>
+            {InfoSectionId !== null && <EditHomePage id={InfoSectionId} onClose={handleCloseEditModal} />}
         </div>
     );
 }
