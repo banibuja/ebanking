@@ -34,8 +34,8 @@ function InvesmentsGoals() {
         <div>
             <main style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'white', color: 'black' }}>
                 <Sidebar />
-                <div className="content-wrapper" style={{ marginRight: '100px' }}>
-                    <section className="content">
+                {/*<div className="content-wrapper" style={{ marginRight: '100px' }}>
+                    <section className="content">*/}
                         <div className="container-fluid">
                             <div className="row">
                                 <div className="col-md-12">
@@ -73,8 +73,8 @@ function InvesmentsGoals() {
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </section>
+                       {/* </div>
+                    </section>*/}
                 </div>
             </main>
         </div>
