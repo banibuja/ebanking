@@ -16,7 +16,7 @@ export const InvestmentsTable = () => {
     const fetchGoals = () => {
         axios.post('http://localhost:8080/getGoalsWithSession')
             .then(res => {
-                console.log(res.data); 
+                //console.log(res.data); 
                 const fetchedGoals = res.data;
                 if (Array.isArray(fetchedGoals)) { 
                     setGoals(fetchedGoals);
