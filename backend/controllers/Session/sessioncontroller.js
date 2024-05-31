@@ -1,11 +1,14 @@
-
 const sessionTimeRemaining = (req, res) => {
     if (req.session && req.session.username) {
         const now = new Date().getTime();
-        const expireTime = req.session.maxAge;
+        const expireTime = req.session.cookie.expires ? new Date(req.session.cookie.expires).getTime() : now;
         if (now > expireTime) {
-            req.session.expired = true;
-            return res.json({ timeRemaining: 0 });
+            req.session.destroy(err => {
+                if (err) {
+                    return res.status(500).json({ error: "Failed to destroy session" });
+                }
+                return res.json({ timeRemaining: 0 });
+            });
         } else {
             const timeRemaining = Math.round((expireTime - now) / 1000);
             return res.json({ timeRemaining });
@@ -16,12 +19,8 @@ const sessionTimeRemaining = (req, res) => {
 };
 
 const resetSession = (req, res) => {
-    
     if (req.session) {
-        const date = new Date();
-        expireDate = date.setMinutes(date.getMinutes() + 15)
-        req.session.touch(); 
-        req.session.maxAge = +expireDate;
+        req.session.cookie.maxAge = 15 * 60 * 1000; // 15 minutes in milliseconds
         res.json({ success: true });
     } else {
         res.status(401).json({ error: "User session not found" });
@@ -29,4 +28,3 @@ const resetSession = (req, res) => {
 };
 
 module.exports = { sessionTimeRemaining, resetSession };
-

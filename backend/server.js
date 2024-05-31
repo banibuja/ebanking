@@ -24,8 +24,6 @@ const HomeController = require('./controllers/Add-Home-page/Add-InfoSection');
 const CaruselController = require('./controllers/Add-Home-page/AddCarusel');
 const AboutUSController = require('./controllers/AboutUs/EditAddAbouUs');
 
-
-
 const app = express();
 app.use(cors({
     origin: ["http://localhost:3000"],
@@ -37,15 +35,24 @@ app.use(express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 5000
 app.use(cookieParser());
 app.use(bodyParser.json());
 
+const refreshSession = (req, res, next) => {
+    if (req.session) {
+        req.session.cookie.maxAge = 15 * 60 * 1000; 
+    }
+    next();
+};
 
 app.use(session({
     secret: 'secret',
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: false
+        secure: false,
+        maxAge: 15 * 60 * 1000 
     }
 }));
+
+app.use(refreshSession);
 
 app.post('/sendEmailContactUs', contactusController.sendEmailContactUs);
 
@@ -56,7 +63,6 @@ app.post('/getCarusel', CaruselController.getCarusel);
 app.get('/getCaruselForEdit/:id', CaruselController.getCaruselForEdit);
 app.put('/updateCarusel/:id', CaruselController.updateCarusel);
 app.delete("/deleteCarusel/:id", CaruselController.deleteCarusel);
-
 
 app.post('/getAllFlexSave', saveTransactionController.getSavingsAccounts);
 app.post('/insertSaveTransaction', saveTransactionController.insertSaveTransaction);
@@ -81,6 +87,7 @@ app.post('/searchUsers', clientController.getByUserID);
 app.delete("/deleteClient/:id", clientController.deleteClient);
 app.get('/checkUsername', clientController.checkUsername);
 app.get('/checkEmail', clientController.checkEmail);
+
 app.post('/getUsersWithSession', clientController.getUsersWithSession);
 
 app.post('/getAllPermissions', accessPermissionsController.getAllPermissions);
@@ -118,10 +125,6 @@ app.get('/getCurrenciesForEdit/:id', currenciesController.getCurrenciesForEdit);
 app.put('/updateCurrencies/:id', currenciesController.updateCurrencies);
 app.delete("/deleteCurrencies/:id", currenciesController.deleteCurrencies);
 
-app.post('/getCurrentAcc', TransactionController.getCurrentAccount);
-app.post('/insertTransaction', TransactionController.insertTransaction);
-app.post('/getAllTransactions', TransactionController.getAllTransactions);
-
 app.post('/getGoalsWithSession', investmentsGoals.getGoalsBySession);
 app.post('/addGoal', investmentsGoals.addGoal);
 app.get('/getGoalsForEdit/:id', investmentsGoals.getGoalsForEdit);
@@ -130,8 +133,6 @@ app.delete("/deleteGoals/:id", investmentsGoals.deleteGoals);
 
 app.post('/insertAboutUs', AboutUSController.insertAboutUs);
 app.get('/getAboutUs', AboutUSController.getAboutUs);
-
-
 
 app.post('/getClientforProfile', profileController.getClientforProfile);
 app.put('/updateProfile', profileController.updateProfile);
@@ -142,7 +143,7 @@ app.post('/getCurrentAcc', TransactionController.getCurrentAccount);
 app.post('/insertTransaction', TransactionController.insertTransaction);
 app.post('/getAllTransactions', TransactionController.getAllTransactions);
 
-
+app.post('/getAllnterTransactions', TransactionController.getAllnterTransactions);
 
 app.post('/getAllLoans', loansController.getAllLoans);
 app.get('/getAccountNumber', loansController.getAccountNumber);
@@ -154,8 +155,6 @@ app.put('/updateLoan/:id', loansController.updateLoan);
 app.put('/updateStatusLoans/:id', loansController.updateStatusLoans);
 
 app.post('/getAllLoansForClient', loansController.getAllLoansForClient);
-
-
 
 const db = mysql.createConnection({
     host: "localhost",
@@ -227,7 +226,8 @@ app.post('/loginform', async (req, res) => {
                         req.session.username = result[0].username;
                         req.session.name = result[0].name;
                         req.session.lastname = result[0].lastname;
-                        req.session.maxAge = +expireDate;
+                        req.session.cookie.maxAge = 15 * 60 * 1000; 
+
                         return res.json({ Message: "Login successful", Login: true });
                     });
                 } else {
@@ -240,8 +240,6 @@ app.post('/loginform', async (req, res) => {
         }
     });
 });
-
-
 
 app.listen(8080, () => {
     console.log("Server is running");
