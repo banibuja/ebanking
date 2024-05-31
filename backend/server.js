@@ -58,6 +58,9 @@ app.post('/sendEmailContactUs', contactusController.sendEmailContactUs);
 
 app.post('/insertInfoSection', HomeController.insertInfoSection);
 app.post('/getInfoSection', HomeController.getInfoSection);
+app.get('/getInfoForEdit/:id', HomeController.getInfoForEdit);
+app.put('/updateInfo/:id', HomeController.updateInfo);
+app.delete("/deleteInfo/:id", HomeController.deleteInfo);
 app.post('/insertCarusel', CaruselController.insertCarusel);
 app.post('/getCarusel', CaruselController.getCarusel);
 app.get('/getCaruselForEdit/:id', CaruselController.getCaruselForEdit);
