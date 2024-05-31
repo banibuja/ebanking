@@ -20,6 +20,14 @@ CREATE TABLE InfoSection(
     InfoSectionId int not null primary key AUTO_INCREMENT,
     Info TEXT
 );
+
+CREATE TABLE AboutUs(
+    AboutUsId int not null primary key AUTO_INCREMENT,
+    Tittle TEXT,
+    Info TEXT
+);
+
+
 CREATE TABLE Carusel(
     CaruselId int not null primary key AUTO_INCREMENT,
     Titulli varchar(50) not null,

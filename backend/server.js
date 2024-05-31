@@ -22,6 +22,8 @@ const contactusController = require('./controllers/Contact/sendEmailContactForm'
 const saveTransactionController = require('./controllers/Transaction/SaveTransaction');
 const HomeController = require('./controllers/Add-Home-page/Add-InfoSection');
 const CaruselController = require('./controllers/Add-Home-page/AddCarusel');
+const AboutUSController = require('./controllers/AboutUs/EditAddAbouUs');
+
 
 
 const app = express();
@@ -125,6 +127,11 @@ app.post('/addGoal', investmentsGoals.addGoal);
 app.get('/getGoalsForEdit/:id', investmentsGoals.getGoalsForEdit);
 app.put('/updateGoal/:id', investmentsGoals.updateGoal);
 app.delete("/deleteGoals/:id", investmentsGoals.deleteGoals);
+
+app.post('/insertAboutUs', AboutUSController.insertAboutUs);
+app.get('/getAboutUs', AboutUSController.getAboutUs);
+
+
 
 app.post('/getClientforProfile', profileController.getClientforProfile);
 app.put('/updateProfile', profileController.updateProfile);

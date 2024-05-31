@@ -43,6 +43,7 @@ import SaveHistory from '../components/Dashboard/Transaction/SaveHistory';
 import AddHomePage from '../components/Dashboard/Add Home-page/Add-HomePage';
 import AddCarusel from '../components/Dashboard/Add Home-page/AddCarusel';
 import ManageLoans from '../components/Dashboard/Loans/ManageLoans';
+import AddAboutUS from '../components/Dashboard/AddAboutUs/AddAboutUs';
 
 import Reports from '../components/Dashboard/Reports/Reports';
 function App() {
@@ -58,6 +59,7 @@ function App() {
         <Route path="/AddCarusel" element={<AddCarusel/>}/>
         {/* <Route path="/login" element={<Login />} /> */}
         <Route path="/AboutUs" element={<AboutUs/> } />
+        <Route path="/AddAboutUS" element={<AddAboutUS/> } />
         <Route path="/ApplyOnline" element={<ApplyOnline />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/client" element={<Client />} />
