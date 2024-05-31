@@ -5,9 +5,13 @@ import axios from 'axios';
 import Nav from '../Nav';
 import { Buffer } from 'buffer';
 import {Table } from 'react-bootstrap';
+import EditCarusel from './EditCarusel';
+
 function AddCarusel() {
     const navigate = useNavigate();
     const [carouselItems, setCarouselItems] = useState([]);
+    const [numClients, setNumClients] = useState(0);
+    const [editClientId, setEditClientId] = useState(null);
     const [values, setValues] = useState({
         Titulli: '',
         Teksti: '',
@@ -29,7 +33,7 @@ function AddCarusel() {
         try {
             const response = await axios.post('http://localhost:8080/insertCarusel', values);
             if (response.data === 'success') {
-                navigate('/dashboard'); 
+                navigate('/AddCarusel'); 
             } else {
                 console.error('Failed to add goal');
             }
@@ -62,6 +66,22 @@ function AddCarusel() {
           })
           .catch(err => console.log(err));
       };
+      const handleEdit = (id) => {
+        setEditClientId(id);
+    };
+
+    const handleCloseEditModal = () => {
+        setEditClientId(null);
+    };
+
+    const handleDelete = (id) => {
+      axios.delete(`http://localhost:8080/deleteCarusel/${id}`)
+          .then(res => {
+            fetchCarouselItems();
+            window.location.reload();
+          })
+          .catch(err => console.log(err));
+  };
     return (
         <div>
             <main className="d-flex min-vh-100 bg-light text-dark">
@@ -99,38 +119,52 @@ function AddCarusel() {
                         </div>
                     </div>
                     <div className="row">
-        <div className="col-md-12 d-flex justify-content-center align-items-center">
-          <Table className="table table-hover border-table dataTable no-footer" style={{ width: '100%' }}>
-            <caption>List of Carousel Items</caption>
-            <thead>
-              <tr>
-                <th scope="col">Photo</th>
-                <th scope="col">Title</th>
-                <th scope="col">Text</th>
-              </tr>
-            </thead>
-            <tbody>
-              {Array.isArray(carouselItems) && carouselItems.length > 0 ? (
-                carouselItems.flat().map((item, index) => (
-                  <tr key={index}>
-                    <td>
-                      <img src={item.Photo} alt="Carousel Item" className='carusel-img'/>
-                    </td>
-                    <td>{item.Titulli}</td>
-                    <td>{item.Teksti}</td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="3" className="text-center">No items found</td>
-                </tr>
-              )}
-            </tbody>
-          </Table>
-        </div>
-      </div>
+                    <div className="col-md-12 d-flex justify-content-center align-items-center">
+                      <Table className="table table-hover border-table dataTable no-footer" style={{ width: '100%' }}>
+                        <caption>List of Carousel Items</caption>
+                        <thead>
+                          <tr>
+                            <th scope="col">Photo</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Text</th>
+                            <th scope="col"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {Array.isArray(carouselItems) && carouselItems.length > 0 ? (
+                            carouselItems.flat().map((item, index) => (
+                              <tr key={index}>
+                                <td>
+                                  <img src={item.Photo} alt="Carousel Item" className='carusel-img'/>
+                                </td>
+                                <td>{item.Titulli}</td>
+                                <td>{item.Teksti}</td>
+                                <td>
+                                  <button 
+                                      onClick={() => handleEdit(item.CaruselId)} 
+                                      className="btn btn-primary mr-2">
+                                      Edit
+                                  </button>
+                                  <button 
+                                      onClick={() => handleDelete(item.CaruselId)} 
+                                      className="btn btn-danger">
+                                      Delete
+                                  </button>
+                                </td>
+                              </tr>
+                            ))
+                          ) : (
+                            <tr>
+                              <td colSpan="3" className="text-center">No items found</td>
+                            </tr>
+                          )}
+                        </tbody>
+                      </Table>
+                    </div>
+                  </div>
                 </div>
             </main>
+            {editClientId !== null && <EditCarusel id={editClientId} onClose={handleCloseEditModal} />}
         </div>
     );
 }

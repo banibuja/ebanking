@@ -51,6 +51,10 @@ app.post('/insertInfoSection', HomeController.insertInfoSection);
 app.post('/getInfoSection', HomeController.getInfoSection);
 app.post('/insertCarusel', CaruselController.insertCarusel);
 app.post('/getCarusel', CaruselController.getCarusel);
+app.get('/getCaruselForEdit/:id', CaruselController.getCaruselForEdit);
+app.put('/updateCarusel/:id', CaruselController.updateCarusel);
+app.delete("/deleteCarusel/:id", CaruselController.deleteCarusel);
+
 
 app.post('/getAllFlexSave', saveTransactionController.getSavingsAccounts);
 app.post('/insertSaveTransaction', saveTransactionController.insertSaveTransaction);

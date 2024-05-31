@@ -53,7 +53,7 @@ function Login() {
             <h2 className="login-title">Login</h2>
             <form onSubmit={handleSubmit}>
               <div className="form-group">
-                <input type="text" name='username' className="form-control" placeholder="Enter email" onChange={handleInput} />
+                <input type="text" name='username' className="form-control" placeholder="User name" onChange={handleInput} />
               </div>
               <div className="form-group">
                 <input type="password" name='password' className="form-control" placeholder="Enter password" onChange={handleInput} />

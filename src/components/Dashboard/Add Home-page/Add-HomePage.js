@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import Sidebar from '../Sidebar';
 import axios from 'axios';
 import Nav from '../Nav';
+import {Table } from 'react-bootstrap';
+
 
 function SaveTransaction() {
     const navigate = useNavigate();
@@ -24,7 +26,7 @@ function SaveTransaction() {
         try {
             const response = await axios.post('http://localhost:8080/insertInfoSection', values);
             if (response.data === 'success') {
-                navigate('/InvestmentsTable'); 
+                navigate('/Add-HomePage'); 
             } else {
                 console.error('Failed to add goal');
             }
@@ -32,7 +34,17 @@ function SaveTransaction() {
             console.error('Failed to add goal:', error);
         }
     };
-
+    // const fetchCarouselItems = () => {
+    //     axios.post('http://localhost:8080/getInfoSection')
+    //       .then(res => {
+    //         const items = res.data;
+    //         console.log(items);
+    //         const processedItems = items.map(item => {
+    //           return { ...item};
+    //         });
+    //       })
+    //       .catch(err => console.log(err));
+    //   };
     return (
         <div>
             <main className="d-flex min-vh-100 bg-light text-dark">
@@ -61,6 +73,44 @@ function SaveTransaction() {
                             </div>
                         </div>
                     </div>
+                    <div className="row">
+                    <div className="col-md-12 d-flex justify-content-center align-items-center">
+                      <Table className="table table-hover border-table dataTable no-footer" style={{ width: '100%' }}>
+                        <caption>List of Carousel Items</caption>
+                        <thead>
+                          <tr>
+                            <th scope="col">Text</th>
+                            <th scope="col"></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {/* {Array.isArray(carouselItems) && carouselItems.length > 0 ? (
+                            {/* carouselItems.flat().map((item, index) => (
+                              <tr key={index}>
+                                <td>{item.Teksti}</td>
+                                <td>
+                                  <button 
+                                      // onClick={() => handleEdit(item.userId)} 
+                                      className="btn btn-primary mr-2">
+                                      Edit
+                                  </button>
+                                  <button 
+                                      // onClick={() => handleDelete(item.userId)} 
+                                      className="btn btn-danger">
+                                      Delete
+                                  </button>
+                                </td>
+                              </tr>
+                            ))
+                          ) : (
+                            <tr>
+                              <td colSpan="3" className="text-center">No items found</td>
+                            </tr>
+                          )}*/}
+                        </tbody>
+                      </Table>
+                    </div>
+                  </div>
                 </div>
             </main>
         </div>
