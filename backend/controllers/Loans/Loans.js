@@ -1,21 +1,18 @@
 const db = require('../../db');
 
-
-
 const getAllLoans = (req, res) => {
     const userID = req.session.uId;
     if (!userID) {
         return res.json("fail");
     }
-    var sql = "SELECT CurrentAccount FROM currentaccounts WHERE UserID = ?";
+    const sql = "SELECT CurrentAccount FROM currentaccounts WHERE UserID = ?";
     db.query(sql, [userID], (err, data) => {
         if (err) {
             return res.status(500).end();
         }
         if (data.length > 0) {
             const accountID = data[0].CurrentAccount;
-            var sql = "SELECT * FROM applyloans";
-            console.log(req.body);
+            const sql = "SELECT * FROM applyloans WHERE AccountID = ?";
             db.query(sql, [accountID], (err, data) => {
                 if (err) {
                     return res.status(500).end();
@@ -32,12 +29,11 @@ const getAllLoans = (req, res) => {
     });
 }
 
-
 const getLoanForEdit = (req, res) => {
     const loanID = req.params.id;
-    const sql = "SELECT AccountID, LoanAmount, LoanConditions, Status FROM loans WHERE LoanID = ?";
+    const sql = "SELECT * FROM applyloans WHERE LoanID = ?";
 
-    db.query(sql, [loanID], (err, data) => {
+    db.query(sql, [LoanID], (err, data) => {
         if (err) {
             return res.status(500).json({ error: "Internal server error" });
         }
@@ -49,13 +45,10 @@ const getLoanForEdit = (req, res) => {
     });
 };
 
-
 const applyLoan = (req, res) => {
-    console.log(req.body);
     const { AccountNumber, firstName, lastName, dateOfBirth, loanType, city, address, email, employmentStatus, annualIncome, loanAmount, loanPurpose } = req.body;
 
     const checkAccountSql = "SELECT * FROM currentaccounts WHERE CurrentAccount = ?";
-
     db.query(checkAccountSql, [AccountNumber], (err, result) => {
         if (err) {
             console.error("Error checking account:", err);
@@ -80,11 +73,9 @@ const applyLoan = (req, res) => {
 };
 
 const addLoan = (req, res) => {
-    console.log(req.body);
     const { AccountID, firstName, lastName, dateOfBirth, loanType, city, address, email, employmentStatus, annualIncome, loanAmount, loanPurpose } = req.body;
 
     const checkAccountSql = "SELECT * FROM currentaccounts WHERE CurrentAccount = ?";
-
     db.query(checkAccountSql, [AccountID], (err, result) => {
         if (err) {
             console.error("Error checking account:", err);
@@ -108,14 +99,12 @@ const addLoan = (req, res) => {
     });
 };
 
-
-
 const updateLoan = (req, res) => {
-    const { AccountID, LoanAmount, LoanConditions, Status } = req.body;
-    const loanID = req.params.id;
+    const { firstName, lastName, dateOfBirth, loanType, city, address, email, employmentStatus, annualIncome, loanAmount, loanPurpose, Status } = req.body;
+    const LoanID = req.params.id;
 
-    const sql = "UPDATE loans SET AccountID = ?, LoanAmount = ?, LoanConditions = ?, Status = ? WHERE LoanID = ?";
-    db.query(sql, [AccountID, LoanAmount, LoanConditions, Status, loanID], (err, result) => {
+    const sql = "UPDATE applyloans SET firstName=?, lastName=?, dateOfBirth=?, loanType=?, city=?, address=?, email=?, employmentStatus=?, annualIncome=?, loanAmount=?, loanPurpose=?, Status=? WHERE LoanID=?";
+    db.query(sql, [firstName, lastName, dateOfBirth, loanType, city, address, email, employmentStatus, annualIncome, loanAmount, loanPurpose, Status, LoanID], (err, result) => {
         if (err) {
             console.error("Error updating loan:", err);
             return res.status(500).json({ error: "Internal server error" });
@@ -127,9 +116,9 @@ const updateLoan = (req, res) => {
 
 const deleteLoan = (req, res) => {
     const loanID = req.params.id;
-    const sqlDelete = "DELETE FROM loans WHERE LoanID = ?";
+    const sqlDelete = "DELETE FROM applyloans WHERE LoanID = ?";
 
-    db.query(sqlDelete, loanID, (err, result) => {
+    db.query(sqlDelete, [loanID], (err, result) => {
         if (err) {
             console.error(err);
             return res.status(500).json({ error: "Internal server error" });
@@ -139,8 +128,7 @@ const deleteLoan = (req, res) => {
 };
 
 const getAccountNumber = (req, res) => {
-
-    const userId = req.session.uId; 
+    const userId = req.session.uId;
     const sql = "SELECT CurrentAccount FROM currentaccounts WHERE UserID = ?"; 
 
     db.query(sql, [userId], (err, result) => {
@@ -171,21 +159,19 @@ const updateStatusLoans = (req, res) => {
     });
 };
 
-
 const getAllLoansForClient = (req, res) => {
     const userID = req.session.uId;
     if (!userID) {
         return res.json("fail");
     }
-    var sql = "SELECT CurrentAccount FROM currentaccounts WHERE UserID = ?";
+    const sql = "SELECT CurrentAccount FROM currentaccounts WHERE UserID = ?";
     db.query(sql, [userID], (err, data) => {
         if (err) {
             return res.status(500).end();
         }
         if (data.length > 0) {
             const accountID = data[0].CurrentAccount;
-            var sql = "SELECT * FROM applyloans WHERE AccountID=? ";
-            console.log(req.body);
+            const sql = "SELECT * FROM applyloans WHERE AccountID=? ";
             db.query(sql, [accountID], (err, data) => {
                 if (err) {
                     return res.status(500).end();
@@ -202,4 +188,14 @@ const getAllLoansForClient = (req, res) => {
     });
 }
 
-module.exports = {getAllLoansForClient,getAccountNumber, getAllLoans, getLoanForEdit, applyLoan, updateLoan, deleteLoan, addLoan, updateStatusLoans};
+module.exports = {
+    getAllLoansForClient,
+    getAccountNumber,
+    getAllLoans,
+    getLoanForEdit,
+    applyLoan,
+    updateLoan,
+    deleteLoan,
+    addLoan,
+    updateStatusLoans
+};

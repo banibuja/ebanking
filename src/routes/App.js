@@ -85,7 +85,7 @@ function App() {
         <Route path="/ManagaeApplicantsOnline" element={<ManagaeApplicantsOnline/>} /> 
         <Route path="/ApplyLoans" element={<ApplyLoans/>} /> 
         <Route path="/SaveHistory" element={<SaveHistory/>} /> 
-        <Route path="/ManageLoans" element={<ManageLoans/>} /> 
+        <Route path="/ManageLoans" element={<ManageLoans />} />
 
 
 {/* 

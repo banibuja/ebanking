@@ -15,6 +15,19 @@ export const Loans = () => {
         LoanType: '', // Added LoanType
         LoanConditions: '',
         Status: ''
+       // AccountNumber: '',
+       // firstName: '',
+        //lastName: '',
+        //dateOfBirth: '',
+        //loanType: '',
+        //city: '',
+        //address: '',
+        
+        //email: '',
+        //employmentStatus: '',
+        //annualIncome: '',
+        //loanAmount: '',
+        //loanPurpose: ''
     });
 
     const loanTypes = [
