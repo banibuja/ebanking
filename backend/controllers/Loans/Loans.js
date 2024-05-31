@@ -33,7 +33,7 @@ const getLoanForEdit = (req, res) => {
     const loanID = req.params.id;
     const sql = "SELECT * FROM applyloans WHERE LoanID = ?";
 
-    db.query(sql, [LoanID], (err, data) => {
+    db.query(sql, [loanID], (err, data) => {
         if (err) {
             return res.status(500).json({ error: "Internal server error" });
         }

@@ -7,7 +7,7 @@ import EditLoan from './EditLoan'; // Ensure this is the correct path to your Ed
 const ManageLoans = () => {
     const [users, setUsers] = useState([]);
     const [numClients, setNumClients] = useState(0);
-    const [editClientId, setEditClientId] = useState(null); // Changed from false to null for clarity
+    const [editClientId, setEditClientId] = useState(null);
     const [recordsPerPage, setRecordsPerPage] = useState(10);
     const [showAll, setShowAll] = useState(false);
     const [searchUserID, setSearchUserID] = useState('');
@@ -162,7 +162,7 @@ const ManageLoans = () => {
                                                                     <EditLoan clientId={editClientId} closeEditModal={handleCloseEditModal} />
                                                                 )}
                                                                 <button
-                                                                    onClick={() => handleEdit(item.AccountID)}
+                                                                    onClick={() => handleEdit(item.LoanID)}
                                                                     className="btn btn-primary mr-2">
                                                                     Edit
                                                                 </button>
@@ -200,6 +200,8 @@ const ManageLoans = () => {
                                                                                        </div>
                                                                                    </div>
                                                                                </main>
+                                                                               {editClientId !== null && <EditLoan id={editClientId} onClose={handleCloseEditModal} />}
+
                                                                            </div>
                                                                        );
                                                                    };
