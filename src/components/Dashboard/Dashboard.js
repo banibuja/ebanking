@@ -61,7 +61,7 @@ export const Dashboard = () => {
   const navigate = useNavigate();
   
   useEffect(() => {
-    axios.get('http://localhost:8080')
+    axios.get('https://localhost:8080')
       .then(res => {
         if (res.data.valid) {
           setRole(res.data.role);

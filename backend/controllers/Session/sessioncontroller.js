@@ -17,10 +17,9 @@ const sessionTimeRemaining = (req, res) => {
         return res.status(401).json({ error: "User session not found" });
     }
 };
-
 const resetSession = (req, res) => {
     if (req.session) {
-        req.session.cookie.maxAge = 15 * 60 * 1000; // 15 minutes in milliseconds
+        req.session.cookie.maxAge = 15 * 60 * 1000; 
         res.json({ success: true });
     } else {
         res.status(401).json({ error: "User session not found" });

@@ -4,8 +4,11 @@ const cors = require('cors');
 const session = require("express-session");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
+const jwt = require('jsonwebtoken'); // for token generation and verification
 const bcrypt = require('bcrypt');
 
+
+// Importing controllers
 const clientController = require('./controllers/Client/ClientController');
 const applyOnlineController = require('./controllers/ApplyOnline/ApplyOnline');
 const accessPermissionsController = require('./controllers/AccesPermissions/AccesPermissionsController');
@@ -25,11 +28,14 @@ const CaruselController = require('./controllers/Add-Home-page/AddCarusel');
 const AboutUSController = require('./controllers/AboutUs/AddAbouUs');
 
 const app = express();
+
+// Middleware for handling CORS
 app.use(cors({
     origin: ["http://localhost:3000"],
     methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true
 }));
+
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 50000 }));
 app.use(cookieParser());
@@ -47,13 +53,29 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        secure: false,
+        secure: process.env.NODE_ENV === 'development', 
         maxAge: 15 * 60 * 1000 
     }
 }));
 
+const requireAuth = (req, res, next) => {
+    const token = req.headers.authorization;
+    if (token) {
+        jwt.verify(token, 'access_token_secret', (err, decoded) => {
+            if (err) {
+                return res.sendStatus(403); 
+            }
+            req.user = decoded;
+            next();
+        });
+    } else {
+        return res.sendStatus(401); 
+    }
+};
+
 app.use(refreshSession);
 
+// Routes
 app.post('/sendEmailContactUs', contactusController.sendEmailContactUs);
 
 app.post('/insertInfoSection', HomeController.insertInfoSection);
@@ -178,9 +200,8 @@ db.connect((err) => {
         console.log('DB: okey');
     }
 });
-
 db.on('error', (err) => {
-    console.error('Gabim lidhjen me databaze:', err);
+    console.error('Database connection error:', err);
 });
 
 app.get('/', (req, res) => {
@@ -203,6 +224,19 @@ app.get('/logout', (req, res) => {
 });
 
 app.post('/loginform', async (req, res) => {
+    // const db = mysql.createConnection({
+    //     host: "localhost",
+    //     user: "root",
+    //     password: "",
+    //     database: "ebanking"
+    // });
+    // db.connect((err) => {
+    //     if (err) {
+    //         console.error('DB not connect:', err);
+    //         return res.status(500).json({ message: "Internal server error" });
+    //     }
+    // });
+
     const sql = "SELECT * FROM users WHERE username = ?";
     const date = new Date();
     const expireDate = date.setMinutes(date.getMinutes() + 15);
@@ -230,14 +264,23 @@ app.post('/loginform', async (req, res) => {
                             return res.json({ Message: "Error during login", Login: false });
                         }
 
+                        const userId = result[0].userId; 
+
                         req.session.role = results[0].AccessLevel;
-                        req.session.uId = result[0].userId;
+                        req.session.uId = userId; 
                         req.session.username = result[0].username;
                         req.session.name = result[0].name;
                         req.session.lastname = result[0].lastname;
-                        req.session.cookie.maxAge = 15 * 60 * 1000; 
+                        req.session.cookie.maxAge = 15 * 60 * 10000; 
 
-                        return res.json({ Message: "Login successful", Login: true });
+                        // Generate Access Token
+                        const accessToken = jwt.sign({ userId, username: result[0].username }, 'access_token_secret', { expiresIn: '15m' });
+
+                        const refreshToken = jwt.sign({ userId }, 'refresh_token_secret');
+
+                        req.session.refreshToken = refreshToken;
+
+                        res.json({ accessToken, message: "Login successful", Login: true });
                     });
                 } else {
                     console.log(comparison);
@@ -247,6 +290,19 @@ app.post('/loginform', async (req, res) => {
         } else {
             return res.json({ Message: "Username not found", Login: false });
         }
+    });
+});
+
+
+app.post('/refresh_token', async (req, res) => {
+    const refreshToken = req.session.refreshToken;
+
+    jwt.verify(refreshToken, 'refresh_token_secret', (err, decoded) => {
+        if (err) {
+            return res.sendStatus(403); // Forbidden
+        }
+        const accessToken = jwt.sign({ userId: decoded.userId }, 'access_token_secret', { expiresIn: '15m' });
+        res.json({ accessToken });
     });
 });
 
