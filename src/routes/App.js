@@ -44,6 +44,7 @@ import AddHomePage from '../components/Dashboard/Add Home-page/Add-HomePage';
 import AddCarusel from '../components/Dashboard/Add Home-page/AddCarusel';
 import ManageLoans from '../components/Dashboard/Loans/ManageLoans';
 
+import Reports from '../components/Dashboard/Reports/Reports';
 function App() {
   return (
 
@@ -86,6 +87,7 @@ function App() {
         <Route path="/ApplyLoans" element={<ApplyLoans/>} /> 
         <Route path="/SaveHistory" element={<SaveHistory/>} /> 
         <Route path="/ManageLoans" element={<ManageLoans />} />
+        <Route path="/Reports" element={<Reports />} /> 
 
 
 {/* 

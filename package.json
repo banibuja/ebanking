@@ -37,7 +37,8 @@
     "reactjs-credit-card": "^1.0.6",
     "recharts": "^2.12.7",
     "styled-components": "^6.1.11",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "xlsx": "^0.18.5"
   },
   "scripts": {
     "start": "react-scripts start",

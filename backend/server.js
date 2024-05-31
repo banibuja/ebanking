@@ -22,7 +22,6 @@ const contactusController = require('./controllers/Contact/sendEmailContactForm'
 const saveTransactionController = require('./controllers/Transaction/SaveTransaction');
 const HomeController = require('./controllers/Add-Home-page/Add-InfoSection');
 const CaruselController = require('./controllers/Add-Home-page/AddCarusel');
-const countriescities = require('./controllers/CountriesCities/CountriesCities');
 
 
 const app = express();
@@ -52,6 +51,10 @@ app.post('/insertInfoSection', HomeController.insertInfoSection);
 app.post('/getInfoSection', HomeController.getInfoSection);
 app.post('/insertCarusel', CaruselController.insertCarusel);
 app.post('/getCarusel', CaruselController.getCarusel);
+app.get('/getCaruselForEdit/:id', CaruselController.getCaruselForEdit);
+app.put('/updateCarusel/:id', CaruselController.updateCarusel);
+app.delete("/deleteCarusel/:id", CaruselController.deleteCarusel);
+
 
 app.post('/getAllFlexSave', saveTransactionController.getSavingsAccounts);
 app.post('/insertSaveTransaction', saveTransactionController.insertSaveTransaction);
@@ -145,8 +148,6 @@ app.put('/updateStatusLoans/:id', loansController.updateStatusLoans);
 
 app.post('/getAllLoansForClient', loansController.getAllLoansForClient);
 
-app.get('/getAllCountries', countriescities.getAllCountries);
-app.post('/getAllCitiesFromCountry', countriescities.getAllCitiesFromCountry);
 
 
 const db = mysql.createConnection({

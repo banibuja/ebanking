@@ -6,6 +6,9 @@ const getAllTransactions = (req, res) => {
     if (!userID) {
         return res.json("fail");
     }
+    const startDate = req.body.startDate;
+    const endDate = req.body.endDate;
+
     var sql = "SELECT CurrentAccount FROM currentaccounts WHERE UserID = ?";
     db.query(sql, [userID], (err, data) => {
         if (err) {
@@ -13,8 +16,9 @@ const getAllTransactions = (req, res) => {
         }
         if (data.length > 0) {
             const accountID = data[0].CurrentAccount;
-            var sql = "SELECT * FROM transactions WHERE SenderAccID = ?";
-            db.query(sql, [accountID], (err, data) => {
+
+            var sql = "SELECT * FROM transactions WHERE SenderAccID = ? AND (CreatedAt BETWEEN ? AND ? )";
+            db.query(sql, [accountID, startDate, endDate], (err, data) => {
                 if (err) {
                     return res.status(500).end();
                 }

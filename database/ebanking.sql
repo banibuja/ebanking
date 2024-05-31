@@ -41,9 +41,7 @@ CREATE TABLE applyonline (
     Street varchar(30) not null,
     backPhoto longblob,
     frontPhoto longblob,
-    Status VARCHAR(20)
-
-    
+    Status VARCHAR(20)  
 );
 
 CREATE TABLE Adresa (
