@@ -22,7 +22,7 @@ const contactusController = require('./controllers/Contact/sendEmailContactForm'
 const saveTransactionController = require('./controllers/Transaction/SaveTransaction');
 const HomeController = require('./controllers/Add-Home-page/Add-InfoSection');
 const CaruselController = require('./controllers/Add-Home-page/AddCarusel');
-const AboutUSController = require('./controllers/AboutUs/EditAddAbouUs');
+const AboutUSController = require('./controllers/AboutUs/AddAbouUs');
 
 const app = express();
 app.use(cors({
@@ -136,6 +136,12 @@ app.delete("/deleteGoals/:id", investmentsGoals.deleteGoals);
 
 app.post('/insertAboutUs', AboutUSController.insertAboutUs);
 app.get('/getAboutUs', AboutUSController.getAboutUs);
+app.get('/getAboutUsEdit/:id', AboutUSController.getAboutUsEdit);
+app.put('/updateAboutUs/:id', AboutUSController.updateAboutUs);
+app.delete("/deleteAboutUs/:id", AboutUSController.deleteAboutUs);
+
+
+
 
 app.post('/getClientforProfile', profileController.getClientforProfile);
 app.put('/updateProfile', profileController.updateProfile);
