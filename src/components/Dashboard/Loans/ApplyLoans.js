@@ -14,7 +14,6 @@ function ApplyLoans() {
         loanType: '',
         city: '',
         address: '',
-        // phoneNumber: '',
         email: '',
         employmentStatus: '',
         annualIncome: '',
@@ -22,6 +21,7 @@ function ApplyLoans() {
         loanPurpose: ''
     });
     const [accountNumber, setAccountNumber] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
 
     useEffect(() => {
         const fetchData = async () => {
@@ -39,10 +39,10 @@ function ApplyLoans() {
                 const clientResponse = await axios.post('http://localhost:8080/getClientforProfile');
                 if (clientResponse.data) {
                     const { name, lastname, email, birthday, City, Street } = clientResponse.data;
-                    setValues(prevValues => ({ 
-                        ...prevValues, 
-                        firstName: name, 
-                        lastName: lastname, 
+                    setValues(prevValues => ({
+                        ...prevValues,
+                        firstName: name,
+                        lastName: lastname,
                         email: email,
                         dateOfBirth: birthday,
                         city: City,
@@ -83,7 +83,10 @@ function ApplyLoans() {
         try {
             const response = await axios.post('http://localhost:8080/applyLoan', values);
             if (response.data.message === 'Loan application submitted successfully') {
-                window.location.reload();
+                setSuccessMessage('Aplikimi për kredi u krye me sukses!');
+                setTimeout(() => {
+                    window.location.reload();
+                }, 3000); // Reload the page after 3 seconds
             } else {
                 console.error('Failed to submit loan application');
             }
@@ -109,6 +112,7 @@ function ApplyLoans() {
                         <div style={{ background: 'black', color: 'white', padding: '30px', borderTopLeftRadius: '10px', borderTopRightRadius: '10px' }}>
                             <h3 style={{ margin: 0, fontSize: '1.5em' }}>Apply for a Loan</h3>
                         </div>
+                        {successMessage && <div style={{ padding: '20px', textAlign: 'center', color: 'green' }}>{successMessage}</div>}
                         <form onSubmit={handleSubmit}>
                             <div style={{ padding: '30px' }}>
                                 {step === 1 && (
@@ -150,7 +154,6 @@ function ApplyLoans() {
                                                 style={{ borderRadius: '5px', padding: '15px', border: '1px solid #ced4da', fontSize: '1.2em', width: '100%' }}
                                                 required
                                                 disabled
-                                                
                                             />
                                         </div>
                                         <div style={{ width: '100%', maxWidth: '50%', padding: '0 15px', marginBottom: '20px' }}>
@@ -165,8 +168,6 @@ function ApplyLoans() {
                                                 disabled
                                             />
                                         </div>
-                                        
-                                        {/* // */}
                                         <div style={{ width: '100%', maxWidth: '50%', padding: '0 15px', marginBottom: '20px' }}>
                                             <label htmlFor="loanType">Loan Type</label>
                                             <select
@@ -182,23 +183,6 @@ function ApplyLoans() {
                                                 ))}
                                             </select>
                                         </div>
-
-                                        //
-                                        {/* <div style={{ width: '100%', maxWidth: '50%', padding: '0 15px', marginBottom: '20px' }}>
-                                            <label htmlFor="city">City</label>
-                                            <select
-                                                name="city"
-                                                value={values.city}
-                                                onChange={handleInput}
-                                                style={{ borderRadius: '5px', padding: '15px', border: '1px solid #ced4 da', fontSize: '1.2em', width: '100%' }}
-                                                required
-                                            >
-                                                <option value="">Select City</option>
-                                                {cities.map((city) => (
-                                                    <option key={city.id} value={city.id}>{city.name}</option>
-                                                ))}
-                                            </select>
-                                        </div> */}
                                     </div>
                                 )}
                                 {step === 2 && (
@@ -216,18 +200,6 @@ function ApplyLoans() {
                                                 disabled
                                             />
                                         </div>
-                                        {/* <div style={{ width: '100%', maxWidth: '50%', padding: '0 15px', marginBottom: '20px' }}>
-                                            <label htmlFor="phoneNumber">Phone Number</label>
-                                            <input
-                                                type="text"
-                                                placeholder="Phone Number"
-                                                name="phoneNumber"
-                                                value={values.phoneNumber}
-                                                onChange={handleInput}
-                                                style={{ borderRadius: '5px', padding: '15px', border: '1px solid #ced4da', fontSize: '1.2em', width: '100%' }}
-                                                required
-                                            />
-                                        </div> */}
                                         <div style={{ width: '100%', maxWidth: '50%', padding: '0 15px', marginBottom: '20px' }}>
                                             <label htmlFor="email">Email</label>
                                             <input
@@ -309,6 +281,7 @@ function ApplyLoans() {
                                 ) : (
                                     <button type="submit" style={{ background: '#FFB347', border: 'none', padding: '15px 30px', borderRadius: '5px', color: 'white', cursor: 'pointer', fontSize: '1.2em' }}>Submit</button>
                                 )}
+                                {successMessage && <div style={{ padding: '20px', textAlign: 'center', color: 'green' }}>{successMessage}</div>}
                             </div>
                         </form>
                     </div>
@@ -319,4 +292,3 @@ function ApplyLoans() {
 }
 
 export default ApplyLoans;
-
