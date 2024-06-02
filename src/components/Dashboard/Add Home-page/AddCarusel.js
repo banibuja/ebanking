@@ -111,6 +111,7 @@ function AddCarusel() {
                                         <div className="form-group">
                                             <input type="file" id="profilePicture" onChange={handleProfilePicture} accept='image/*' hidden />
                                             <label htmlFor="profilePicture" className="btn btn-secondary">Upload new image</label>
+                        {values.Photo ? <img src={values.Photo} height='50px' /> : ''}
                                         </div>
                                     </div>
                                     <center>

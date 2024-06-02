@@ -47,7 +47,7 @@ const handleEdit = (id) => {
 };
 const fetchAboutUslItems = async () => {
   try {
-      const res = await axios.post('http://localhost:8080/getAboutUs');
+    const res = await axios.get('http://localhost:8080/getAboutUs');
       const items = res.data;
       if (Array.isArray(items)) {
           setAboutUsItems(items);

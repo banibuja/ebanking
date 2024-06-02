@@ -20,7 +20,7 @@ export const Home = () => {
   }, []);
 
   const fetchInfo = () => {
-    axios.post('http://localhost:8080/getInfoSection')
+    axios.get('http://localhost:8080/getInfoSection')
       .then(res => {
         const fetchedInfo = res.data;
         setInfo(fetchedInfo);
@@ -98,7 +98,7 @@ export const Home = () => {
 
       <div className="info-place">
         <img src={logoNoBackground} alt="Logo" />
-        {info.map((item, index) => (
+        {(info.length == 0) ? '' : info.map((item, index) => (
           <h1 key={index}>{item.Info}</h1>
         ))}
       </div>

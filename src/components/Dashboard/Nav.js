@@ -33,11 +33,6 @@ function Nav() {
     };
 
     fetchSessionTime();
-    const interval = setInterval(() => {
-      fetchSessionTime();
-    }, 10000); 
-
-    return () => clearInterval(interval);
   }, []); 
 
   useEffect(() => {

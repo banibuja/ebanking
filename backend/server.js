@@ -79,7 +79,7 @@ app.use(refreshSession);
 app.post('/sendEmailContactUs', contactusController.sendEmailContactUs);
 
 app.post('/insertInfoSection', HomeController.insertInfoSection);
-app.post('/getInfoSection', HomeController.getInfoSection);
+app.get('/getInfoSection', HomeController.getInfoSection);
 app.get('/getInfoForEdit/:id', HomeController.getInfoForEdit);
 app.put('/updateInfo/:id', HomeController.updateInfo);
 app.delete("/deleteInfo/:id", HomeController.deleteInfo);
