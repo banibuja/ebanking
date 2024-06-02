@@ -222,6 +222,17 @@ CREATE TABLE InvestmentsGoals (
     CONSTRAINT FK_User_InvestmentsGoals FOREIGN KEY (UserID) REFERENCES users (userId) ON DELETE CASCADE
 );
 
+CREATE TABLE TransactionHistory (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    SenderAccID INT NOT NULL,
+    ReceiverAccID INT NOT NULL,
+    TransactionAmount DECIMAL(10,2) NOT NULL,
+    TransactionDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (SenderAccID) REFERENCES accounts(id),
+    FOREIGN KEY (ReceiverAccID) REFERENCES accounts(id)
+);
+
+
 
 INSERT INTO `users` (`userId`, `username`, `name`, `lastname`, `email`, `password`, `gender`, `birthday`, `CurrencyCode`, `profilePicture`, `Status`) VALUES
 (5, 'user', 'user', 'user', 'ebankingebanking7@gmail.com', '$2b$10$LkBEWggp4k/Y/dgN7YatnuVT5MF1AwB1n0aECVKAOJTg54Gtez98y', 'M', '2024-05-14 22:00:00', 'EUR', 'adsdsda', 'Active'),
