@@ -7,10 +7,10 @@ const insertCarusel = (req, res) => {
     db.query(sql, [Titulli, Teksti, Photo], (err, result) => {
         if (err) {
             console.error("Error adding goal:", err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
         console.log("Goal added successfully");
-        return res.json("success");
+        return res.status(200).json("success").end();
     });
 };
 
@@ -19,12 +19,12 @@ const getCarusel = (req, res) => {
 
     db.query(sql, (err, data) => {
         if (err) {
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
         if (data.length > 0) {
-            return res.json(data);
+            return res.status(200).json(data).end();
         } else {
-            return res.json("fail");
+            return res.status(204).json("fail").end();
         }
     });
 };
@@ -39,12 +39,12 @@ const getCaruselForEdit = (req, res) => {
 
     db.query(sql, [CaruselId], (err, data) => {
         if (err) {
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
         if (data.length > 0) {
-            return res.json(data[0]);
+            return res.status(200).json(data[0]).end();
         } else {
-            return res.status(404).json({ message: "Carusel not found" });
+            return res.status(204).json({ message: "Carusel not found" }).end();
         }
     });
 };
@@ -56,10 +56,10 @@ const updateCarusel = (req, res) => {
     db.query(sql, [Titulli, Teksti, Photo, CarId], (err, result) => {
         if (err) {
             console.error("Error updating Carus:", err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
         console.log("Crusel updated successfully");
-        return res.json("success");
+        return res.status(200).json("success").end();
     });
 };
 const deleteCarusel = (req, res) => {
@@ -67,12 +67,12 @@ const deleteCarusel = (req, res) => {
     const sql = "DELETE FROM Carusel WHERE CaruselId = ?";
     db.query(sql, [CaruselId], (err, result) => {
         if (err) {
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
         if (result.affectedRows > 0) {
-            return res.json('success');
+            return res.status(200).json('success').end();
         } else {
-            return res.status(404).json({ message: "Carousel item not found" });
+            return res.status(404).json({ message: "Carousel item not found" }).end();
         }
     });
 };

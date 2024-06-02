@@ -4,7 +4,7 @@ const sendTransactionEmail = require('../Transaction/sendEmailTransaction');
 const getAllTransactions = (req, res) => {
     const userID = req.session.uId;
     if (!userID) {
-        return res.json("fail");
+        return res.status(401).json("fail").end();
     }
     const startDate = req.body.startDate;
     const endDate = req.body.endDate;
@@ -25,7 +25,7 @@ const getAllTransactions = (req, res) => {
                 if (data.length > 0) {
                     return res.status(200).json(data).end();
                 } else {
-                    return res.status(404).json("No Transactions found").end();
+                    return res.status(204).json("No Transactions found").end();
                 }
             });
         } else {
@@ -37,7 +37,7 @@ const getAllTransactions = (req, res) => {
 const getAllnterTransactions = (req, res) => {
     const userID = req.session.uId;
     if (!userID) {
-        return res.json("fail");
+        return res.status(401).json("fail").end();
     }
     var sql = "SELECT CurrentAccount FROM currentaccounts WHERE UserID = ?";
     db.query(sql, [userID], (err, data) => {
@@ -66,7 +66,7 @@ const getAllnterTransactions = (req, res) => {
 const getCurrentAccount = (req, res) => {
     const userID = req.session.uId;
     if (!userID) {
-        return res.json("fail");
+        return res.status(401).json("fail").end();
     }
 
     var sql = "SELECT * FROM currentaccounts WHERE UserID = ?";
@@ -95,25 +95,25 @@ const insertTransaction = (req, res) => {
         const receiverAccount = results.find(account => account.CurrentAccount === parseInt(ReceiverAccID));
         const senderAccount = results.find(account => account.CurrentAccount === parseInt(SenderAccID));
         if (!receiverAccount) {
-            return res.status(404).json("Receiver account not found").end();
+            return res.status(400).json("Receiver account not found").end();
         }
         if (!senderAccount || senderAccount.Balance < TransactionAmount) {
-            return res.status(404).json("Not enough balance").end();
+            return res.status(400).json("Not enough balance").end();
         }
         if (!SenderAccID || !ReceiverAccID || !TransactionType || !TransactionAmount || !Currency || !AdditionalInfo) {
-            return res.json("Missing parameters");
+            return res.status(400).json("Missing parameters").end();
         }
 
         const newSenderBalance = senderAccount.Balance - TransactionAmount;
         db.query('UPDATE currentaccounts SET Balance = ? WHERE CurrentAccount = ?', [newSenderBalance, parseInt(SenderAccID)], (err, result) => {
             if (err) {
-                return res.status(500).json({ error: 'Database update error' });
+                return res.status(500).json({ error: 'Database update error' }).end();
             }
 
             const newReceiverBalance = +receiverAccount.Balance + +TransactionAmount;
             db.query('UPDATE currentaccounts SET Balance = ? WHERE CurrentAccount = ?', [newReceiverBalance, parseInt(ReceiverAccID)], (err, result) => {
                 if (err) {
-                    return res.status(500).json({ error: 'Database update error' });
+                    return res.status(500).json({ error: 'Database update error' }).end();
                 }
 
                 db.query(`INSERT INTO transactions (SenderAccID, ReceiverAccID, TransactionType, TransactionAmount, Currency, Statusi, AdditionalInfo, TransactionFee) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, 

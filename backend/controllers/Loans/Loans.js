@@ -3,28 +3,28 @@ const db = require('../../db');
 const getAllLoans = (req, res) => {
     const userID = req.session.uId;
     if (!userID) {
-        return res.json("fail");
+        return res.status(500).json("Not logged in");
     }
     const sql = "SELECT CurrentAccount FROM currentaccounts WHERE UserID = ?";
     db.query(sql, [userID], (err, data) => {
         if (err) {
-            return res.status(500).end();
+            return res.status(500).json("server error").end();
         }
         if (data.length > 0) {
             const accountID = data[0].CurrentAccount;
             const sql = "SELECT * FROM applyloans WHERE AccountID = ?";
             db.query(sql, [accountID], (err, data) => {
                 if (err) {
-                    return res.status(500).end();
+                    return res.status(500).json("server error").end();
                 }
                 if (data.length > 0) {
                     return res.status(200).json(data).end();
                 } else {
-                    return res.status(404).json("No Transactions found").end();
+                    return res.status(204).json("No Transactions found").end();
                 }
             });
         } else {
-            return res.status(404).end();
+            return res.status(204).json("No Transactions found").end();
         }
     });
 }
@@ -35,12 +35,12 @@ const getLoanForEdit = (req, res) => {
 
     db.query(sql, [loanID], (err, data) => {
         if (err) {
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
         if (data.length > 0) {
-            return res.json(data[0]);
+            return res.status(200).json(data[0]).end();
         } else {
-            return res.status(404).json({ message: "Loan not found" });
+            return res.status(204).json({ message: "Loan not found" }).end();
         }
     });
 };
@@ -52,11 +52,11 @@ const applyLoan = (req, res) => {
     db.query(checkAccountSql, [AccountNumber], (err, result) => {
         if (err) {
             console.error("Error checking account:", err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
 
         if (result.length === 0) {
-            return res.status(400).json({ error: "Account does not exist" });
+            return res.status(204).json({ error: "Account does not exist" }).end();
         }
 
         const insertLoanSql = "INSERT INTO applyloans (AccountID, firstName, lastName, dateOfBirth, loanType, city, address, email, employmentStatus, annualIncome, loanAmount, loanPurpose, Status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending')";
@@ -64,10 +64,10 @@ const applyLoan = (req, res) => {
         db.query(insertLoanSql, [AccountNumber, firstName, lastName, dateOfBirth, loanType, city, address, email, employmentStatus, annualIncome, loanAmount, loanPurpose], (err, result) => {
             if (err) {
                 console.error("Error adding loan:", err);
-                return res.status(500).json({ error: "Internal server error" });
+                return res.status(500).json({ error: "Internal server error" }).end();
             }
             console.log("Loan added successfully");
-            return res.json({ message: "Loan added successfully" });
+            return res.status(200).json({ message: "Loan added successfully" }).end();
         });
     });
 };
@@ -79,11 +79,11 @@ const addLoan = (req, res) => {
     db.query(checkAccountSql, [AccountID], (err, result) => {
         if (err) {
             console.error("Error checking account:", err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
 
         if (result.length === 0) {
-            return res.status(400).json({ error: "Account does not exist" });
+            return res.status(204).json({ error: "Account does not exist" }).end();
         }
 
         const insertLoanSql = "INSERT INTO loans (AccountID, firstName, lastName, dateOfBirth, loanType, city, address, email, employmentStatus, annualIncome, loanAmount, loanPurpose, Status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Accepted')";
@@ -91,10 +91,10 @@ const addLoan = (req, res) => {
         db.query(insertLoanSql, [AccountID, firstName, lastName, dateOfBirth, loanType, city, address, email, employmentStatus, annualIncome, loanAmount, loanPurpose], (err, result) => {
             if (err) {
                 console.error("Error adding loan:", err);
-                return res.status(500).json({ error: "Internal server error" });
+                return res.status(500).json({ error: "Internal server error" }).end();
             }
             console.log("Loan added successfully");
-            return res.json({ message: "Loan added successfully" });
+            return res.status(200).json({ message: "Loan added successfully" }).end();
         });
     });
 };
@@ -107,10 +107,10 @@ const updateLoan = (req, res) => {
     db.query(sql, [firstName, lastName, dateOfBirth, loanType, city, address, email, employmentStatus, annualIncome, loanAmount, loanPurpose, Status, LoanID], (err, result) => {
         if (err) {
             console.error("Error updating loan:", err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
         console.log("Loan updated successfully");
-        return res.json({ message: "Loan updated successfully" });
+        return res.status(200).json({ message: "Loan updated successfully" }).end();
     });
 };
 
@@ -121,9 +121,9 @@ const deleteLoan = (req, res) => {
     db.query(sqlDelete, [loanID], (err, result) => {
         if (err) {
             console.error(err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
-        return res.status(200).json({ message: "Loan deleted successfully" });
+        return res.status(200).json({ message: "Loan deleted successfully" }).end();
     });
 };
 
@@ -134,14 +134,14 @@ const getAccountNumber = (req, res) => {
     db.query(sql, [userId], (err, result) => {
         if (err) {
             console.error("Error fetching account number:", err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
 
         if (result.length === 0) {
-            return res.status(404).json({ error: "Account not found" });
+            return res.status(204).json({ error: "Account not found" }).end();
         }
 
-        res.json({ accountNumber: result[0].CurrentAccount });
+        res.status(200).json({ accountNumber: result[0].CurrentAccount }).end();
     });
 };
 
@@ -153,37 +153,37 @@ const updateStatusLoans = (req, res) => {
     db.query(sqlUpdate, [Status, accountId], (err, result) => {
         if (err) {
             console.error(err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
-        return res.status(200).json({ message: "Status updated successfully" });
+        return res.status(200).json({ message: "Status updated successfully" }).end();
     });
 };
 
 const getAllLoansForClient = (req, res) => {
     const userID = req.session.uId;
     if (!userID) {
-        return res.json("fail");
+        return res.status(500).json("Not logged in").end();
     }
     const sql = "SELECT CurrentAccount FROM currentaccounts WHERE UserID = ?";
     db.query(sql, [userID], (err, data) => {
         if (err) {
-            return res.status(500).end();
+            return res.status(500).json("Server error").end();
         }
         if (data.length > 0) {
             const accountID = data[0].CurrentAccount;
             const sql = "SELECT * FROM applyloans WHERE AccountID=? ";
             db.query(sql, [accountID], (err, data) => {
                 if (err) {
-                    return res.status(500).end();
+                    return res.status(500).json("Query error").end();
                 }
                 if (data.length > 0) {
                     return res.status(200).json(data).end();
                 } else {
-                    return res.status(404).json("No Transactions found").end();
+                    return res.status(204).json("No Transactions found").end();
                 }
             });
         } else {
-            return res.status(404).end();
+            return res.status(204).json("No Transactions found").end();
         }
     });
 }

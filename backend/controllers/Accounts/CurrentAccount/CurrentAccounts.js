@@ -17,12 +17,12 @@ const getAccountForEdit = (req, res) => {
 
     db.query(sql, [accountId], (err, data) => {
         if (err) {
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
         if (data.length > 0) {
-            return res.json(data[0]); 
+            return res.status(200).json(data[0]).end(); 
         } else {
-            return res.status(404).json({ message: "Account not found" });
+            return res.status(204).json({ message: "Account not found" }).end();
         }
     });
 };
@@ -35,9 +35,9 @@ const updateAccount = (req, res) => {
     db.query(sqlUpdate, [Balance,AccountStatus, accountId], (err, result) => {
         if (err) {
             console.error(err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
-        return res.status(200).json({ message: "Account updated successfully" });
+        return res.status(200).json({ message: "Account updated successfully" }).end();
     });
 };
 
@@ -50,12 +50,12 @@ const getAllAccounts = (req, res) => {
 `;
     db.query(sql, (err, data) => {
         if (err) {
-            return res.json("Error");
+            return res.status(500).json("Error").end();
         }
         if (data.length > 0) {
-            return res.json(data);
+            return res.status(200).json(data).end();
         } else {
-            return res.json("fail");
+            return res.status(204).json("fail").end();
         }
     });
 };
@@ -72,12 +72,12 @@ const getAccountBySession = (req, res) => {
 
     db.query(sql, [userID], (err, data) => {
         if (err) {
-            return res.json("Error");
+            return res.status(500).json("Error").end();
         }
         if (data.length > 0) {
-            return res.json(data);
+            return res.status(200).json(data).end();
         } else {
-            return res.json("fail");
+            return res.status(204).json("fail").end();
         }
     });
 };
@@ -89,9 +89,9 @@ const deleteAccount = (req, res) => {
     db.query(sqlDelete, accountId, (err, result) => {
         if (err) {
             console.error(err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
-        return res.status(200).json({ message: "Account deleted successfully" });
+        return res.status(200).json({ message: "Account deleted successfully" }).end();
     });
 };
 
@@ -106,9 +106,9 @@ const getAccountByUserID = (req, res) => {
     db.query(sql, [username], (err, data) => {
         if (err) {
             console.error(err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
-        return res.json(data);
+        return res.status(200).json(data);
     });
 };
 

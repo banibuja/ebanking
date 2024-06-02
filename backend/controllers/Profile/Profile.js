@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const getClientforProfile = (req, res) => {
     const userID = req.session.uId;
     if (!userID) {
-        return res.status(401).json("User not logged in");
+        return res.status(500).json("User not logged in").end();
     }
     
     const sql = `
@@ -15,12 +15,12 @@ const getClientforProfile = (req, res) => {
     `;
     db.query(sql, [userID], (err, data) => {
         if (err) {
-            return res.status(500).json("Error");
+            return res.status(500).json("Error").end();
         }
         if (data.length > 0) {
-            return res.json(data[0]); 
+            return res.status(200).json(data[0]).end(); 
         } else {
-            return res.status(404).json("fail");
+            return res.status(204).json("fail").end();
         }
     });
 };
@@ -36,20 +36,20 @@ const updateProfile = async (req, res) => {
 
 
             if (data.length === 0) {
-                return res.status(404).json({ message: 'User not found' }).end();
+                return res.status(204).json({ message: 'User not found' }).end();
             }
 
             const sqlUpdateUser = "UPDATE users SET ? WHERE userId = ?";
             db.query(sqlUpdateUser, [{ ...details }, userId], (err, data) => {
                 console.log("err" + err);
                 console.log("data" + data);
-                if (err) res.status(404).json(err);
+                if (err) res.status(204).json(err).end();
                 return res.status(200).json({ message: 'Profile updated successfully' }).end();
             });
         });
     } catch (error) {
         console.error("error");
-        return res.status(500).json({ message: 'Server error' });
+        return res.status(500).json({ message: 'Server error' }).end();
 
 
     }
@@ -60,7 +60,7 @@ const updatePassword = (req, res) => {
     console.log(req.body);
 
     if (newPassword !== confirmPassword) {
-        return res.status(400).json({ message: 'Passwords do not match' });
+        return res.status(400).json({ message: 'Passwords do not match' }).end();
     }
 
     const sqlGetUser = "SELECT password FROM users WHERE userId = ?";
@@ -68,7 +68,7 @@ const updatePassword = (req, res) => {
 
 
         if (data.length === 0) {
-            return res.status(404).json({ message: 'User not found' });
+            return res.status(404).json({ message: 'User not found' }).end();
         }
 
         const user = data[0];
@@ -76,15 +76,15 @@ const updatePassword = (req, res) => {
         const isMatch = await bcrypt.compare(currentPassword, user.password);
 
         if (!isMatch) {
-            return res.status(400).json({message: 'Current password is incorrect' });
+            return res.status(400).json({ message: 'Current password is incorrect' }).end();
         }
 
         const hashedPassword = await bcrypt.hash(newPassword, 10);
 
             const sqlUpdateUser = "UPDATE users SET password = ? WHERE userId = ?";
             db.query(sqlUpdateUser, [hashedPassword, userId], (err, data) => {
-            if(err) res.status(404).json(err);
-            return res.json({ message: 'Profile updated successfully' });
+                if (err) res.status(404).json(err).end();
+                return res.status(200).json({ message: 'Profile updated successfully' }).end();
         });
         })
 };

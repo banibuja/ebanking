@@ -10,7 +10,7 @@ const insertAboutUs = (req, res) => {
             return res.status(500).json({ error: "Internal server error" });
         }
         console.log("AboutUs added successfully");
-        return res.json("success");
+        return res.status(200).json("success").end();
     });
 };
 
@@ -20,12 +20,12 @@ const getAboutUs = (req, res) => {
 
     db.query(sql, (err, data) => {
         if (err) {
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
         if (data.length > 0) {
-            return res.json(data);
+            return res.status(200).json(data).end();
         } else {
-            return res.json([]);
+            return res.status(204).json("No response").end();
         }
     });
 };
@@ -35,12 +35,12 @@ const getAboutUsEdit = (req, res) =>{
     const sql = "SELECT * FROM AboutUs where AboutUsId=?";
     db.query(sql, [AboutUsId], (err, data) => {
         if (err) {
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
         if (data.length > 0) {
-            return res.json(data[0]);
+            return res.status(200).json(data[0]).end();
         } else {
-            return res.status(404).json({ message: "Carusel not found" });
+            return res.status(204).json({ message: "Carusel not found" }).end();
         }
     });
 }
@@ -51,10 +51,10 @@ const updateAboutUs =(req, res) => {
     db.query(sql, [Tittle, Info, AboutUsId], (err, result) => {
         if (err) {
             console.error("Error updating AbouUs:", err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
         console.log("AboutUs updated successfully");
-        return res.json("success");
+        return res.status(200).json("success").end();
     });
 }
 const deleteAboutUs = (req, res) => {
@@ -62,12 +62,12 @@ const deleteAboutUs = (req, res) => {
     const sql = "DELETE FROM AboutUs WHERE AboutUsId = ?";
     db.query(sql, [AboutUsId], (err, result) => {
         if (err) {
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
         if (result.affectedRows > 0) {
-            return res.json('success');
+            return res.status(200).json('success').end();
         } else {
-            return res.status(404).json({ message: "Carousel item not found" });
+            return res.status(204).json({ message: "Carousel item not found" }).end();
         }
     });
 };

@@ -17,7 +17,7 @@ const addApply = (req, res) => {
     bcrypt.hash(password, 10, (err, hash) => {
         if (err) {
             console.error('Error hashing password:', err);
-            return res.status(500).json({ error: 'Error hashing password' });
+            return res.status(500).json({ error: 'Error hashing password' }).end();
         }
 
         const hashedPassword = hash;
@@ -29,10 +29,10 @@ const addApply = (req, res) => {
         db.query(query, values, (err) => {
             if (err) {
                 console.error('Error inserting data:', err);
-                return res.status(500).json({ error: 'Error inserting data' });
+                return res.status(500).json({ error: 'Error inserting data' }).end();
             }
 
-            res.status(200).json({ message: 'Data inserted successfully' });
+            res.status(200).json({ message: 'Data inserted successfully' }).end();
         });
     });
 };
@@ -43,10 +43,9 @@ const getApply = (req, res) => {
     db.query(query, (err, results) => {
         if (err) {
             console.error('Error fetching data:', err);
-            res.status(500).json({ error: 'Error fetching data' });
+            res.status(500).json({ error: 'Error fetching data' }).end();
         } else {
-            // console.log('Data retrieved successfully:', results);
-            res.status(200).json(results);
+            res.status(200).json(results).end();
         }
     });
 };
@@ -59,9 +58,9 @@ const updateStatus = (req, res) => {
     db.query(sqlUpdate, [Status, accountId], (err, result) => {
         if (err) {
             console.error(err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
-        return res.status(200).json({ message: "Account updated successfully" });
+        return res.status(200).json({ message: "Account updated successfully" }).end();
     });
 };
 
@@ -72,9 +71,9 @@ const deleteApplicant = (req, res) => {
     db.query(sqlDelete, userID, (err, result) => {
         if (err) {
             console.error(err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
-        return res.status(200).json({ message: "Card deleted successfully" });
+        return res.status(200).json({ message: "Card deleted successfully" }).end();
     });
 };
 
@@ -89,12 +88,12 @@ const getApplicantForEdit = (req, res) => {
 
     db.query(sql, [clientID], (err, data) => {
         if (err) {
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
         if (data.length > 0) {
-            return res.json(data[0]);
+            return res.status(200).json(data[0]).end();
         } else {
-            return res.status(404).json({ message: "Client not found" });
+            return res.status(204).json({ message: "Client not found" }).end();
         }
     });
 };
@@ -107,9 +106,9 @@ const updateAplicant = (req, res) => {
     db.query(sqlUpdate, [username, name, lastname, email, package, birthday, Country, City, Street, accountId], (err, result) => {
         if (err) {
             console.error(err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
-        return res.status(200).json({ message: "Account updated successfully" });
+        return res.status(200).json({ message: "Account updated successfully" }).end();
     });
 };
 
@@ -125,9 +124,9 @@ const searchApplicant = (req, res) => {
     db.query(sql, [username], (err, data) => {
         if (err) {
             console.error(err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
-        return res.json(data);
+        return res.status(200).json(data).end();
     });
 };
 module.exports = { addApply, getApply, updateStatus, deleteApplicant, getApplicantForEdit, updateAplicant , searchApplicant};

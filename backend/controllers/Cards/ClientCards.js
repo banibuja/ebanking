@@ -21,7 +21,7 @@ const addCard = async (req, res) => {
         });
 
         if (existingCard.length > 0) {
-            return res.status(400).json({ error: "Card number already exists" });
+            return res.status(400).json({ error: "Card number already exists" }).end();
         }
 
         const addCardResult = await new Promise((resolve, reject) => {
@@ -36,11 +36,11 @@ const addCard = async (req, res) => {
                 });
         });
 
-        res.json({ message: 'Card added successfully', cardId: addCardResult.insertId });
+        res.status(200).json({ message: 'Card added successfully', cardId: addCardResult.insertId }).end();
 
     } catch (error) {
         console.error('Error adding card:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: 'Internal Server Error' }).end();
     }
 };
 
@@ -54,12 +54,12 @@ const getCardsclients = (req, res) => {
 
     db.query(sql, (err, data) => {
         if (err) {
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
         if (data.length > 0) {
-            return res.json(data);
+            return res.status(200).json(data).end();
         } else {
-            return res.json("fail");
+            return res.status(204).json("fail").end();
         }
     });
 };
@@ -71,9 +71,9 @@ const deleteCard = (req, res) => {
     db.query(sqlDelete, cardId, (err, result) => {
         if (err) {
             console.error(err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
-        return res.status(200).json({ message: "Card deleted successfully" });
+        return res.status(200).json({ message: "Card deleted successfully" }).end();
     });
 };
 
@@ -85,9 +85,9 @@ const updateCard = (req, res) => {
     db.query(sqlUpdate, [ExpiryDate, CardHolderName, CardType, CardStatus, cardId], (err, result) => {
         if (err) {
             console.error(err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
-        return res.status(200).json({ message: "Card updated successfully" });
+        return res.status(200).json({ message: "Card updated successfully" }).end();
     });
 };
 
@@ -97,9 +97,9 @@ const blockCard = (req, res) => {
     db.query(sqlUpdate, [cardId], (err, result) => {
         if (err) {
             console.error(err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
-        return res.status(200).json({ message: "Card blocked successfully" });
+        return res.status(200).json({ message: "Card blocked successfully" }).end();
     });
 };
 
@@ -109,9 +109,9 @@ const enableCard = (req, res) => {
     db.query(sqlUpdate, [cardId], (err, result) => {
         if (err) {
             console.error(err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
-        return res.status(200).json({ message: "Card enabled successfully" });
+        return res.status(200).json({ message: "Card enabled successfully" }).end();
     });
 };
 
@@ -126,12 +126,12 @@ const getCardsForEdit = (req, res) => {
 
     db.query(sql, [cardId], (err, data) => {
         if (err) {
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
         if (data.length > 0) {
-            return res.json(data[0]);
+            return res.status(200).json(data[0]).end();
         } else {
-            return res.status(404).json({ message: "Card not found" });
+            return res.status(204).json({ message: "Card not found" }).end();
         }
     });
 };
@@ -147,12 +147,12 @@ const getCardsWithSession = (req, res) => {
 
     db.query(sql, [userID], (err, data) => {
         if (err) {
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
         if (data.length > 0) {
-            return res.json(data);
+            return res.status(200).json(data).end();
         } else {
-            return res.status(404).json({ message: "No cards found for the user" });
+            return res.status(204).json({ message: "No cards found for the user" }).end();
         }
     });
 };
@@ -164,14 +164,14 @@ const checkCardExists = (req, res) => {
         db.query(sql, [cardNumber], (err, result) => {
             if (err) {
                 console.error('Error checking card:', err);
-                return res.status(500).json({ error: 'Internal Server Error' });
+                return res.status(500).json({ error: 'Internal Server Error' }).end();
             }
             const exists = result[0].count > 0;
-            return res.json({ exists });
+            return res.status(200).json({ exists }).end();
         });
     } catch (error) {
         console.error('Error checking card:', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(500).json({ error: 'Internal Server Error' }).end();
     }
 };
 
@@ -186,9 +186,9 @@ const sql = `
     db.query(sql, [username], (err, data) => {
         if (err) {
             console.error(err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
-        return res.json(data);
+        return res.status(200).json(data).end();
     });
 };
 
