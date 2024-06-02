@@ -222,15 +222,6 @@ CREATE TABLE InvestmentsGoals (
     CONSTRAINT FK_User_InvestmentsGoals FOREIGN KEY (UserID) REFERENCES users (userId) ON DELETE CASCADE
 );
 
-CREATE TABLE TransactionHistory (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    SenderAccID INT NOT NULL,
-    ReceiverAccID INT NOT NULL,
-    TransactionAmount DECIMAL(10,2) NOT NULL,
-    TransactionDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (SenderAccID) REFERENCES accounts(id),
-    FOREIGN KEY (ReceiverAccID) REFERENCES accounts(id)
-);
 
 
 

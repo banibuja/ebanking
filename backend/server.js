@@ -26,7 +26,6 @@ const saveTransactionController = require('./controllers/Transaction/SaveTransac
 const HomeController = require('./controllers/Add-Home-page/Add-InfoSection');
 const CaruselController = require('./controllers/Add-Home-page/AddCarusel');
 const AboutUSController = require('./controllers/AboutUs/AddAbouUs');
-const TransactionHistory= require('./controllers/TransactionHistory/TransactionHistory');
 
 const app = express();
 
@@ -162,14 +161,6 @@ app.get('/getAboutUs', AboutUSController.getAboutUs);
 app.get('/getAboutUsEdit/:id', AboutUSController.getAboutUsEdit);
 app.put('/updateAboutUs/:id', AboutUSController.updateAboutUs);
 app.delete("/deleteAboutUs/:id", AboutUSController.deleteAboutUs);
-
-app.get('/', transactionHistoryController.getAllTransactions);
-app.get('/:id', transactionHistoryController.getTransactionById);
-app.post('/', transactionHistoryController.createTransaction);
-app.put('/:id', transactionHistoryController.updateTransaction);
-app.delete('/:id', transactionHistoryController.deleteTransaction);
-
-
 
 app.post('/getClientforProfile', profileController.getClientforProfile);
 app.put('/updateProfile', profileController.updateProfile);
