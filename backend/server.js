@@ -26,7 +26,7 @@ const saveTransactionController = require('./controllers/Transaction/SaveTransac
 const HomeController = require('./controllers/Add-Home-page/Add-InfoSection');
 const CaruselController = require('./controllers/Add-Home-page/AddCarusel');
 const AboutUSController = require('./controllers/AboutUs/AddAbouUs');
-const AboutUSController = require('./controllers/AboutUs/AboutUsCarusel');
+const AboutUSCaruselController = require('./controllers/AboutUs/AboutUsCarusel');
 
 const app = express();
 

@@ -60,7 +60,7 @@ function Login() {
               </div>
               
               <button type="submit" className="btn btn-primary btn-block">Log In</button>
-              <p className="small mt-2 mb-0">Don't have an account? <Link to="/applyonline" className="link-primary">Apply Online</Link></p>
+              <p className="small mt-2 mb-0">Don't have an account? <a href="/applyonline">Apply Online</a></p>
             </form>
           </div>
         </div>
