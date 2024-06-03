@@ -33,14 +33,23 @@ body {
 }
 
 .container {
-  flex-direction: column;
-}
+  margin-top: -20px;
+  display: flex;
+  flex-direction: column;}
 
 .flexbox1 {
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap:20vh;
+  margin-bottom: 20px;
 }
+.flexbox .paragraph-p {
+  width: 25%;
+  margin-left: -60px;
+  font-size: 25px;
+}
+
+
 .StartBanking-button {
   z-index: 1;
   display: inline-flex;
@@ -56,6 +65,8 @@ body {
   position: relative;
   overflow: hidden;
   background-color:#070707;
+  margin-left: 13%;
+
 }
 
 .StartBanking-button .arrow-slide::before {
@@ -77,9 +88,10 @@ body {
   width: 100%;
   height: 100%;
 }
-
 .StartBanking-button .arrow-img {
-  width: 1rem;
+  width: 20px;
+  margin-left: 0px;
+  margin-bottom: -40px;
   height: auto;
   transform: rotate(50deg);
   background-color: transparent;
@@ -91,6 +103,9 @@ body {
 
 .StartBanking-button p {
   background-color: transparent;
+  margin-left: 2px;
+  margin-right: 15px;
+  margin-bottom: 1px;
   transition: color 300ms ease-in-out, font-size 300ms ease-in-out;
   font-weight: bold;
 }

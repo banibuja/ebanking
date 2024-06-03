@@ -15,9 +15,7 @@ export const AboutUs= () => {
 
   return (
     <>
-    <header>
       <Navbar/>
-    </header>
           
           <div className="AboutUS">
 

@@ -54,9 +54,7 @@ export const Home = () => {
 
   return (
     <>
-      <header>
         <Navbar />
-      </header>
       <div className="container">
         <div className="flexbox1">
           <h1 className="h1">Gateway</h1>
