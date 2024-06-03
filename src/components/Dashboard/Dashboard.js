@@ -6,15 +6,16 @@ import Nav from './Nav';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './Dashboard.css';
-
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 export const Dashboard = () => {
   const [numClients, setNumClients] = useState(0);
   const [numAccount, setNumAccounts] = useState(0);
+  const [SaveAccount, setSaveAccount] = useState(0);
+  const [Transaction, setTransactions] = useState(0);
   const [role, setRole] = useState('');
-  const [numStaff, setNumStaff] = useState(0);
+  // const [monthlyClients, setMonthlyClients] = useState([]);
   const navigate = useNavigate();
-
 
   axios.defaults.withCredentials = true;
 
@@ -23,7 +24,6 @@ export const Dashboard = () => {
       .then(res => {
         if (res.data.valid) {
           setRole(res.data.role);
-
         } else {
           navigate('/login');
         }
@@ -45,7 +45,35 @@ export const Dashboard = () => {
         setNumAccounts(fetchedAccounts.length);
       })
       .catch(err => console.log(err));
+
+    axios.post('http://localhost:8080/getAllSavingAccount')
+      .then(res => {
+        const fetchedAccounts = res.data;
+        setSaveAccount(fetchedAccounts.length);
+      })
+      .catch(err => console.log(err));
+
+    axios.post('http://localhost:8080/getAllnterTransactions')
+      .then(res => {
+        const fetchedAccounts = res.data;
+        setTransactions(fetchedAccounts.length);
+      })
+      .catch(err => console.log(err));
+
+  //   axios.post('http://localhost:8080/getClientsByMonth')
+  //     .then(res => {
+  //       const fetchedMonthlyClients = res.data;
+  //       setMonthlyClients(fetchedMonthlyClients);
+  //     })
+  //     .catch(err => console.log(err));
   }, []);
+
+  const data = [
+    { name: 'Clients', value: numClients },
+    { name: 'CurrentAcc', value: numAccount },
+    { name: 'SavingsAcc', value: SaveAccount },
+    { name: 'Transactions', value: Transaction },
+  ];
 
   return (
     <div>
@@ -53,61 +81,55 @@ export const Dashboard = () => {
         <Sidebar />
         <div className="container-fluid mt-4">
           <Nav />
-            {/* <header className="mb-4">
-              <h1 className="text-center">Dashboard</h1>
-            </header> */}
-        
-  <div className="cardat">
-          <div className="row">
-              {role !== 'User' && (
-                <div className="col-xl-3 col-md-6 mb-4">
-                  <div className="card border-left-primary shadow h-100 py-2">
-                    <div className="card-body">
-                      <div className="row no-gutters align-items-center">
-                        <div className="col mr-2">
-                          <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Clients
-                          </div>
-                          <div className="h5 mb-0 font-weight-bold text-gray-800">{numClients}</div>
+          <div className="row mt-5">
+            {role !== 'User' && (
+              <div className="col-xl-3 col-md-6 mb-4">
+                <div className="card border-left-primary shadow h-100 py-2">
+                  <div className="card-body">
+                    <div className="row no-gutters align-items-center">
+                      <div className="col mr-2">
+                        <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                          Clients
                         </div>
-                        <div className="col-auto">
-                          <i className="fa fa-users fa-2x text-gray-300"></i>
-                        </div>
+                        <div className="h5 mb-0 font-weight-bold text-gray-800">{numClients}</div>
+                      </div>
+                      <div className="col-auto">
+                        <i className="fa fa-users fa-2x text-gray-300"></i>
                       </div>
                     </div>
                   </div>
                 </div>
-              )}
-              {role !== 'User' && (
-                <div className="col-xl-3 col-md-6 mb-4">
-                  <div className="card border-left-success shadow h-100 py-2">
-                    <div className="card-body">
-                      <div className="row no-gutters align-items-center">
-                        <div className="col mr-2">
-                          <div className="text-xs font-weight-bold text-success text-uppercase mb-1">
-                            Account Types
-                          </div>
-                          <div className="h5 mb-0 font-weight-bold text-gray-800">{numAccount}</div>
+              </div>
+            )}
+            {role !== 'User' && (
+              <div className="col-xl-3 col-md-6 mb-4">
+                <div className="card border-left-success shadow h-100 py-2">
+                  <div className="card-body">
+                    <div className="row no-gutters align-items-center">
+                      <div className="col mr-2">
+                        <div className="text-xs font-weight-bold text-success text-uppercase mb-1">
+                          Current Account Types
                         </div>
-                        <div className="col-auto">
-                          <i className="fa fa-calendar fa-2x text-gray-300"></i>
-                        </div>
+                        <div className="h5 mb-0 font-weight-bold text-gray-800">{numAccount}</div>
+                      </div>
+                      <div className="col-auto">
+                        <i className="fa fa-calendar fa-2x text-gray-300"></i>
                       </div>
                     </div>
                   </div>
                 </div>
-              )}
-              {role !== 'User' && (
-
+              </div>
+            )}
+            {role !== 'User' && (
               <div className="col-xl-3 col-md-6 mb-4">
                 <div className="card border-left-info shadow h-100 py-2">
                   <div className="card-body">
                     <div className="row no-gutters align-items-center">
                       <div className="col mr-2">
                         <div className="text-xs font-weight-bold text-info text-uppercase mb-1">
-                          Deposits
+                          Savings Account Types
                         </div>
-                        <div className="h5 mb-0 font-weight-bold text-gray-800">$0,0</div>
+                        <div className="h5 mb-0 font-weight-bold text-gray-800">{SaveAccount}</div>
                       </div>
                       <div className="col-auto">
                         <i className="fa fa-upload fa-2x text-gray-300"></i>
@@ -116,96 +138,55 @@ export const Dashboard = () => {
                   </div>
                 </div>
               </div>
-              )}
-              {role !== 'User' && (
-
+            )}
+            {role !== 'User' && (
               <div className="col-xl-3 col-md-6 mb-4">
-                <div className="card border-left-warning shadow h-100 py-2">
+                <div className="card border-left-primary shadow h-100 py-2">
                   <div className="card-body">
                     <div className="row no-gutters align-items-center">
                       <div className="col mr-2">
-                        <div className="text-xs font-weight-bold text-warning text-uppercase mb-1">
-                          Withdrawal
+                        <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                          Transaction
                         </div>
-                        <div className="h5 mb-0 font-weight-bold text-gray-800">$0,0</div>
+                        <div className="h5 mb-0 font-weight-bold text-gray-800">{Transaction}</div>
                       </div>
                       <div className="col-auto">
-                        <i className="fa fa-download fa-2x text-gray-300"></i>
+                        <i className="fa fa-users fa-2x text-gray-300"></i>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
-                            )}
-              {role !== 'User' && (
+            )}
+          </div>
+      
 
-              <div className="col-xl-3 col-md-6 mb-4">
-                <div className="card border-left-danger shadow h-100 py-2">
-                  <div className="card-body">
-                    <div className="row no-gutters align-items-center">
-                      <div className="col mr-2">
-                        <div className="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                          Transfers
-                        </div>
-                        <div className="h5 mb-0 font-weight-bold text-gray-800">$00,000</div>
-                      </div>
-                      <div className="col-auto">
-                        <i className="fa fa-random fa-2x text-gray-300"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-                            )}
-              {role !== 'User' && (
-
-              <div className="col-xl-3 col-md-6 mb-4">
-                <div className="card border-left-secondary shadow h-100 py-2">
-                  <div className="card-body">
-                    <div className="row no-gutters align-items-center">
-                      <div className="col mr-2">
-                        <div className="text-xs font-weight-bold text-secondary text-uppercase mb-1">
-                          Wallet Balance
-                        </div>
-                        <div className="h5 mb-0 font-weight-bold text-gray-800">$00,000</div>
-                      </div>
-                      <div className="col-auto">
-                        <i className="fa fa-money-bill-alt fa-2x text-gray-300"></i>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-                                          )}
-              {role !== 'User' && (
-                <div className="col-xl-3 col-md-6 mb-4">
-                  <div className="card border-left-primary shadow h-100 py-2">
-                    <div className="card-body">
-                      <div className="row no-gutters align-items-center">
-                        <div className="col mr-2">
-                          <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                            Accounts
-                          </div>
-                          <div className="h5 mb-0 font-weight-bold text-gray-800">0</div>
-                        </div>
-                        <div className="col-auto">
-                          <i className="fa fa-users fa-2x text-gray-300"></i>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-            </div>
         </div>
-        <div class="welcome-dashboard">
-    <span class="text1">welcome in</span>
-    <span class="text2">Dashboard</span>
-    {/* <span class="text3">Hello</span> */}
-  </div>
+        <div className="welcome-dashboard welcome-message">
+          <span className="text1">Welcome to</span>
+          <span className="text2">E-Banking</span>
+          <div className="additional-text">
+            <p className="welcome-message">You can manage your account,</p>
+            <p>transfer money to another account,(History for transfer)</p>
+            <p>transfer money to save accounts (History for transfer),</p>
+            <p>you can apply for Loans,</p>
+            <p>you can add goals for your investments,</p>
+            <p>and view reports, and view your Profile.</p>
+          </div>
+        </div>
+
+        {/* <div className='rechartat'>
+            <BarChart width={600} height={300} data={data}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="value" fill="#8884d8" />
+            </BarChart>
+         </div> */}
+        
       </main>
     </div>
   );
 };
-
