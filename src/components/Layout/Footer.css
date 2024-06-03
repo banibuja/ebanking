@@ -35,3 +35,7 @@ font-size: 1.6rem;
 .col-md-3 >p{
 font-size: 1.2rem;
 }
+.footer{
+    position: absolute;
+    left: 20%;
+}
