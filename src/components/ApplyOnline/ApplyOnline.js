@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../Layout/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './ApplyOnline.css'; // Shto një skedar CSS për stilizimin
+import './ApplyOnline.css'; // Include a CSS file for styling
 
 function AplikimiOnline() {
     const navigate = useNavigate();
@@ -13,7 +13,7 @@ function AplikimiOnline() {
     const [idPhotos, setIdPhotos] = useState({ frontPhoto: '', backPhoto: '' });
     const [countries, setCountries] = useState([]);
     const [cities, setCities] = useState([]);
-    const [selectedCountry, setSelectedCountry] = useState();
+    const [selectedCountry, setSelectedCountry] = useState('');
     const [selectedCity, setSelectedCity] = useState('');
 
     const handlePhotoUpload = (e, type) => {
@@ -75,14 +75,6 @@ function AplikimiOnline() {
             .catch(err => console.log(err));
     };
 
-    const sendEmail = (email, username, password) => {
-        axios.post('http://localhost:8080/sendEmail', { email, username, password })
-            .then(res => {
-                console.log('Email sent successfully');
-            })
-            .catch(err => console.log('Error sending email', err));
-    };
-
     useEffect(() => {
         axios.get('https://polar-everglades-58451-8c8c26171cdb.herokuapp.com/getAllCountries')
             .then(response => {
@@ -106,7 +98,8 @@ function AplikimiOnline() {
     }, [selectedCountry]);
 
     const handleCountryChange = (event) => {
-        let country = countries.find((country) => country.code == event.target.value)
+        const countryCode = event.target.value;
+        const country = countries.find(country => country.code === countryCode);
         setSelectedCountry(country);
         setSelectedCity('');
     };
@@ -114,6 +107,7 @@ function AplikimiOnline() {
     const handleCityChange = (event) => {
         setSelectedCity(event.target.value);
     };
+
     return (
         <>
             <Navbar />
@@ -267,7 +261,7 @@ function AplikimiOnline() {
                                 <select 
                                     id="Country"
                                     name="Country"
-                                    value={selectedCountry}
+                                    value={selectedCountry?.code || ''}
                                     onChange={handleCountryChange}
                                     className="form-control form-control-lg mb-2"
                                 >
@@ -312,7 +306,9 @@ function AplikimiOnline() {
                                 <button type="submit" className="btn btn-success btn-lg">Apply</button>
                             </div>
                             {successMessage && (
+
                                 <div className="alert alert-success mt-4">
+                                    
                                     {successMessage}
                                 </div>
                             )}

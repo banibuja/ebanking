@@ -176,7 +176,9 @@ export const Client = () => {
                                                         {item.Status !== 'Accepted' && (
                                                             <button
                                                                 onClick={() => handleAccept(item.userId)}
-                                                                className="btn btn-success">
+                                                                
+                                                                className="btn btn-success ">
+                                                                    
                                                                 Accept
                                                             </button>
                                                         )}

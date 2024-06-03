@@ -6,70 +6,29 @@ import Nav from './Nav';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './Dashboard.css';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-const data = [
-  {
-    name: 'Page A',
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: 'Page B',
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: 'Page C',
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: 'Page D',
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: 'Page E',
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: 'Page F',
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: 'Page G',
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-];
 
 export const Dashboard = () => {
   const [numClients, setNumClients] = useState(0);
   const [numAccount, setNumAccounts] = useState(0);
-  const [role, setRole] = useState(0);
+  const [role, setRole] = useState('');
   const [numStaff, setNumStaff] = useState(0);
   const navigate = useNavigate();
-  
+
+
+  axios.defaults.withCredentials = true;
+
   useEffect(() => {
-    axios.get('https://localhost:8080')
+    axios.get('http://localhost:8080')
       .then(res => {
         if (res.data.valid) {
           setRole(res.data.role);
+
         } else {
           navigate('/login');
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log(err))
   }, [navigate]);
 
   useEffect(() => {
@@ -94,11 +53,12 @@ export const Dashboard = () => {
         <Sidebar />
         <div className="container-fluid mt-4">
           <Nav />
-          <div className="container">
-            <header className="mb-4">
+            {/* <header className="mb-4">
               <h1 className="text-center">Dashboard</h1>
-            </header>
-            <div className="row">
+            </header> */}
+        
+  <div className="cardat">
+          <div className="row">
               {role !== 'User' && (
                 <div className="col-xl-3 col-md-6 mb-4">
                   <div className="card border-left-primary shadow h-100 py-2">
@@ -137,6 +97,8 @@ export const Dashboard = () => {
                   </div>
                 </div>
               )}
+              {role !== 'User' && (
+
               <div className="col-xl-3 col-md-6 mb-4">
                 <div className="card border-left-info shadow h-100 py-2">
                   <div className="card-body">
@@ -154,6 +116,9 @@ export const Dashboard = () => {
                   </div>
                 </div>
               </div>
+              )}
+              {role !== 'User' && (
+
               <div className="col-xl-3 col-md-6 mb-4">
                 <div className="card border-left-warning shadow h-100 py-2">
                   <div className="card-body">
@@ -171,6 +136,9 @@ export const Dashboard = () => {
                   </div>
                 </div>
               </div>
+                            )}
+              {role !== 'User' && (
+
               <div className="col-xl-3 col-md-6 mb-4">
                 <div className="card border-left-danger shadow h-100 py-2">
                   <div className="card-body">
@@ -188,6 +156,9 @@ export const Dashboard = () => {
                   </div>
                 </div>
               </div>
+                            )}
+              {role !== 'User' && (
+
               <div className="col-xl-3 col-md-6 mb-4">
                 <div className="card border-left-secondary shadow h-100 py-2">
                   <div className="card-body">
@@ -205,6 +176,7 @@ export const Dashboard = () => {
                   </div>
                 </div>
               </div>
+                                          )}
               {role !== 'User' && (
                 <div className="col-xl-3 col-md-6 mb-4">
                   <div className="card border-left-primary shadow h-100 py-2">
@@ -225,29 +197,13 @@ export const Dashboard = () => {
                 </div>
               )}
             </div>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart
-                width={500}
-                height={300}
-                data={data}
-                margin={{
-                  top: 5,
-                  right: 30,
-                  left: 20,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                 <Tooltip />
-                <Legend />
-                <Bar dataKey="pv" fill="#8884d8" background={{ fill: '#eee' }} />
-                <Bar dataKey="uv" fill="#82ca9d" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+            </div>
         </div>
+        <div class="welcome-dashboard">
+    <span class="text1">welcome in</span>
+    <span class="text2">Dashboard</span>
+    {/* <span class="text3">Hello</span> */}
+  </div>
       </main>
     </div>
   );

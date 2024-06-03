@@ -33,8 +33,8 @@
 }
 /* .form-control, */
  .form-select {
-    background: rgba(255, 255, 255, 0.1);
-    color: #fff;
+    background: rgba(252, 250, 250, 0.995);
+    color: #000000;
     border: none;
     border-radius: 5px;
     padding: 8px;
@@ -45,12 +45,12 @@
     color: #ccc;
 }
 
-.btn-success {
+/* .btn-success {
     background: linear-gradient(to right, #ff416c, #ff4b2b);
     border: none;
     padding: 10px 20px;
     font-size: 0.9em;
-}
+} */
 
 .alert-success {
     background: #28a745;
@@ -59,3 +59,50 @@
     font-size: 0.9em;
     padding: 10px;
 }
+
+.btn-success {
+    background-color: #004A7F;
+    -webkit-border-radius: 10px;
+    border-radius: 3px;
+    border: none;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Arial;
+    font-size: 20px;
+    padding: 6px 20px;
+    text-align: center;
+    text-decoration: none;
+  }
+  @-webkit-keyframes glowing {
+    0% { background-color: #97bf2d; -webkit-box-shadow: 0 0 3px #f73b02; }
+    50% { background-color: #97bf2d; -webkit-box-shadow: 0 0 40px #f73b02; }
+    100% { background-color: #97bf2d; -webkit-box-shadow: 0 0 3px #f73b02; }
+  }
+  
+  @-moz-keyframes glowing {
+    0% { background-color: #97bf2d; -moz-box-shadow: 0 0 3px #f73b02; }
+    50% { background-color: #97bf2d; -moz-box-shadow: 0 0 40px #f73b02; }
+    100% { background-color: #97bf2d; -moz-box-shadow: 0 0 3px #f73b02; }
+  }
+  
+  @-o-keyframes glowing {
+    0% { background-color: #97bf2d; box-shadow: 0 0 3px #f73b02; }
+    50% { background-color: #97bf2d; box-shadow: 0 0 40px #f73b02; }
+    100% { background-color: #97bf2d; box-shadow: 0 0 3px #f73b02; }
+  }
+  
+  @keyframes glowing {
+    0% { background-color: #97bf2d; box-shadow: 0 0 3px #f73b02; }
+    50% { background-color: #97bf2d; box-shadow: 0 0 40px #f73b02; }
+    100% { background-color: #97bf2d; box-shadow: 0 0 3px #f73b02; }
+  }
+  
+  .btn-success {
+    -webkit-animation: glowing 1500ms infinite;
+    -moz-animation: glowing 1500ms infinite;
+    -o-animation: glowing 1500ms infinite;
+    animation: glowing 1500ms infinite;
+  }
+
+

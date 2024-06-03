@@ -55,3 +55,100 @@ header h1 {
     font-weight: bold;
     color: #d6b600; /* Ngjyra e numrave */
 }
+.cardat{
+  top: 60px;
+
+}
+
+
+.button {
+    background-color: #004A7F;
+    -webkit-border-radius: 10px;
+    border-radius: 3px;
+    border: none;
+    color: #FFFFFF;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Arial;
+    font-size: 30px;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+  }
+  @-webkit-keyframes glowing {
+    0% { background-color: #97bf2d; -webkit-box-shadow: 0 0 3px #97bf2d; }
+    50% { background-color: #97bf2d; -webkit-box-shadow: 0 0 40px #97bf2d; }
+    100% { background-color: #97bf2d; -webkit-box-shadow: 0 0 3px #97bf2d; }
+  }
+  
+  @-moz-keyframes glowing {
+    0% { background-color: #97bf2d; -moz-box-shadow: 0 0 3px #97bf2d; }
+    50% { background-color: #97bf2d; -moz-box-shadow: 0 0 40px #97bf2d; }
+    100% { background-color: #97bf2d; -moz-box-shadow: 0 0 3px #97bf2d; }
+  }
+  
+  @-o-keyframes glowing {
+    0% { background-color: #97bf2d; box-shadow: 0 0 3px #97bf2d; }
+    50% { background-color: #97bf2d; box-shadow: 0 0 40px #97bf2d; }
+    100% { background-color: #97bf2d; box-shadow: 0 0 3px #97bf2d; }
+  }
+  
+  @keyframes glowing {
+    0% { background-color: #97bf2d; box-shadow: 0 0 3px #97bf2d; }
+    50% { background-color: #97bf2d; box-shadow: 0 0 40px #97bf2d; }
+    100% { background-color: #97bf2d; box-shadow: 0 0 3px #97bf2d; }
+  }
+  
+  .button {
+    -webkit-animation: glowing 1500ms infinite;
+    -moz-animation: glowing 1500ms infinite;
+    -o-animation: glowing 1500ms infinite;
+    animation: glowing 1500ms infinite;
+  }
+
+
+
+  .welcome-dashboard{
+    text-align: center;
+    position: absolute;
+    top: 60%;
+    left: 60%;
+    transform: translate(-50%,-50%);
+    width: 70%;
+  }
+  .welcome-dashboard span{
+    text-transform: uppercase;
+    display: block;
+  }
+  .text1{
+    color: rgb(212, 17, 17);
+    font-size: 60px;
+    font-weight: 500;
+    letter-spacing: 8px;
+    /* margin-bottom: 20px; */
+    background: rgb(242, 237, 237);
+    position: relative;
+    animation: ani 3s;
+  }
+  .text2{
+    font-size: 35px;
+    color: #6ab04c;
+    /* position: relative;
+    animation: ani 3s; */
+  }
+  @keyframes ani{
+    0%{
+      color: black;
+      margin-bottom: -40px;
+    }
+    30%{
+      letter-spacing: 25px;
+      margin-bottom: -40px;
+    }
+    85%{
+      letter-spacing: 8px;
+      margin-bottom: -40px;
+    }
+  }
+
+  

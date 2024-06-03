@@ -40,7 +40,7 @@ function Profile() {
                     lastname: data.lastname || '',
                     email: data.email || '',
                     birthday: data.birthday.split("T")[0] || '',
-                    profilePicture: bufferredImage || 'http://bootdey.com/img/Content/avatar/avatar1.png'
+                    profilePicture: bufferredImage || 'https://t4.ftcdn.net/jpg/03/40/12/49/360_F_340124934_bz3pQTLrdFpH92ekknuaTHy8JuXgG7fi.jpg'
                     
 
                 }));

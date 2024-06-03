@@ -88,12 +88,7 @@ export default function Sidebar() {
         </a>
         <hr />
         <ul className="nav nav-pills flex-column mb-auto">
-              <li>
-                <a href="/profi" className="nav-link link-dark" onClick={handleManageClick}>
-                  <i className="bi me-2 fas fa-user fa-1x text-gray-300" ></i>
-                  Profile
-                </a>
-              </li>
+              
           {role !== 'User' && (
             <>
               <li>
@@ -148,7 +143,10 @@ export default function Sidebar() {
               </Dropdown.Menu>
             </Dropdown>
           </li>
+          {role !== 'User' && (
+
           <li>
+            
             <Dropdown>
               <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
                 <i className="bi me-2 fas fa-money-bill-wave fa-1x text-gray-300  "></i>
@@ -160,6 +158,9 @@ export default function Sidebar() {
               </Dropdown.Menu>
             </Dropdown>
           </li>
+          )}
+          {role !== 'User' && (
+
           <li>
             <Dropdown>
               <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
@@ -172,6 +173,7 @@ export default function Sidebar() {
               </Dropdown.Menu>
             </Dropdown>
           </li>
+          )}
           <li>
             <Dropdown>
               <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
@@ -198,25 +200,32 @@ export default function Sidebar() {
               </Dropdown.Menu>
             </Dropdown>
           </li>
+                        <li>
+                                      <a href="/Reports" className="nav-link link-dark" onClick={handleManageClick}>
+                                        <i className="fas fa-file-alt fa-1x text-gray-300 me-2"></i>
+                                        Reports
+                                      </a>
+              </li>
+
           <li>
-            <a href="/Reports" className="nav-link link-dark" onClick={handleManageClick}>
-              <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
-              Reports
-            </a>
-          </li>
-          <li>
+                <a href="/profi" className="nav-link link-dark" onClick={handleManageClick}>
+                  <i className="bi me-2 fas fa-user fa-1x text-gray-300" ></i>
+                  Profile
+                </a>
+              </li>
+          {/* <li>
             <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
               Notifications
             </a>
-          </li>
+          </li> */}
           <li>Advanced Modules</li>
-          <li>
+          {/* <li>
             <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
               Transactions History
             </a>
-          </li>
+          </li> */}
 
           <li>
             <a href="#" className="nav-link link-dark" onClick={handleLogout}>
