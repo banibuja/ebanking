@@ -27,6 +27,12 @@ CREATE TABLE AboutUs(
     Info TEXT
 );
 
+CREATE TABLE Team(
+    TeamId int not null primary key AUTO_INCREMENT,
+    Emri varchar(50) not null,
+    Teksti text not null,
+    Photo longblob
+);
 
 CREATE TABLE Carusel(
     CaruselId int not null primary key AUTO_INCREMENT,
