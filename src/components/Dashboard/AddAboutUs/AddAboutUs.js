@@ -87,11 +87,11 @@ const handleDelete = (id) => {
                                     <div className="card-body">
                                         <div className="form-group">
                                             <label htmlFor="CurrentAccount">Tittle</label>
-                                            <input type="text" name='Tittle' className='form-control rounded-0' onChange={handleInput} value={values.Tittle}/>
+                                            <input type="text" name='Tittle' className='form-control rounded-0' onChange={handleInput} />
                                         </div>
                                         <div className="form-group">
                                             <label htmlFor="CurrentAccount">Information Section</label>
-                                            <input type="text" name='Info' className='form-control rounded-0' onChange={handleInput} value={values.Info}/>
+                                            <input type="text" name='Info' className='form-control rounded-0' onChange={handleInput} />
                                         </div>
                                     </div>
                                     <center>
