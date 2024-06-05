@@ -1,8 +1,13 @@
 const db = require('../../db');
 const bcrypt = require('bcrypt');
-
+const jwt = require('jsonwebtoken');
 const getClientforProfile = (req, res) => {
-    const userID = req.session.uId;
+    try {
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
+
+        const userID = decodedToken.userId;
     if (!userID) {
         return res.status(500).json("User not logged in").end();
     }
@@ -23,10 +28,21 @@ const getClientforProfile = (req, res) => {
             return res.status(204).json("fail").end();
         }
     });
+} catch (error) {
+        res.status(401).send("not logged in").end();
+      }
 };
 
 const updateProfile = async (req, res) => {
-    const userId  = req.session.uId;
+    try {
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
+
+        const userID = decodedToken.userId;
+} catch (error) {
+        res.status(401).send("not logged in").end();
+      }
     const details = req.body;
 
     console.log(details);
@@ -55,7 +71,15 @@ const updateProfile = async (req, res) => {
     }
 };
 const updatePassword = (req, res) => {
-    const userId = req.session.uId;
+    try {
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
+
+        const userID = decodedToken.userId;
+} catch (error) {
+        res.status(401).send("not logged in").end();
+      }
     const { currentPassword, newPassword, confirmPassword } = req.body;
     console.log(req.body);
 
@@ -89,7 +113,15 @@ const updatePassword = (req, res) => {
         })
 };
 const updateProfilePicture = (req, res) => {
-    const userId = req.session.uId;
+    try {
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
+
+        const userID = decodedToken.userId;
+} catch (error) {
+        res.status(401).send("not logged in").end();
+      }
     const base64 = req.body.base64;
 
     db.query(

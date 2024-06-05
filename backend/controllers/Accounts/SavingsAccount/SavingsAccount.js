@@ -1,5 +1,6 @@
 const db = require('../../../db');
 
+const jwt = require('jsonwebtoken')
 
 const updateSavingsAccounts = (req, res) => {
     const Savingsid = req.params.id;
@@ -74,8 +75,13 @@ const deleteSavings = (req, res) => {
     });
 };
 
-const getSavingsBySesison = (req, res) => {
-    const userID = req.session.uId; 
+const getSavingsBySesison = (req, res) => {try {
+    const token = req.cookies.authToken; 
+    const secretKey = process.env.SECRET; 
+    const decodedToken = jwt.verify(token, secretKey);
+
+
+    const userID = decodedToken.userId; 
 
     // const sql = "SELECT * FROM savingsaccounts WHERE UserID = ?"; 
     const sql = `
@@ -95,6 +101,9 @@ const getSavingsBySesison = (req, res) => {
             return res.status(204).json("fail").end();
         }
     });
+    } catch (error) {
+        console.error('getAllnterTransactions verification failed:', error);
+    }
 };
 
 const getAccountByUserID = (req, res) => {

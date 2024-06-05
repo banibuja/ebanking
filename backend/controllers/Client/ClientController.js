@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const db = require('../../db');
 const sendEmail = require('../Client/sendEmail');
 const { generateRandomAccountNumber, generateFlexSaveAccountNumber, checkAccountExists } = require('./helpers');
+const jwt = require('jsonwebtoken');
 
 const addClient = async (req, res) => {
     try {
@@ -119,10 +120,10 @@ const addClient = async (req, res) => {
             console.error('Error sending email:', emailError);
         }
 
-        return res.json(addClient);
+        return res.status(200).json(addClient).end();
     } catch (error) {
         console.error('Error adding client:', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(500).json({ error: 'Internal Server Error' }).end();
     }
 };
 
@@ -152,10 +153,10 @@ const getUsers = async (req, res) => {
         });
 
         const users = await Promise.all(userPromises);
-        return res.json(users);
+        return res.status(200).json(users).end();
     } catch (error) {
         console.error('Error fetching users:', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(500).json({ error: 'Internal Server Error' }).end();
     }
 };
 
@@ -171,12 +172,12 @@ const getClientForEdit = (req, res) => {
 
     db.query(sql, [clientID], (err, data) => {
         if (err) {
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
         if (data.length > 0) {
-            return res.json(data[0]);
+            return res.status(200).json(data[0]).end();
         } else {
-            return res.status(404).json({ message: "Client not found" });
+            return res.status(204).json({ message: "Client not found" }).end();
         }
     });
 };
@@ -221,10 +222,10 @@ const updateUser = async (req, res) => {
 
         await Promise.all([updateUserPromise, updateAddressPromise]);
 
-        return res.json({ message: 'User updated successfully' });
+        return res.status(200).json({ message: 'User updated successfully' }).end();
     } catch (error) {
         console.error('Error updating user:', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(500).json({ error: 'Internal Server Error' }).end();
     }
 };
 
@@ -239,9 +240,9 @@ const getByUserID = (req, res) => {
     db.query(sql, [username], (err, data) => {
         if (err) {
             console.error(err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
-        return res.json(data);
+        return res.status(200).json(data).end();
     });
 };
 
@@ -252,9 +253,9 @@ const deleteClient = (req, res) => {
     db.query(sqlDelete, userID, (err, result) => {
         if (err) {
             console.error(err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
-        return res.status(200).json({ message: "Card deleted successfully" });
+        return res.status(200).json({ message: "Card deleted successfully" }).end();
     });
 };
 
@@ -266,14 +267,14 @@ const checkEmail = async (req, res) => {
         db.query(sql, [email], (err, result) => {
             if (err) {
                 console.error('Error checking email:', err);
-                return res.status(500).json({ error: 'Internal Server Error' });
+                return res.status(500).json({ error: 'Internal Server Error' }).end();
             }
             const exists = result[0].count > 0;
-            return res.json({ exists });
+            return res.status(200).json({ exists }).end();
         });
     } catch (error) {
         console.error('Error checking email:', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(500).json({ error: 'Internal Server Error' }).end();
     }
 };
 
@@ -285,31 +286,40 @@ const checkUsername = async (req, res) => {
         db.query(sql, [username], (err, result) => {
             if (err) {
                 console.error('Error checking username:', err);
-                return res.status(500).json({ error: 'Internal Server Error' });
+                return res.status(500).json({ error: 'Internal Server Error' }).end();
             }
             const exists = result[0].count > 0;
-            return res.json({ exists });
+            return res.status(200).json({ exists }).end();
         });
     } catch (error) {
         console.error('Error checking username:', error);
-        return res.status(500).json({ error: 'Internal Server Error' });
+        return res.status(500).json({ error: 'Internal Server Error' }).end();
     }
 };
 
 const getUsersWithSession = (req, res) => {
-    const userID = req.session.uId;
-    const sql = "SELECT * FROM users WHERE userId = ?";
+   
+    try {
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
 
-    db.query(sql, [userID], (err, data) => {
-        if (err) {
-            return res.json("Error");
-        }
-        if (data.length > 0) {
-            return res.json(data);
-        } else {
-            return res.json("fail");
-        }
-    });
+        const userID = decodedToken.userId;
+        const sql = "SELECT * FROM users WHERE userId = ?";
+
+        db.query(sql, [userID], (err, data) => {
+            if (err) {
+                return res.status(500).json("Error").end();
+            }
+            if (data.length > 0) {
+                return res.status(200).json(data).end();
+            } else {
+                return res.status(204).json("fail").end();
+            }
+        }); 
+    } catch (error) {
+        res.status(401).send("not logged in").end();
+      }
 };
 
 module.exports = { addClient, getUsers, getUsersWithSession, getClientForEdit, checkEmail, checkUsername, updateUser, getByUserID, deleteClient };

@@ -12,8 +12,9 @@ export default function Sidebar() {
   axios.defaults.withCredentials = true;
 
   useEffect(() => {
-    axios.get('http://localhost:8080')
+    axios.get('http://localhost:8080', {withCredentials:true})
       .then(res => {
+        console.log(res.data);
         if (res.data.valid) {
           setRole(res.data.role);
 
@@ -21,8 +22,10 @@ export default function Sidebar() {
           navigate('/login');
         }
       })
-      .catch(err => console.log(err))
-  }, [navigate]);
+      .catch(err => 
+        navigate('/login')
+      )
+  }, []);
 
   useEffect(() => {
     // axios.get('http://localhost:8080/sessionTimeRemaining')
@@ -55,10 +58,14 @@ export default function Sidebar() {
   const handleLogout = () => {
     axios.get('http://localhost:8080/logout')
       .then(res => {
-        if (res.data.success) {
+        console.log(res.data);
           navigate('/login');
+<<<<<<< Updated upstream
         } else {
         }
+=======
+
+>>>>>>> Stashed changes
       })
       .catch(err => {
       });
@@ -72,7 +79,7 @@ export default function Sidebar() {
 
   const handleManageClick = async (e) => {
     e.preventDefault();
-    await axios.get('http://localhost:8080/resetSession');
+    // await axios.get('http://localhost:8080/resetSession');
     navigate(e.target.getAttribute('href'));
   };
 

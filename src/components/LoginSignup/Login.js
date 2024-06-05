@@ -22,9 +22,7 @@ function Login() {
       .then(res => {
         if (res.data.valid) {
           navigate('/dashboard');
-        } else {
-          navigate('/login');
-        }
+        } 
       })
       .catch(err => console.log(err));
   }, []);

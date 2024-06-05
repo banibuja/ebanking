@@ -1,4 +1,5 @@
 const db = require('../../../db');
+const jwt = require('jsonwebtoken')
 
 
 
@@ -61,25 +62,35 @@ const getAllAccounts = (req, res) => {
 };
 
 const getAccountBySession = (req, res) => {
-    const userID = req.session.uId; 
-    // const sql = "SELECT * FROM currentaccounts WHERE UserID = ?";
-    const sql = `
-    SELECT u.*, a.CurrentAccount, a.CurrencyCode, a.Balance
-    FROM users u 
-    INNER JOIN currentaccounts a ON a.userId = u.userId 
-    WHERE u.userId = ?
-`;
+    try {
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
 
-    db.query(sql, [userID], (err, data) => {
-        if (err) {
-            return res.status(500).json("Error").end();
-        }
-        if (data.length > 0) {
-            return res.status(200).json(data).end();
-        } else {
-            return res.status(204).json("fail").end();
-        }
-    });
+        const userID = decodedToken.userId; 
+        // const sql = "SELECT * FROM currentaccounts WHERE UserID = ?";
+        const sql = 
+        `
+            SELECT u.*, a.CurrentAccount, a.CurrencyCode, a.Balance
+            FROM users u 
+            INNER JOIN currentaccounts a ON a.userId = u.userId 
+            WHERE u.userId = ?
+        `;
+
+        db.query(sql, [userID], (err, data) => {
+            if (err) {
+                return res.status(500).json("Error").end();
+            }
+            if (data.length > 0) {
+                return res.status(200).json(data).end();
+            } else {
+                return res.status(204).json("fail").end();
+            }
+        });
+    } catch (error) {
+        console.error('getAllnterTransactions verification failed:', error);
+    }
+    
 };
 
 const deleteAccount = (req, res) => {

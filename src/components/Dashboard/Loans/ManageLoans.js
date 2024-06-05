@@ -20,7 +20,7 @@ const ManageLoans = () => {
     const getUsers = () => {
         axios.post('http://localhost:8080/getAllLoans')
             .then(res => {
-                const fetchedUsers = res.data;
+                const fetchedUsers = [...res.data];
                 const sortedUsers = fetchedUsers.sort((a, b) => {
                     if (a.Status === 'Pending' && b.Status !== 'Pending') return -1;
                     if (a.Status !== 'Pending' && b.Status === 'Pending') return 1;

@@ -1,10 +1,16 @@
 const db = require('../../db');
 // const sendTransactionEmail = require('../Transaction/sendEmailTransaction');
-
+const jwt = require('jsonwebtoken');
 const getCurrentAccount = (req, res) => {
-    const userID = req.session.uId;
+    try {
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
+
+        const userID = decodedToken.userId;
+
     if (!userID) {
-        return res.json("fail");
+        return res.status(401).json("fail").end();
     }
 
     const sql = "SELECT * FROM currentaccounts WHERE UserID = ?";
@@ -17,13 +23,21 @@ const getCurrentAccount = (req, res) => {
         } else {
             return res.status(404).end();
         }
-    });
+    });} catch (error) {
+        res.status(401).send("not logged in").end();
+      }
 };
 
 const getSavingsAccounts = (req, res) => {
-    const userID = req.session.uId;
+    try {
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
+
+        const userID = decodedToken.userId;
+
     if (!userID) {
-        return res.json("fail");
+        return res.status(401).json("fail").end();
     }
 
     const sql = "SELECT * FROM savingsaccounts WHERE UserID = ?";
@@ -36,7 +50,9 @@ const getSavingsAccounts = (req, res) => {
         } else {
             return res.status(404).end();
         }
-    });
+    });} catch (error) {
+        res.status(401).send("not logged in").end();
+      }
 };
 
 const insertSaveTransaction = (req, res) => {
@@ -101,9 +117,15 @@ const insertSaveTransaction = (req, res) => {
 
 
 const getAllHistory = (req, res) => {
-    const userID = req.session.uId;
+    try {
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
+
+        const userID = decodedToken.userId;
+
     if (!userID) {
-        return res.json("fail");
+        return res.status(401).json("fail").end();
     }
     var sql = "SELECT CurrentAccount FROM currentaccounts WHERE UserID = ?";
     db.query(sql, [userID], (err, data) => {
@@ -126,7 +148,9 @@ const getAllHistory = (req, res) => {
         } else {
             return res.status(404).end();
         }
-    });
+    });} catch (error) {
+        res.status(401).send("not logged in").end();
+      }
 }
 
 module.exports = { getCurrentAccount, getSavingsAccounts, insertSaveTransaction, getAllHistory };

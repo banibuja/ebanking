@@ -6,7 +6,6 @@ import Nav from './Nav';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './Dashboard.css';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 
 export const Dashboard = () => {
   const [numClients, setNumClients] = useState(0);
@@ -20,7 +19,7 @@ export const Dashboard = () => {
   axios.defaults.withCredentials = true;
 
   useEffect(() => {
-    axios.get('http://localhost:8080')
+    axios.get('http://localhost:8080', {withCredentials:'true'})
       .then(res => {
         if (res.data.valid) {
           setRole(res.data.role);

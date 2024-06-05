@@ -1,8 +1,15 @@
 const db = require('../../db');
 const sendTransactionEmail = require('../Transaction/sendEmailTransaction');
+const jwt = require('jsonwebtoken');
 
 const getAllTransactions = (req, res) => {
-    const userID = req.session.uId;
+    try {
+        const token = req.cookies.authToken; // Retrieve the JWT token from the cookie
+        const secretKey = process.env.SECRET; // Retrieve the secret key from environment variables
+        const decodedToken = jwt.verify(token, secretKey);
+     
+      
+    const userID = decodedToken.userId;
     if (!userID) {
         return res.status(401).json("fail").end();
     }
@@ -31,11 +38,19 @@ const getAllTransactions = (req, res) => {
         } else {
             return res.status(404).end();
         }
-    });
+    });} catch (error) {
+        res.status(401).send("not logged in").end();
+      }
 }
 
 const getAllnterTransactions = (req, res) => {
-    const userID = req.session.uId;
+    try {
+        const token = req.cookies.authToken; // Retrieve the JWT token from the cookie
+        const secretKey = process.env.SECRET; // Retrieve the secret key from environment variables
+        const decodedToken = jwt.verify(token, secretKey);
+     
+      
+    const userID = decodedToken.userId;
     if (!userID) {
         return res.status(401).json("fail").end();
     }
@@ -60,11 +75,19 @@ const getAllnterTransactions = (req, res) => {
         } else {
             return res.status(404).end();
         }
-    });
+    });} catch (error) {
+        res.status(401).send("not logged in").end();
+      }
 }
 
 const getCurrentAccount = (req, res) => {
-    const userID = req.session.uId;
+    try {
+        const token = req.cookies.authToken; // Retrieve the JWT token from the cookie
+        const secretKey = process.env.SECRET; // Retrieve the secret key from environment variables
+        const decodedToken = jwt.verify(token, secretKey);
+     
+      
+    const userID = decodedToken.userId;
     if (!userID) {
         return res.status(401).json("fail").end();
     }
@@ -79,7 +102,9 @@ const getCurrentAccount = (req, res) => {
         } else {
             return res.status(404).end();
         }
-    });
+    });} catch (error) {
+        res.status(401).send("not logged in").end();
+      }
 }
 
 const insertTransaction = (req, res) => {

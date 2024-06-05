@@ -6,7 +6,7 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const jwt = require('jsonwebtoken'); // for token generation and verification
 const bcrypt = require('bcrypt');
-
+require('dotenv').config();
 
 // Importing controllers
 const clientController = require('./controllers/Client/ClientController');
@@ -42,27 +42,27 @@ app.use(express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 5000
 app.use(cookieParser());
 app.use(bodyParser.json());
 
-const refreshSession = (req, res, next) => {
-    if (req.session) {
-        req.session.cookie.maxAge = 15 * 60 * 1000; 
-    }
-    next();
-};
+// const refreshSession = (req, res, next) => {
+//     if (req.session) {
+//         req.session.cookie.maxAge = 15 * 60 * 1000; 
+//     }
+//     next();
+// };
 
-app.use(session({
-    secret: 'secret',
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-        secure: process.env.NODE_ENV === 'development', 
-        maxAge: 15 * 60 * 1000 
-    }
-}));
+// app.use(session({
+//     secret: process.env.SECRET,
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {
+//         secure: process.env.NODE_ENV === 'development', 
+//         maxAge: 15 * 60 * 1000 
+//     }
+// }));
 
 const requireAuth = (req, res, next) => {
     const token = req.headers.authorization;
     if (token) {
-        jwt.verify(token, 'access_token_secret', (err, decoded) => {
+        jwt.verify(token, process.env.SECRET, (err, decoded) => {
             if (err) {
                 return res.sendStatus(403); 
             }
@@ -74,7 +74,7 @@ const requireAuth = (req, res, next) => {
     }
 };
 
-app.use(refreshSession);
+// app.use(refreshSession);
 
 // Routes
 app.post('/sendEmailContactUs', contactusController.sendEmailContactUs);
@@ -95,7 +95,6 @@ app.post('/insertSaveTransaction', saveTransactionController.insertSaveTransacti
 app.post('/getAllHistory', saveTransactionController.getAllHistory);
 
 app.get('/sessionTimeRemaining', SessionController.sessionTimeRemaining);
-app.get('/resetSession', SessionController.resetSession);
 
 app.post('/addApply', applyOnlineController.addApply);
 app.post('/getApply', applyOnlineController.getApply);
@@ -208,41 +207,30 @@ db.on('error', (err) => {
 });
 
 app.get('/', (req, res) => {
-    if (req.session.username) {
-        return res.json({ valid: true, uId: req.session.uId, username: req.session.username, role: req.session.role });
-    } else {
-        return res.json({ valid: false, sessionExpired: req.session.expired });
+    const token = req.cookies.authToken;
+    
+    if (!token) {
+      return res.status(401).json({ message: 'Token not provided' });
     }
+    jwt.verify(token, process.env.SECRET, (err, decoded) => {
+        if (err) {
+            return res.json({ valid: false, sessionExpired: req.session.expired });
+        } else {
+            return res.json({ valid: true, uId: decoded.uId, username: decoded.username, role: decoded.role });
+        }
+      });
+
 });
 
 app.get('/logout', (req, res) => {
-    req.session.destroy(err => {
-        if (err) {
-            res.json({ success: false });
-        } else {
-            res.clearCookie('connect.sid');
-            res.json({ success: true });
-        }
-    });
+    console.log('loged out');
+    res.clearCookie('connect.sid');
+    res.clearCookie('authToken').send('Logged out successfully');
 });
 
 app.post('/loginform', async (req, res) => {
-    // const db = mysql.createConnection({
-    //     host: "localhost",
-    //     user: "root",
-    //     password: "",
-    //     database: "ebanking"
-    // });
-    // db.connect((err) => {
-    //     if (err) {
-    //         console.error('DB not connect:', err);
-    //         return res.status(500).json({ message: "Internal server error" });
-    //     }
-    // });
-
     const sql = "SELECT * FROM users WHERE username = ?";
     const date = new Date();
-    const expireDate = date.setMinutes(date.getMinutes() + 15);
 
     db.query(sql, [req.body.username], async (err, result) => {
         if (err) {
@@ -269,20 +257,15 @@ app.post('/loginform', async (req, res) => {
 
                         const userId = result[0].userId; 
 
-                        req.session.role = results[0].AccessLevel;
-                        req.session.uId = userId; 
-                        req.session.username = result[0].username;
-                        req.session.name = result[0].name;
-                        req.session.lastname = result[0].lastname;
-                        req.session.cookie.maxAge = 15 * 60 * 10000; 
+                        const accessToken = jwt.sign({ userId, username: result[0].username, role:results[0].AccessLevel }, process.env.SECRET, { expiresIn: '15m' });
 
-                        // Generate Access Token
-                        const accessToken = jwt.sign({ userId, username: result[0].username }, 'access_token_secret', { expiresIn: '15m' });
-
-                        const refreshToken = jwt.sign({ userId }, 'refresh_token_secret');
-
-                        req.session.refreshToken = refreshToken;
-
+                        const refreshToken = jwt.sign({ userId }, process.env.SECRET);
+                        console.log(accessToken);
+                        res.cookie('authToken',accessToken,{ 
+                            maxAge: 3600000, 
+                            httpOnly: true, 
+                            secure: true 
+                          })
                         res.json({ accessToken, message: "Login successful", Login: true });
                     });
                 } else {
@@ -298,15 +281,15 @@ app.post('/loginform', async (req, res) => {
 
 
 app.post('/refresh_token', async (req, res) => {
-    const refreshToken = req.session.refreshToken;
+    // const refreshToken = req.session.refreshToken;
 
-    jwt.verify(refreshToken, 'refresh_token_secret', (err, decoded) => {
-        if (err) {
-            return res.sendStatus(403); // Forbidden
-        }
-        const accessToken = jwt.sign({ userId: decoded.userId }, 'access_token_secret', { expiresIn: '15m' });
-        res.json({ accessToken });
-    });
+    // jwt.verify(refreshToken, 'refresh_token_secret', (err, decoded) => {
+    //     if (err) {
+    //         return res.sendStatus(403); // Forbidden
+    //     }
+    //     const accessToken = jwt.sign({ userId: decoded.userId }, 'access_token_secret', { expiresIn: '15m' });
+    //     res.json({ accessToken });
+    // });
 });
 
 app.listen(8080, () => {

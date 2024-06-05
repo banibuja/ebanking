@@ -8,7 +8,7 @@ function Nav() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.post('http://localhost:8080/getUsersWithSession')
+    axios.post('http://localhost:8080/getUsersWithSession', {withCredentials:'true'})
       .then(res => {
         const userData = res.data;
         if (userData && userData.length > 0) {
@@ -20,11 +20,11 @@ function Nav() {
 
   useEffect(() => {
     const fetchSessionTime = () => {
-      axios.get('http://localhost:8080/sessionTimeRemaining')
+      axios.get('http://localhost:8080/sessionTimeRemaining', {withCredentials:true})
         .then(res => {
           const { timeRemaining } = res.data;
           if (timeRemaining === 0) {
-            handleLogout();
+            // handleLogout();
           } else {
             setSessionTimeRemaining(timeRemaining);
           }
@@ -42,7 +42,7 @@ function Nav() {
           return prevTime - 1;
         } else {
           clearInterval(timer);
-          handleLogout();
+          // handleLogout();
           return 0;
         }
       });

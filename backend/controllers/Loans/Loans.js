@@ -1,7 +1,12 @@
 const db = require('../../db');
-
+const jwt = require('jsonwebtoken')
 const getAllLoans = (req, res) => {
-    const userID = req.session.uId;
+    try {
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
+
+        const userID = decodedToken.userId;
     if (!userID) {
         return res.status(500).json("Not logged in");
     }
@@ -26,7 +31,9 @@ const getAllLoans = (req, res) => {
         } else {
             return res.status(204).json("No Transactions found").end();
         }
-    });
+    });} catch (error) {
+        res.status(401).send("not logged in").end();
+      }
 }
 
 const getLoanForEdit = (req, res) => {
@@ -128,7 +135,12 @@ const deleteLoan = (req, res) => {
 };
 
 const getAccountNumber = (req, res) => {
-    const userId = req.session.uId;
+    try {
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
+
+        const userID = decodedToken.userId;
     const sql = "SELECT CurrentAccount FROM currentaccounts WHERE UserID = ?"; 
 
     db.query(sql, [userId], (err, result) => {
@@ -143,6 +155,9 @@ const getAccountNumber = (req, res) => {
 
         res.status(200).json({ accountNumber: result[0].CurrentAccount }).end();
     });
+} catch (error) {
+    console.error('Token verification failed:', error.message);
+}
 };
 
 const updateStatusLoans = (req, res) => {
@@ -160,7 +175,12 @@ const updateStatusLoans = (req, res) => {
 };
 
 const getAllLoansForClient = (req, res) => {
-    const userID = req.session.uId;
+    try {
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
+
+        const userID = decodedToken.userId;
     if (!userID) {
         return res.status(500).json("Not logged in").end();
     }
@@ -186,6 +206,9 @@ const getAllLoansForClient = (req, res) => {
             return res.status(204).json("No Transactions found").end();
         }
     });
+} catch (error) {
+        res.status(401).send("not logged in").end();
+      }
 }
 
 module.exports = {

@@ -1,34 +1,50 @@
 const db = require('../../db');
 
+const jwt = require('jsonwebtoken')
 const addGoal = (req, res) => {
     const { goalname, GoalAmount, deadline, impact } = req.body;
-    const userID = req.session.uId; 
+    try {
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
+   
+    const userID = decodedToken.userId; 
 
     const sql = "INSERT INTO investmentsgoals (UserID, GoalName, GoalAmount, Deadline, Impact) VALUES (?, ?, ?, ?, ?)";
     db.query(sql, [userID, goalname, GoalAmount, deadline, impact], (err, result) => {
         if (err) {
             console.error("Error adding goal:", err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
         console.log("Goal added successfully");
-        return res.json("success");
+        return res.status(200).json("success").end();
     });
+} catch (error) {
+    console.error('getAllnterTransactions verification failed:', error);
+}
 };
 
 const getGoalsBySession = (req, res) => {
-    const userID = req.session.uId; 
+    try {
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
+   
+    const userID = decodedToken.userId; 
     const sql = "SELECT * FROM investmentsgoals WHERE UserID = ?";
 
     db.query(sql, [userID], (err, data) => {
         if (err) {
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
         if (data.length > 0) {
-            return res.json(data);
+            return res.status(200).json(data).end();
         } else {
-            return res.json("fail");
+            return res.status(204).json("fail").end();
         }
-    });
+    });} catch (error) {
+        console.error('getAllnterTransactions verification failed:', error);
+    }
 };
 
 const getGoalsForEdit = (req, res) => {
@@ -37,12 +53,12 @@ const getGoalsForEdit = (req, res) => {
 
     db.query(sql, [goalsID], (err, data) => {
         if (err) {
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
         if (data.length > 0) {
-            return res.json(data[0]); 
+            return res.status(200).json(data[0]).end(); 
         } else {
-            return res.status(404).json({ message: "Goal not found" });
+            return res.status(204).json({ message: "Goal not found" }).end();
         }
     });
 };
@@ -55,10 +71,10 @@ const updateGoal = (req, res) => {
     db.query(sql, [GoalName, GoalAmount, Deadline, Impact, goalsID], (err, result) => {
         if (err) {
             console.error("Error updating goal:", err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
         console.log("Goal updated successfully");
-        return res.json("success");
+        return res.status(200).json("success").end();
     });
 };
 
@@ -69,9 +85,9 @@ const deleteGoals = (req, res) => {
     db.query(sqlDelete, goaldID, (err, result) => {
         if (err) {
             console.error(err);
-            return res.status(500).json({ error: "Internal server error" });
+            return res.status(500).json({ error: "Internal server error" }).end();
         }
-        return res.status(200).json({ message: "Account deleted successfully" });
+        return res.status(200).json({ message: "Account deleted successfully" }).end();
     });
 };
 

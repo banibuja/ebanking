@@ -1,14 +1,19 @@
 const db = require('../../db');
+const jwt = require('jsonwebtoken')
 
 
 const addCard = async (req, res) => {
     try {
-        if (!req.session.username) {
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
+        
+        if (!decodedToken.username) {
             return res.status(401).json({ error: "Unauthorized" });
         }
 
         const cardDetails = req.body;
-        const userID = req.session.uId;
+        const userID = decodedToken.userId;
 
         const existingCard = await new Promise((resolve, reject) => {
             db.query(`SELECT * FROM Cards WHERE CardNumber = ?`, [cardDetails.CardNumber], (error, result) => {
@@ -136,8 +141,13 @@ const getCardsForEdit = (req, res) => {
     });
 };
 
-const getCardsWithSession = (req, res) => {
-    const userID = req.session.uId;
+const getCardsWithSession = (req, res) => { 
+    try {
+    const token = req.cookies.authToken; 
+    const secretKey = process.env.SECRET; 
+    const decodedToken = jwt.verify(token, secretKey);
+
+    const userID = decodedToken.userId;
     const sql = `
         SELECT c.*, ca.Balance 
         FROM cards c 
@@ -155,6 +165,9 @@ const getCardsWithSession = (req, res) => {
             return res.status(204).json({ message: "No cards found for the user" }).end();
         }
     });
+} catch (error) {
+    console.error('getAllnterTransactions verification failed:', error);
+}
 };
 const checkCardExists = (req, res) => {
     const { cardNumber } = req.query;
