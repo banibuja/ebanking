@@ -201,18 +201,7 @@ export default function Sidebar() {
               </Dropdown.Menu>
             </Dropdown>
           </li>
-          <li>
-            <Dropdown>
-              <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
-                <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300  "></i>
-                Payment
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item href="/Payment" onClick={handleManageClick}>Payment</Dropdown.Item>
-                <Dropdown.Item href="/HistoryPayment" onClick={handleManageClick}>HistoryPayment</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
-          </li>
+    
                         <li>
                                       <a href="/Reports" className="nav-link link-dark" onClick={handleManageClick}>
                                         <i className="fas fa-file-alt fa-1x text-gray-300 me-2"></i>
@@ -226,12 +215,7 @@ export default function Sidebar() {
                   Profile
                 </a>
               </li>
-              <li>
-                                      <a href="/Support" className="nav-link link-dark" onClick={handleManageClick}>
-                                        <i className="fa-solid fa-circle-info fa-1x text-gray-300 me-2"></i>
-                                        Support
-                                      </a>
-              </li>
+             
           {/* <li>
             <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
