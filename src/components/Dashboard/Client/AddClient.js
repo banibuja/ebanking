@@ -139,11 +139,11 @@ function AddClient() {
                                                     </span>
                                                 )}
                                             </div>
-                                            <div className="col-md-6 form-group">
+                                            {/* <div className="col-md-6 form-group">
                                                 <label htmlFor="password">Client Password</label>
                                                 <input type="password" placeholder='Password' name='password' onChange={handleInput} className='form-control roundend-0' />
                                                 {errors.password && <span className='text-danger'>{errors.password}</span>}
-                                            </div>
+                                            </div> */}
                                             <div className="col-md-6 form-group">
                                                 <label htmlFor="gender">Client Gender</label>
                                                 <select name="gender" onChange={handleInput} value={values.gender} className="form-control rounded-0">

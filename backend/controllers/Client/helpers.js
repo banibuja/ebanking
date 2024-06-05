@@ -11,6 +11,15 @@ function generateFlexSaveAccountNumber() {
     const randomSuffix = Math.floor(10000000 + Math.random() * 90000000); 
     return parseInt(prefix + randomSuffix); 
 }
+function generateRandomPassword() {
+    const length = 10; 
+    const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let password = "";
+    for (let i = 0; i < length; ++i) {
+        password += charset.charAt(Math.floor(Math.random() * charset.length));
+    }
+    return password;
+}
 
 async function checkAccountExists(accountNumber) {
     return new Promise((resolve, reject) => {
@@ -24,4 +33,4 @@ async function checkAccountExists(accountNumber) {
     });
 }
 
-module.exports = { generateRandomAccountNumber, generateFlexSaveAccountNumber, checkAccountExists };
+module.exports = { generateRandomAccountNumber, generateFlexSaveAccountNumber, checkAccountExists, generateRandomPassword };

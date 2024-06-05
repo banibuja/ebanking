@@ -1,13 +1,16 @@
 const bcrypt = require('bcrypt');
 const db = require('../../db');
 const sendEmail = require('../Client/sendEmail');
-const { generateRandomAccountNumber, generateFlexSaveAccountNumber, checkAccountExists } = require('./helpers');
+const { generateRandomAccountNumber, generateFlexSaveAccountNumber, checkAccountExists, generateRandomPassword } = require('./helpers');
 const jwt = require('jsonwebtoken');
 
 const addClient = async (req, res) => {
     try {
         const client = req.body;
-        const hashedPassword = await bcrypt.hash(client.password, 10);
+        
+        // Generate a random password
+        const randomPassword = generateRandomPassword();
+        const hashedPassword = await bcrypt.hash(randomPassword, 10);
 
         let currentAccount;
         let accountExists = true;
@@ -112,9 +115,8 @@ const addClient = async (req, res) => {
             );
         });
 
-        // Send email to the client
         try {
-            await sendEmail(client.name, client.lastname, client.email, client.username, client.password);
+            await sendEmail(client.name, client.lastname, client.email, client.username, randomPassword);
             console.log('Email sent successfully');
         } catch (emailError) {
             console.error('Error sending email:', emailError);

@@ -5,14 +5,26 @@ import { useNavigate } from 'react-router-dom';
 function Nav() {
   const [name, setName] = useState('');
   const [sessionTimeRemaining, setSessionTimeRemaining] = useState(0);
+  const [lastLogin, setLastLogin] = useState('');
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.post('http://localhost:8080/getUsersWithSession', {withCredentials:true})
+    axios.post('http://localhost:8080/getUsersWithSession', { withCredentials: true })
       .then(res => {
         const userData = res.data;
         if (userData && userData.length > 0) {
           setName(userData[0].name);
+          const lastLoginTimestamp = new Date(userData[0].last_login);
+          const formattedLastLogin = lastLoginTimestamp.toLocaleDateString('en-US', { 
+            day: 'numeric', 
+            month: 'numeric', 
+            year: 'numeric', 
+            hour: 'numeric', 
+            minute: 'numeric', 
+            second: 'numeric', 
+            hour12: true 
+          });
+          setLastLogin(formattedLastLogin);
         }
       })
       .catch(err => console.log(err));
@@ -71,13 +83,14 @@ function Nav() {
   const formatTime = (timeInSeconds) => {
     const minutes = Math.floor(timeInSeconds / 60);
     const seconds = timeInSeconds % 60;
-    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    return `${minutes}`;
   };
 
   return (
     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', backgroundColor: 'white', height: '60px', padding: '0 20px', borderBottom: '1px solid #ccc' }}>
       <div style={{ color: 'red' }}>Welcome, {name}</div>
-      <small>Session Time Remaining: {formatTime(sessionTimeRemaining)}</small>
+      <small>Last login: {lastLogin}</small>
+      <small>Session ends: {formatTime(sessionTimeRemaining)} min</small>
       <a href="#" className="nav-link link-dark" onClick={handleLogout}>
         <i className="bi me-2 fas fa-sign-out-alt fa-1x text-gray-300"></i>
         Log Out

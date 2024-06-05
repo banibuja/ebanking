@@ -231,6 +231,8 @@ app.get('/logout', (req, res) => {
 app.post('/loginform', async (req, res) => {
     const sql = "SELECT * FROM users WHERE username = ?";
     const date = new Date();
+    const lastLogin = new Date().toISOString(); 
+
 
     db.query(sql, [req.body.username], async (err, result) => {
         if (err) {
@@ -249,18 +251,23 @@ app.post('/loginform', async (req, res) => {
                 }
 
                 if (comparison) {
-                    db.query(`SELECT AccessLevel FROM accesspermissions WHERE UserID = ${result[0].userId}`, (error, results) => {
+                    const lastLogin = new Date().toISOString();
+                    const userId = result[0].userId;
+                    db.query("UPDATE users SET last_login = ? WHERE userId = ?", [lastLogin, userId], (updateErr, updateResult) => {
+                        if (updateErr) {
+                            console.error("Error updating last login timestamp:", updateErr);
+                            return res.json({ Message: "Error during login", Login: false });
+                        }
+                    });
+
+                    db.query(`SELECT AccessLevel FROM accesspermissions WHERE UserID = ${userId}`, (error, results) => {
                         if (error) {
                             console.error("Error querying access permissions:", error);
                             return res.json({ Message: "Error during login", Login: false });
                         }
 
-                        const userId = result[0].userId; 
-
                         const accessToken = jwt.sign({ userId, username: result[0].username, role:results[0].AccessLevel }, process.env.SECRET, { expiresIn: '15m' });
 
-                        const refreshToken = jwt.sign({ userId }, process.env.SECRET);
-                        console.log(accessToken);
                         res.cookie('authToken',accessToken,{ 
                             maxAge: 3600000, 
                             httpOnly: true, 
