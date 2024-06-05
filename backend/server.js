@@ -42,127 +42,92 @@ app.use(express.urlencoded({ limit: "50mb", extended: true, parameterLimit: 5000
 app.use(cookieParser());
 app.use(bodyParser.json());
 
-// const refreshSession = (req, res, next) => {
-//     if (req.session) {
-//         req.session.cookie.maxAge = 15 * 60 * 1000; 
-//     }
-//     next();
-// };
+app.post('/sendEmailContactUs',         contactusController.sendEmailContactUs);
 
-// app.use(session({
-//     secret: process.env.SECRET,
-//     resave: false,
-//     saveUninitialized: false,
-//     cookie: {
-//         secure: process.env.NODE_ENV === 'development', 
-//         maxAge: 15 * 60 * 1000 
-//     }
-// }));
+app.post('/insertInfoSection',          HomeController.insertInfoSection);
+app.get('/getInfoSection',              HomeController.getInfoSection);
+app.get('/getInfoForEdit/:id',          HomeController.getInfoForEdit);
+app.put('/updateInfo/:id',              HomeController.updateInfo);
+app.delete("/deleteInfo/:id",           HomeController.deleteInfo);
+app.post('/insertCarusel',              CaruselController.insertCarusel);
+app.post('/getCarusel',                 CaruselController.getCarusel);
+app.get('/getCaruselForEdit/:id',       CaruselController.getCaruselForEdit);
+app.put('/updateCarusel/:id',           CaruselController.updateCarusel);
+app.delete("/deleteCarusel/:id",        CaruselController.deleteCarusel);
 
-const requireAuth = (req, res, next) => {
-    const token = req.headers.authorization;
-    if (token) {
-        jwt.verify(token, process.env.SECRET, (err, decoded) => {
-            if (err) {
-                return res.sendStatus(403); 
-            }
-            req.user = decoded;
-            next();
-        });
-    } else {
-        return res.sendStatus(401); 
-    }
-};
+app.post('/getAllFlexSave',             saveTransactionController.getSavingsAccounts);
+app.post('/insertSaveTransaction',      saveTransactionController.insertSaveTransaction);
+app.get('/getAllHistory',               saveTransactionController.getAllHistory);
 
-// app.use(refreshSession);
+app.get('/sessionTimeRemaining',        SessionController.sessionTimeRemaining);
 
-// Routes
-app.post('/sendEmailContactUs', contactusController.sendEmailContactUs);
+app.post('/addApply',                   applyOnlineController.addApply);
+app.get('/getApply',                    applyOnlineController.getApply);
+app.put('/updateStatus/:id',            applyOnlineController.updateStatus);
+app.delete("/deleteApplicant/:id",      applyOnlineController.deleteApplicant);
+app.get('/getApplicantForEdit/:id',     applyOnlineController.getApplicantForEdit);
+app.put('/updateAplicant/:id',          applyOnlineController.updateAplicant);
+app.post('/searchApplicant',            applyOnlineController.searchApplicant);
 
-app.post('/insertInfoSection', HomeController.insertInfoSection);
-app.get('/getInfoSection', HomeController.getInfoSection);
-app.get('/getInfoForEdit/:id', HomeController.getInfoForEdit);
-app.put('/updateInfo/:id', HomeController.updateInfo);
-app.delete("/deleteInfo/:id", HomeController.deleteInfo);
-app.post('/insertCarusel', CaruselController.insertCarusel);
-app.post('/getCarusel', CaruselController.getCarusel);
-app.get('/getCaruselForEdit/:id', CaruselController.getCaruselForEdit);
-app.put('/updateCarusel/:id', CaruselController.updateCarusel);
-app.delete("/deleteCarusel/:id", CaruselController.deleteCarusel);
+app.post('/addClient',                  clientController.addClient);
+app.post('/getUsers',                   clientController.getUsers);
+app.get('/getClientForEdit/:id',        clientController.getClientForEdit);
+app.put('/updateUser/:id',              clientController.updateUser);
+app.post('/searchUsers',                clientController.getByUserID);
+app.delete("/deleteClient/:id",         clientController.deleteClient);
+app.get('/checkUsername',               clientController.checkUsername);
+app.get('/checkEmail',                  clientController.checkEmail);
 
-app.post('/getAllFlexSave', saveTransactionController.getSavingsAccounts);
-app.post('/insertSaveTransaction', saveTransactionController.insertSaveTransaction);
-app.post('/getAllHistory', saveTransactionController.getAllHistory);
+app.post('/getUsersWithSession',        clientController.getUsersWithSession);
 
-app.get('/sessionTimeRemaining', SessionController.sessionTimeRemaining);
-
-app.post('/addApply', applyOnlineController.addApply);
-app.post('/getApply', applyOnlineController.getApply);
-app.put('/updateStatus/:id', applyOnlineController.updateStatus);
-app.delete("/deleteApplicant/:id", applyOnlineController.deleteApplicant);
-app.get('/getApplicantForEdit/:id', applyOnlineController.getApplicantForEdit);
-app.put('/updateAplicant/:id', applyOnlineController.updateAplicant);
-app.post('/searchApplicant', applyOnlineController.searchApplicant);
-
-app.post('/addClient', clientController.addClient);
-app.post('/getUsers', clientController.getUsers);
-app.get('/getClientForEdit/:id', clientController.getClientForEdit);
-app.put('/updateUser/:id', clientController.updateUser);
-app.post('/searchUsers', clientController.getByUserID);
-app.delete("/deleteClient/:id", clientController.deleteClient);
-app.get('/checkUsername', clientController.checkUsername);
-app.get('/checkEmail', clientController.checkEmail);
-
-app.post('/getUsersWithSession', clientController.getUsersWithSession);
-
-app.post('/getAllPermissions', accessPermissionsController.getAllPermissions);
+app.post('/getAllPermissions',          accessPermissionsController.getAllPermissions);
 app.put('/updateAccessPermissions/:id', accessPermissionsController.updateAccessPermission);
-app.post('/searchAccessPermissionss', accessPermissionsController.searchAccessPermissionss);
-app.get('/getAccesForEdit/:id', accessPermissionsController.getAccesForEdit);
+app.post('/searchAccessPermissionss',   accessPermissionsController.searchAccessPermissionss);
+app.get('/getAccesForEdit/:id',         accessPermissionsController.getAccesForEdit);
 
-app.get('/getAccountForEdit/:id', currentAccountController.getAccountForEdit);
-app.put('/updateAccount/:id', currentAccountController.updateAccount);
-app.post('/getAllAccounts', currentAccountController.getAllAccounts);
-app.post('/getAccountBySession', currentAccountController.getAccountBySession);
-app.delete("/deleteAccounts/:id", currentAccountController.deleteAccount);
-app.post('/searchAccounts', currentAccountController.getAccountByUserID);
+app.get('/getAccountForEdit/:id',       currentAccountController.getAccountForEdit);
+app.put('/updateAccount/:id',           currentAccountController.updateAccount);
+app.post('/getAllAccounts',             currentAccountController.getAllAccounts);
+app.post('/getAccountBySession',        currentAccountController.getAccountBySession);
+app.delete("/deleteAccounts/:id",       currentAccountController.deleteAccount);
+app.post('/searchAccounts',             currentAccountController.getAccountByUserID);
 
-app.post('/getAllSavingAccount', savingsAccountController.getAllSavingAccount);
-app.get('/getSavingsAccounts/:id', savingsAccountController.getSavingsAccountById);
-app.delete('/deleteSavings/:id', savingsAccountController.deleteSavings);
-app.put('/updateSavingsAccounts/:id', savingsAccountController.updateSavingsAccounts);
-app.post('/getSavingsBySesison', savingsAccountController.getSavingsBySesison);
-app.post('/searchSavingsAccounts', savingsAccountController.getAccountByUserID);
+app.post('/getAllSavingAccount',        savingsAccountController.getAllSavingAccount);
+app.get('/getSavingsAccounts/:id',      savingsAccountController.getSavingsAccountById);
+app.delete('/deleteSavings/:id',        savingsAccountController.deleteSavings);
+app.put('/updateSavingsAccounts/:id',   savingsAccountController.updateSavingsAccounts);
+app.post('/getSavingsBySesison',        savingsAccountController.getSavingsBySesison);
+app.post('/searchSavingsAccounts',      savingsAccountController.getAccountByUserID);
 
-app.post('/getCardsclients', cardsController.getCardsclients);
-app.delete("/deleteCard/:id", cardsController.deleteCard);
-app.put('/updateCards/:id', cardsController.updateCard);
-app.put('/blockCard/:id', cardsController.blockCard);
-app.put('/enableCard/:id', cardsController.enableCard);
-app.get('/getCardsForEdit/:id', cardsController.getCardsForEdit);
-app.post('/getCardsWithSession', cardsController.getCardsWithSession);
-app.get('/checkCardExists', cardsController.checkCardExists);
-app.post('/addCard', cardsController.addCard);
-app.post('/searchCards', cardsController.getCardsByUserID);
+app.post('/getCardsclients',            cardsController.getCardsclients);
+app.delete("/deleteCard/:id",           cardsController.deleteCard);
+app.put('/updateCards/:id',             cardsController.updateCard);
+app.put('/blockCard/:id',               cardsController.blockCard);
+app.put('/enableCard/:id',              cardsController.enableCard);
+app.get('/getCardsForEdit/:id',         cardsController.getCardsForEdit);
+app.post('/getCardsWithSession',        cardsController.getCardsWithSession);
+app.get('/checkCardExists',             cardsController.checkCardExists);
+app.post('/addCard',                    cardsController.addCard);
+app.post('/searchCards',                cardsController.getCardsByUserID);
 
-app.post('/getCurrencies', currenciesController.getCurrencies);
-app.get('/getCurrenciesForEdit/:id', currenciesController.getCurrenciesForEdit);
-app.put('/updateCurrencies/:id', currenciesController.updateCurrencies);
-app.delete("/deleteCurrencies/:id", currenciesController.deleteCurrencies);
+app.post('/getCurrencies',              currenciesController.getCurrencies);
+app.get('/getCurrenciesForEdit/:id',    currenciesController.getCurrenciesForEdit);
+app.put('/updateCurrencies/:id',        currenciesController.updateCurrencies);
+app.delete("/deleteCurrencies/:id",     currenciesController.deleteCurrencies);
 
-app.post('/getGoalsWithSession', investmentsGoals.getGoalsBySession);
-app.post('/addGoal', investmentsGoals.addGoal);
-app.get('/getGoalsForEdit/:id', investmentsGoals.getGoalsForEdit);
-app.put('/updateGoal/:id', investmentsGoals.updateGoal);
-app.delete("/deleteGoals/:id", investmentsGoals.deleteGoals);
+app.post('/getGoalsWithSession',        investmentsGoals.getGoalsBySession);
+app.post('/addGoal',                    investmentsGoals.addGoal);
+app.get('/getGoalsForEdit/:id',         investmentsGoals.getGoalsForEdit);
+app.put('/updateGoal/:id',              investmentsGoals.updateGoal);
+app.delete("/deleteGoals/:id",          investmentsGoals.deleteGoals);
 
-app.post('/insertAboutUs', AboutUSController.insertAboutUs);
-app.get('/getAboutUs', AboutUSController.getAboutUs);
-app.get('/getAboutUsEdit/:id', AboutUSController.getAboutUsEdit);
-app.put('/updateAboutUs/:id', AboutUSController.updateAboutUs);
-app.delete("/deleteAboutUs/:id", AboutUSController.deleteAboutUs);
+app.post('/insertAboutUs',              AboutUSController.insertAboutUs);
+app.get('/getAboutUs',                  AboutUSController.getAboutUs);
+app.get('/getAboutUsEdit/:id',          AboutUSController.getAboutUsEdit);
+app.put('/updateAboutUs/:id',           AboutUSController.updateAboutUs);
+app.delete("/deleteAboutUs/:id",        AboutUSController.deleteAboutUs);
 
-app.post('/insertTeam', TeamController.insertTeam);
+app.post('/insertTeam',                 TeamController.insertTeam);
 //app.post('/sendMessage',  supportController.sendMessage);
 
 

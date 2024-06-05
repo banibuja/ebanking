@@ -20,7 +20,7 @@ export const Client = () => {
     }, []);
 
     const getUsers = () => {
-        axios.post('http://localhost:8080/getApply')
+        axios.get('http://localhost:8080/getApply')
             .then(res => {
                 const fetchedUsers = res.data;
                 const sortedUsers = fetchedUsers.sort((a, b) => {

@@ -16,7 +16,7 @@ export const SaveHistory = () => {
     const navigate = useNavigate();
 
     const fetchTransactions = () => {
-        axios.post('http://localhost:8080/getAllHistory')
+        axios.get('http://localhost:8080/getAllHistory')
             .then(res => {
                 const fetchedTransactions = res.data;
                 setTransactions(fetchedTransactions);
