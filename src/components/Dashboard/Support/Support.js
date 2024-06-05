@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Sidebar from '../Sidebar';
 import { useNavigate } from 'react-router-dom';
@@ -90,27 +90,40 @@ const ContactInfo = styled.div`
 `;
 
 const Support = () => {
-    const [activeTab, setActiveTab] = useState('contact');
-    const [message, setMessage] = useState('');
+    const form = useRef();
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [activeTab, setActiveTab] = useState('contact');
+    const [values, setValues] = useState({
+        name: '',
+        email: '',
+        message: ''
+    });
 
     const handleTabClick = (tab) => {
         setActiveTab(tab);
     };
 
-    const handleMessageChange = (e) => {
-        setMessage(e.target.value);
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setValues(prevValues => ({
+            ...prevValues,
+            [name]: value,
+        }));
     };
 
-    const handleSubmit = async (e) => {
+
+    const sendEmail = async (e) => {
         e.preventDefault();
+
+        const { name, email, message } = values;
+
         try {
-            await axios.post('http://localhost:8080/sendMessage', { message });
-            console.log('Message sent successfully');
+            await axios.post('http://localhost:8080/sendEmailContactUs', { name, email, message });
+            console.log('Email sent successfully');
             setIsSubmitted(true);
-            setMessage('');
+               // sendEmail(values.name, values.email, values.message);
         } catch (error) {
-            console.error('Error sending message', error);
+            console.error('Error sending email', error);
         }
     };
 
@@ -172,13 +185,15 @@ const Support = () => {
                             {activeTab === 'messages' && (
                                 <Section>
                                     <SectionHeader>Messages</SectionHeader>
-                                    <form onSubmit={handleSubmit}>
+                                    <form onSubmit={sendEmail}>
+                                    
                                         <div className="mb-3">
                                             <textarea
                                                 className="form-control"
                                                 rows="5"
-                                                value={message}
-                                                onChange={handleMessageChange}
+                                                name="message"
+                                                value={values.message}
+                                                onChange={handleChange}
                                                 placeholder="Write your message here"
                                                 style={{ borderRadius: '25px', padding: '10px 20px', fontSize: '16px', border: '1px solid #ddd', color: '#000' }}
                                             ></textarea>

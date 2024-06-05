@@ -27,7 +27,7 @@ const HomeController = require('./controllers/Add-Home-page/Add-InfoSection');
 const CaruselController = require('./controllers/Add-Home-page/AddCarusel');
 const AboutUSController = require('./controllers/AboutUs/AddAbouUs');
 const TeamController = require('./controllers/AboutUs/Team');
-
+const supportController =require('./controllers/Support/sendMessage');
 const app = express();
 
 // Middleware for handling CORS
@@ -164,7 +164,7 @@ app.put('/updateAboutUs/:id', AboutUSController.updateAboutUs);
 app.delete("/deleteAboutUs/:id", AboutUSController.deleteAboutUs);
 
 app.post('/insertTeam', TeamController.insertTeam);
-
+app.post('/sendMessage',  supportController.sendMessage);
 
 
 
