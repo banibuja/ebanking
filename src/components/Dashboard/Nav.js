@@ -8,7 +8,7 @@ function Nav() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.post('http://localhost:8080/getUsersWithSession', {withCredentials:'true'})
+    axios.post('http://localhost:8080/getUsersWithSession', {withCredentials:true})
       .then(res => {
         const userData = res.data;
         if (userData && userData.length > 0) {
@@ -24,15 +24,22 @@ function Nav() {
         .then(res => {
           const { timeRemaining } = res.data;
           if (timeRemaining === 0) {
-            // handleLogout();
+            handleLogout();
           } else {
             setSessionTimeRemaining(timeRemaining);
           }
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          if (err.response.status === 401) {
+            handleLogout();
+          }
+        });
     };
 
     fetchSessionTime();
+    const interval = setInterval(fetchSessionTime, 60000); // Refresh every minute
+
+    return () => clearInterval(interval);
   }, []); 
 
   useEffect(() => {
@@ -42,7 +49,7 @@ function Nav() {
           return prevTime - 1;
         } else {
           clearInterval(timer);
-          // handleLogout();
+          handleLogout();
           return 0;
         }
       });
@@ -52,7 +59,7 @@ function Nav() {
   }, []);
 
   const handleLogout = () => {
-    axios.get('http://localhost:8080/logout')
+    axios.get('http://localhost:8080/logout', {withCredentials:true})
       .then(res => {
         if (res.data.success) {
           navigate('/login');

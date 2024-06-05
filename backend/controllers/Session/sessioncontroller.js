@@ -13,7 +13,7 @@ const sessionTimeRemaining = (req, res) => {
                 res.status(401).send("expired token").end();
             } else {
                 const timeRemaining = Math.round((expireTime - now) / 1000);
-                return res.status(200).json({ timeRemaining }).end();
+                return res.status(200).json({ timeRemaining : 900}).end();
             }
         }  catch (error) {
             console.log(error);

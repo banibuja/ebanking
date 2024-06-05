@@ -143,31 +143,36 @@ const getCardsForEdit = (req, res) => {
 
 const getCardsWithSession = (req, res) => { 
     try {
-    const token = req.cookies.authToken; 
-    const secretKey = process.env.SECRET; 
-    const decodedToken = jwt.verify(token, secretKey);
-
-    const userID = decodedToken.userId;
-    const sql = `
-        SELECT c.*, ca.Balance 
-        FROM cards c 
-        INNER JOIN currentaccounts ca ON c.CurrentAccount = ca.CurrentAccount
-        WHERE c.UserID = ?
-    `;
-
-    db.query(sql, [userID], (err, data) => {
-        if (err) {
-            return res.status(500).json({ error: "Internal server error" }).end();
+        const token = req.cookies.authToken; 
+        if (!token) {
+            return res.status(401).json({ message: "JWT token is missing" }).end();
         }
-        if (data.length > 0) {
-            return res.status(200).json(data).end();
-        } else {
-            return res.status(204).json({ message: "No cards found for the user" }).end();
-        }
-    });
-} catch (error) {
-    console.error('getAllnterTransactions verification failed:', error);
-}
+
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
+
+        const userID = decodedToken.userId;
+        const sql = `
+            SELECT c.*, ca.Balance 
+            FROM cards c 
+            INNER JOIN currentaccounts ca ON c.CurrentAccount = ca.CurrentAccount
+            WHERE c.UserID = ?
+        `;
+
+        db.query(sql, [userID], (err, data) => {
+            if (err) {
+                return res.status(500).json({ error: "Internal server error" }).end();
+            }
+            if (data.length > 0) {
+                return res.status(200).json(data).end();
+            } else {
+                return res.status(204).json({ message: "No cards found for the user" }).end();
+            }
+        });
+    } catch (error) {
+        console.error('getCardsWithSession verification failed:', error);
+        return res.status(401).json({ message: "JWT token verification failed" }).end();
+    }
 };
 const checkCardExists = (req, res) => {
     const { cardNumber } = req.query;

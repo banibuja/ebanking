@@ -75,36 +75,37 @@ const deleteSavings = (req, res) => {
     });
 };
 
-const getSavingsBySesison = (req, res) => {try {
-    const token = req.cookies.authToken; 
-    const secretKey = process.env.SECRET; 
-    const decodedToken = jwt.verify(token, secretKey);
+const getSavingsBySesison = (req, res) => {
+    try {
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
 
+        const userID = decodedToken.userId; 
 
-    const userID = decodedToken.userId; 
+        const sql = `
+            SELECT u.*, a.SavingsType, a.CurrencyCode, a.Balance, a.AccountStatus
+            FROM users u 
+            INNER JOIN savingsaccounts a ON a.UserID = u.userId 
+            WHERE u.userId = ?
+        `;
 
-    // const sql = "SELECT * FROM savingsaccounts WHERE UserID = ?"; 
-    const sql = `
-    SELECT u.*, a.SavingsType, a.CurrencyCode, a.Balance, a.AccountStatus
-    FROM users u 
-    INNER JOIN savingsaccounts a ON a.UserID = u.userId 
-    WHERE u.userId = ?
-`;
-
-    db.query(sql, [userID], (err, data) => {
-        if (err) {
-            return res.status(500).json("Error").end();
-        }
-        if (data.length > 0) {
-            return res.status(200).json(data).end();
-        } else {
-            return res.status(204).json("fail").end();
-        }
-    });
+        db.query(sql, [userID], (err, data) => {
+            if (err) {
+                return res.status(500).json({ error: "Internal server error" }).end();
+            }
+            if (data.length > 0) {
+                return res.status(200).json(data).end();
+            } else {
+                return res.status(204).json({ message: "No savings accounts found for the user" }).end();
+            }
+        });
     } catch (error) {
-        console.error('getAllnterTransactions verification failed:', error);
+        console.error('getSavingsBySesison verification failed:', error);
+        return res.status(500).json({ error: "Internal server error" }).end();
     }
 };
+
 
 const getAccountByUserID = (req, res) => {
     const { username } = req.body;
