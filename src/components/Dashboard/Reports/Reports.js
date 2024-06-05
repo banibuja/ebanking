@@ -13,13 +13,15 @@ export const Reports = () => {
         fetchReports(new Date(0), new Date());
     }, []);
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const exportToExcel = () => {
         const wb = XLSX.utils.table_to_book(document.getElementById('table'));
         XLSX.writeFile(wb, 'table.xlsx');
     }
     const fetchReports = (startDate, endDate) => {
-        axios.post('http://localhost:8080/getAllTransactions', { startDate, endDate })
+        const formatedStartDate = formatimeTime(startDate)
+        const formatedEndDate = formatimeTime(endDate)
+        axios.post('http://localhost:8080/getAllTransactions', { startDate:formatedStartDate, endDate:formatedEndDate })
             .then(res => {
                 const fetchedReports = res.data;
                 setReports(fetchedReports);
@@ -29,7 +31,7 @@ export const Reports = () => {
     };
 
     const handleShowToday = () => {
-        const date = new Date;
+        const date = new Date();
         date.setMilliseconds(0);
         date.setSeconds(0);
         date.setMinutes(0);
@@ -43,6 +45,11 @@ export const Reports = () => {
         const dayOfWeek = today.getDay();
 
         const date = new Date(today);
+        
+        date.setMilliseconds(0);
+        date.setSeconds(0);
+        date.setMinutes(0);
+        date.setHours(0);
         date.setDate(today.getDate() - dayOfWeek);
 
         fetchReports(date, new Date());
@@ -53,6 +60,10 @@ export const Reports = () => {
         const month = today.getMonth();
 
         const thisMonth = new Date(year, month, 1);
+        thisMonth.setMilliseconds(0);
+        thisMonth.setSeconds(0);
+        thisMonth.setMinutes(0);
+        thisMonth.setHours(0);
 
         fetchReports(thisMonth, new Date());
     }
@@ -61,13 +72,20 @@ export const Reports = () => {
         const year = today.getFullYear();
 
         const thisYear = new Date(year, 1, 1);
+        thisYear.setMilliseconds(0);
+        thisYear.setSeconds(0);
+        thisYear.setMinutes(0);
+        thisYear.setHours(0);
 
         fetchReports(thisYear, new Date());
     }
     const handleShowAll = () => {
         fetchReports(new Date(0), new Date());
     }
-
+    const formatimeTime = (time) => {
+        const formattedTime = `${time.getFullYear()}-${("0" + (time.getMonth() + 1)).slice(-2)}-${("0" + time.getDate()).slice(-2)} ${("0" + time.getHours()).slice(-2)}:${("0" + time.getMinutes()).slice(-2)}:${("0" + time.getSeconds()).slice(-2)}`;
+        return formattedTime;
+    }
 
     return (
         <div>

@@ -230,8 +230,6 @@ app.get('/logout', (req, res) => {
 
 app.post('/loginform', async (req, res) => {
     const sql = "SELECT * FROM users WHERE username = ?";
-    const date = new Date();
-    const lastLogin = new Date().toISOString(); 
 
 
     db.query(sql, [req.body.username], async (err, result) => {
@@ -251,7 +249,7 @@ app.post('/loginform', async (req, res) => {
                 }
 
                 if (comparison) {
-                    const lastLogin = new Date().toISOString();
+                    const lastLogin = new Date()
                     const userId = result[0].userId;
                     db.query("UPDATE users SET last_login = ? WHERE userId = ?", [lastLogin, userId], (updateErr, updateResult) => {
                         if (updateErr) {
