@@ -39,3 +39,4 @@ next-env.d.ts
 backend/package-lock.json
 backend/package.json
 *.json
+./backend/.env
