@@ -1,12 +1,16 @@
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 const sendEmail = (name, lastname, email, username, password) => {
+    const emaillogin = process.env.EMAIL;
+    const emailpassword = process.env.EMAILPASSWORD;
+
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: 'ebankingebanking7@gmail.com',
-            pass: 'xobu guxn ubtv smdg'
-        }
+            user: emaillogin,
+            pass: emailpassword,
+        },
     });
 
     const mailOptions = {

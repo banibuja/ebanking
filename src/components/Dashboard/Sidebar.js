@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { FaCreditCard } from 'react-icons/fa';
+// import { FaCreditCard } from 'react-icons/fa';
 import axios from 'axios';
 
 export default function Sidebar() {
   const [role, setRole] = useState('');
-  const [sessionTimeRemaining, setSessionTimeRemaining] = useState();
+  // const [sessionTimeRemaining, setSessionTimeRemaining] = useState();
   const navigate = useNavigate();
 
   axios.defaults.withCredentials = true;
@@ -57,11 +57,12 @@ export default function Sidebar() {
       .then(res => {
         if (res.data.success) {
           navigate('/login');
-        } else {
-        }
+        } 
+
       })
-      .catch(err => {
+      .catch(err => { console.log(err)
       });
+      return ;
   };
 
   // const formatTime = (timeInSeconds) => {
@@ -78,17 +79,19 @@ export default function Sidebar() {
 
   return (
     <div>
-
-<div className="d-flex flex-column flex-shrink-0 p-3" style={{ width: '300px', height: '100%', color: 'black', background: 'linear-gradient(to bottom right, #FFB347, #A9A9A9)', boxShadow: '0 12px 24px rgba(0, 0, 0, 0.3)' }}>
-  
-
+      <div className="d-flex flex-column flex-shrink-0 p-3" style={{ width: '300px', height: '100%', color: 'black', background: 'linear-gradient(to bottom right, #FFB347, #A9A9A9)', boxShadow: '0 12px 24px rgba(0, 0, 0, 0.3)' }}>
         <a href="/" className="d-flex align-items-center mb-3 link-dark text-decoration-none">
           <i className="bi me-2 fas fa-university fa-2x text-gray-300" ></i>
           <span className="fs-4">E-Banking</span>
         </a>
         <hr />
         <ul className="nav nav-pills flex-column mb-auto">
-              
+            <li>
+              <a href="/profi" className="nav-link link-dark" onClick={handleManageClick}>
+                <i className="bi me-2 fas fa-user fa-1x text-gray-300" ></i>
+                Profile
+              </a>
+            </li>
           {role !== 'User' && (
             <>
               <li>
@@ -139,14 +142,11 @@ export default function Sidebar() {
               <Dropdown.Menu>
                 <Dropdown.Item href="/InvesmentsGoals" onClick={handleManageClick}>Add Goal</Dropdown.Item>
                 <Dropdown.Item href="/InvestmentsTable" onClick={handleManageClick}>Goals</Dropdown.Item>
-                <Dropdown.Item href="#" onClick={handleManageClick}>My budget</Dropdown.Item>
+                {/* <Dropdown.Item href="#" onClick={handleManageClick}>My budget</Dropdown.Item> */}
               </Dropdown.Menu>
             </Dropdown>
           </li>
-          {role !== 'User' && (
-
           <li>
-            
             <Dropdown>
               <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
                 <i className="bi me-2 fas fa-money-bill-wave fa-1x text-gray-300  "></i>
@@ -158,9 +158,6 @@ export default function Sidebar() {
               </Dropdown.Menu>
             </Dropdown>
           </li>
-          )}
-          {role !== 'User' && (
-
           <li>
             <Dropdown>
               <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
@@ -173,7 +170,6 @@ export default function Sidebar() {
               </Dropdown.Menu>
             </Dropdown>
           </li>
-          )}
           <li>
             <Dropdown>
               <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
@@ -201,36 +197,11 @@ export default function Sidebar() {
             </Dropdown>
           </li>
           <li>
-            <Dropdown>
-              <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
-                <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300  "></i>
-                Payment
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                <Dropdown.Item href="/Payment" onClick={handleManageClick}>Payment</Dropdown.Item>
-                <Dropdown.Item href="/HistoryPayment" onClick={handleManageClick}>HistoryPayment</Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+            <a href="/Reports" className="nav-link link-dark" onClick={handleManageClick}>
+              <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
+              Reports
+            </a>
           </li>
-                        <li>
-                                      <a href="/Reports" className="nav-link link-dark" onClick={handleManageClick}>
-                                        <i className="fas fa-file-alt fa-1x text-gray-300 me-2"></i>
-                                        Reports
-                                      </a>
-              </li>
-
-          <li>
-                <a href="/profi" className="nav-link link-dark" onClick={handleManageClick}>
-                  <i className="bi me-2 fas fa-user fa-1x text-gray-300" ></i>
-                  Profile
-                </a>
-              </li>
-              <li>
-                                      <a href="/Support" className="nav-link link-dark" onClick={handleManageClick}>
-                                        <i className="fa-solid fa-circle-info fa-1x text-gray-300 me-2"></i>
-                                        Support
-                                      </a>
-              </li>
           {/* <li>
             <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
@@ -245,12 +216,12 @@ export default function Sidebar() {
             </a>
           </li> */}
 
-          <li>
-            <a href="#" className="nav-link link-dark" onClick={handleLogout}>
-              <i className="bi me-2 fas fa-sign-out-alt fa-1x text-gray-300" ></i>
-              Log Out
-            </a>
-          </li>
+         <li>
+           <a href="#" className="nav-link link-dark" onClick={handleLogout}>
+             <i className="bi me-2 fas fa-sign-out-alt fa-1x text-gray-300" ></i>
+             Log Out
+           </a>
+         </li> 
         </ul>
         <hr />
 

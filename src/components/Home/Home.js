@@ -14,6 +14,21 @@ export const Home = () => {
   const [carouselItems, setCarouselItems] = useState([]);
   const [info, setInfo] = useState([]);
 
+  const fetchCarouselItems = () => {
+    axios.post('http://localhost:8080/getCarusel')
+      .then(res => {
+        const items = [...res.data];
+        const processedItems = items.map(item => {
+          const base64Image = Buffer.from(item.Photo.data).toString();
+          const imageSrc = `${base64Image}`;
+          return { ...item, Photo: imageSrc };
+        });
+        const chunkedItems = chunkItems(processedItems, 3);
+        setCarouselItems(chunkedItems);
+        return ;
+      })
+      .catch(err => console.log(err));
+  };
   useEffect(() => {
     fetchInfo();
     fetchCarouselItems();
@@ -28,21 +43,6 @@ export const Home = () => {
       .catch(err => console.log(err));
   };
 
-  const fetchCarouselItems = () => {
-    axios.post('http://localhost:8080/getCarusel')
-      .then(res => {
-        const items = res.data;
-        console.log(items);
-        const processedItems = items.map(item => {
-          const base64Image = Buffer.from(item.Photo.data).toString();
-          const imageSrc = `${base64Image}`;
-          return { ...item, Photo: imageSrc };
-        });
-        const chunkedItems = chunkItems(processedItems, 3);
-        setCarouselItems(chunkedItems);
-      })
-      .catch(err => console.log(err));
-  };
 
   const chunkItems = (items, size) => {
     const chunks = [];
@@ -54,7 +54,9 @@ export const Home = () => {
 
   return (
     <>
+      <header>
         <Navbar />
+      </header>
       <div className="container">
         <div className="flexbox1">
           <h1 className="h1">Gateway</h1>
@@ -96,7 +98,7 @@ export const Home = () => {
 
       <div className="info-place">
         <img src={logoNoBackground} alt="Logo" />
-        {(info.length == 0) ? '' : info.map((item, index) => (
+        {(info.length === 0) ? '' : info.map((item, index) => (
           <h1 key={index}>{item.Info}</h1>
         ))}
       </div>

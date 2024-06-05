@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Sidebar from '../../Dashboard/Sidebar';
@@ -40,9 +40,39 @@ function AddClient() {
             fetchCities();
         }
     }, [selectedCountry]);
-
+    const checkUsername = async (username) => {
+        try {
+          const response = await axios.get(`http://localhost:8080/checkUsername?username=${username}`);
+          if (response.data.exists) {
+            setErrors((prev) => ({ ...prev, username: 'This username is already taken.' }));
+          } else {
+            setErrors((prev) => ({ ...prev, username: '' }));
+          }
+        } catch (err) {
+          console.log(err);
+          setErrors((prev) => ({ ...prev, username: 'Error checking username.' }));
+        }
+      };
+    const checkEmail = async (email) => {
+        try {
+          const response = await axios.get(`http://localhost:8080/checkemail?email=${email}`);
+          if (response.data.exists) {
+            setErrors((prev) => ({ ...prev, email: 'This email is already in use.' }));
+          } else {
+            setErrors((prev) => ({ ...prev, email: '' }));
+          }
+        } catch (err) {
+          console.log(err);
+          setErrors((prev) => ({ ...prev, email: 'Error checking email.' }));
+        }
+      };
     const handleInput = (event) => {
         setValues(prev => ({ ...prev, [event.target.name]: event.target.value }));
+        if(event.target.name == 'username'){
+            checkUsername(event.target.value);
+        }else if(event.target.name == 'email'){
+            checkEmail(event.target.value);
+        }
     };
 
     const handleCountryChange = (event) => {
@@ -55,35 +85,21 @@ function AddClient() {
     const handleCityChange = (event) => {
         setSelectedCity(event.target.value);
     };
-
+    const checkEmptyValues = (array) => {
+        return Object.values(array).some(value => value === '');
+    }
     const handleSubmit = (event) => {
         event.preventDefault();
-        axios.get(`http://localhost:8080/checkemail?email=${values.email}`)
-            .then(response => {
-                if (response.data.exists) {
-                    setErrors(prev => ({ ...prev, email: 'This email is already in use.' }));
-                } else {
-                    setErrors(prev => ({ ...prev, email: '' }));
-                    axios.get(`http://localhost:8080/checkUsername?username=${values.username}`)
-                        .then(response => {
-                            if (response.data.exists) {
-                                setErrors(prev => ({ ...prev, username: 'This username is already taken.' }));
-                            } else {
-                                setErrors(prev => ({ ...prev, username: '' }));
-                                if (Object.keys(errors).length === 0) {
-                                    axios.post('http://localhost:8080/addClient', { ...values, Country: selectedCountry.name, City: selectedCity })
-                                        .then(res => {
-                                            setSuccessMessage('Client added successfully!');
-                                            navigate('/client');
-                                        })
-                                        .catch(err => console.log(err));
-                                }
-                            }
-                        })
-                        .catch(err => console.log(err));
-                }
-            })
-            .catch(err => console.log(err));
+        if (checkEmptyValues(errors)  && !checkEmptyValues(values)) {
+            axios.post('http://localhost:8080/addClient', { ...values, Country: selectedCountry.name, City: selectedCity })
+                .then(res => {
+                    setSuccessMessage('Client added successfully!');
+                    navigate('/client');
+                })
+                .catch(err => console.log(err));
+        }else {
+            alert("Please check all the inputs")
+        }
     };
 
     return (
@@ -102,18 +118,9 @@ function AddClient() {
                                     <div className="card-body">
                                         <div className="row">
                                             <div className="col-md-6 form-group">
-                                                <label htmlFor="username">Client Username</label>
-                                                <input type="text" placeholder='Username' name='username' onChange={handleInput} className='form-control roundend-0' required />
+                                                <label htmlFor="username">Client ID card number</label>
+                                                <input type="text" placeholder='ID card number' name='username' onChange={handleInput} className='form-control roundend-0' required />
                                                 {errors.username && <span className='text-danger'>{errors.username}</span>}
-                                                {values.username && (
-                                                    <span style={{ marginLeft: '10px' }}>
-                                                        {errors.username ? (
-                                                            <span style={{ color: 'red' }}>{errors.username}</span>
-                                                        ) : (
-                                                            <span style={{ color: 'green' }}>Username is available.</span>
-                                                        )}
-                                                    </span>
-                                                )}
                                             </div>
                                             <div className="col-md-6 form-group">
                                                 <label htmlFor="name">Client Name</label>
@@ -129,15 +136,6 @@ function AddClient() {
                                                 <label htmlFor="email">Client Email</label>
                                                 <input type="email" placeholder='Email' name='email' onChange={handleInput} className='form-control roundend-0' />
                                                 {errors.email && <span className='text-danger'>{errors.email}</span>}
-                                                {values.email && (
-                                                    <span style={{ marginLeft: '10px' }}>
-                                                        {errors.email ? (
-                                                            <span style={{ color: 'red' }}>{errors.email}</span>
-                                                        ) : (
-                                                            <span style={{ color: 'green' }}>Email is available.</span>
-                                                        )}
-                                                    </span>
-                                                )}
                                             </div>
                                             <div className="col-md-6 form-group">
                                                 <label htmlFor="password">Client Password</label>
@@ -173,9 +171,7 @@ function AddClient() {
                                                         </option>
                                                     ))}
                                                 </select>
-                                            </div>
-                                            {selectedCountry && (
-                                                <div className="col-md-6 form-group">
+                                            {selectedCountry && (<>
                                                     <label htmlFor="City">City</label>
                                                     <select
                                                         id="City"
@@ -189,11 +185,10 @@ function AddClient() {
                                                                 {city}
                                                             </option>
                                                         ))}
-                                                    </select>
-                                                </div>
+                                                    </select></>
                                             )}
                                             {selectedCity && (
-                                                <div className="col-md-6 form-group">
+                                                <>
                                                     <label htmlFor="Street">Street</label>
                                                     <input
                                                         type="text"
@@ -203,9 +198,9 @@ function AddClient() {
                                                         onChange={handleInput}
                                                         className="form-control form-control-lg"
                                                         required
-                                                    />
+                                                    /></>
+                                                )}
                                                 </div>
-                                            )}
                                         </div>
                                     </div>
                                     <center>

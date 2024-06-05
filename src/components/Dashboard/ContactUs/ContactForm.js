@@ -27,10 +27,14 @@ const Contact = () => {
         const { name, email, message } = values;
 
         try {
-            await axios.post('http://localhost:8080/sendEmailContactUs', { name, email, message });
-            console.log('Email sent successfully');
-            setIsSubmitted(true);
-               // sendEmail(values.name, values.email, values.message);
+            await axios.post('http://localhost:8080/sendEmailContactUs', { name, email, message })
+            .then(() => {
+
+                console.log('Email sent successfully');
+                setIsSubmitted(true)
+            }
+            )
+                .catch(error => console.log(error))
         } catch (error) {
             console.error('Error sending email', error);
         }
