@@ -58,14 +58,8 @@ export default function Sidebar() {
   const handleLogout = () => {
     axios.get('http://localhost:8080/logout')
       .then(res => {
-        console.log(res.data);
           navigate('/login');
-<<<<<<< Updated upstream
-        } else {
-        }
-=======
-
->>>>>>> Stashed changes
+       
       })
       .catch(err => {
       });
