@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const login = async (req, res) => {
     const sql = "SELECT * FROM users WHERE username = ?";
 
-    db.query(sql, [req.body.username], async (err, result) => {
+    db.query(sql, [req.body.username], async (err, result, sqll) => {
         if (err) {
             console.error("Error connecting to database:", err);
             return res.json({ Message: "bad connection", Login: false });
@@ -23,14 +23,8 @@ const login = async (req, res) => {
                 }
 
                 if (comparison) {
-                    const lastLogin = new Date()
                     const userId = result[0].userId;
-                    db.query("UPDATE users SET last_login = ? WHERE userId = ?", [lastLogin, userId], (updateErr, updateResult) => {
-                        if (updateErr) {
-                            console.error("Error updating last login timestamp:", updateErr);
-                            return res.json({ Message: "Error during login", Login: false });
-                        }
-                    });
+                   
 
                     db.query(`SELECT AccessLevel FROM accesspermissions WHERE UserID = ${userId}`, (error, results) => {
                         if (error) {
@@ -53,9 +47,10 @@ const login = async (req, res) => {
                 }
             });
         } else {
-            return res.json({ Message: "Username not found", Login: false });
+            return res.json({ Message: [sql, req.body.username, sqll], Login: false });
         }
     });
+    
 };
 
 module.exports = {

@@ -16,7 +16,6 @@ const sessionTimeRemaining = (req, res) => {
                 return res.status(200).json({ timeRemaining : 900}).end();
             }
         }  catch (error) {
-            console.log(error);
             res.status(401).send("not logged in").end();
         }
     }else {

@@ -40,15 +40,13 @@ const updateProfile = async (req, res) => {
         const decodedToken = jwt.verify(token, secretKey);
 
         const userID = decodedToken.userId;
-} catch (error) {
-        res.status(401).send("not logged in").end();
-      }
+
     const details = req.body;
 
     console.log(details);
     try {
         const sqlGetUser = "SELECT * FROM users WHERE userId = ?";
-        db.query(sqlGetUser, [userId], async (err, data) => {
+        db.query(sqlGetUser, [userID], async (err, data) => {
 
 
             if (data.length === 0) {
@@ -56,7 +54,7 @@ const updateProfile = async (req, res) => {
             }
 
             const sqlUpdateUser = "UPDATE users SET ? WHERE userId = ?";
-            db.query(sqlUpdateUser, [{ ...details }, userId], (err, data) => {
+            db.query(sqlUpdateUser, [{ ...details }, userID], (err, data) => {
                 console.log("err" + err);
                 console.log("data" + data);
                 if (err) res.status(204).json(err).end();
@@ -68,7 +66,9 @@ const updateProfile = async (req, res) => {
         return res.status(500).json({ message: 'Server error' }).end();
 
 
-    }
+    }} catch (error) {
+        res.status(401).send("not logged in").end();
+      }
 };
 const updatePassword = (req, res) => {
     try {
@@ -77,9 +77,7 @@ const updatePassword = (req, res) => {
         const decodedToken = jwt.verify(token, secretKey);
 
         const userID = decodedToken.userId;
-} catch (error) {
-        res.status(401).send("not logged in").end();
-      }
+
     const { currentPassword, newPassword, confirmPassword } = req.body;
     console.log(req.body);
 
@@ -88,7 +86,7 @@ const updatePassword = (req, res) => {
     }
 
     const sqlGetUser = "SELECT password FROM users WHERE userId = ?";
-        db.query(sqlGetUser, [userId], async (err, data) => {
+        db.query(sqlGetUser, [userID], async (err, data) => {
 
 
         if (data.length === 0) {
@@ -106,11 +104,13 @@ const updatePassword = (req, res) => {
         const hashedPassword = await bcrypt.hash(newPassword, 10);
 
             const sqlUpdateUser = "UPDATE users SET password = ? WHERE userId = ?";
-            db.query(sqlUpdateUser, [hashedPassword, userId], (err, data) => {
+            db.query(sqlUpdateUser, [hashedPassword, userID], (err, data) => {
                 if (err) res.status(404).json(err).end();
                 return res.status(200).json({ message: 'Profile updated successfully' }).end();
         });
-        })
+        })} catch (error) {
+            res.status(401).send("not logged in").end();
+          }
 };
 const updateProfilePicture = (req, res) => {
     try {
@@ -119,19 +119,19 @@ const updateProfilePicture = (req, res) => {
         const decodedToken = jwt.verify(token, secretKey);
 
         const userID = decodedToken.userId;
-} catch (error) {
-        res.status(401).send("not logged in").end();
-      }
+
     const base64 = req.body.base64;
 
     db.query(
         "UPDATE users SET profilePicture = ? WHERE userId = ?",
-        [base64, userId],
+        [base64, userID],
         (err, data) => {
             if (err) res.status(404).json(err).end();
             return res.status(200).json({ message: 'Profile updated successfully' }).end();
         }
-    )
+    )} catch (error) {
+        res.status(401).send("not logged in").end();
+      }
 }
 
 module.exports = {

@@ -198,7 +198,7 @@ export const ManageYourAccount = () => {
                                     <tbody>
                                         {Array.isArray(savings) && savings.map((item) => (
                                             <tr key={item.SavingsID}>
-                                                <td>{item.SavingsType}</td>
+                                                <td>{item.SavingAccount }</td>
                                                 <td>{item.name + ' ' + item.lastname}</td>
                                                 <td>{item.CurrencyCode}</td>
                                                 <td>{parseFloat(item.Balance).toFixed(2)}</td> 

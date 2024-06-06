@@ -13,6 +13,7 @@ CREATE TABLE Users (
     birthday datetime,
     CurrencyCode varchar(20) NOT NULL,
     profilePicture longblob,
+    lastLogin datetime,
     Status VARCHAR(20)
 );
 
@@ -79,12 +80,12 @@ CREATE TABLE currentaccounts (
     CONSTRAINT FK_User_Account FOREIGN KEY (UserID) REFERENCES users (userId) ON DELETE CASCADE
 );
 CREATE TABLE savingsaccounts (
-    SavingsType bigint NOT NULL,
+    SavingAccount bigint NOT NULL,
     UserID int(11) NOT NULL,
     CurrencyCode varchar(20) NOT NULL,
     Balance decimal(18, 2) NOT NULL,
     AccountStatus varchar(50) NOT NULL,
-    PRIMARY KEY (SavingsType),
+    PRIMARY KEY (SavingAccount),
     CONSTRAINT FK_User_Savings FOREIGN KEY (UserID) REFERENCES users (userId) ON DELETE CASCADE
 );
 
@@ -95,7 +96,7 @@ CREATE TABLE SavingsHistory (
     TransactionAmount DECIMAL(18, 5) NOT NULL,
     CreatedAt DATETIME DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT FK_SavingsHistory_CurrentAccount FOREIGN KEY (CurrentAccountID) REFERENCES currentaccounts (CurrentAccount) ON DELETE CASCADE,
-    CONSTRAINT FK_SavingsHistory_Savingsaccount FOREIGN KEY (FlexSaveAccountID) REFERENCES savingsaccounts (SavingsType) ON DELETE CASCADE
+    CONSTRAINT FK_SavingsHistory_Savingsaccount FOREIGN KEY (FlexSaveAccountID) REFERENCES savingsaccounts (SavingAccount) ON DELETE CASCADE
 );
 
 CREATE TABLE AccessPermissions (
@@ -251,7 +252,7 @@ INSERT INTO `currentaccounts` (`CurrentAccount`, `UserID`, `CurrencyCode`, `Bala
 (1110333316835670, 5, 'EUR', 50000.00, 'Open'),
 (1110333367253288, 6, 'EUR', 60000.00, 'Open');
 
-INSERT INTO `savingsaccounts` (`SavingsType`, `UserID`, `CurrencyCode`, `Balance`, `AccountStatus`) VALUES
+INSERT INTO `savingsaccounts` (`SavingAccount`, `UserID`, `CurrencyCode`, `Balance`, `AccountStatus`) VALUES
 (1110222258657008, 5, 'EUR', 0.00, 'Open'),
 (1110222276211824, 6, 'EUR', 0.00, 'Open');
 

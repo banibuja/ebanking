@@ -36,7 +36,7 @@ function Login() {
         if (res.data.Login) {
           navigate('/dashboard');
         } else {
-          alert("No record");
+          console.log(res.data);
         }
       })
       .catch(err => console.log(err));

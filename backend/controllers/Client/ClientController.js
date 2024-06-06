@@ -1,14 +1,13 @@
 const bcrypt = require('bcrypt');
 const db = require('../../db');
 const sendEmail = require('../Client/sendEmail');
-const { generateRandomAccountNumber, generateFlexSaveAccountNumber, checkAccountExists, generateRandomPassword } = require('./helpers');
+const {  generateRandomAccountNumber, generateFlexSaveAccountNumber, checkCurrentAccountExists, checkSaveAccountExists, checkCardExists, generateRandomPassword } = require('./helpers');
 const jwt = require('jsonwebtoken');
 
 const addClient = async (req, res) => {
     try {
         const client = req.body;
         
-        // Generate a random password
         const randomPassword = generateRandomPassword();
         const hashedPassword = await bcrypt.hash(randomPassword, 10);
 
@@ -17,10 +16,16 @@ const addClient = async (req, res) => {
 
         while (accountExists) {
             currentAccount = generateRandomAccountNumber();
-            accountExists = await checkAccountExists(currentAccount);
+            accountExists = await checkCurrentAccountExists(currentAccount);
         }
+        
+        let savingsAccount;
+        let savingsaccountExists = true;
 
-        const SavingsType = generateFlexSaveAccountNumber();
+        while (savingsaccountExists) {
+            savingsAccount = generateFlexSaveAccountNumber();
+            savingsaccountExists = await checkSaveAccountExists(currentAccount);
+        }
 
         const addClient = await new Promise((resolve, reject) => {
             db.query(
@@ -82,8 +87,8 @@ const addClient = async (req, res) => {
 
         await new Promise((resolve, reject) => {
             db.query(
-                `INSERT INTO savingsaccounts (UserID, SavingsType, Balance, CurrencyCode, AccountStatus) VALUES (?, ?, ?, ?, ?)`, 
-                [userId, SavingsType, 0, 'EUR', 'Open'], 
+                `INSERT INTO savingsaccounts (UserID, SavingAccount , Balance, CurrencyCode, AccountStatus) VALUES (?, ?, ?, ?, ?)`, 
+                [userId, savingsAccount, 0, 'EUR', 'Open'], 
                 (error, results) => {
                     if (error) {
                         reject(error);
@@ -93,9 +98,13 @@ const addClient = async (req, res) => {
                 }
             );
         });
-
-
-        const cardNumber = `53547${Math.floor(100000000000 + Math.random() * 900000000000)}`;
+ 
+        let cardNumber;
+        let cardExists = true;
+        while (cardExists) {
+            cardNumber = `53547${Math.floor(100000000000 + Math.random() * 900000000000)}`;
+            cardExists = await checkCardExists(currentAccount);
+        }
         const today = new Date();
         const expiryDate = new Date(today);
         expiryDate.setFullYear(expiryDate.getFullYear() + 4);

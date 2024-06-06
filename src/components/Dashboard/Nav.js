@@ -9,12 +9,12 @@ function Nav() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    axios.post('http://localhost:8080/getUsersWithSession', { withCredentials: true })
+    axios.post('http://localhost:8080/getUsersWithSession')
       .then(res => {
         const userData = res.data;
         if (userData && userData.length > 0) {
           setName(userData[0].name);
-          const lastLoginTimestamp = new Date(userData[0].last_login);
+          const lastLoginTimestamp = new Date(userData[0].lastLogin);
           const formattedLastLogin = lastLoginTimestamp.toLocaleDateString('en-US', { 
             day: 'numeric', 
             month: 'numeric', 
@@ -27,7 +27,10 @@ function Nav() {
           setLastLogin(formattedLastLogin);
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        if (err.response.status === 401){
+          handleLogout();
+      }});
   }, []);
 
   useEffect(() => {
@@ -71,10 +74,12 @@ function Nav() {
   }, []);
 
   const handleLogout = () => {
-    axios.get('http://localhost:8080/logout', {withCredentials:true})
+    axios.get('http://localhost:8080/logout')
       .then(res => {
-        if (res.data.success) {
+        if (res.status === 200 ) {
+          console.clear();
           navigate('/login');
+
         }
       })
       .catch(err => console.log(err));

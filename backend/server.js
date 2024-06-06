@@ -29,11 +29,11 @@ app.get('/', (req, res) => {
     const token = req.cookies.authToken;
     
     if (!token) {
-      return res.status(401).json({ message: 'Token not provided' });
+      return res.status(204).json({ message: 'Token not provided' });
     }
     jwt.verify(token, process.env.SECRET, (err, decoded) => {
         if (err) {
-            return res.json({ valid: false, sessionExpired: req.session.expired });
+            return res.json({ valid: false });
         } else {
             return res.json({ valid: true, uId: decoded.uId, username: decoded.username, role: decoded.role });
         }
@@ -42,9 +42,25 @@ app.get('/', (req, res) => {
 });
 
 app.get('/logout', (req, res) => {
+    try {
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
+
+        const userID = decodedToken.userId;
+    const lastLogin = new Date()
+    db.query("UPDATE users SET lastLogin = ? WHERE userId = ?", [lastLogin, userID], (updateErr, updateResult) => {
+        if (updateErr) {
+            console.error("Error updating last login timestamp:", updateErr);
+            return res.json({ Message: "Error during login", Login: false });
+        }
+    });
     console.log('loged out');
     res.clearCookie('connect.sid');
     res.clearCookie('authToken').send('Logged out successfully');
+} catch (error) {
+        res.status(401).send("not logged in").end();
+      }
 });
 
 

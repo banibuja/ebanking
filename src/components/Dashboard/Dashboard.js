@@ -21,6 +21,7 @@ export const Dashboard = () => {
   useEffect(() => {
     axios.get('http://localhost:8080', {withCredentials:'true'})
       .then(res => {
+        if(res.statusCode === 401) navigate('/login');
         if (res.data.valid) {
           setRole(res.data.role);
         } else {

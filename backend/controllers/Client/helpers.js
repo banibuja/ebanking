@@ -21,7 +21,7 @@ function generateRandomPassword() {
     return password;
 }
 
-async function checkAccountExists(accountNumber) {
+async function checkCurrentAccountExists(accountNumber) {
     return new Promise((resolve, reject) => {
         db.query(`SELECT COUNT(*) AS count FROM currentaccounts WHERE CurrentAccount = ?`, [accountNumber], (error, result) => {
             if (error) {
@@ -32,5 +32,27 @@ async function checkAccountExists(accountNumber) {
         });
     });
 }
+async function checkSaveAccountExists(accountNumber) {
+    return new Promise((resolve, reject) => {
+        db.query(`SELECT COUNT(*) AS count FROM savingsaccounts WHERE SavingAccount = ?`, [accountNumber], (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(result[0].count > 0);
+            }
+        });
+    });
+}
+async function checkCardExists(cardId) {
+    return new Promise((resolve, reject) => {
+        db.query(`SELECT COUNT(*) AS count FROM cards WHERE CardID = ?`, [cardId], (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(result[0].count > 0);
+            }
+        });
+    });
+}
 
-module.exports = { generateRandomAccountNumber, generateFlexSaveAccountNumber, checkAccountExists, generateRandomPassword };
+module.exports = { generateRandomAccountNumber, generateFlexSaveAccountNumber, checkCurrentAccountExists, checkSaveAccountExists, checkCardExists, generateRandomPassword };

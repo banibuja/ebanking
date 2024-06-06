@@ -31,8 +31,7 @@ export const Home = () => {
   const fetchCarouselItems = () => {
     axios.post('http://localhost:8080/getCarusel')
       .then(res => {
-        const items = res.data;
-        console.log(items);
+        const items = [...res.data];
         const processedItems = items.map(item => {
           const base64Image = Buffer.from(item.Photo.data).toString();
           const imageSrc = `${base64Image}`;

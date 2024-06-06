@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 const updateSavingsAccounts = (req, res) => {
     const Savingsid = req.params.id;
     const { Balance, AccountStatus } = req.body;
-    const sqlUpdate = "UPDATE savingsaccounts SET Balance=?, AccountStatus=? WHERE SavingsType=?";
+    const sqlUpdate = "UPDATE savingsaccounts SET Balance=?, AccountStatus=? WHERE SavingAccount =?";
 
     db.query(sqlUpdate, [Balance,AccountStatus, Savingsid], (err, result) => {
         if (err) {
@@ -19,12 +19,11 @@ const updateSavingsAccounts = (req, res) => {
 
 const getSavingsAccountById = (req, res) => {
     const Savingsid = req.params.id;
-    // const sql = "SELECT UserID, SavingsType, Balance FROM savingsaccounts WHERE SavingsType = ?";
     const sql = `
-    SELECT u.*, a.SavingsType, a.CurrencyCode, a.Balance, a.AccountStatus
+    SELECT u.*, a.SavingAccount, a.CurrencyCode, a.Balance, a.AccountStatus
     FROM users u 
     INNER JOIN savingsaccounts a ON a.userId = u.userId 
-    WHERE a.SavingsType = ?
+    WHERE a.SavingAccount = ?
 
     
 `;
@@ -43,7 +42,7 @@ const getSavingsAccountById = (req, res) => {
 
 const getAllSavingAccount = (req, res) => {
     const sql = `
-    SELECT u.*, a.SavingsType, a.CurrencyCode, a.Balance, a.AccountStatus
+    SELECT u.*, a.SavingAccount, a.CurrencyCode, a.Balance, a.AccountStatus
     FROM users u 
     INNER JOIN savingsaccounts a ON a.userId = u.userId 
     
@@ -63,7 +62,7 @@ const getAllSavingAccount = (req, res) => {
 const deleteSavings = (req, res) => {
 
     const AccountID = req.params.id;
-    const sqlDelete = "DELETE FROM savingsaccounts WHERE SavingsType = ?";
+    const sqlDelete = "DELETE FROM savingsaccounts WHERE SavingAccount = ?";
   
     db.query(sqlDelete, AccountID, (err, result) => {
         if (err) {
@@ -84,7 +83,7 @@ const getSavingsBySesison = (req, res) => {
         const userID = decodedToken.userId; 
 
         const sql = `
-            SELECT u.*, a.SavingsType, a.CurrencyCode, a.Balance, a.AccountStatus
+            SELECT u.*, a.SavingAccount, a.CurrencyCode, a.Balance, a.AccountStatus
             FROM users u 
             INNER JOIN savingsaccounts a ON a.UserID = u.userId 
             WHERE u.userId = ?
@@ -110,7 +109,7 @@ const getSavingsBySesison = (req, res) => {
 const getAccountByUserID = (req, res) => {
     const { username } = req.body;
     const sql = `
-    SELECT u.*, a.SavingsType, a.CurrencyCode, a.Balance, a.AccountStatus
+    SELECT u.*, a.SavingAccount, a.CurrencyCode, a.Balance, a.AccountStatus
     FROM users u 
     INNER JOIN savingsaccounts a ON a.UserID = u.userId 
     WHERE u.username = ?

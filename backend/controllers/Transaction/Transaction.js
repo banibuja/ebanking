@@ -69,11 +69,11 @@ const getAllnterTransactions = (req, res) => {
                 if (data.length > 0) {
                     return res.status(200).json(data).end();
                 } else {
-                    return res.status(404).json("No Transactions found").end();
+                    return res.status(204).json("No Transactions found").end();
                 }
             });
         } else {
-            return res.status(404).end();
+            return res.status(204).end();
         }
     });} catch (error) {
         res.status(401).send("not logged in").end();
