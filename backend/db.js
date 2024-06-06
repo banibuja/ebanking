@@ -11,7 +11,6 @@ const dbConfig = {
 
 const pool = mysql.createPool(dbConfig);
 
-// Test the database connection
 pool.getConnection((err, connection) => {
     if (err) {
         console.error('Error connecting to database:', err);
@@ -22,3 +21,6 @@ pool.getConnection((err, connection) => {
 });
 
 module.exports = pool;
+
+
+

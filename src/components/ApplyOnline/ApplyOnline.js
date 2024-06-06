@@ -9,7 +9,7 @@ function AplikimiOnline() {
     const navigate = useNavigate();
     const [values, setValues] = useState({});
     const [errors, setErrors] = useState({});
-    const [successMessage, setSuccessMessage] = useState('');
+    const [isSubmitted, setIsSubmitted] = useState(false);
     const [idPhotos, setIdPhotos] = useState({ frontPhoto: '', backPhoto: '' });
     const [countries, setCountries] = useState([]);
     const [cities, setCities] = useState([]);
@@ -28,14 +28,14 @@ function AplikimiOnline() {
     };
 
     useEffect(() => {
-        if (successMessage) {
+        if (isSubmitted) {
             const timer = setTimeout(() => {
                 navigate('/');
             }, 4000);
 
             return () => clearTimeout(timer);
         }
-    }, [successMessage, navigate]);
+    }, [isSubmitted, navigate]);
 
     const handleInput = (event) => {
         setValues(prev => ({ ...prev, [event.target.name]: event.target.value }));
@@ -58,12 +58,9 @@ function AplikimiOnline() {
                             } else {
                                 setErrors(prev => ({ ...prev, username: '' }));
                                 if (Object.keys(errors).length === 0) {
-
                                     axios.post('http://localhost:8080/addApply', { ...values, Country: selectedCountry.name, City: selectedCity, frontPhoto: idPhotos.frontPhoto, backPhoto: idPhotos.backPhoto })
                                         .then(res => {
-                                            console.log(values);
-                                            setSuccessMessage('Application submitted successfully!');
-                                            navigate('../');
+                                            setIsSubmitted(true);
                                         })
                                         .catch(err => console.log(err));
                                 }
@@ -199,6 +196,7 @@ function AplikimiOnline() {
                                     <option value="">Select Gender</option>
                                     <option value="M">Male</option>
                                     <option value="F">Female</option>
+                                    {/* <option value="O">Other</option> */}
                                 </select>
                                 {errors.gender && <span className="text-danger">{errors.gender}</span>}
                             </div>
@@ -305,13 +303,7 @@ function AplikimiOnline() {
                             <div className="d-flex justify-content-center">
                                 <button type="submit" className="btn btn-success btn-lg">Apply</button>
                             </div>
-                            {successMessage && (
-
-                                <div className="alert alert-success mt-4">
-                                    
-                                    {successMessage}
-                                </div>
-                            )}
+                            {isSubmitted && <p className="text-success text-center mt-2">Your application has been sent successfully!</p>}
                         </form>
                     </div>
                 </div>
