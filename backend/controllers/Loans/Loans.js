@@ -143,7 +143,7 @@ const getAccountNumber = (req, res) => {
         const userID = decodedToken.userId;
     const sql = "SELECT CurrentAccount FROM currentaccounts WHERE UserID = ?"; 
 
-    db.query(sql, [userId], (err, result) => {
+    db.query(sql, [userID], (err, result) => {
         if (err) {
             console.error("Error fetching account number:", err);
             return res.status(500).json({ error: "Internal server error" }).end();

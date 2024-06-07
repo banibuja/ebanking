@@ -1,30 +1,16 @@
 const bcrypt = require('bcrypt');
 const db = require('../../db');
+const {  generateRandomPassword } = require('../Client/helpers');
 
 
-
-const addApply = (req, res) => {
+const addApply = async (req, res) => {
     const { username, name, lastname, email, package, gender, birthday, Country, City, Street, frontPhoto, backPhoto } = req.body;
     
-        var charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+{}:<>?[];',./";
-        var password = "";
-        for (var i = 0; i < 8; i++) {
-          var randomIndex = Math.floor(Math.random() * charset.length);
-          password += charset[randomIndex];
-        }
-      
+  
+        const query = `INSERT INTO applyonline (username, name, lastname, email, package, gender, birthday, Country, City, Street, frontPhoto, backPhoto, Status) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending')`;
 
-    bcrypt.hash(password, 10, (err, hash) => {
-        if (err) {
-            console.error('Error hashing password:', err);
-            return res.status(500).json({ error: 'Error hashing password' }).end();
-        }
-
-        const hashedPassword = hash;
-        const query = `INSERT INTO applyonline (username, name, lastname, email, password, package, gender, birthday, Country, City, Street, frontPhoto, backPhoto, Status) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending')`;
-
-        const values = [username, name, lastname, email, hashedPassword, package, gender, birthday, Country, City, Street, frontPhoto, backPhoto];
+        const values = [username, name, lastname, email, package, gender, birthday, Country, City, Street, frontPhoto, backPhoto];
 
         db.query(query, values, (err) => {
             if (err) {
@@ -34,8 +20,7 @@ const addApply = (req, res) => {
 
             res.status(200).json({ message: 'Data inserted successfully' }).end();
         });
-    });
-};
+    }
 
 const getApply = (req, res) => {
     const query = `SELECT * FROM applyonline`;
