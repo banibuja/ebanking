@@ -16,7 +16,7 @@ function SaveTransaction() {
     const [errors, setErrors] = useState({});
 
     useEffect(() => {
-      fetchCarouselItems();
+      fetchInfo();
     }, []);
 
     const handleInput = (event) => {
@@ -42,18 +42,14 @@ function SaveTransaction() {
   const handleCloseEditModal = () => {
     setEditInfoId(null);
 };
-    const fetchCarouselItems = () => {
-        axios.post('http://localhost:8080/getInfoSection')
-          .then(res => {
-            const items = res.data;
-            console.log(items);
-            const processedItems = items.map(item => {
-              return { ...item};
-            });
-            setInfo(processedItems);
-          })
-          .catch(err => console.log(err));
-      };
+const fetchInfo = () => {
+  axios.get('http://localhost:8080/getInfoSection')
+    .then(res => {
+      const fetchedInfo = res.data;
+      setInfo(fetchedInfo);
+    })
+    .catch(err => console.log(err));
+};
 
       const handleDelete = (id) => {
         axios.delete(`http://localhost:8080/deleteInfo/${id}`)

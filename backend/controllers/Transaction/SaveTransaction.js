@@ -75,12 +75,12 @@ const insertSaveTransaction = (req, res) => {
             return res.status(400).json({ error: "Not enough balance" }).end();
         }
 
-        db.query(`SELECT * FROM savingsaccounts WHERE SavingsType = ?`, [ReceiverAccID], (err, receiverResults) => {
+        db.query(`SELECT * FROM savingsaccounts WHERE SavingAccount = ?`, [ReceiverAccID], (err, receiverResults) => {
             if (err) {
                 return res.status(500).json({ error: 'Database query error' }).end();
             }
 
-            const receiverAccount = receiverResults.find(account => account['SavingsType'] === parseInt(ReceiverAccID));
+            const receiverAccount = receiverResults.find(account => account['SavingAccount'] === parseInt(ReceiverAccID));
             if (!receiverAccount) {
                 return res.status(404).json({ error: "Receiver account not found" }).end();
             }
@@ -92,7 +92,7 @@ const insertSaveTransaction = (req, res) => {
                 }
 
                 const newReceiverBalance = +receiverAccount.Balance + +TransactionAmount;
-                db.query(`UPDATE savingsaccounts set Balance = ? WHERE SavingsType = ?`, [newReceiverBalance, parseInt(ReceiverAccID)], (err, result) => {
+                db.query(`UPDATE savingsaccounts set Balance = ? WHERE SavingAccount = ?`, [newReceiverBalance, parseInt(ReceiverAccID)], (err, result) => {
                     if (err) {
                         return res.status(500).json({ error: 'Database update error' }).end();
                     }

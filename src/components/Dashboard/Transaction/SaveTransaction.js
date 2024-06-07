@@ -83,8 +83,8 @@ function SaveTransaction() {
                                             <select name='ReceiverAccID' className='form-control rounded-0' onChange={handleInput} value={values.ReceiverAccID}>
                                                 <option value=''>Select Savings Account</option>
                                                 {savingsAccounts.map(account => (
-                                                    <option key={account.SavingsType} value={account.SavingsType}>
-                                                        {account.SavingsType} - FlexSave
+                                                    <option key={account.SavingAccount} value={account.SavingAccount}>
+                                                        {account.SavingAccount} - FlexSave
                                                     </option>
                                                 ))}
                                             </select>
