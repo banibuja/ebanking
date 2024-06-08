@@ -74,12 +74,12 @@ function AddTeam() {
     };
 
     const handleDelete = (id) => {
-      axios.delete(`http://localhost:8080/deleteCarusel/${id}`)
+      axios.delete(`http://localhost:8080/deleteTeam/${id}`)
           .then(res => {
               if (res.data === 'success') {
                   window.location.reload();
               } else {
-                  console.error('Failed to delete carousel item');
+                  console.error('Failed to delete team item');
               }
           })
           .catch(err => console.log(err));
@@ -100,8 +100,8 @@ function AddTeam() {
                                 <form onSubmit={handleSubmit}>
                                     <div className="card-body">
                                         <div className="form-group">
-                                            <label htmlFor="Titulli">Title</label>
-                                            <input type="text" name='Titulli' className='form-control rounded-0' onChange={handleInput} value={values.Titulli}/>
+                                            <label htmlFor="Emri">Emri</label>
+                                            <input type="text" name='Emri' className='form-control rounded-0' onChange={handleInput} value={values.Emri}/>
                                         </div>
                                         <div className="form-group">
                                             <label htmlFor="Teksti">Paragraph</label>
@@ -125,21 +125,20 @@ function AddTeam() {
                     <div className="row">
                     <div className="col-md-12 d-flex justify-content-center align-items-center">
                       <Table className="table table-hover border-table dataTable no-footer" style={{ width: '100%' }}>
-                        <caption>List of Carousel Items</caption>
+                        <caption>List of Team Items</caption>
                         <thead>
                           <tr>
-                            <th scope="col">Photo</th>
-                            <th scope="col">Title</th>
-                            <th scope="col">Text</th>
+                            <th scope="col">Emri</th>
+                            <th scope="col">Teksti</th>
                             <th scope="col"></th>
                           </tr>
                         </thead>
                         <tbody>
-                          {Array.isArray(carouselItems) && carouselItems.length > 0 ? (
-                            carouselItems.flat().map((item, index) => (
+                          {Array.isArray(EmriItems) && EmriItems.length > 0 ? (
+                            EmriItems.flat().map((item, index) => (
                               <tr key={index}>
                                 <td>
-                                  <img src={item.Photo} alt="Carousel Item" className='carusel-img'/>
+                                  <img src={item.Photo} alt="Team Item" className='carusel-img'/>
                                 </td>
                                 <td>{item.Titulli}</td>
                                 <td>{item.Teksti}</td>
@@ -168,7 +167,7 @@ function AddTeam() {
                   </div>
                 </div>
             </main>
-            {editClientId !== null && <EditCarusel id={editClientId} onClose={handleCloseEditModal} />}
+            {editClientId !== null && <EditTeam id={editClientId} onClose={handleManageClick} />}
         </div>
     );
 }
