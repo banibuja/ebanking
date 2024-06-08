@@ -204,7 +204,7 @@ CREATE TABLE Transactions (
 
 
 
-CREATE TABLE Payments (
+/*CREATE TABLE Payments (
     PaymentID int primary key AUTO_INCREMENT,
     SenderAccountID BIGINT NOT NULL,
     ReceiverAccountID BIGINT NOT NULL,
@@ -213,7 +213,18 @@ CREATE TABLE Payments (
     PaymentStatus VARCHAR(50) NOT NULL,
     CONSTRAINT FK_Sender_Account FOREIGN KEY (SenderAccountID) REFERENCES currentaccounts (CurrentAccount) ON DELETE CASCADE,
     CONSTRAINT FK_Receiver_Account FOREIGN KEY (ReceiverAccountID) REFERENCES currentaccounts (CurrentAccount) ON DELETE CASCADE
+);*/
+
+CREATE TABLE Bills (
+    BillID INT PRIMARY KEY AUTO_INCREMENT,
+    UserID INT,
+    ServiceType VARCHAR(50),
+    Amount DECIMAL(10, 2),
+    DueDate DATE,
+    Status VARCHAR(20) DEFAULT 'Unpaid',
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)
 );
+
 
 
 

@@ -18,6 +18,7 @@ const HomeController = require('./Add-Home-page/Add-InfoSection');
 const CaruselController = require('./Add-Home-page/AddCarusel');
 const AboutUSController = require('./AboutUs/AddAbouUs');
 const TeamController = require('./AboutUs/Team');
+const PaymentController =require('./Payment/PaymentController');
 
 const defineRoutes = (app) => {
     app.post('/loginform',                  LoginController.login);
@@ -133,6 +134,11 @@ const defineRoutes = (app) => {
     app.put('/updateStatusLoans/:id',       loansController.updateStatusLoans);
     
     app.post('/getAllLoansForClient',       loansController.getAllLoansForClient);
+
+    app.get('/getAllBills',                PaymentController.getAllBills);
+    app.post('/AddBillForm',                PaymentController.AddBillForm);
+    app.delete("/deleteBills/:id",          PaymentController.deleteBills);
+    app.put('/updateBills/:id',            PaymentController.updateBills);
 };
 
 module.exports = defineRoutes;

@@ -111,6 +111,7 @@ export default function Sidebar() {
                     <Dropdown.Item href="/Manageclientcards" onClick={handleManageClick}>Manage ClientCards</Dropdown.Item>
                     <Dropdown.Item href="/ManagaeApplicantsOnline" onClick={handleManageClick}>ManagaeApplicantsOnline</Dropdown.Item>
                     <Dropdown.Item href="/ManageLoans" onClick={handleManageClick}>Manage Loans</Dropdown.Item>
+                    <Dropdown.Item href="/ManagePayment" onClick={handleManageClick}>Manage Payment</Dropdown.Item>
                     <Dropdown.Item href="/AccessPermissions" onClick={handleManageClick}>Managae AccessPermissions</Dropdown.Item>
                     <Dropdown.Item href="/CardsForm" onClick={handleManageClick}>Add Cards</Dropdown.Item>
 
@@ -200,7 +201,18 @@ export default function Sidebar() {
               </Dropdown.Menu>
             </Dropdown>
           </li>
-    
+          <li>
+            <Dropdown>
+              <Dropdown.Toggle variant="link" id="dropdown-accounts" className="nav-link link-dark">
+                <i className="bi me-2 fas fa-hand-holding-usd fa-1x text-gray-300  "></i>
+                Payment
+              </Dropdown.Toggle>
+              <Dropdown.Menu>
+                <Dropdown.Item href="/AddBillForm" onClick={handleManageClick}>Add BillForm</Dropdown.Item>
+                <Dropdown.Item href="/BillsList" onClick={handleManageClick}>BillsList</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </li>
                         <li>
                                       <a href="/Reports" className="nav-link link-dark" onClick={handleManageClick}>
                                         <i className="fas fa-file-alt fa-1x text-gray-300 me-2"></i>
@@ -214,8 +226,14 @@ export default function Sidebar() {
                   Profile
                 </a>
               </li>
+              <li>
+                                      <a href="/Support" className="nav-link link-dark" onClick={handleManageClick}>
+                                        <i className=" fa-solid fa-circle-info text-gray-300 me-2"></i>
+                                        Support
+                                      </a>
+              </li>
              
-          {/* <li>
+          {/* <li><i class="fa-solid fa-circle-info"></i>
             <a href="#" className="nav-link link-dark" onClick={handleManageClick}>
               <i className="bi me-2 fas fa-exchange-alt fa-1x text-gray-300" ></i>
               Notifications

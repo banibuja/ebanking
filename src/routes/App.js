@@ -44,10 +44,11 @@ import AddHomePage from '../components/Dashboard/Add Home-page/Add-HomePage';
 import AddCarusel from '../components/Dashboard/Add Home-page/AddCarusel';
 import ManageLoans from '../components/Dashboard/Loans/ManageLoans';
 import AddAboutUS from '../components/Dashboard/AddAboutUs/AddAboutUs';
-// import Payment from '../components/Dashboard/Payment/Payment';
-// import HistoryPayment from '../components/Dashboard/Payment/HistoryPayment';
+import BillsList from '../components/Dashboard/Payment/BillsList';
+import AddBillForm from '../components/Dashboard/Payment/AddBillForm';
+import ManagePayment from '../components/Dashboard/Payment/BillsList';
 import Reports from '../components/Dashboard/Reports/Reports';
-// import Support from '../components/Dashboard/Support/Support';
+import Support from '../components/Dashboard/Support/Support';
 function App() {
   return (
 
@@ -78,6 +79,7 @@ function App() {
         <Route path="/ManageYourAccount" element={<ManageYourAccount/>} /> 
         <Route path="/Manageclientcards" element={<Manageclientcards/>} /> 
         <Route path="/ManageSavingsAccount" element={<ManageSavingsAccount/>} /> 
+        <Route path="/ManagePayment" element={<ManagePayment/>}/>
         {/* <Route path="/ManageYourSavings" element={<ManageYourSavings/>} />  */}
         <Route path="/AccessPermissions" element={<AccessPermissions/>} /> 
         <Route path="/currencies" element={<Currencies/>} /> 
@@ -92,9 +94,9 @@ function App() {
         <Route path="/SaveHistory" element={<SaveHistory/>} /> 
         <Route path="/ManageLoans" element={<ManageLoans />} />
         <Route path="/Reports" element={<Reports />} /> 
-        {/* <Route path="/Payment" element={<Payment />}/> */}
-        {/* <Route path="/HistoryPayment" element={<HistoryPayment />} />
-        <Route path="/Support" element={<Support />} /> */}
+         <Route path="/BillsList" element={<BillsList />}/> 
+        <Route path="/AddBillForm" element={<AddBillForm />} />
+        <Route path="/Support" element={<Support />} /> 
 
 {/* 
         
