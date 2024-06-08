@@ -145,12 +145,12 @@ function AddTeam() {
                                 <td>{item.Teksti}</td>
                                 <td>
                                   <button 
-                                      onClick={() => handleEdit(item.CaruselId)} 
+                                      onClick={() => handleEdit(item.TeamId)} 
                                       className="btn btn-primary mr-2">
                                       Edit
                                   </button>
                                   <button 
-                                      onClick={() => handleDelete(item.CaruselId)} 
+                                      onClick={() => handleDelete(item.TeamId)} 
                                       className="btn btn-danger">
                                       Delete
                                   </button>

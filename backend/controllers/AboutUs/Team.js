@@ -32,29 +32,29 @@ const getTeam = (req, res) => {
 
 
 
-const getCaruselForEdit = (req, res) => {
+const getTeamForEdit = (req, res) => {
     const CaruselId = req.params.id;
     const sql = `
-        SELECT * FROM Carusel WHERE CaruselId = ?
+        SELECT * FROM Carusel WHERE TeamId = ?
     `;
 
-    db.query(sql, [CaruselId], (err, data) => {
+    db.query(sql, [TeamId], (err, data) => {
         if (err) {
             return res.status(500).json({ error: "Internal server error" }).end();
         }
         if (data.length > 0) {
             return res.status(200).json(data[0]).end();
         } else {
-            return res.status(204).json({ message: "Carusel not found" }).end();
+            return res.status(204).json({ message: "Team not found" }).end();
         }
     });
 };
-const updateCarusel = (req, res) => {
-    const { Titulli, Teksti, Photo} = req.body;
+const updateTeam = (req, res) => {
+    const { Emri, Teksti, Photo} = req.body;
     const CarId = req.params.id; 
 
     const sql = "UPDATE Carusel SET Titulli = ?, Teksti = ?, Photo = ? WHERE CaruselId = ?";
-    db.query(sql, [Titulli, Teksti, Photo, CarId], (err, result) => {
+    db.query(sql, [Emri, Teksti, Photo, CarId], (err, result) => {
         if (err) {
             console.error("Error updating Carus:", err);
             return res.status(500).json({ error: "Internal server error" }).end();
@@ -63,7 +63,7 @@ const updateCarusel = (req, res) => {
         return res.status(200).json("success").end();
     });
 };
-const deleteCarusel = (req, res) => {
+const deleteTeam = (req, res) => {
     const CaruselId = req.params.id;
     const sql = "DELETE FROM Carusel WHERE CaruselId = ?";
     db.query(sql, [CaruselId], (err, result) => {
@@ -80,4 +80,4 @@ const deleteCarusel = (req, res) => {
 
 
 
-module.exports = { insertTeam,getTeam,getCaruselForEdit,updateCarusel,deleteCarusel };
+module.exports = { insertTeam,getTeam,getTeamForEdit,updateTeam,deleteTeam };
