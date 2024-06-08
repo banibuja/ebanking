@@ -44,20 +44,25 @@ function AplikimiOnline() {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        axios.get(`http://localhost:8080/checkemail?email=${values.email}`)
-            .then(response => {
-                if (response.data.exists) {
-                    setErrors(prev => ({ ...prev, email: 'This email is already in use.' }));
-                } else {
-                    setErrors(prev => ({ ...prev, email: '' }));
-
-                    axios.get(`http://localhost:8080/checkUsername?username=${values.username}`)
-                        .then(response => {
-                            if (response.data.exists) {
-                                setErrors(prev => ({ ...prev, username: 'This username is already taken.' }));
-                            } else {
-                                setErrors(prev => ({ ...prev, username: '' }));
-                                if (Object.keys(errors).length === 0) {
+        const checkEmail = axios.get(`http://localhost:8080/checkemail?email=${values.email}`);
+        const checkUsername = axios.get(`http://localhost:8080/checkUsername?username=${values.username}`);
+    
+        Promise.all([checkEmail, checkUsername])
+            .then(([emailResponse, usernameResponse]) => {
+                let emailError = '';
+                let usernameError = '';
+    
+                if (emailResponse.data.exists) {
+                    emailError = 'This email is already in use.';
+                }
+    
+                if (usernameResponse.data.exists) {
+                    usernameError = 'This username is already taken.';
+                }
+    
+                setErrors({ email: emailError, username: usernameError });
+    
+                if (!emailError && !usernameError) {
                                     axios.post('http://localhost:8080/addApply', { ...values, Country: selectedCountry.name, City: selectedCity, frontPhoto: idPhotos.frontPhoto, backPhoto: idPhotos.backPhoto })
                                         .then(res => {
                                             setIsSubmitted(true);
@@ -65,13 +70,9 @@ function AplikimiOnline() {
                                         .catch(err => console.log(err));
                                 }
                             }
-                        })
-                        .catch(err => console.log(err));
-                }
-            })
-            .catch(err => console.log(err));
-    };
-
+                       
+                )}
+        
     useEffect(() => {
         axios.get('https://polar-everglades-58451-8c8c26171cdb.herokuapp.com/getAllCountries')
             .then(response => {
