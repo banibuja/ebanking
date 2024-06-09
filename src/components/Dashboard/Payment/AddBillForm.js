@@ -65,20 +65,45 @@ function AddBillForm() {
 
     return (
         <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#f0f0f0' }}>
-            <Sidebar />
-            <div style={{ flex: 1, padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                {!paymentMethod ? (
-                    <div style={{ width: '100%', maxWidth: '600px', backgroundColor: '#ffffff', padding: '40px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.15)', color: '#333' }}>
-                        <h2 style={{ textAlign: 'center', marginBottom: '20px', color: '#333', fontSize: '24px' }}>How would you like to pay?</h2>
-                        <div style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '20px' }}>
-                            <img src={visa} alt="Visa" style={{ cursor: 'pointer', width: '50px', height: '50px' }} onClick={() => handlePaymentMethodChange('Visa')} />
-                            <img src={master} alt="MasterCard" style={{ cursor: 'pointer', width: '50px', height: '50px' }} onClick={() => handlePaymentMethodChange('MasterCard')} />
-                            <img src={paypal} alt="PayPal" style={{ cursor: 'pointer', width: '50px', height: '50px' }} onClick={() => handlePaymentMethodChange('PayPal')} />
-                            <img src={giropay} alt="GiroPay" style={{ cursor: 'pointer', width: '50px', height: '50px' }} onClick={() => handlePaymentMethodChange('GiroPay')} />
-                            <img src={ideal} alt="iDEAL" style={{ cursor: 'pointer', width: '50px', height: '50px' }} onClick={() => handlePaymentMethodChange('iDEAL')} />
-                            <img src={jcb} alt="JCB" style={{ cursor: 'pointer', width: '50px', height: '50px' }} onClick={() => handlePaymentMethodChange('JCB')} />
-                        </div>
+        <Sidebar />
+        <div style={{ flex: 1, padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+            {!paymentMethod ? (
+                <div style={{ width: '100%', maxWidth: '1000px', backgroundColor: '#ffffff', padding: '80px', borderRadius: '25px', boxShadow: '0 10px 20px rgba(0,0,0,0.3)', color: '#333' }}>
+                    <h2 style={{ textAlign: 'center', marginBottom: '50px', color: '#333', fontSize: '34px', fontFamily: 'Arial, sans-serif', fontWeight: 'bold' }}>How would you like to pay?</h2>
+                    <div style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '50px', flexWrap: 'wrap' }}>
+                        {[
+                            { src: visa, alt: "Visa", bgColor: 'white' },
+                            { src: master, alt: "MasterCard", bgColor: 'white' },
+                            { src: paypal, alt: "PayPal", bgColor: 'white' },
+                            { src: giropay, alt: "GiroPay", bgColor: 'white' },
+                            { src: ideal, alt: "iDEAL", bgColor: 'white' },
+                            { src: jcb, alt: "JCB", bgColor: 'white' }
+                        ].map((payment, index) => (
+                            <div key={index} style={{
+                                margin: '10px',
+                                padding: '20px',
+                                textAlign: 'center',
+                                transition: 'transform 0.3s, box-shadow 0.3s',
+                                cursor: 'pointer',
+                                backgroundColor: payment.bgColor,
+                                color: '#ffffff',
+                                borderRadius: '15px',
+                                boxShadow: '0 6px 12px rgba(0, 0, 0, 0.4)',
+                                width: '160px',
+                                height: '100px',
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                '&:hover': {
+                                    transform: 'scale(1.1)',
+                                    boxShadow: '0 8px 16px rgba(212, 175, 55, 0.6)'
+                                }
+                            }}>
+                                <img src={payment.src} alt={payment.alt} style={{ width: '80px', height: '80px' }} onClick={() => handlePaymentMethodChange(payment.alt)} />
+                            </div>
+                        ))}
                     </div>
+                </div>
                 ) : (
                     <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: '600px', backgroundColor: '#ffffff', padding: '40px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0,0,0,0.15)', color: '#333' }}>
                         <h2 style={{ textAlign: 'center', marginBottom: '20px', color: '#333', fontSize: '24px' }}>Add New Bill</h2>
