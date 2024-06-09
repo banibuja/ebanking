@@ -22,7 +22,6 @@ export const ManageYourAccount = () => {
         focus: "",
         cardType: "",
         CurrentAccount: "",
-
     });
 
     useEffect(() => {
@@ -63,7 +62,6 @@ export const ManageYourAccount = () => {
                             focus: "",
                             cardType: fetchedCards[0].CardType,
                             CurrentAccount: fetchedCards[0].CurrentAccount,
-
                         });
                     }
                 }
@@ -148,17 +146,21 @@ export const ManageYourAccount = () => {
     const handleCardAdded = () => {
         getCards();  
     };
+
+    function formatBalance(balance) {
+        const floatBalance = parseFloat(balance);
+        const integerPart = Math.floor(floatBalance).toLocaleString();
+        const fractionalPart = floatBalance % 1 !== 0 ? floatBalance.toFixed(2).split('.')[1] : '';
+        return fractionalPart ? `${integerPart}.${fractionalPart}` : integerPart;
+    }
     
     return (
-        
         <div> 
-
             <main className="d-flex min-vh-100 bg-light text-dark">
                 <Sidebar />
                 <div className="container-fluid mt-4 ">
-                <Nav />
-
-                <h2 className="text-start text-secondary p-2">Account summary</h2>
+                    <Nav />
+                    <h2 className="text-start text-secondary p-2">Account summary</h2>
                     <div className="row">
                         <div className="col-md-12 d-flex justify-content-center align-items-center">
                             <table className="table table-hover no-border-table dataTable no-footer" style={{ width: '100%', marginLeft: '9px' }}>
@@ -176,7 +178,7 @@ export const ManageYourAccount = () => {
                                             <td>{item.CurrentAccount}</td>
                                             <td>{item.name + ' ' + item.lastname}</td>
                                             <td>{item.CurrencyCode}</td>
-                                            <td>{parseFloat(item.Balance).toFixed(2)}</td> 
+                                            <td>{formatBalance(item.Balance)}</td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -198,10 +200,10 @@ export const ManageYourAccount = () => {
                                     <tbody>
                                         {Array.isArray(savings) && savings.map((item) => (
                                             <tr key={item.SavingsID}>
-                                                <td>{item.SavingAccount }</td>
+                                                <td>{item.SavingAccount}</td>
                                                 <td>{item.name + ' ' + item.lastname}</td>
                                                 <td>{item.CurrencyCode}</td>
-                                                <td>{parseFloat(item.Balance).toFixed(2)}</td> 
+                                                <td>{formatBalance(item.Balance)}</td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -235,7 +237,7 @@ export const ManageYourAccount = () => {
                                             <td>{formatDate(card.ExpiryDate)}</td>
                                             <td>{card.CardType}</td>
                                             <td>{card.CardStatus}</td>
-                                            <td>{parseFloat(card.Balance).toFixed(2)}</td> 
+                                            <td>{formatBalance(card.Balance)}</td>
                                             <td>
                                                 {card.CardStatus === 'ACTIVE' ? (
                                                     <button onClick={() => handleBlock(card.CardID)} className="btn btn-danger mr-2">Block</button>
@@ -260,7 +262,7 @@ export const ManageYourAccount = () => {
                 </div>
             </main>
         </div>
-    )
-}
+    );
+};
 
 export default ManageYourAccount;

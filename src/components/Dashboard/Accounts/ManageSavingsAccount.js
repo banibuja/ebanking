@@ -70,9 +70,18 @@ export const ManageSavingsAccount = () => {
             .catch(err => console.log(err));
     };
 
+    
+
     const paginatedAccounts = showAll ? accounts : accounts.slice(0, recordsPerPage);
     const renderData = searchResult.length > 0 ? searchResult : paginatedAccounts;
 
+
+    function formatBalance(balance) {
+        const floatBalance = parseFloat(balance);
+        const integerPart = Math.floor(floatBalance).toLocaleString();
+        const fractionalPart = floatBalance % 1 !== 0 ? floatBalance.toFixed(2).split('.')[1] : '';
+        return fractionalPart ? `${integerPart}.${fractionalPart}` : integerPart;
+    }
     return (
         <div>
            <main className="d-flex min-vh-100 bg-light text-dark">
@@ -92,8 +101,7 @@ export const ManageSavingsAccount = () => {
                         <table className="table table-hover border-table dataTable no-footer" style={{ width: '100%' }}>
                                 <thead>
                                     <tr>
-                                        {/* <th scope="col">AccountID</th> */}
-                                        {/* <th scope="col">Client ID</th> */}
+                                        
                                         <th scope="col">Nr. Personal</th>
                                         <th scope="col">Name Lastname</th>
                                         <th scope="col">SavingsType</th>
@@ -105,19 +113,18 @@ export const ManageSavingsAccount = () => {
                                 </thead>
                                 <tbody>
                                 {Array.isArray(renderData) && renderData.map((account, index) => (
-                                        <tr key={account.SavingsType}>
-                                             {/* <th scope="row">{account.CurrentAccount}</th> */}
-                                            {/* <td>{account.UserID}</td> */}
+                                        <tr key={account.SavingAccount}>
+                                    
                                             <td>{account.username}</td>
                                             <td>{account.name + ' ' + account.lastname}</td>
-                                            <td>{account.SavingsType}</td>
+                                            <td>{account.SavingAccount}</td>
                                             <td>{account.CurrencyCode}</td>
-                                            <td>{parseFloat(account.Balance).toFixed(2)}</td>
+                                            <td>{formatBalance(account.Balance)}</td>
                                             <td>{account.AccountStatus}</td>
 
                                             <td>
-                                                <button onClick={() => handleEdit(account.SavingsType)} className="btn btn-primary mr-2">Edit</button>
-                                                <button onClick={() => handleDelete(account.SavingsType)} className="btn btn-danger">Delete</button>
+                                                <button onClick={() => handleEdit(account.SavingAccount)} className="btn btn-primary mr-2">Edit</button>
+                                                <button onClick={() => handleDelete(account.SavingAccount)} className="btn btn-danger">Delete</button>
                                             </td>
                                         </tr>
                                     ))}

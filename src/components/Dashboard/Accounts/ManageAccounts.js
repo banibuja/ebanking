@@ -70,6 +70,14 @@ export const ManageAccounts = () => {
             .catch(err => console.log(err));
     };
 
+    
+    function formatBalance(balance) {
+        const floatBalance = parseFloat(balance);
+        const integerPart = Math.floor(floatBalance).toLocaleString();
+        const fractionalPart = floatBalance % 1 !== 0 ? floatBalance.toFixed(2).split('.')[1] : '';
+        return fractionalPart ? `${integerPart}.${fractionalPart}` : integerPart;
+    }
+
     const paginatedAccounts = showAll ? accounts : accounts.slice(0, recordsPerPage);
     const renderData = searchResult.length > 0 ? searchResult : paginatedAccounts;
 
@@ -112,7 +120,7 @@ export const ManageAccounts = () => {
                                             <td>{account.name + '  ' + account.lastname}</td>
                                             <td>{account.CurrentAccount}</td>
                                             <td>{account.CurrencyCode}</td>
-                                            <td>{parseFloat(account.Balance).toFixed(2)}</td>
+                                            <td>{formatBalance(account.Balance)}</td>
                                             <td>{account.AccountStatus}</td>
 
                                             <td>

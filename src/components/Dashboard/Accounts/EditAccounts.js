@@ -9,32 +9,48 @@ function EditAccount({ id, onClose }) {
         CurrentAccount: '',
         Balance: ''
     });
+    const [rawBalance, setRawBalance] = useState(''); 
+
     VerifyLogin();
+
     useEffect(() => {
         axios.get(`http://localhost:8080/getAccountForEdit/${id}`)
             .then(res => {
                 console.log('Edit Account API', res.data);
                 setValues(res.data);
+                setRawBalance(res.data.Balance); 
             })
             .catch(err => console.log(err));
     }, [id]);
 
     const handleInput = (e) => {
         const { name, value } = e.target;
-        setValues((prev) => ({ ...prev, [name]: value }));
-  };
+        if (name === 'Balance') {
+            setRawBalance(value); 
+            setValues((prev) => ({ ...prev, [name]: formatBalance(value) })); 
+        } else {
+            setValues((prev) => ({ ...prev, [name]: value }));
+        }
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        const formattedValues = { ...values, Balance: rawBalance }; 
         
-        axios.put(`http://localhost:8080/updateAccount/${id}`, values)
+        axios.put(`http://localhost:8080/updateAccount/${id}`, formattedValues)
             .then(res => {
                 console.log('Update API', res.data);
-                
                 window.location.reload(); 
             })
             .catch(err => console.log(err));
     };
+
+    function formatBalance(balance) {
+        const floatBalance = parseFloat(balance);
+        const integerPart = Math.floor(floatBalance).toLocaleString();
+        const fractionalPart = floatBalance % 1 !== 0 ? floatBalance.toFixed(2).split('.')[1] : '';
+        return fractionalPart ? `${integerPart}.${fractionalPart}` : integerPart;
+    }
 
     return (
         <div className="modal fade show text-black" style={{ display: 'block' }} aria-modal="true">
@@ -62,17 +78,16 @@ function EditAccount({ id, onClose }) {
                             </div>
                             <div className="form-group">
                                 <label>Balance</label>
-                                <input type="text" placeholder='Balance' name='Balance' onChange={handleInput} className='form-control rounded-0' value={values.Balance} disabled/>
+                                <input type="text" placeholder='Balance' name='Balance' onChange={handleInput} className='form-control rounded-0' value={formatBalance(rawBalance)} disabled />
                             </div>
                             <div className="form-group">
                                 <label>Account Status</label>
-                                                              <select name='AccountStatus' onChange={handleInput}  className='form-control roundend-0' value={values.AccountStatus} >
-                                                                 <option value="">Select Status</option>
-                                                                  <option value="Open">Open</option>
-                                                                   <option value="Closed">Closed</option>
-
-                                                                         </select>
-                                                                         </div>
+                                <select name='AccountStatus' onChange={handleInput} className='form-control rounded-0' value={values.AccountStatus} >
+                                    <option value="">Select Status</option>
+                                    <option value="Open">Open</option>
+                                    <option value="Closed">Closed</option>
+                                </select>
+                            </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" onClick={onClose}>Close</button>
                                 <button type="submit" className="btn btn-primary">Save changes</button>

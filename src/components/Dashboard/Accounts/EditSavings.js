@@ -6,7 +6,7 @@ import VerifyLogin from '../VerifyLogin';
 function EditSavings({ id, onClose }) {
     const navigate = useNavigate();
     const [values, setValues] = useState({
-        SavingsType: '',
+        SavingAccount: '',
         Balance: ''
     });
 
@@ -61,12 +61,12 @@ function EditSavings({ id, onClose }) {
                             </div>
                             <div className="form-group">
                                 <label>FlexSaveAccount</label>
-                                <input type="text" placeholder='FlexSaveAccount' name='SavingsType' onChange={handleInput} className='form-control roundend-0' value={values.SavingsType} disabled />
+                                <input type="text" placeholder='FlexSaveAccount' name='SavingAccount' onChange={handleInput} className='form-control roundend-0' value={values.SavingAccount} disabled />
                             </div>
                            
                             <div className="form-group">
                                 <label>Balance</label>
-                                <input type="text" placeholder='Balance' name='Balance' onChange={handleInput} className='form-control roundend-0' value={values.Balance} />
+                                <input type="text" placeholder='Balance' name='Balance' onChange={handleInput} className='form-control roundend-0' value={values.Balance}  disabled/>
                             </div>
 
                             <div className="form-group">

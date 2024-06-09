@@ -106,8 +106,8 @@ function AddClient() {
                                     <div className="card-body">
                                         <div className="row">
                                             <div className="col-md-6 form-group">
-                                                <label htmlFor="username">Client Username</label>
-                                                <input type="text" placeholder='Username' name='username' onChange={handleInput} className='form-control roundend-0' required />
+                                                <label htmlFor="username">Client NrPersnaol</label>
+                                                <input type="text" placeholder='NrPersonal' name='username' onChange={handleInput} className='form-control roundend-0' required />
                                                 {errors.username && <span className='text-danger'>{errors.username}</span>}
                                                 {values.username && (
                                                     <span style={{ marginLeft: '10px' }}>

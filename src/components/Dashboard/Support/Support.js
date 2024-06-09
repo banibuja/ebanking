@@ -95,6 +95,7 @@ const Support = () => {
     const [activeTab, setActiveTab] = useState('contact');
     const [values, setValues] = useState({
         name: '',
+        lastname: '',
         email: '',
         message: ''
     });
@@ -111,24 +112,40 @@ const Support = () => {
         }));
     };
 
-
     const sendEmail = async (e) => {
         e.preventDefault();
 
-        const { name, email, message } = values;
+        const { name, lastname, email, message } = values;
 
         try {
-            await axios.post('http://localhost:8080/sendEmailContactUs', { name, email, message });
+            await axios.post('http://localhost:8080/sendMessage', { name, lastname,  email, message });
             console.log('Email sent successfully');
             setIsSubmitted(true);
-               // sendEmail(values.name, values.email, values.message);
         } catch (error) {
             console.error('Error sending email', error);
         }
     };
 
+    const fetchData = async () => {
+        try {
+            const clientResponse = await axios.post('http://localhost:8080/getClientforProfile');
+            if (clientResponse.data) {
+                const { username, name, lastname, email} = clientResponse.data;
+                setValues(prevValues => ({
+                    ...prevValues,
+                    name: name,
+                    lastname: lastname,
+                    username: username,
+                    email: email
+                }));
+            }
+        } catch (error) {
+            console.error('Error fetching client details:', error);
+        }
+    };
+
     useEffect(() => {
-        // Placeholder for any future effect logic
+        fetchData();
     }, []);
 
     return (
@@ -188,6 +205,14 @@ const Support = () => {
                                     <form onSubmit={sendEmail}>
                                     
                                         <div className="mb-3">
+                                        <div className="mb-3">
+                                            <label>Your Name</label>
+                                <input type="text" name="name" value={values.name + '' + values.lastname} className="form-control" onChange={handleChange} placeholder="Name" style={{ borderRadius: '25px', padding: '10px 20px', fontSize: '16px', border: '1px solid #ddd' }} disabled/>
+                                   </div>
+                                   <div className="mb-3">
+                                   <label>Your Email and in this email wait for reply message form staff Ebanking</label>
+                                <input type="text" name="name" value={values.email} className="form-control" onChange={handleChange} placeholder="Name" style={{ borderRadius: '25px', padding: '10px 20px', fontSize: '16px', border: '1px solid #ddd' }} disabled/>
+                                   </div>
                                             <textarea
                                                 className="form-control"
                                                 rows="5"
