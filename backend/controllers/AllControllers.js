@@ -19,6 +19,7 @@ const CaruselController = require('./Add-Home-page/AddCarusel');
 const AboutUSController = require('./AboutUs/AddAbouUs');
 const TeamController = require('./AboutUs/Team');
 const PaymentController =require('./Payment/PaymentController');
+const SupportController=require('./Support/SupportController');
 
 const defineRoutes = (app) => {
     app.post('/loginform',                  LoginController.login);
