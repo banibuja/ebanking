@@ -23,7 +23,7 @@ const SupportController=require('./Support/SupportController');
 
 const defineRoutes = (app) => {
     app.post('/loginform',                  LoginController.login);
-
+    app.post('/sendMessage',                SupportController.sendMessage);
     app.post('/sendEmailContactUs',         contactusController.sendEmailContactUs);
 
     app.post('/insertInfoSection',          HomeController.insertInfoSection);
