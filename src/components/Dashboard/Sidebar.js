@@ -111,7 +111,7 @@ export default function Sidebar() {
                     <Dropdown.Item href="/Manageclientcards" onClick={handleManageClick}>Manage ClientCards</Dropdown.Item>
                     <Dropdown.Item href="/ManagaeApplicantsOnline" onClick={handleManageClick}>ManagaeApplicantsOnline</Dropdown.Item>
                     <Dropdown.Item href="/ManageLoans" onClick={handleManageClick}>Manage Loans</Dropdown.Item>
-                    <Dropdown.Item href="/ManagePayment" onClick={handleManageClick}>Manage Payment</Dropdown.Item>
+                    <Dropdown.Item href="/AllPayments" onClick={handleManageClick}>Manage Payment</Dropdown.Item>
                     <Dropdown.Item href="/AccessPermissions" onClick={handleManageClick}>Managae AccessPermissions</Dropdown.Item>
                     <Dropdown.Item href="/CardsForm" onClick={handleManageClick}>Add Cards</Dropdown.Item>
 

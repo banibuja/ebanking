@@ -139,6 +139,10 @@ const defineRoutes = (app) => {
     app.post('/AddBillForm',                PaymentController.AddBillForm);
     app.delete("/deleteBills/:id",          PaymentController.deleteBills);
     app.put('/updateBills/:id',            PaymentController.updateBills);
+    app.get('/getNrPersonals',               PaymentController.getNrPersonal);
+    
+    app.get('/getAllBillsForStaff',                PaymentController.getAllBillsForStaff);
+
 };
 
 module.exports = defineRoutes;

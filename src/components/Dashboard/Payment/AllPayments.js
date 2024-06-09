@@ -5,12 +5,12 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
 
-function BillsList() {
+function AllPayments() {
     const [bills, setBills] = useState([]);
 
     const fetchBills = async () => {
         try {
-            const response = await axios.get('http://localhost:8080/getAllBills');
+            const response = await axios.get('http://localhost:8080/getAllBillsForStaff');
             setBills(response.data);
         } catch (error) {
             console.error('Failed to fetch bills', error);
@@ -82,4 +82,4 @@ function BillsList() {
     );
 }
 
-export default BillsList;
+export default AllPayments;
