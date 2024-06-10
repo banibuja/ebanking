@@ -48,7 +48,7 @@ import BillsList from '../components/Dashboard/Payment/BillsList';
 import AddBillForm from '../components/Dashboard/Payment/AddBillForm';
 import Reports from '../components/Dashboard/Reports/Reports';
 import Support from '../components/Dashboard/Support/Support';
-
+import LogsAdmin from '../components/Dashboard/Logs/LogsAdmin';
 import AllPayments from '../components/Dashboard/Payment/AllPayments';
 function App() {
   return (
@@ -57,6 +57,8 @@ function App() {
 
     <BrowserRouter>
       <Routes>
+      <Route path="/LogsAdmin" element={<LogsAdmin/>}/>
+
         <Route path="/SaveTransaction" element={<SaveTransaction/>}/>
         <Route path="/Transaction" element={<Transaction/>}></Route> 
         <Route path="/AddHomePage" element={<AddHomePage/>}/>

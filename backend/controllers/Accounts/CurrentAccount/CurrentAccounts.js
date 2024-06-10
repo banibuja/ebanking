@@ -1,5 +1,6 @@
 const db = require('../../../db');
 const jwt = require('jsonwebtoken')
+const insertLog = require('../../Logs/LogsAdmin').insertLog; 
 
 
 
@@ -28,9 +29,18 @@ const getAccountForEdit = (req, res) => {
     });
 };
 
-const updateAccount = (req, res) => {
+const updateAccount = async (req, res) => {
     const accountId = req.params.id;
     const { Balance, AccountStatus } = req.body;
+
+    try {
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
+
+        const adminId = decodedToken.userId;
+
+
     const sqlUpdate = "UPDATE currentaccounts SET Balance=?,AccountStatus=?  WHERE CurrentAccount=?";
 
     db.query(sqlUpdate, [Balance,AccountStatus, accountId], (err, result) => {
@@ -40,6 +50,12 @@ const updateAccount = (req, res) => {
         }
         return res.status(200).json({ message: "Account updated successfully" }).end();
     });
+    await insertLog(adminId, 'update', 'update the currentAccount'); 
+
+} catch (error) {
+    console.error('Error updating user:', error);
+    return res.status(500).json({ error: 'Internal Server Error' }).end();
+}
 };
 
 const getAllAccounts = (req, res) => {
@@ -99,7 +115,15 @@ const getAccountBySession = (req, res) => {
 module.exports = { getAccountBySession };
 
 
-const deleteAccount = (req, res) => {
+const deleteAccount = async (req, res) => {
+
+    try {
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
+
+        const adminId = decodedToken.userId;
+
     const accountId = req.params.id;
     const sqlDelete = "DELETE FROM currentaccounts WHERE CurrentAccount = ?";
 
@@ -110,6 +134,12 @@ const deleteAccount = (req, res) => {
         }
         return res.status(200).json({ message: "Account deleted successfully" }).end();
     });
+    await insertLog(adminId, 'delete', 'delete the currentAccount'); 
+
+} catch (error) {
+    console.error('getAccountBySession verification failed:', error);
+    return res.status(401).json({ message: "JWT token verification failed" }).end();
+}
 };
 
 const getAccountByUserID = (req, res) => {

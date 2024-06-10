@@ -1,10 +1,19 @@
 const db = require('../../../db');
-
+const insertLog = require('../../Logs/LogsAdmin').insertLog; 
 const jwt = require('jsonwebtoken')
 
-const updateSavingsAccounts = (req, res) => {
+const updateSavingsAccounts = async (req, res) => {
     const Savingsid = req.params.id;
     const { Balance, AccountStatus } = req.body;
+
+    try {
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
+
+        const adminId = decodedToken.userId;
+
+
     const sqlUpdate = "UPDATE savingsaccounts SET Balance=?, AccountStatus=? WHERE SavingAccount =?";
 
     db.query(sqlUpdate, [Balance,AccountStatus, Savingsid], (err, result) => {
@@ -15,6 +24,12 @@ const updateSavingsAccounts = (req, res) => {
 
         return res.status(200).json({ message: "Account updated successfully" }).end();
     });
+    await insertLog(adminId, 'update', 'update the SavingAccount'); 
+
+} catch (error) {
+    console.error('Error updating user:', error);
+    return res.status(500).json({ error: 'Internal Server Error' }).end();
+}
 };
 
 const getSavingsAccountById = (req, res) => {
@@ -59,9 +74,17 @@ const getAllSavingAccount = (req, res) => {
     });
 };
 
-const deleteSavings = (req, res) => {
+const deleteSavings = async (req, res) => {
 
     const AccountID = req.params.id;
+
+    try {
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
+
+        const adminId = decodedToken.userId;
+
     const sqlDelete = "DELETE FROM savingsaccounts WHERE SavingAccount = ?";
   
     db.query(sqlDelete, AccountID, (err, result) => {
@@ -72,6 +95,12 @@ const deleteSavings = (req, res) => {
 
         return res.status(200).json({ message: "Message deleted successfully" }).end();
     });
+    await insertLog(adminId, 'delete', 'delete the savingaccount'); 
+
+} catch (error) {
+    console.error('Error updating user:', error);
+    return res.status(500).json({ error: 'Internal Server Error' }).end();
+}
 };
 
 const getSavingsBySesison = (req, res) => {

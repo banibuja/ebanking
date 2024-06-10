@@ -1,5 +1,6 @@
 const db = require('../../db');
 const jwt = require('jsonwebtoken')
+const insertLog = require('../Logs/LogsAdmin').insertLog; 
 
 
 const addCard = async (req, res) => {
@@ -69,8 +70,18 @@ const getCardsclients = (req, res) => {
     });
 };
 
-const deleteCard = (req, res) => {
+const deleteCard = async (req, res) => {
     const cardId = req.params.id;
+
+    try {
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
+
+        const adminId = decodedToken.userId;
+
+
+
     const sqlDelete = "DELETE FROM Cards WHERE CardID = ?";
 
     db.query(sqlDelete, cardId, (err, result) => {
@@ -80,11 +91,26 @@ const deleteCard = (req, res) => {
         }
         return res.status(200).json({ message: "Card deleted successfully" }).end();
     });
+    await insertLog(adminId, 'delete', 'delete the card'); 
+
+} catch (error) {
+    console.error('Error updating user:', error);
+    return res.status(500).json({ error: 'Internal Server Error' }).end();
+}
 };
 
-const updateCard = (req, res) => {
+const updateCard = async(req, res) => {
     const cardId = req.params.id;
     const { ExpiryDate, CardHolderName, CardType, CardStatus } = req.body;
+
+    try {
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
+
+        const adminId = decodedToken.userId;
+
+
     const sqlUpdate = "UPDATE Cards SET ExpiryDate=?, CardHolderName=?, CardType=?, CardStatus=? WHERE CardID=?";
 
     db.query(sqlUpdate, [ExpiryDate, CardHolderName, CardType, CardStatus, cardId], (err, result) => {
@@ -94,6 +120,12 @@ const updateCard = (req, res) => {
         }
         return res.status(200).json({ message: "Card updated successfully" }).end();
     });
+    await insertLog(adminId, 'update', 'update the card'); 
+
+} catch (error) {
+    console.error('Error updating user:', error);
+    return res.status(500).json({ error: 'Internal Server Error' }).end();
+}
 };
 
 const blockCard = (req, res) => {

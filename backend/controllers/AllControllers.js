@@ -20,7 +20,7 @@ const AboutUSController = require('./AboutUs/AddAbouUs');
 const TeamController = require('./AboutUs/Team');
 const PaymentController =require('./Payment/PaymentController');
 const SupportController=require('./Support/SupportController');
-
+const LogsAdmin = require('./Logs/LogsAdmin')
 
 const defineRoutes = (app) => {
     app.post('/loginform',                  LoginController.login);
@@ -53,6 +53,12 @@ const defineRoutes = (app) => {
     app.put('/updateAplicant/:id',          applyOnlineController.updateAplicant);
     app.post('/searchApplicant',            applyOnlineController.searchApplicant);
     
+
+
+    
+    app.post('/insertLog',                  LogsAdmin.insertLog);
+    app.get('/getLogs',                     LogsAdmin.getLogs);
+
     app.post('/addClient',                  clientController.addClient);
     app.post('/getUsers',                   clientController.getUsers);
     app.get('/getClientForEdit/:id',        clientController.getClientForEdit);

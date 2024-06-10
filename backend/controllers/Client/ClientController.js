@@ -3,9 +3,19 @@ const db = require('../../db');
 const sendEmail = require('../Client/sendEmail');
 const {  generateRandomAccountNumber, generateFlexSaveAccountNumber, checkCurrentAccountExists, checkSaveAccountExists, checkCardExists, generateRandomPassword } = require('./helpers');
 const jwt = require('jsonwebtoken');
+const insertLog = require('../Logs/LogsAdmin').insertLog; 
+
+
 
 const addClient = async (req, res) => {
     try {
+
+        
+            const token = req.cookies.authToken; 
+            const secretKey = process.env.SECRET; 
+            const decodedToken = jwt.verify(token, secretKey);
+    
+            const adminId = decodedToken.userId;
         const client = req.body;
         
         const randomPassword = generateRandomPassword();
@@ -130,7 +140,12 @@ const addClient = async (req, res) => {
         } catch (emailError) {
             console.error('Error sending email:', emailError);
         }
+        try {
+        await insertLog(adminId, 'add', 'Added new client'); 
+        } catch(error){
+            console.error('Error add email:', error);
 
+        }
         return res.status(200).json(addClient).end();
     } catch (error) {
         console.error('Error adding client:', error);
@@ -198,6 +213,11 @@ const updateUser = async (req, res) => {
     const client = req.body;
 
     try {
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
+
+        const adminId = decodedToken.userId;
 
         const updateUserPromise = new Promise((resolve, reject) => {
             const query = `
@@ -232,6 +252,7 @@ const updateUser = async (req, res) => {
         });
 
         await Promise.all([updateUserPromise, updateAddressPromise]);
+        await insertLog(adminId, 'update', 'update the client'); 
 
         return res.status(200).json({ message: 'User updated successfully' }).end();
     } catch (error) {
@@ -257,7 +278,15 @@ const getByUserID = (req, res) => {
     });
 };
 
-const deleteClient = (req, res) => {
+const deleteClient = async (req, res) => {
+    try {
+
+        
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
+
+        const adminId = decodedToken.userId;
     const userID = req.params.id;
     const sqlDelete = "DELETE FROM users WHERE userId = ?";
 
@@ -268,6 +297,11 @@ const deleteClient = (req, res) => {
         }
         return res.status(200).json({ message: "Card deleted successfully" }).end();
     });
+    await insertLog(adminId, 'remove', 'remove the client ' + {userID}); 
+
+} catch (error) {
+    res.status(401).send("not logged in").end();
+  }
 };
 
 const checkEmail = async (req, res) => {

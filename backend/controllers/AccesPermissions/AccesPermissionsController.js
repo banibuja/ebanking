@@ -2,6 +2,9 @@
 
 
 const db = require('../../db'); 
+const jwt = require('jsonwebtoken')
+const insertLog = require('../Logs/LogsAdmin').insertLog; 
+
 
 const getAllPermissions = (req, res) => {
 
@@ -25,7 +28,16 @@ const getAllPermissions = (req, res) => {
     });
 };
 
-const updateAccessPermission = (req, res) => {
+const updateAccessPermission = async(req, res) => {
+
+    try {
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
+
+        const adminId = decodedToken.userId;
+
+
     const accessPermissionId = req.params.id;
     const { AccessLevel } = req.body;
     const sqlUpdate = "UPDATE accesspermissions SET AccessLevel=? WHERE PermissionID=?";
@@ -37,6 +49,12 @@ const updateAccessPermission = (req, res) => {
         }
         return res.status(200).json({ message: "Access permission updated successfully" }).end();
     });
+    await insertLog(adminId, 'update', 'update the role'); 
+
+} catch (error) {
+    console.error('Error updating user:', error);
+    return res.status(500).json({ error: 'Internal Server Error' }).end();
+}
 };
 
 

@@ -93,7 +93,7 @@ export const Manageclientcards = () => {
                 <Sidebar />
                 <div className="container-fluid mt-4 ">
                     <Nav />
-                    <h2 className="text-center mt-4 text-secondary">Manage Current Account</h2>
+                    <h2 className="text-center mt-4 text-secondary">Manage Cards </h2>
                     <div className="row">
                         <caption>List of Cards</caption>
                         <div className="search-container">

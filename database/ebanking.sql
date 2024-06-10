@@ -17,6 +17,16 @@ CREATE TABLE Users (
     Status VARCHAR(20)
 );
 
+CREATE TABLE logs (
+    logId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    userId INT NOT NULL,
+    action VARCHAR(50) NOT NULL,
+    details TEXT,
+    timestamp DATETIME NOT NULL,
+    FOREIGN KEY (userId) REFERENCES Users(userId)
+);
+
+
 CREATE TABLE InfoSection(
     InfoSectionId int not null primary key AUTO_INCREMENT,
     Info TEXT
@@ -253,7 +263,7 @@ INSERT INTO `accesspermissions` (`PermissionID`, `UserID`, `AccessLevel`) VALUES
 
 INSERT INTO `adresa` (`AdresaID`, `userId`, `Country`, `City`, `Street`) VALUES
 (0, 5, 'dasdsaad', 'dasasda', 'ewqqw'),
-(0, 6, 'dasdsaad', 'dasasda', 'adsads');
+(0, 6, 'Kosova', 'Lipjan', 'Bujan');
 
 
 
