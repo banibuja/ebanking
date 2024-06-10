@@ -20,11 +20,13 @@ const AboutUSController = require('./AboutUs/AddAbouUs');
 const TeamController = require('./AboutUs/Team');
 const PaymentController =require('./Payment/PaymentController');
 const SupportController=require('./Support/SupportController');
+const NotificationsController =require('./Notifications/NotificationsController');
 
 const defineRoutes = (app) => {
     app.post('/loginform',                  LoginController.login);
     app.post('/sendMessage',                SupportController.sendMessage);
     app.post('/sendEmailContactUs',         contactusController.sendEmailContactUs);
+    app.post('/sendNotifications',           NotificationsController.sendNotifications);
 
     app.post('/insertInfoSection',          HomeController.insertInfoSection);
     app.get('/getInfoSection',              HomeController.getInfoSection);
