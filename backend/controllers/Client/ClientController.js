@@ -287,9 +287,22 @@ const deleteClient = async (req, res) => {
         const decodedToken = jwt.verify(token, secretKey);
 
         const adminId = decodedToken.userId;
+        const adminUser = decodedToken.username;
+
     const userID = req.params.id;
     const sqlDelete = "DELETE FROM users WHERE userId = ?";
+    const sql = `
+    SELECT u.*, a.Country, a.City, a.Street 
+    FROM users u 
+    INNER JOIN adresa a ON a.userId = u.userId 
+    WHERE u.userId = ?
+`;
 
+db.query(sql, [userID], async (err, data) => {
+    if (err) {
+        return res.status(500).json({ error: "Internal server error" }).end();
+    }
+    if (data.length > 0) {
     db.query(sqlDelete, userID, (err, result) => {
         if (err) {
             console.error(err);
@@ -297,7 +310,11 @@ const deleteClient = async (req, res) => {
         }
         return res.status(200).json({ message: "Card deleted successfully" }).end();
     });
-    await insertLog(adminId, 'remove', 'remove the client ' + {userID}); 
+    await insertLog(adminId, 'remove', `remove the client ${data[0].username}`); 
+} else {
+    return res.status(204).json({ message: "Client not found" }).end();
+}
+});    
 
 } catch (error) {
     res.status(401).send("not logged in").end();

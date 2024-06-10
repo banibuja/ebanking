@@ -51,6 +51,7 @@ CREATE TABLE Carusel(
     Teksti text not null,
     Photo longblob
 );
+
 CREATE TABLE applyonline (
     userId int NOT NULL primary key AUTO_INCREMENT,
     username varchar(50) unique not null,
@@ -140,7 +141,6 @@ CREATE TABLE Reports (
     GenerationDate DATE NOT NULL,
     Description TEXT
 );
-
 
 
 CREATE TABLE `loans` (
@@ -279,4 +279,3 @@ INSERT INTO `savingsaccounts` (`SavingAccount`, `UserID`, `CurrencyCode`, `Balan
 INSERT INTO `cards` (`CardID`, `UserID`, `CurrentAccount`, `CardNumber`, `ValidFrom`, `ExpiryDate`, `CardHolderName`, `CardType`, `CardStatus`, `AvailableBalance`) VALUES
 (1, 5, 1110333316835670, '5354791934376884', '2024-05-26', '2028-05-26', 'user user', 'DEBIT MASTER CARD', 'ACTIVE', NULL),
 (2, 6, 1110333367253288, '5354716673411652', '2024-05-26', '2028-05-26', 'bani bani', 'DEBIT MASTER CARD', 'ACTIVE', NULL);
-
