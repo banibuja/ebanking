@@ -26,7 +26,7 @@ const defineRoutes = (app) => {
     app.post('/loginform',                  LoginController.login);
     app.post('/sendMessage',                SupportController.sendMessage);
     app.post('/sendEmailContactUs',         contactusController.sendEmailContactUs);
-    app.post('/sendNotifications',           NotificationsController.sendNotifications);
+    app.get('/sendNotifications',           NotificationsController.sendNotifications);
 
     app.post('/insertInfoSection',          HomeController.insertInfoSection);
     app.get('/getInfoSection',              HomeController.getInfoSection);
