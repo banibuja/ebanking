@@ -48,7 +48,7 @@ import BillsList from '../components/Dashboard/Payment/BillsList';
 import AddBillForm from '../components/Dashboard/Payment/AddBillForm';
 import Reports from '../components/Dashboard/Reports/Reports';
 import Support from '../components/Dashboard/Support/Support';
-import Notifications from '../components/Dashboard/Notifications/Notifications';
+
 import AllPayments from '../components/Dashboard/Payment/AllPayments';
 function App() {
   return (
@@ -97,7 +97,7 @@ function App() {
          <Route path="/BillsList" element={<BillsList />}/> 
         <Route path="/AddBillForm" element={<AddBillForm />} />
         <Route path="/Support" element={<Support />} /> 
-        <Route path="/Notifications" element={<Notifications />}/>
+
         
         <Route path="/AllPayments" element={<AllPayments />} /> 
 

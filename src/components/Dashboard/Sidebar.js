@@ -226,12 +226,7 @@ export default function Sidebar() {
                   Profile
                 </a>
               </li>
-              <li>
-                                      <a href="/Notifications" className="nav-link link-dark" onClick={handleManageClick}>
-                                        <i className=" fa-solid fa-comment text-gray-300 me-2"></i>
-                                        Notifications
-                                      </a>
-              </li>
+              
               <li>
                                       <a href="/Support" className="nav-link link-dark" onClick={handleManageClick}>
                                         <i className=" fa-solid fa-circle-info text-gray-300 me-2"></i>
