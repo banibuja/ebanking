@@ -19,7 +19,7 @@ function Notifications() {
     }, []);
 
     return (
-        <div style={{ display: 'flex', fontFamily: 'Arial, sans-serif', height: '100vh' }}>
+        <div style={{ display: 'flex', fontFamily: 'Arial, sans-serif', minHeight: '100vh', backgroundColor: 'white' }}>
             <Sidebar />  {/* Sidebar now without any additional div wrapping or width setting */}
             <div style={{ flex: 1, padding: '20px', backgroundColor: 'white', color: 'black' }}>
                 <h2 style={{ borderBottom: '2px solid gray', paddingBottom: '10px', color:'black'}}>Notifications</h2>
