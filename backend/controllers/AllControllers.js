@@ -22,7 +22,12 @@ const PaymentController =require('./Payment/PaymentController');
 const SupportController=require('./Support/SupportController');
 const LogsAdmin = require('./Logs/LogsAdmin')
 
+
 const defineRoutes = (app) => {
+   
+
+  
+
     app.post('/loginform',                  LoginController.login);
     app.post('/sendMessage',                SupportController.sendMessage);
     app.post('/sendEmailContactUs',         contactusController.sendEmailContactUs);
@@ -151,6 +156,24 @@ const defineRoutes = (app) => {
     app.get('/getNrPersonals',               PaymentController.getNrPersonal);
     
     app.get('/getAllBillsForStaff',                PaymentController.getAllBillsForStaff);
+
+
+
+    // app.post('/AddTeam',                  AddTeamControllr.AddTeamee);
+    // app.post('/AddPlayer',                  AddTeamControllr.AddPlayer);
+    // app.post('/getPlayers',                  AddTeamControllr.getPlayers);
+    // app.get('/getTeam',                  AddTeamControllr.getTeam);
+    // app.delete("/deletePlayers/:id",              AddTeamControllr.deletePlayers);
+    // app.get('/getForEdit/:id',                  AddTeamControllr.getForEdit);
+    // app.put('/updatePlayers/:id',              AddTeamControllr.updatePlayers);
+
+
+    // app.get('/getPlanet',                  AddPlanet.getPlanet);
+    // app.post('/AddPlanet',                  AddPlanet.AddPlanet);
+    // app.put("/deleteSatelite/:id",              AddPlanet.deleteSatelite);
+    // app.post('/AddSatellite',                  AddPlanet.AddSatellite);
+    // app.post('/getSatellite',                  AddPlanet.getSatellite);
+
 
 };
 

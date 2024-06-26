@@ -9,13 +9,12 @@ const insertLog = require('../Logs/LogsAdmin').insertLog;
 
 const addClient = async (req, res) => {
     try {
+        const token = req.cookies.authToken; 
+        const secretKey = process.env.SECRET; 
+        const decodedToken = jwt.verify(token, secretKey);
+        const adminId = decodedToken.userId;
+        const adminUser = decodedToken.username;
 
-        
-            const token = req.cookies.authToken; 
-            const secretKey = process.env.SECRET; 
-            const decodedToken = jwt.verify(token, secretKey);
-    
-            const adminId = decodedToken.userId;
         const client = req.body;
         
         const randomPassword = generateRandomPassword();
@@ -34,10 +33,10 @@ const addClient = async (req, res) => {
 
         while (savingsaccountExists) {
             savingsAccount = generateFlexSaveAccountNumber();
-            savingsaccountExists = await checkSaveAccountExists(currentAccount);
+            savingsaccountExists = await checkSaveAccountExists(savingsAccount);
         }
 
-        const addClient = await new Promise((resolve, reject) => {
+        const addClientResult = await new Promise((resolve, reject) => {
             db.query(
                 `INSERT INTO users (username, name, lastname, email, password, gender, birthday, CurrencyCode, Status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Active')`, 
                 [client.username, client.name, client.lastname, client.email, hashedPassword, client.gender, client.birthday, 'EUR'], 
@@ -51,7 +50,7 @@ const addClient = async (req, res) => {
             );
         });
 
-        const userId = addClient.insertId;
+        const userId = addClientResult.insertId;
 
         await new Promise((resolve, reject) => {
             db.query(
@@ -108,12 +107,12 @@ const addClient = async (req, res) => {
                 }
             );
         });
- 
+
         let cardNumber;
         let cardExists = true;
         while (cardExists) {
             cardNumber = `53547${Math.floor(100000000000 + Math.random() * 900000000000)}`;
-            cardExists = await checkCardExists(currentAccount);
+            cardExists = await checkCardExists(cardNumber);
         }
         const today = new Date();
         const expiryDate = new Date(today);
@@ -141,18 +140,16 @@ const addClient = async (req, res) => {
             console.error('Error sending email:', emailError);
         }
         try {
-        await insertLog(adminId, 'add', 'Added new client'); 
+            await insertLog(adminId, `add from ${adminUser}`, `Added new client ${client.username}`); 
         } catch(error){
-            console.error('Error add email:', error);
-
+            console.error('Error logging addition:', error);
         }
-        return res.status(200).json(addClient).end();
+        return res.status(200).json(addClientResult).end();
     } catch (error) {
         console.error('Error adding client:', error);
         return res.status(500).json({ error: 'Internal Server Error' }).end();
     }
 };
-
 
 const getUsers = async (req, res) => {
     try {
@@ -218,6 +215,9 @@ const updateUser = async (req, res) => {
         const decodedToken = jwt.verify(token, secretKey);
 
         const adminId = decodedToken.userId;
+        const adminUser = decodedToken.username;
+
+
 
         const updateUserPromise = new Promise((resolve, reject) => {
             const query = `
@@ -225,6 +225,7 @@ const updateUser = async (req, res) => {
                 SET username = ?, name = ?, lastname = ?, email = ?, gender = ?, birthday = ?, CurrencyCode = ?
                 WHERE userId = ?
             `;
+          
             const values = [client.username, client.name, client.lastname, client.email, client.gender, client.birthday, client.currency];
             values.push(userId);
 
@@ -252,7 +253,7 @@ const updateUser = async (req, res) => {
         });
 
         await Promise.all([updateUserPromise, updateAddressPromise]);
-        await insertLog(adminId, 'update', 'update the client'); 
+        await insertLog(adminId, `update from ${adminUser}`, `update the client ${client.username}`); 
 
         return res.status(200).json({ message: 'User updated successfully' }).end();
     } catch (error) {
@@ -310,7 +311,7 @@ db.query(sql, [userID], async (err, data) => {
         }
         return res.status(200).json({ message: "Card deleted successfully" }).end();
     });
-    await insertLog(adminId, 'remove', `remove the client ${data[0].username}`); 
+    await insertLog(adminId, `remove from ${adminUser}`, `remove the client ${data[0].username}`); 
 } else {
     return res.status(204).json({ message: "Client not found" }).end();
 }

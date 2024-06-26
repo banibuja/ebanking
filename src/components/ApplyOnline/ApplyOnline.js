@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../Layout/Navbar';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './ApplyOnline.css'; // Include a CSS file for styling
+import './ApplyOnline.css'; 
 
 function AplikimiOnline() {
     const navigate = useNavigate();

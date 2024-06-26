@@ -17,6 +17,25 @@ CREATE TABLE Users (
     Status VARCHAR(20)
 );
 
+CREATE TABLE Adresa (
+    AdresaID int,
+    userId INT NOT NULL,
+    Country varchar(30) not null,
+    City varchar(30) not null,
+    Street varchar(30) not null,
+    CONSTRAINT PK_AdresaID PRIMARY KEY (AdresaID, userId),
+    CONSTRAINT UC_UserID_AdresaID UNIQUE (userId, AdresaID),
+    CONSTRAINT FK_Adresa_Useri FOREIGN KEY (userId) REFERENCES Users(userId) ON DELETE CASCADE
+);
+
+CREATE TABLE AccessPermissions (
+    PermissionID int NOT NULL AUTO_INCREMENT,
+    UserID INT NOT NULL,
+    AccessLevel VARCHAR(50) NOT NULL,
+    PRIMARY KEY (PermissionID),
+    CONSTRAINT FK_User_AccessPermission FOREIGN KEY (UserID) REFERENCES users (userId) ON DELETE CASCADE
+);
+
 CREATE TABLE logs (
     logId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     userId INT NOT NULL,
@@ -27,30 +46,6 @@ CREATE TABLE logs (
 );
 
 
-CREATE TABLE InfoSection(
-    InfoSectionId int not null primary key AUTO_INCREMENT,
-    Info TEXT
-);
-
-CREATE TABLE AboutUs(
-    AboutUsId int not null primary key AUTO_INCREMENT,
-    Tittle TEXT,
-    Info TEXT
-);
-
-CREATE TABLE Team(
-    TeamId int not null primary key AUTO_INCREMENT,
-    Emri varchar(50) not null,
-    Teksti text not null,
-    Photo longblob
-);
-
-CREATE TABLE Carusel(
-    CaruselId int not null primary key AUTO_INCREMENT,
-    Titulli varchar(50) not null,
-    Teksti text not null,
-    Photo longblob
-);
 
 CREATE TABLE applyonline (
     userId int NOT NULL primary key AUTO_INCREMENT,
@@ -69,16 +64,7 @@ CREATE TABLE applyonline (
     Status VARCHAR(20)  
 );
 
-CREATE TABLE Adresa (
-    AdresaID int,
-    userId INT NOT NULL,
-    Country varchar(30) not null,
-    City varchar(30) not null,
-    Street varchar(30) not null,
-    CONSTRAINT PK_AdresaID PRIMARY KEY (AdresaID, userId),
-    CONSTRAINT UC_UserID_AdresaID UNIQUE (userId, AdresaID),
-    CONSTRAINT FK_Adresa_Useri FOREIGN KEY (userId) REFERENCES Users(userId) ON DELETE CASCADE
-);
+
 
 CREATE TABLE currentaccounts (
     CurrentAccount bigint NOT NULL,
@@ -109,13 +95,7 @@ CREATE TABLE SavingsHistory (
     CONSTRAINT FK_SavingsHistory_Savingsaccount FOREIGN KEY (FlexSaveAccountID) REFERENCES savingsaccounts (SavingAccount) ON DELETE CASCADE
 );
 
-CREATE TABLE AccessPermissions (
-    PermissionID int NOT NULL AUTO_INCREMENT,
-    UserID INT NOT NULL,
-    AccessLevel VARCHAR(50) NOT NULL,
-    PRIMARY KEY (PermissionID),
-    CONSTRAINT FK_User_AccessPermission FOREIGN KEY (UserID) REFERENCES users (userId) ON DELETE CASCADE
-);
+
 
 CREATE TABLE cards (
     CardID INT NOT NULL AUTO_INCREMENT,
@@ -213,16 +193,6 @@ CREATE TABLE Transactions (
 
 
 
-/*CREATE TABLE Payments (
-    PaymentID int primary key AUTO_INCREMENT,
-    SenderAccountID BIGINT NOT NULL,
-    ReceiverAccountID BIGINT NOT NULL,
-    Amount DECIMAL(18, 2) NOT NULL,
-    PaymentDate DATETIME NOT NULL,
-    PaymentStatus VARCHAR(50) NOT NULL,
-    CONSTRAINT FK_Sender_Account FOREIGN KEY (SenderAccountID) REFERENCES currentaccounts (CurrentAccount) ON DELETE CASCADE,
-    CONSTRAINT FK_Receiver_Account FOREIGN KEY (ReceiverAccountID) REFERENCES currentaccounts (CurrentAccount) ON DELETE CASCADE
-);*/
 
 CREATE TABLE Bills (
     BillID INT PRIMARY KEY AUTO_INCREMENT,
@@ -247,6 +217,32 @@ CREATE TABLE InvestmentsGoals (
     Deadline DATE NOT NULL,
     Impact INT NOT NULL,
     CONSTRAINT FK_User_InvestmentsGoals FOREIGN KEY (UserID) REFERENCES users (userId) ON DELETE CASCADE
+);
+
+
+CREATE TABLE InfoSection(
+    InfoSectionId int not null primary key AUTO_INCREMENT,
+    Info TEXT
+);
+
+CREATE TABLE AboutUs(
+    AboutUsId int not null primary key AUTO_INCREMENT,
+    Tittle TEXT,
+    Info TEXT
+);
+
+CREATE TABLE Team(
+    TeamId int not null primary key AUTO_INCREMENT,
+    Emri varchar(50) not null,
+    Teksti text not null,
+    Photo longblob
+);
+
+CREATE TABLE Carusel(
+    CaruselId int not null primary key AUTO_INCREMENT,
+    Titulli varchar(50) not null,
+    Teksti text not null,
+    Photo longblob
 );
 
 

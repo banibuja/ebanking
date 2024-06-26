@@ -258,6 +258,21 @@ export default function Sidebar() {
           </li>
         </ul>
         <hr />
+{/* 
+        <Dropdown>
+                  <Dropdown.Toggle variant="link" id="dropdown-clients" className="nav-link link-dark">
+                    <i className="bi me-2 fas fa-user fa-1x text-gray-300  "></i>
+                    Provimit
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu>
+                  
+                    <Dropdown.Item href="/AddTeam" onClick={handleManageClick}>Add Team</Dropdown.Item>
+                    <Dropdown.Item href="/AddPlayers" onClick={handleManageClick}>AddPlayers</Dropdown.Item>
+                    <Dropdown.Item href="/getPlayers" onClick={handleManageClick}>Manage getUsers</Dropdown.Item>
+                  
+
+                  </Dropdown.Menu>
+                </Dropdown> */}
 
         {/* <Dropdown>
           <Dropdown.Toggle variant="link" id="dropdown-profile" className="nav-link link-dark">

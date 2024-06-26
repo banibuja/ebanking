@@ -55,4 +55,7 @@ async function checkCardExists(cardId) {
     });
 }
 
+
+
+
 module.exports = { generateRandomAccountNumber, generateFlexSaveAccountNumber, checkCurrentAccountExists, checkSaveAccountExists, checkCardExists, generateRandomPassword };
