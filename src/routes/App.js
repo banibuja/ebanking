@@ -44,6 +44,9 @@ import GetPlayers from '../components/zz/GetPlayers'
 import AddPlanet from '../components/zz/AddPlanet'
 import AddSatellite from '../components/zz/AddSatellite'
 import GetSatellite from '../components/zz/GetSatellite';
+import Item from '../components/Item'
+import ItemForm from '../components/ItemForm';
+import ItemList from '../components/ItemList';
 
 
 
@@ -63,6 +66,11 @@ function App() {
       <Routes>
       <Route path="/LogsAdmin" element={<LogsAdmin/>}/>
      
+      <Route path="/Item" element={<Item/>}/>
+      <Route path="/ItemForm" element={<ItemForm/>}/>
+      <Route path="/ItemList" element={<ItemList/>}/>
+
+
 
         <Route path="/SaveTransaction" element={<SaveTransaction/>}/>
         <Route path="/Transaction" element={<Transaction/>}></Route> 

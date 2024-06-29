@@ -21,12 +21,16 @@ const TeamController = require('./AboutUs/Team');
 const PaymentController =require('./Payment/PaymentController');
 const SupportController=require('./Support/SupportController');
 const LogsAdmin = require('./Logs/LogsAdmin')
-
+const itemController = require('../controllers/Item/controllers/itemController')
 
 const defineRoutes = (app) => {
    
 
-  
+    app.get('/items', itemController.getAllItems);
+    app.get('/items/:id', itemController.getItemById);
+    app.post('/items', itemController.addItem);
+    app.put('/items/:id', itemController.updateItem);
+    app.delete('/items/:id', itemController.deleteItem);
 
     app.post('/loginform',                  LoginController.login);
     app.post('/sendMessage',                SupportController.sendMessage);

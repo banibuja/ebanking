@@ -21,7 +21,7 @@ const Navbar = () => {
 
   return (
     <nav className="navbar navbar-inverse">
-      <div className="container-fluid">
+      {/* <div className="container-fluid"> */}
        
         <Menu right isOpen={menuOpen} onStateChange={handleStateChange}>
           <a id='a' href="/" onClick={closeMenu}>Home</a>
@@ -33,7 +33,7 @@ const Navbar = () => {
         <ul className="nav navbar-nav navbar-right">
           <a href="#" onClick={toggleMenu}><img src={menuLogo} alt="Menu Logo" /></a>
         </ul>
-      </div>
+      {/* </div> */}
     </nav>
   );
 };
