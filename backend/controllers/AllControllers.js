@@ -141,7 +141,6 @@ const defineRoutes = (app) => {
     app.post('/getAllTransactions',         TransactionController.getAllTransactions);
     
     app.post('/getAllnterTransactions',     TransactionController.getAllnterTransactions);
-    
     app.post('/getAllLoans',                loansController.getAllLoans);
     app.get('/getAccountNumber',            loansController.getAccountNumber);
     app.post('/applyLoan',                  loansController.applyLoan);
@@ -152,6 +151,23 @@ const defineRoutes = (app) => {
     app.put('/updateStatusLoans/:id',       loansController.updateStatusLoans);
     
     app.post('/getAllLoansForClient',       loansController.getAllLoansForClient);
+
+    ;
+
+    // ndryshimi me bo module te veqanta qe me kon kodi ma i organizum qe me perdor route
+    // router.get('/getAllLoans', loansController.getAllLoans);
+    // router.get('/getAccountNumber', loansController.getAccountNumber);
+    // router.post('/applyLoan', loansController.applyLoan);
+    // router.post('/addLoan', loansController.addLoan);
+    // router.delete('/deleteLoan/:id', loansController.deleteLoan);
+    // router.get('/editLoans/:id', loansController.getLoanForEdit);
+    // router.put('/updateLoan/:id', loansController.updateLoan);
+    // router.put('/updateStatusLoans/:id', loansController.updateStatusLoans);
+    // router.get('/getAllLoansForClient', loansController.getAllLoansForClient);
+
+
+
+
 
     app.get('/getAllBills',                PaymentController.getAllBills);
     app.post('/AddBillForm',                PaymentController.AddBillForm);
