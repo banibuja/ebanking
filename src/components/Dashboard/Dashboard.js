@@ -68,13 +68,9 @@ export const Dashboard = () => {
       .catch(err => console.log(err));
   }, []);
 
-  const data = [
-    { name: 'Clients', value: numClients },
-    { name: 'CurrentAcc', value: numAccount },
-    { name: 'SavingsAcc', value: SaveAccount },
-    { name: 'Transactions', value: Transaction },
-    { name: 'Loans', value: loans } 
-  ];
+  const handleNavigate = (path) => {
+    navigate(path);
+  };
 
   return (
     <div>
@@ -87,7 +83,7 @@ export const Dashboard = () => {
               <>
                 <div className="col-xl-3 col-md-6 mb-4">
                   <div className="card border-left-primary shadow h-100 py-2">
-                    <div className="card-body">
+                    <div className="card-body" onClick={() => handleNavigate('/client')}>
                       <div className="row no-gutters align-items-center">
                         <div className="col mr-2">
                           <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
@@ -105,7 +101,7 @@ export const Dashboard = () => {
 
                 <div className="col-xl-3 col-md-6 mb-4">
                   <div className="card border-left-success shadow h-100 py-2">
-                    <div className="card-body">
+                    <div className="card-body" onClick={() => handleNavigate('/manageaccounts')}>
                       <div className="row no-gutters align-items-center">
                         <div className="col mr-2">
                           <div className="text-xs font-weight-bold text-success text-uppercase mb-1">
@@ -123,7 +119,7 @@ export const Dashboard = () => {
 
                 <div className="col-xl-3 col-md-6 mb-4">
                   <div className="card border-left-info shadow h-100 py-2">
-                    <div className="card-body">
+                    <div className="card-body" onClick={() => handleNavigate('/managesavingsaccount')}>
                       <div className="row no-gutters align-items-center">
                         <div className="col mr-2">
                           <div className="text-xs font-weight-bold text-info text-uppercase mb-1">
@@ -143,7 +139,7 @@ export const Dashboard = () => {
 
             <div className="col-xl-3 col-md-6 mb-4">
               <div className="card border-left-primary shadow h-100 py-2">
-                <div className="card-body">
+                <div className="card-body" onClick={() => handleNavigate('/Transaction')}>
                   <div className="row no-gutters align-items-center">
                     <div className="col mr-2">
                       <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
@@ -162,13 +158,13 @@ export const Dashboard = () => {
             {role === 'User' && (
               <div className="col-xl-3 col-md-6 mb-4">
                 <div className="card border-left-success shadow h-100 py-2">
-                  <div className="card-body">
+                  <div className="card-body" onClick={() => handleNavigate('/loans')}>
                     <div className="row no-gutters align-items-center">
                       <div className="col mr-2">
                         <div className="text-xs font-weight-bold text-success text-uppercase mb-1">
                           Loans
                         </div>
-                        <div className="h5 mb-0 font-weight-bold text-gray-800">{loans}</div> {/* Fixed variable name */}
+                        <div className="h5 mb-0 font-weight-bold text-gray-800">{loans}</div>
                       </div>
                       <div className="col-auto">
                         <i className="fa fa-calendar fa-2x text-gray-300"></i>
@@ -194,17 +190,6 @@ export const Dashboard = () => {
           </div>
         </div>
 
-        {/* <div className='rechartat'>
-          <BarChart width={600} height={300} data={data}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="value" fill="#8884d8" />
-          </BarChart>
-        </div> */}
-        
       </main>
     </div>
   );
