@@ -4,8 +4,8 @@ const jwt = require('jsonwebtoken');
 
 const getAllTransactions = (req, res) => {
     try {
-        const token = req.cookies.authToken; // Retrieve the JWT token from the cookie
-        const secretKey = process.env.SECRET; // Retrieve the secret key from environment variables
+        const token = req.cookies.authToken;
+        const secretKey = process.env.SECRET;
         const decodedToken = jwt.verify(token, secretKey);
      
       
