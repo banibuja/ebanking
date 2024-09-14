@@ -142,34 +142,34 @@ const defineRoutes = (app) => {
     app.post('/getAllTransactions',         TransactionController.getAllTransactions);
     
     app.post('/getAllnterTransactions',     TransactionController.getAllnterTransactions);
-    // app.post('/getAllLoans',                loansController.getAllLoans);
-    // app.get('/getAccountNumber',            loansController.getAccountNumber);
-    // app.post('/applyLoan',                  loansController.applyLoan);
-    // app.post('/addLoan',                    loansController.addLoan);
-    // app.delete("/deleteLoan/:id",           loansController.deleteLoan);
-    // app.get('/editLoans/:id',               loansController.getLoanForEdit);
+    app.post('/getAllLoans',                loansController.getAllLoans);
+    app.get('/getAccountNumber',            loansController.getAccountNumber);
+    app.post('/applyLoan',                  loansController.applyLoan);
+    app.post('/addLoan',                    loansController.addLoan);
+    app.delete("/deleteLoan/:id",           loansController.deleteLoan);
+    app.get('/editLoans/:id',               loansController.getLoanForEdit);
     
 
     
-    // app.put('/updateLoan/:id',              loansController.updateLoan);
-    // app.put('/updateStatusLoans/:id',       loansController.updateStatusLoans);
+    app.put('/updateLoan/:id',              loansController.updateLoan);
+    app.put('/updateStatusLoans/:id',       loansController.updateStatusLoans);
     
-    // app.post('/getAllLoansForClient',       loansController.getAllLoansForClient);
+    app.post('/getAllLoansForClient',       loansController.getAllLoansForClient);
 // Importo kontrolluesin (controllers)
 
 
 // Definimi i rrugëve (routes) me metodat HTTP korrekte
-app.get('/getAllLoans',                loansController.getAllLoans);              // GET për të marrë të gjitha kreditë
-app.get('/getAccountNumber',           loansController.getAccountNumber);         // GET për të marrë numrin e llogarisë
-app.post('/applyLoan',                 loansController.applyLoan);                // POST për të aplikuar për një kredi
-app.post('/addLoan',                   loansController.addLoan);                  // POST për të shtuar një kredi
-app.delete("/deleteLoan/:id",          loansController.deleteLoan);               // DELETE për të fshirë një kredi me ID specifike
-app.get('/editLoans/:id',              loansController.getLoanForEdit);           // GET për të marrë një kredi për redaktim me ID specifike
+// app.get('/getAllLoans',                loansController.getAllLoans);              // GET për të marrë të gjitha kreditë
+// app.get('/getAccountNumber',           loansController.getAccountNumber);         // GET për të marrë numrin e llogarisë
+// app.post('/applyLoan',                 loansController.applyLoan);                // POST për të aplikuar për një kredi
+// app.post('/addLoan',                   loansController.addLoan);                  // POST për të shtuar një kredi
+// app.delete("/deleteLoan/:id",          loansController.deleteLoan);               // DELETE për të fshirë një kredi me ID specifike
+// app.get('/editLoans/:id',              loansController.getLoanForEdit);           // GET për të marrë një kredi për redaktim me ID specifike
 
-app.put('/updateLoan/:id',             loansController.updateLoan);               // PUT për të përditësuar një kredi me ID specifike
-app.put('/updateStatusLoans/:id',      loansController.updateStatusLoans);        // PUT për të përditësuar statusin e kredive me ID specifike
+// app.put('/updateLoan/:id',             loansController.updateLoan);               // PUT për të përditësuar një kredi me ID specifike
+// app.put('/updateStatusLoans/:id',      loansController.updateStatusLoans);        // PUT për të përditësuar statusin e kredive me ID specifike
 
-app.get('/getAllLoansForClient',       loansController.getAllLoansForClient);     // GET për të marrë të gjitha kreditë për një klient të caktuar
+// app.get('/getAllLoansForClient',       loansController.getAllLoansForClient);     // GET për të marrë të gjitha kreditë për një klient të caktuar
 
     
 
