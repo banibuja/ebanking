@@ -1,156 +1,115 @@
-const db = require('../../db');
-// const sendTransactionEmail = require('../Transaction/sendEmailTransaction');
+const { CurrentAccount, SavingsAccount, SavingsHistory } = require('../../Models/Transactions/SavingsAccount');
 const jwt = require('jsonwebtoken');
-const getCurrentAccount = (req, res) => {
+
+// Helper to get the userID from JWT token
+const getUserIdFromToken = (req, res) => {
+    const token = req.cookies.authToken;
+    const secretKey = process.env.SECRET;
     try {
-        const token = req.cookies.authToken; 
-        const secretKey = process.env.SECRET; 
         const decodedToken = jwt.verify(token, secretKey);
-
-        const userID = decodedToken.userId;
-
-    if (!userID) {
-        return res.status(401).json("fail").end();
+        return decodedToken.userId;
+    } catch (error) {
+        res.status(401).json({ error: "Not logged in" }).end();
+        return null;
     }
-
-    const sql = "SELECT * FROM currentaccounts WHERE UserID = ?";
-    db.query(sql, [userID], (err, data) => {
-        if (err) {
-            return res.status(500).end();
-        }
-        if (data.length > 0) {
-            return res.status(200).json(data).end();
-        } else {
-            return res.status(404).end();
-        }
-    });} catch (error) {
-        res.status(401).send("not logged in").end();
-      }
 };
 
-const getSavingsAccounts = (req, res) => {
+// Get all current accounts for a user (findAll)
+const findAllCurrentAccounts = async (req, res) => {
+    const userID = getUserIdFromToken(req, res);
+    if (!userID) return;
+
     try {
-        const token = req.cookies.authToken; 
-        const secretKey = process.env.SECRET; 
-        const decodedToken = jwt.verify(token, secretKey);
-
-        const userID = decodedToken.userId;
-
-    if (!userID) {
-        return res.status(401).json("fail").end();
-    }
-
-    const sql = "SELECT * FROM savingsaccounts WHERE UserID = ?";
-    db.query(sql, [userID], (err, data) => {
-        if (err) {
-            return res.status(500).json(err).end();
-        }
-        if (data.length > 0) {
-            return res.status(200).json(data).end();
+        const accounts = await CurrentAccount.findAll({ where: { UserID: userID } });
+        if (accounts.length > 0) {
+            res.status(200).json(accounts).end();
         } else {
-            return res.status(404).end();
+            res.status(404).json({ message: "No accounts found" }).end();
         }
-    });} catch (error) {
-        res.status(401).send("not logged in").end();
-      }
+    } catch (error) {
+        res.status(500).json({ error: 'Database error' }).end();
+    }
 };
 
-const insertSaveTransaction = (req, res) => {
-    const { SenderAccID, TransactionAmount, ReceiverAccID} = req.body;
+// Get all savings accounts for a user (findAll)
+const findAllSavingsAccounts = async (req, res) => {
+    const userID = getUserIdFromToken(req, res);
+    if (!userID) return;
 
+    try {
+        const savingsAccounts = await SavingsAccount.findAll({ where: { UserID: userID } });
+        if (savingsAccounts.length > 0) {
+            res.status(200).json(savingsAccounts).end();
+        } else {
+            res.status(404).json({ message: "No savings accounts found" }).end();
+        }
+    } catch (error) {
+        res.status(500).json({ error: 'Database error' }).end();
+    }
+};
+
+// Create a new transaction (create)
+const createTransaction = async (req, res) => {
+    const { SenderAccID, TransactionAmount, ReceiverAccID } = req.body;
+    
     if (!SenderAccID || !TransactionAmount || !ReceiverAccID) {
         return res.status(400).json({ error: "Missing parameters" }).end();
     }
 
-    db.query('SELECT * FROM currentaccounts WHERE CurrentAccount = ?', [SenderAccID], (err, results) => {
-        if (err) {
-            return res.status(500).json({ error: 'Database query error' }).end();
-        }
-
-        const senderAccount = results.find(account => account.CurrentAccount === parseInt(SenderAccID));
+    try {
+        const senderAccount = await CurrentAccount.findByPk(SenderAccID);
         if (!senderAccount) {
             return res.status(404).json({ error: "Sender account not found" }).end();
         }
         if (senderAccount.Balance < TransactionAmount) {
-            return res.status(400).json({ error: "Not enough balance" }).end();
+            return res.status(400).json({ error: "Insufficient balance" }).end();
         }
 
-        db.query(`SELECT * FROM savingsaccounts WHERE SavingAccount = ?`, [ReceiverAccID], (err, receiverResults) => {
-            if (err) {
-                return res.status(500).json({ error: 'Database query error' }).end();
-            }
+        const receiverAccount = await SavingsAccount.findByPk(ReceiverAccID);
+        if (!receiverAccount) {
+            return res.status(404).json({ error: "Receiver account not found" }).end();
+        }
 
-            const receiverAccount = receiverResults.find(account => account['SavingAccount'] === parseInt(ReceiverAccID));
-            if (!receiverAccount) {
-                return res.status(404).json({ error: "Receiver account not found" }).end();
-            }
+        // Update balances
+        senderAccount.Balance -= TransactionAmount;
+        await senderAccount.save();
 
-            const newSenderBalance = senderAccount.Balance - TransactionAmount;
-            db.query('UPDATE currentaccounts SET Balance = ? WHERE CurrentAccount = ?', [newSenderBalance, parseInt(SenderAccID)], (err, result) => {
-                if (err) {
-                    return res.status(500).json({ error: 'Database update error' }).end();
-                }
+        receiverAccount.Balance += TransactionAmount;
+        await receiverAccount.save();
 
-                const newReceiverBalance = +receiverAccount.Balance + +TransactionAmount;
-                db.query(`UPDATE savingsaccounts set Balance = ? WHERE SavingAccount = ?`, [newReceiverBalance, parseInt(ReceiverAccID)], (err, result) => {
-                    if (err) {
-                        return res.status(500).json({ error: 'Database update error' }).end();
-                    }
-
-                    db.query('INSERT INTO SavingsHistory (CurrentAccountID, FlexSaveAccountID, TransactionAmount) VALUES (?, ?, ?)',
-                        [SenderAccID,  ReceiverAccID, TransactionAmount],
-                        async (err, result) => {
-                            if (err) {
-                                return res.status(500).json(err).end();
-                            }
-                            res.status(200).json({ message: 'Transaction completed and email sent successfully' }).end();
-
-                            }
-                        
-                    );
-                });
-            });
+        // Create transaction history
+        await SavingsHistory.create({
+            CurrentAccountID: SenderAccID,
+            FlexSaveAccountID: ReceiverAccID,
+            TransactionAmount
         });
-    });
+
+        res.status(200).json({ message: 'Transaction successful' }).end();
+    } catch (error) {
+        res.status(500).json({ error: 'Database error' }).end();
+    }
 };
 
+// Get all transaction history for a user's current account (findPK)
+const findAllHistoryByCurrentAccount = async (req, res) => {
+    const userID = getUserIdFromToken(req, res);
+    if (!userID) return;
 
-
-const getAllHistory = (req, res) => {
     try {
-        const token = req.cookies.authToken; 
-        const secretKey = process.env.SECRET; 
-        const decodedToken = jwt.verify(token, secretKey);
-
-        const userID = decodedToken.userId;
-
-    if (!userID) {
-        return res.status(401).json("fail").end();
-    }
-    var sql = "SELECT CurrentAccount FROM currentaccounts WHERE UserID = ?";
-    db.query(sql, [userID], (err, data) => {
-        if (err) {
-            return res.status(500).end();
+        const account = await CurrentAccount.findOne({ where: { UserID: userID } });
+        if (!account) {
+            return res.status(404).json({ message: "No account found" }).end();
         }
-        if (data.length > 0) {
-            const accountID = data[0].CurrentAccount;
-            var sql = "SELECT * FROM savingshistory WHERE CurrentAccountID = ?";
-            db.query(sql, [accountID], (err, data) => {
-                if (err) {
-                    return res.status(500).end();
-                }
-                if (data.length > 0) {
-                    return res.status(200).json(data).end();
-                } else {
-                    return res.status(404).json("No Transactions found").end();
-                }
-            });
+
+        const transactions = await SavingsHistory.findAll({ where: { CurrentAccountID: account.CurrentAccountID } });
+        if (transactions.length > 0) {
+            res.status(200).json(transactions).end();
         } else {
-            return res.status(404).end();
+            res.status(404).json({ message: "No transactions found" }).end();
         }
-    });} catch (error) {
-        res.status(401).send("not logged in").end();
-      }
-}
+    } catch (error) {
+        res.status(500).json({ error: 'Database error' }).end();
+    }
+};
 
-module.exports = { getCurrentAccount, getSavingsAccounts, insertSaveTransaction, getAllHistory };
+module.exports = { findAllCurrentAccounts, findAllSavingsAccounts, createTransaction, findAllHistoryByCurrentAccount };

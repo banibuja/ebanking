@@ -49,9 +49,10 @@ const defineRoutes = (app) => {
     app.put('/updateCarusel/:id',           CaruselController.updateCarusel);
     app.delete("/deleteCarusel/:id",        CaruselController.deleteCarusel);
     
-    app.post('/getAllFlexSave',             saveTransactionController.getSavingsAccounts);
-    app.post('/insertSaveTransaction',      saveTransactionController.insertSaveTransaction);
-    app.get('/getAllHistory',               saveTransactionController.getAllHistory);
+    app.post('/getAllFlexSave',             saveTransactionController.findAllSavingsAccounts);
+    app.post('/insertSaveTransaction',      saveTransactionController.createTransaction);
+    app.get('/getAllHistory',               saveTransactionController.findAllHistoryByCurrentAccount);
+    
     
     app.get('/sessionTimeRemaining',        SessionController.sessionTimeRemaining);
     
