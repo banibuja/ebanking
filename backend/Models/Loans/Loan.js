@@ -1,40 +1,71 @@
-const db = require('../db'); // Adjust the path to your db connection file as needed
+const { Model, DataTypes } = require('sequelize');
+const sequelize = require('../config/database'); // Rrugën e saktë për konfigurimin e bazës së të dhënave
 
-const Loan = {
-    findByPk: (loanID, callback) => {
-        const sql = "SELECT * FROM applyloans WHERE LoanID = ?";
-        db.query(sql, [loanID], callback);
+class Loan extends Model {}
+
+Loan.init({
+    LoanID: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,
     },
-
-    getAllByAccount: (accountID, callback) => {
-        const sql = "SELECT * FROM applyloans WHERE AccountID = ?";
-        db.query(sql, [accountID], callback);
+    AccountID: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
     },
-
-    insert: (loanData, callback) => {
-        const sql = "INSERT INTO applyloans (AccountID, firstName, lastName, dateOfBirth, loanType, city, address, email, employmentStatus, annualIncome, loanAmount, loanPurpose, Status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Pending')";
-        db.query(sql, loanData, callback);
+    firstName: {
+        type: DataTypes.STRING,
+        allowNull: false,
     },
-
-    add: (loanData, callback) => {
-        const sql = "INSERT INTO loans (AccountID, firstName, lastName, dateOfBirth, loanType, city, address, email, employmentStatus, annualIncome, loanAmount, loanPurpose, Status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Accepted')";
-        db.query(sql, loanData, callback);
+    lastName: {
+        type: DataTypes.STRING,
+        allowNull: false,
     },
-
-    update: (loanID, loanData, callback) => {
-        const sql = "UPDATE applyloans SET firstName=?, lastName=?, dateOfBirth=?, loanType=?, city=?, address=?, email=?, employmentStatus=?, annualIncome=?, loanAmount=?, loanPurpose=?, Status=? WHERE LoanID=?";
-        db.query(sql, [...loanData, loanID], callback);
+    dateOfBirth: {
+        type: DataTypes.DATE,
+        allowNull: false,
     },
-
-    delete: (loanID, callback) => {
-        const sql = "DELETE FROM applyloans WHERE LoanID = ?";
-        db.query(sql, [loanID], callback);
+    loanType: {
+        type: DataTypes.STRING,
+        allowNull: false,
     },
-
-    getAccountNumberByUserId: (userID, callback) => {
-        const sql = "SELECT CurrentAccount FROM currentaccounts WHERE UserID = ?";
-        db.query(sql, [userID], callback);
-    }
-};
+    city: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    address: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    email: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    employmentStatus: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    annualIncome: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+    },
+    loanAmount: {
+        type: DataTypes.FLOAT,
+        allowNull: false,
+    },
+    loanPurpose: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    Status: {
+        type: DataTypes.STRING,
+        defaultValue: 'Pending',
+    },
+}, {
+    sequelize,
+    modelName: 'Loan',
+    tableName: 'applyloans',
+    timestamps: true, // Shtoni këtë nëse dëshironi të menaxhoni createdAt dhe updatedAt
+});
 
 module.exports = Loan;

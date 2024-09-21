@@ -223,134 +223,192 @@ module.exports = {
     addLoan,
     updateStatusLoans
 };
-
-
-// const Loan = require('../../Models/Loans/Loans');
+// const { Loan, } = require('../../models'); // Importoni modelet tuaja
 // const jwt = require('jsonwebtoken');
 
-// // Fetch all loans for a specific account
-// const getAllLoansForClient = async (req, res) => {
+// exports.getAllLoans = async (req, res) => {
 //     try {
-//         const token = req.cookies.authToken;
-//         if (!token) return res.status(401).json("Not logged in");
-
-//         const secretKey = process.env.SECRET;
+//         const token = req.cookies.authToken; 
+//         const secretKey = process.env.SECRET; 
 //         const decodedToken = jwt.verify(token, secretKey);
 //         const userID = decodedToken.userId;
 
-//         if (!userID) return res.status(401).json("Not logged in");
+//         if (!userID) {
+//             return res.status(401).json({ message: "Not logged in" });
+//         }
 
-//         const accountData = await Loan.getAccountNumberByUserId(userID);
-//         if (accountData.length > 0) {
-//             const accountID = accountData[0].CurrentAccount;
-//             const loans = await Loan.getAllByAccount(accountID);
+//         const account = await CurrentAccount.findOne({ where: { UserID: userID } });
+
+//         if (account) {
+//             const loans = await Loan.findAll({ where: { AccountID: account.CurrentAccount } });
+
 //             if (loans.length > 0) {
 //                 return res.status(200).json(loans);
 //             } else {
-//                 return res.status(404).json("No loans found");
+//                 return res.status(204).json({ message: "No Transactions found" });
 //             }
 //         } else {
-//             return res.status(404).json("No loans found");
+//             return res.status(204).json({ message: "No Transactions found" });
 //         }
 //     } catch (error) {
-//         console.error('Error fetching loans:', error);
-//         res.status(401).send("Not logged in");
+//         console.error(error);
+//         return res.status(401).json({ message: "Not logged in" });
 //     }
 // };
 
-// // Fetch a specific loan by ID
-// const getLoanForEdit = async (req, res) => {
+// exports.getLoanForEdit = async (req, res) => {
+//     const loanID = parseInt(req.params.id);
+
 //     try {
-//         const loanID = req.params.id;
 //         const loan = await Loan.findByPk(loanID);
+
 //         if (loan) {
 //             return res.status(200).json(loan);
 //         } else {
-//             return res.status(404).json("Loan not found");
+//             return res.status(404).json({ message: "Loan not found" });
 //         }
 //     } catch (error) {
-//         console.error('Error fetching loan:', error);
-//         res.status(500).json("Internal server error");
+//         console.error(error);
+//         return res.status(500).json({ message: "Internal server error" });
 //     }
 // };
 
-// // Apply for a loan
-// const applyLoan = async (req, res) => {
+// exports.applyLoan = async (req, res) => {
+//     const { AccountNumber, firstName, lastName, dateOfBirth, loanType, city, address, email, employmentStatus, annualIncome, loanAmount, loanPurpose } = req.body;
+
+//     if (!AccountNumber || !firstName || !lastName || !dateOfBirth || !loanType || !city || !address || !email || !employmentStatus || !annualIncome || !loanAmount || !loanPurpose) {
+//         return res.status(400).json({ message: "All fields are required" });
+//     }
+
 //     try {
-//         const { AccountNumber, firstName, lastName, dateOfBirth, loanType, city, address, email, employmentStatus, annualIncome, loanAmount, loanPurpose } = req.body;
+//         const account = await CurrentAccount.findOne({ where: { CurrentAccount: AccountNumber } });
 
-//         const accountExists = await Loan.getAccountNumberByUserId(AccountNumber);
-//         if (accountExists.length === 0) return res.status(404).json("Account does not exist");
+//         if (!account) {
+//             return res.status(404).json({ message: "Account does not exist" });
+//         }
 
-//         await Loan.insert([AccountNumber, firstName, lastName, dateOfBirth, loanType, city, address, email, employmentStatus, annualIncome, loanAmount, loanPurpose]);
-//         return res.status(201).json("Loan application submitted successfully");
+//         const newLoan = await Loan.create({
+//             AccountID: account.CurrentAccount,
+//             firstName,
+//             lastName,
+//             dateOfBirth,
+//             loanType,
+//             city,
+//             address,
+//             email,
+//             employmentStatus,
+//             annualIncome,
+//             loanAmount,
+//             loanPurpose,
+//             Status: 'Pending'
+//         });
+
+//         return res.status(201).json({ message: "Loan added successfully", newLoan });
 //     } catch (error) {
-//         console.error('Error applying for loan:', error);
-//         res.status(500).json("Internal server error");
+//         console.error("Error adding loan:", error);
+//         return res.status(500).json({ message: "Internal server error" });
 //     }
 // };
 
-// // Add a loan (admin function)
-// const addLoan = async (req, res) => {
+// exports.updateLoan = async (req, res) => {
+//     const LoanID = parseInt(req.params.id);
+//     const { firstName, lastName, dateOfBirth, loanType, city, address, email, employmentStatus, annualIncome, loanAmount, loanPurpose, Status } = req.body;
+
+//     if (!firstName || !lastName || !dateOfBirth || !loanType || !city || !address || !email || !employmentStatus || !annualIncome || !loanAmount || !loanPurpose || !Status) {
+//         return res.status(400).json({ message: "All fields are required" });
+//     }
+
 //     try {
-//         const { AccountID, firstName, lastName, dateOfBirth, loanType, city, address, email, employmentStatus, annualIncome, loanAmount, loanPurpose } = req.body;
+//         const loan = await Loan.findByPk(LoanID);
 
-//         const accountExists = await Loan.getAccountNumberByUserId(AccountID);
-//         if (accountExists.length === 0) return res.status(404).json("Account does not exist");
+//         if (!loan) {
+//             return res.status(404).json({ message: "Loan not found" });
+//         }
 
-//         await Loan.add([AccountID, firstName, lastName, dateOfBirth, loanType, city, address, email, employmentStatus, annualIncome, loanAmount, loanPurpose]);
-//         return res.status(201).json("Loan added successfully");
+//         await loan.update({
+//             firstName,
+//             lastName,
+//             dateOfBirth,
+//             loanType,
+//             city,
+//             address,
+//             email,
+//             employmentStatus,
+//             annualIncome,
+//             loanAmount,
+//             loanPurpose,
+//             Status
+//         });
+
+//         return res.status(200).json({ message: "Loan updated successfully", loan });
 //     } catch (error) {
-//         console.error('Error adding loan:', error);
-//         res.status(500).json("Internal server error");
+//         console.error("Error updating loan:", error);
+//         return res.status(500).json({ message: "Internal server error" });
 //     }
 // };
 
-// // Update loan details
-// const updateLoan = async (req, res) => {
-//     try {
-//         const { firstName, lastName, dateOfBirth, loanType, city, address, email, employmentStatus, annualIncome, loanAmount, loanPurpose, Status } = req.body;
-//         const loanID = req.params.id;
+// exports.deleteLoan = async (req, res) => {
+//     const loanID = parseInt(req.params.id);
 
-//         await Loan.update(loanID, [firstName, lastName, dateOfBirth, loanType, city, address, email, employmentStatus, annualIncome, loanAmount, loanPurpose, Status]);
-//         return res.status(200).json("Loan updated successfully");
+//     try {
+//         const loan = await Loan.findByPk(loanID);
+
+//         if (!loan) {
+//             return res.status(404).json({ message: "Loan not found" });
+//         }
+
+//         await loan.destroy();
+//         return res.status(200).json({ message: "Loan deleted successfully" });
 //     } catch (error) {
-//         console.error('Error updating loan:', error);
-//         res.status(500).json("Internal server error");
+//         console.error(error);
+//         return res.status(500).json({ message: "Internal server error" });
 //     }
 // };
 
-// // Delete a loan
-// const deleteLoan = async (req, res) => {
+// exports.getAccountNumber = async (req, res) => {
 //     try {
-//         const loanID = req.params.id;
-//         await Loan.delete(loanID);
-//         return res.status(200).json("Loan deleted successfully");
+//         const token = req.cookies.authToken; 
+//         const secretKey = process.env.SECRET; 
+//         const decodedToken = jwt.verify(token, secretKey);
+//         const userID = decodedToken.userId;
+
+//         const account = await CurrentAccount.findOne({ where: { UserID: userID } });
+
+//         if (!account) {
+//             return res.status(404).json({ message: "Account not found" });
+//         }
+
+//         return res.status(200).json({ accountNumber: account.CurrentAccount });
 //     } catch (error) {
-//         console.error('Error deleting loan:', error);
-//         res.status(500).json("Internal server error");
+//         console.error('Token verification failed:', error.message);
+//         return res.status(401).json({ message: "Not logged in" });
 //     }
 // };
 
-// // Update loan status (admin function)
-// const updateStatusLoans = async (req, res) => {
+// exports.updateStatusLoans = async (req, res) => {
+//     const accountId = parseInt(req.params.id);
+//     const { Status } = req.body;
+
 //     try {
-//         const accountId = req.params.id;
-//         const { Status } = req.body;
-//         await Loan.updateStatus(accountId, Status);
-//         return res.status(200).json("Status updated successfully");
+//         const [updated] = await Loan.update({ Status }, { where: { AccountID: accountId } });
+
+//         if (updated) {
+//             return res.status(200).json({ message: "Status updated successfully" });
+//         } else {
+//             return res.status(404).json({ message: "Loan not found" });
+//         }
 //     } catch (error) {
-//         console.error('Error updating loan status:', error);
-//         res.status(500).json("Internal server error");
+//         console.error(error);
+//         return res.status(500).json({ message: "Internal server error" });
 //     }
 // };
 
 // module.exports = {
-//     getAllLoansForClient,
+//     getAllLoans,
 //     getLoanForEdit,
 //     applyLoan,
-//     addLoan,
 //     updateLoan,
 //     deleteLoan,
+//     getAccountNumber,
 //     updateStatusLoans
 // };
