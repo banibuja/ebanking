@@ -1,9 +1,6 @@
-const { Model, DataTypes } = require('sequelize');
-const sequelize = require('../config/database'); // Rrugën e saktë për konfigurimin e bazës së të dhënave
 
-class Loan extends Model {}
-
-Loan.init({
+module.exports =(sequelize,DataTypes)=>{
+const Loan = sequelize.define('Loan',{
     LoanID: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -12,6 +9,10 @@ Loan.init({
     AccountID: {
         type: DataTypes.INTEGER,
         allowNull: false,
+        references: {
+            model: 'users', // Name of the table you're referencing
+            key: 'userId'
+        },
     },
     firstName: {
         type: DataTypes.STRING,
@@ -61,11 +62,13 @@ Loan.init({
         type: DataTypes.STRING,
         defaultValue: 'Pending',
     },
-}, {
-    sequelize,
-    modelName: 'Loan',
-    tableName: 'applyloans',
-    timestamps: true, // Shtoni këtë nëse dëshironi të menaxhoni createdAt dhe updatedAt
-});
 
-module.exports = Loan;
+  },{
+      tableName:'loans',
+      timestamps: false
+  });
+       return Loan;
+};     
+
+
+
