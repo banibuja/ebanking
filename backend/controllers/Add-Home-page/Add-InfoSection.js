@@ -1,4 +1,4 @@
-/*const db = require('../../db');
+const db = require('../../db');
 
 const insertInfoSection = (req, res) => {
     const { Info } = req.body;
@@ -70,113 +70,113 @@ const deleteInfo = (req, res) => {
     });
 };
 module.exports = { insertInfoSection,getInfoSection,getInfoForEdit,updateInfo,deleteInfo };
-*/
 
-const { InfoSection } = require('../../Models/InfoSection');
-const jwt = require('jsonwebtoken');
 
-// Helper to get the userID from JWT token
-const getUserIdFromToken = (req, res) => {
-    const token = req.cookies.authToken;
-    const secretKey = process.env.SECRET;
-    try {
-        const decodedToken = jwt.verify(token, secretKey);
-        return decodedToken.userId;
-    } catch (error) {
-        res.status(401).json({ error: "Not logged in" }).end();
-        return null;
-    }
-};
+// const { InfoSection } = require('../../Models/InfoSection');
+// const jwt = require('jsonwebtoken');
 
-// Insert a new info section (create)
-const insertInfoSection = async (req, res) => {
-    const { Info } = req.body;
+// // Helper to get the userID from JWT token
+// const getUserIdFromToken = (req, res) => {
+//     const token = req.cookies.authToken;
+//     const secretKey = process.env.SECRET;
+//     try {
+//         const decodedToken = jwt.verify(token, secretKey);
+//         return decodedToken.userId;
+//     } catch (error) {
+//         res.status(401).json({ error: "Not logged in" }).end();
+//         return null;
+//     }
+// };
+
+// // Insert a new info section (create)
+// const insertInfoSection = async (req, res) => {
+//     const { Info } = req.body;
     
-    if (!Info) {
-        return res.status(400).json({ error: "Missing Info" }).end();
-    }
+//     if (!Info) {
+//         return res.status(400).json({ error: "Missing Info" }).end();
+//     }
 
-    try {
-        const newInfoSection = await InfoSection.create({ Info });
-        res.status(200).json({ message: "Info section created", data: newInfoSection }).end();
-    } catch (error) {
-        console.error("Error creating info section:", error);
-        res.status(500).json({ error: "Internal server error" }).end();
-    }
-};
+//     try {
+//         const newInfoSection = await InfoSection.create({ Info });
+//         res.status(200).json({ message: "Info section created", data: newInfoSection }).end();
+//     } catch (error) {
+//         console.error("Error creating info section:", error);
+//         res.status(500).json({ error: "Internal server error" }).end();
+//     }
+// };
 
-// Get all info sections (findAll)
-const getInfoSection = async (req, res) => {
-    try {
-        const infoSections = await InfoSection.findAll();
-        if (infoSections.length > 0) {
-            res.status(200).json(infoSections).end();
-        } else {
-            res.status(204).json({ message: "No info sections found" }).end();
-        }
-    } catch (error) {
-        console.error("Error fetching info sections:", error);
-        res.status(500).json({ error: "Internal server error" }).end();
-    }
-};
+// // Get all info sections (findAll)
+// const getInfoSection = async (req, res) => {
+//     try {
+//         const infoSections = await InfoSection.findAll();
+//         if (infoSections.length > 0) {
+//             res.status(200).json(infoSections).end();
+//         } else {
+//             res.status(204).json({ message: "No info sections found" }).end();
+//         }
+//     } catch (error) {
+//         console.error("Error fetching info sections:", error);
+//         res.status(500).json({ error: "Internal server error" }).end();
+//     }
+// };
 
-// Get a single info section by ID (findOne)
-const getInfoForEdit = async (req, res) => {
-    const InfoSectionId = req.params.id;
+// // Get a single info section by ID (findOne)
+// const getInfoForEdit = async (req, res) => {
+//     const InfoSectionId = req.params.id;
 
-    try {
-        const infoSection = await InfoSection.findByPk(InfoSectionId);
-        if (infoSection) {
-            res.status(200).json(infoSection).end();
-        } else {
-            res.status(404).json({ message: "Info section not found" }).end();
-        }
-    } catch (error) {
-        console.error("Error fetching info section:", error);
-        res.status(500).json({ error: "Internal server error" }).end();
-    }
-};
+//     try {
+//         const infoSection = await InfoSection.findByPk(InfoSectionId);
+//         if (infoSection) {
+//             res.status(200).json(infoSection).end();
+//         } else {
+//             res.status(404).json({ message: "Info section not found" }).end();
+//         }
+//     } catch (error) {
+//         console.error("Error fetching info section:", error);
+//         res.status(500).json({ error: "Internal server error" }).end();
+//     }
+// };
 
-// Update an info section by ID (update)
-const updateInfo = async (req, res) => {
-    const { Info } = req.body;
-    const InfoSectionId = req.params.id;
+// // Update an info section by ID (update)
+// const updateInfo = async (req, res) => {
+//     const { Info } = req.body;
+//     const InfoSectionId = req.params.id;
 
-    if (!Info) {
-        return res.status(400).json({ error: "Missing Info" }).end();
-    }
+//     if (!Info) {
+//         return res.status(400).json({ error: "Missing Info" }).end();
+//     }
 
-    try {
-        const infoSection = await InfoSection.findByPk(InfoSectionId);
-        if (!infoSection) {
-            return res.status(404).json({ error: "Info section not found" }).end();
-        }
+//     try {
+//         const infoSection = await InfoSection.findByPk(InfoSectionId);
+//         if (!infoSection) {
+//             return res.status(404).json({ error: "Info section not found" }).end();
+//         }
 
-        infoSection.Info = Info;
-        await infoSection.save();
+//         infoSection.Info = Info;
+//         await infoSection.save();
         
-        res.status(200).json({ message: "Info section updated" }).end();
-    } catch (error) {
-        console.error("Error updating info section:", error);
-        res.status(500).json({ error: "Internal server error" }).end();
-    }
-};
+//         res.status(200).json({ message: "Info section updated" }).end();
+//     } catch (error) {
+//         console.error("Error updating info section:", error);
+//         res.status(500).json({ error: "Internal server error" }).end();
+//     }
+// };
 
-// Delete an info section by ID (delete)
-const deleteInfo = async (req, res) => {
-    const InfoSectionId = req.params.id;
+// // Delete an info section by ID (delete)
+// const deleteInfo = async (req, res) => {
+//     const InfoSectionId = req.params.id;
 
-    try {
-        const result = await InfoSection.destroy({ where: { InfoSectionId } });
-        if (result) {
-            res.status(200).json({ message: "Info section deleted" }).end();
-        } else {
-            res.status(404).json({ message: "Info section not found" }).end();
-        }
-    } catch (error) {
-        console.error("Error deleting info section:", error);
-        res.status(500).json({ error: "Internal server error" }).end();
-    }
-};
+//     try {
+//         const result = await InfoSection.destroy({ where: { InfoSectionId } });
+//         if (result) {
+//             res.status(200).json({ message: "Info section deleted" }).end();
+//         } else {
+//             res.status(404).json({ message: "Info section not found" }).end();
+//         }
+//     } catch (error) {
+//         console.error("Error deleting info section:", error);
+//         res.status(500).json({ error: "Internal server error" }).end();
+//     }
+// };
 
-module.exports = { insertInfoSection, getInfoSection, getInfoForEdit, updateInfo, deleteInfo };
+// module.exports = { insertInfoSection, getInfoSection, getInfoForEdit, updateInfo, deleteInfo };
