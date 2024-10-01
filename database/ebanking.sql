@@ -16,6 +16,9 @@ CREATE TABLE Users (
     lastLogin datetime,
     Status VARCHAR(20)
 );
+-- CREATE INDEX idx_emer ON klienti 
+-- SELECT * FROM klientet WHERE Emer"Arion";
+
 
 CREATE TABLE Adresa (
     AdresaID int,
