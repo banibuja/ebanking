@@ -1,25 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
+/* ============ GLOBAL ============ */
 * {
-  /* background-color: #0D0D0D;
-  color: white; */
   font-family: "Montserrat", sans-serif;
   font-optical-sizing: auto;
-  font-weight: weight;
   font-style: normal;
-  /* -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none; */
 }
 
 body {
   height: 100vh;
   background-color: #070707 !important;
   color: white !important;
-
 }
 
+/* ============ NAVBAR ============ */
 .navbar-nav {
   display: flex;
   flex-direction: row !important;
@@ -32,10 +26,12 @@ body {
   width: auto;
 }
 
+/* ============ LAYOUTS ============ */
 .container {
   margin-top: -20px;
   display: flex;
-  flex-direction: column;}
+  flex-direction: column;
+}
 
 .flexbox1 {
   display: flex;
@@ -43,20 +39,21 @@ body {
   align-items: center;
   margin-bottom: 20px;
 }
+
 .flexbox .paragraph-p {
   width: 25%;
   margin-left: -60px;
   font-size: 25px;
 }
 
-
+/* ============ START BANKING BUTTON ============ */
 .StartBanking-button {
   z-index: 1;
-  display: inline-flex;
+  display: flex;
   justify-content: center;
   align-items: center;
   height: 9rem;
-  width:9rem;
+  width: 9rem;
   text-align: center;
   border: 2px solid #EDC14A;
   border-radius: 50%;
@@ -64,9 +61,9 @@ body {
   text-decoration: none;
   position: relative;
   overflow: hidden;
-  background-color:#070707;
+  background-color: #070707;
   margin-left: 13%;
-
+  transition: all 0.3s ease-in-out;
 }
 
 .StartBanking-button .arrow-slide::before {
@@ -88,48 +85,50 @@ body {
   width: 100%;
   height: 100%;
 }
+
 .StartBanking-button .arrow-img {
   width: 20px;
-  margin-left: 0px;
-  margin-bottom: -40px;
   height: auto;
   transform: rotate(50deg);
   background-color: transparent;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .StartBanking-button:hover .arrow-img {
-  display: none;
+  opacity: 0;
 }
 
 .StartBanking-button p {
-  background-color: transparent;
-  margin-left: 2px;
-  margin-right: 15px;
-  margin-bottom: 1px;
-  transition: color 300ms ease-in-out, font-size 300ms ease-in-out;
+  margin: 0;
   font-weight: bold;
+  font-size: 1rem;
+  transition: color 0.3s ease-in-out, font-size 0.3s ease-in-out;
 }
 
 .StartBanking-button:hover p {
   color: black;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
 
+/* ============ FLEXBOX SECTIONS ============ */
 .flexbox {
   display: flex;
   align-items: center;
 }
+
 .flexbox .paragraph-p {
   width: 20%;
   flex-shrink: 0;
   font-size: 1.4rem;
 }
-.flexbox .e-logoimage{
-  width:25%;
+
+.flexbox .e-logoimage {
+  width: 25%;
   flex-shrink: 0;
   text-align: right;
 }
 
+/* ============ CAROUSEL ============ */
 .carusel-space {
   height: 100vh;
   display: flex;
@@ -143,7 +142,7 @@ body {
   height: 25rem;
   display: flex;
   flex-direction: column;
-  gap:5%;
+  gap: 5%;
   justify-content: center;
   align-items: center;
 }
@@ -155,14 +154,13 @@ body {
 
 .carusel-title {
   font-size: 1.8rem;
-  margin-bottom: 20px;
-  margin:0;
+  margin: 0;
 }
 
 .carusel-txt {
   font-size: 1.1rem;
   text-align: center;
-  margin:0;
+  margin: 0;
 }
 
 .carusel-gold-line {
@@ -179,6 +177,8 @@ body {
 .carusel-inner {
   max-width: 80%;
 }
+
+/* ============ INFO SECTION ============ */
 .info-place {
   width: 100%;
   height: 100vh;
@@ -201,6 +201,7 @@ body {
   text-align: center;
 }
 
+/* ============ CONTACT FORM ============ */
 .contactus-form {
   z-index: 999;
   position: fixed;
@@ -211,48 +212,131 @@ body {
   transform: translate(-50%, -50%);
 }
 
-.carousel a {
-  display: flex;
-  background: none;
-  width: 100px;
-}
-@media (min-width: 1200px) {
-  .h1 {
-      font-size: 14rem;
-  }
-  .-ebanking{
-    font-size: 8rem;
-  }
-  .eLogo-img {
-    width: 250px;
-  }
-}
+/* ============ MEDIA QUERIES ============ */
 @media (max-width: 1200px) {
   .flexbox1 {
-    gap:5vh;
+    gap: 5vh;
   }
+
   .h1 {
-      font-size: 5rem;
+    font-size: 5rem;
   }
+
   .StartBanking-button {
-    height: 4rem;
-    width:4rem;
-  }
-  .start-banking-text{
-    font-size: 0.5rem;
-  }
-  .StartBanking-button .arrow-img {
-    width: 0.5rem;
+    height: 7rem;
+    width: 7rem;
+    margin-left: 0;
   }
 
   .flexbox .paragraph-p {
     display: none;
   }
+
   .eLogo-img {
     width: 120px;
   }
-  .-ebanking{
+
+  .-ebanking {
     font-size: 4.5rem;
   }
-  
+}
+
+/* 📱 Për telefona */
+@media (max-width: 768px) {
+  .navbar-nav {
+    flex-direction: column !important;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .container {
+    margin-top: 10px;
+    padding: 10px;
+  }
+
+  .flexbox,
+  .flexbox1 {
+    flex-direction: column;
+    text-align: center;
+    margin: 0 auto;
+  }
+
+  .StartBanking-button {
+    margin: 30px auto;
+    height: 6rem;
+    width: 6rem;
+    border-width: 1.5px;
+  }
+
+  .StartBanking-button p {
+    font-size: 0.9rem;
+  }
+
+  .StartBanking-button .arrow-img {
+    width: 16px;
+  }
+
+  .carusel-space {
+    flex-direction: column;
+    height: auto;
+    gap: 2rem;
+  }
+
+  .carusel-cards {
+    width: 90%;
+    height: auto;
+  }
+
+  .info-place {
+    flex-direction: column;
+    height: auto;
+    padding: 30px 10px;
+  }
+
+  .info-place h1 {
+    font-size: 1.4rem;
+    width: 90%;
+  }
+
+  .info-place img {
+    width: 200px;
+    height: auto;
+  }
+
+  .contactus-form {
+    width: 90%;
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: none;
+  }
+}
+
+/* 📱📱 Për ekrane shumë të vogla (nën 480px) */
+@media (max-width: 480px) {
+  .StartBanking-button {
+    height: 5rem;
+    width: 5rem;
+    margin: 25px auto;
+  }
+
+  .StartBanking-button p {
+    font-size: 0.8rem;
+  }
+
+  .StartBanking-button .arrow-img {
+    width: 14px;
+  }
+
+  .carusel-title {
+    font-size: 1.3rem;
+  }
+
+  .carusel-txt {
+    font-size: 0.9rem;
+  }
+
+  .info-place h1 {
+    font-size: 1.2rem;
+  }
 }

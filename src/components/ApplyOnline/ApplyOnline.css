@@ -1,108 +1,91 @@
 .apply-online-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background: url('./banka.png') no-repeat center center fixed;
-    background-size: cover;
-    color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: url('./banka.png') no-repeat center center fixed;
+  background-size: cover;
+  color: #fff;
+  padding: 20px;
 }
 
 .content-wrapper {
-    display: flex;
-    width: 100%;
-    max-width: 1200px;
-    padding: 20px;
-    gap: 20px; /* Hapësirë midis kolonave */
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  max-width: 1200px;
+  gap: 20px;
+  padding: 20px;
 }
 
 .column {
-    flex: 1;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
+  flex: 1;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  backdrop-filter: blur(4px);
 }
 
+/* --- Stilet ekzistuese për inpute dhe buton --- */
 .form-outline {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 .form-label {
-    color: #fff;
-    font-size: 0.9em;
-}
-/* .form-control, */
- .form-select {
-    background: rgba(252, 250, 250, 0.995);
-    color: #000000;
-    border: none;
-    border-radius: 5px;
-    padding: 8px;
-    font-size: 0.9em;
+  color: #fff;
+  font-size: 0.9em;
 }
 
-.form-control::placeholder, .form-select::placeholder {
-    color: #ccc;
-}
-
-/* .btn-success {
-    background: linear-gradient(to right, #ff416c, #ff4b2b);
-    border: none;
-    padding: 10px 20px;
-    font-size: 0.9em;
-} */
-
-.alert-success {
-    background: #28a745;
-    color: #fff;
-    border: none;
-    font-size: 0.9em;
-    padding: 10px;
+.form-select {
+  background: rgba(252, 250, 250, 0.995);
+  color: #000;
+  border: none;
+  border-radius: 5px;
+  padding: 8px;
+  font-size: 0.9em;
 }
 
 .btn-success {
-    background-color: #004A7F;
-    -webkit-border-radius: 10px;
-    border-radius: 3px;
-    border: none;
-    color: #FFFFFF;
-    cursor: pointer;
-    display: inline-block;
-    font-family: Arial;
-    font-size: 20px;
-    padding: 6px 20px;
-    text-align: center;
-    text-decoration: none;
-  }
-  @-webkit-keyframes glowing {
-    0% { background-color: #97bf2d; -webkit-box-shadow: 0 0 3px #f73b02; }
-    50% { background-color: #97bf2d; -webkit-box-shadow: 0 0 40px #f73b02; }
-    100% { background-color: #97bf2d; -webkit-box-shadow: 0 0 3px #f73b02; }
-  }
-  
-  @-moz-keyframes glowing {
-    0% { background-color: #97bf2d; -moz-box-shadow: 0 0 3px #f73b02; }
-    50% { background-color: #97bf2d; -moz-box-shadow: 0 0 40px #f73b02; }
-    100% { background-color: #97bf2d; -moz-box-shadow: 0 0 3px #f73b02; }
-  }
-  
-  @-o-keyframes glowing {
-    0% { background-color: #97bf2d; box-shadow: 0 0 3px #f73b02; }
-    50% { background-color: #97bf2d; box-shadow: 0 0 40px #f73b02; }
-    100% { background-color: #97bf2d; box-shadow: 0 0 3px #f73b02; }
-  }
-  
-  @keyframes glowing {
-    0% { background-color: #97bf2d; box-shadow: 0 0 3px #f73b02; }
-    50% { background-color: #97bf2d; box-shadow: 0 0 40px #f73b02; }
-    100% { background-color: #97bf2d; box-shadow: 0 0 3px #f73b02; }
-  }
-  
-  .btn-success {
-    -webkit-animation: glowing 1500ms infinite;
-    -moz-animation: glowing 1500ms infinite;
-    -o-animation: glowing 1500ms infinite;
-    animation: glowing 1500ms infinite;
+  background-color: #004A7F;
+  border-radius: 3px;
+  border: none;
+  color: #FFFFFF;
+  cursor: pointer;
+  font-family: Arial;
+  font-size: 18px;
+  padding: 10px 25px;
+  text-align: center;
+  text-decoration: none;
+  transition: transform 0.2s ease-in-out;
+}
+
+.btn-success:hover {
+  transform: scale(1.05);
+}
+
+@keyframes glowing {
+  0% { background-color: #97bf2d; box-shadow: 0 0 3px #f73b02; }
+  50% { background-color: #97bf2d; box-shadow: 0 0 40px #f73b02; }
+  100% { background-color: #97bf2d; box-shadow: 0 0 3px #f73b02; }
+}
+
+.btn-success {
+  animation: glowing 1500ms infinite;
+}
+
+/* 📱 Për telefona — shfaq kolonat me scroll horizontal */
+@media (max-width: 768px) {
+  .apply-online-container {
+    overflow-x: auto; /* aktivizon scroll horizontal */
   }
 
+  .content-wrapper {
+    flex-wrap: nowrap;
+    width: 200%; /* dyfisho për të nxënë 2 kolonat njëra pas tjetrës */
+  }
 
+  .column {
+    min-width: 100%;
+    flex-shrink: 0; /* mos lejo tkurrje */
+  }
+}

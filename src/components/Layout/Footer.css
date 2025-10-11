@@ -1,41 +1,111 @@
 .StartBanking-footer-button {
-display: inline-block;
-background-color: black;
-color: white;
-text-decoration: none;
-padding: 13px 15px 0px 15px;
-border: 2px solid #EDC14A;
-border-radius: 30%;
-transition: color 0.3s, background-color 0.3s;
-}
-.StartBanking-footer-button:hover {
-color: black;
-background-color: white;
-}
-.StartBanking-footer-button > p{
-font-size: 1rem;
+  display: inline-block;
+  background-color: black;
+  color: white;
+  text-decoration: none;
+  padding: 13px 15px 0px 15px;
+  border: 2px solid #EDC14A;
+  border-radius: 30%;
+  transition: color 0.3s, background-color 0.3s;
 }
 
-.row-footer{
-width:60rem;
-border-bottom: 2px solid #EDC14A;
+.StartBanking-footer-button:hover {
+  color: black;
+  background-color: white;
 }
-.row-footer-b{
-width:60rem;
+
+.StartBanking-footer-button > p {
+  font-size: 1rem;
 }
-.col > h1{
-font-size: 2rem;
+
+.row-footer {
+  width: 60rem;
+  border-bottom: 2px solid #EDC14A;
 }
-.col > p{
-font-size: 1rem;
+
+.row-footer-b {
+  width: 60rem;
 }
-.col-md-3 >h1{
-font-size: 1.6rem;
+
+.col > h1 {
+  font-size: 2rem;
 }
-.col-md-3 >p{
-font-size: 1.2rem;
+
+.col > p {
+  font-size: 1rem;
 }
-.footer{
-    position: absolute;
-    left: 22%;
+
+.col-md-3 > h1 {
+  font-size: 1.6rem;
+}
+
+.col-md-3 > p {
+  font-size: 1.2rem;
+}
+
+.footer {
+  position: absolute;
+  left: 22%;
+}
+
+/* 📱 Responzivitet për telefona dhe tabletë */
+@media (max-width: 1024px) {
+  .footer {
+    position: relative;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    padding: 20px 10px;
+  }
+
+  .row-footer,
+  .row-footer-b {
+    width: 100%;
+    border-bottom: 1px solid #EDC14A;
+  }
+
+  .col, .col-md-3 {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  .col > h1,
+  .col-md-3 > h1 {
+    font-size: 1.4rem;
+  }
+
+  .col > p,
+  .col-md-3 > p {
+    font-size: 1rem;
+  }
+
+  .StartBanking-footer-button {
+    display: block;
+    width: 70%;
+    margin: 15px auto;
+    padding: 12px;
+    border-radius: 25px;
+  }
+
+  .StartBanking-footer-button > p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .StartBanking-footer-button {
+    width: 90%;
+    padding: 10px;
+  }
+
+  .col > h1,
+  .col-md-3 > h1 {
+    font-size: 1.2rem;
+  }
+
+  .col > p,
+  .col-md-3 > p {
+    font-size: 0.95rem;
+  }
 }
